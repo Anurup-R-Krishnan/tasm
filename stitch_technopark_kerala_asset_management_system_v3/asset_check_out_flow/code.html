@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Asset Check-Out Flow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#ffdbcb",
+                      "canvas": "#FAF7F2",
+                      "surface-container": "#fdeae3",
+                      "secondary-fixed": "#e9e1dd",
+                      "secondary-container": "#e9e1dd",
+                      "on-tertiary": "#ffffff",
+                      "metric-amber": "#FEF3C7",
+                      "surface-container-high": "#f7e4dd",
+                      "on-secondary-container": "#686361",
+                      "surface-container-low": "#fff1eb",
+                      "surface-container-highest": "#f1dfd8",
+                      "error": "#ba1a1a",
+                      "surface": "#FFFFFF",
+                      "secondary": "#625d5b",
+                      "metric-sage": "#DCFCE7",
+                      "on-primary-fixed-variant": "#7a3000",
+                      "surface-dim": "#e8d6cf",
+                      "primary-fixed-dim": "#ffb693",
+                      "border-default": "#EEEBE4",
+                      "outline": "#887269",
+                      "on-tertiary-container": "#a8d3ff",
+                      "surface-container-lowest": "#ffffff",
+                      "accent-subtle": "#FEF3C7",
+                      "outline-variant": "#dcc1b6",
+                      "on-secondary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "metric-lavender": "#EDE9FE",
+                      "text-primary": "#1C1917",
+                      "status-checked-out": "#1E40AF",
+                      "on-surface": "#231a15",
+                      "tertiary-container": "#005c92",
+                      "surface-subtle": "#FAFAF8",
+                      "primary": "#712c00",
+                      "inverse-surface": "#392e2a",
+                      "status-in-stock": "#166534",
+                      "on-secondary-fixed": "#1e1b19",
+                      "surface-variant": "#f1dfd8",
+                      "text-secondary": "#78716C",
+                      "surface-bright": "#fff8f6",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#ffb693",
+                      "on-tertiary-fixed": "#001d33",
+                      "on-surface-variant": "#55433a",
+                      "background": "#fff8f6",
+                      "tertiary-fixed-dim": "#98cbff",
+                      "on-tertiary-fixed-variant": "#004a77",
+                      "on-primary-container": "#ffc2a5",
+                      "surface-tint": "#9a4614",
+                      "inverse-on-surface": "#ffede6",
+                      "error-container": "#ffdad6",
+                      "on-background": "#231a15",
+                      "on-primary-fixed": "#341000",
+                      "tertiary-fixed": "#cee5ff",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#92400e",
+                      "on-secondary-fixed-variant": "#4a4643",
+                      "secondary-fixed-dim": "#ccc5c2",
+                      "tertiary": "#00446d",
+                      "status-critical": "#991B1B"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "inline": "12px",
+                      "base": "4px",
+                      "page-margin": "32px",
+                      "stack": "16px",
+                      "section-gap": "32px",
+                      "card-padding": "24px"
+              },
+              "fontFamily": {
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "metadata": [
+                              "Inter"
+                      ],
+                      "mono-data": [
+                              "JetBrains Mono"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "h3": [
+                              "Inter"
+                      ],
+                      "h2": [
+                              "Inter"
+                      ],
+                      "kpi-number": [
+                              "Inter"
+                      ],
+                      "h1": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "table-header": [
+                              "12px",
+                              {
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "metadata": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "mono-data": [
+                              "13px",
+                              {
+                                      "lineHeight": "1",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h3": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "h2": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "kpi-number": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "h1": [
+                              "22px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+        .material-symbols-outlined[style*="font-variation-settings: 'FILL' 1"] {
+          font-variation-settings:
+          'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+      </style>
+</head>
+<body class="bg-canvas text-text-primary font-body antialiased selection:bg-metric-amber">
+<div class="flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar (JSON generated) -->
+<header class="bg-[#FAF9F6] dark:bg-stone-950 font-['Inter'] text-sm tracking-tight docked full-width top-0 h-[60px] shadow-sm flex justify-between items-center px-8 w-full sticky top-0 z-40">
+<div class="flex items-center gap-inline">
+<!-- Brand Logo Placeholder if needed, but per logic, it's transactional, wait, the prompt says "Asset Check-Out Flow". A transactional flow implies we should suppress the nav shell. However, I am generating the UI based on instructions. The prompt implies a focused flow. I will render a minimal header. -->
+<button class="flex items-center gap-base text-text-secondary hover:text-text-primary transition-colors cursor-pointer active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+<span class="font-h3 text-h3">Cancel Check-Out</span>
+</button>
+</div>
+<div class="flex-1 flex justify-center">
+<div class="font-['Inter'] text-sm tracking-tight text-lg font-bold text-stone-900 dark:text-stone-50 tracking-tight">
+                    Technopark AMS
+                 </div>
+</div>
+<div class="flex items-center gap-stack">
+<!-- Actions suppressed for transactional flow -->
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto px-page-margin py-page-margin">
+<div class="max-w-[1000px] mx-auto w-full">
+<!-- Page Header -->
+<div class="mb-section-gap text-center">
+<h1 class="font-h1 text-h1 text-text-primary mb-base">Asset Check-Out</h1>
+<p class="font-body text-body text-text-secondary">Assign equipment to a staff member.</p>
+</div>
+<!-- Stepper -->
+<div class="mb-section-gap">
+<div class="flex items-center justify-between w-full relative">
+<!-- Connecting Line -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-border-default -z-10"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1/4 h-0.5 bg-primary-container -z-10"></div>
+<!-- Step 1: Select Asset (Active) -->
+<div class="flex flex-col items-center gap-base bg-canvas px-inline relative">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-h3 text-h3 shadow-sm border-2 border-primary-container">
+                                1
+                            </div>
+<span class="font-h3 text-h3 text-primary-container">Select Asset</span>
+</div>
+<!-- Step 2: Select Recipient -->
+<div class="flex flex-col items-center gap-base bg-canvas px-inline relative">
+<div class="w-8 h-8 rounded-full bg-surface text-text-secondary flex items-center justify-center font-h3 text-h3 border-2 border-border-default">
+                                2
+                            </div>
+<span class="font-h3 text-h3 text-text-secondary">Select Recipient</span>
+</div>
+<!-- Step 3: Review -->
+<div class="flex flex-col items-center gap-base bg-canvas px-inline relative">
+<div class="w-8 h-8 rounded-full bg-surface text-text-secondary flex items-center justify-center font-h3 text-h3 border-2 border-border-default">
+                                3
+                            </div>
+<span class="font-h3 text-h3 text-text-secondary">Review</span>
+</div>
+<!-- Step 4: Confirm -->
+<div class="flex flex-col items-center gap-base bg-canvas px-inline relative">
+<div class="w-8 h-8 rounded-full bg-surface text-text-secondary flex items-center justify-center font-h3 text-h3 border-2 border-border-default">
+                                4
+                            </div>
+<span class="font-h3 text-h3 text-text-secondary">Confirm</span>
+</div>
+</div>
+</div>
+<!-- Step Content: Select Asset & Recipient (Hybrid Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-section-gap">
+<!-- Left Column: Asset Selection -->
+<div class="lg:col-span-7 flex flex-col gap-stack">
+<!-- Search and Filter Bar -->
+<div class="flex gap-inline">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-inline top-1/2 -translate-y-1/2 text-text-secondary" data-icon="search">search</span>
+<input class="w-full pl-10 pr-inline py-2 bg-surface border border-border-default rounded-DEFAULT font-body text-body text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent shadow-sm" placeholder="Search by asset tag, model, or type..." type="text"/>
+</div>
+<button class="px-inline py-2 bg-surface border border-border-default rounded-DEFAULT flex items-center gap-base text-text-secondary hover:bg-surface-subtle transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+<span class="font-h3 text-h3">Filters</span>
+</button>
+</div>
+<!-- Asset Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack">
+<!-- Selected Asset Card -->
+<div class="bg-surface rounded-[16px] border border-primary-container shadow-md p-stack relative cursor-pointer hover:-translate-y-0.5 transition-transform">
+<div class="absolute top-stack right-stack">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-12 h-12 bg-surface-subtle rounded-lg flex items-center justify-center mb-stack border border-border-default">
+<span class="material-symbols-outlined text-text-primary text-[24px]" data-icon="laptop_mac">laptop_mac</span>
+</div>
+<div class="mb-base">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-metric-sage text-status-in-stock font-metadata text-metadata mb-2">In Stock</span>
+</div>
+<h3 class="font-h2 text-h2 text-text-primary mb-1">MacBook Pro 16"</h3>
+<p class="font-mono-data text-mono-data text-text-secondary mb-stack">TAG: AST-2023-089</p>
+<div class="flex gap-2">
+<span class="font-metadata text-metadata text-text-secondary bg-surface-subtle px-2 py-1 rounded border border-border-default">M2 Max</span>
+<span class="font-metadata text-metadata text-text-secondary bg-surface-subtle px-2 py-1 rounded border border-border-default">32GB RAM</span>
+</div>
+</div>
+<!-- Available Asset Card -->
+<div class="bg-surface rounded-[16px] border border-border-default shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] p-stack relative cursor-pointer hover:-translate-y-0.5 transition-transform hover:shadow-md">
+<div class="absolute top-stack right-stack">
+<span class="material-symbols-outlined text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+<div class="w-12 h-12 bg-surface-subtle rounded-lg flex items-center justify-center mb-stack border border-border-default">
+<span class="material-symbols-outlined text-text-primary text-[24px]" data-icon="laptop_windows">laptop_windows</span>
+</div>
+<div class="mb-base">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-metric-sage text-status-in-stock font-metadata text-metadata mb-2">In Stock</span>
+</div>
+<h3 class="font-h2 text-h2 text-text-primary mb-1">Dell XPS 15</h3>
+<p class="font-mono-data text-mono-data text-text-secondary mb-stack">TAG: AST-2023-142</p>
+<div class="flex gap-2">
+<span class="font-metadata text-metadata text-text-secondary bg-surface-subtle px-2 py-1 rounded border border-border-default">i9 13th Gen</span>
+<span class="font-metadata text-metadata text-text-secondary bg-surface-subtle px-2 py-1 rounded border border-border-default">64GB RAM</span>
+</div>
+</div>
+<!-- Available Asset Card -->
+<div class="bg-surface rounded-[16px] border border-border-default shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] p-stack relative cursor-pointer hover:-translate-y-0.5 transition-transform hover:shadow-md">
+<div class="absolute top-stack right-stack">
+<span class="material-symbols-outlined text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+<div class="w-12 h-12 bg-surface-subtle rounded-lg flex items-center justify-center mb-stack border border-border-default">
+<span class="material-symbols-outlined text-text-primary text-[24px]" data-icon="tablet_mac">tablet_mac</span>
+</div>
+<div class="mb-base">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-metric-sage text-status-in-stock font-metadata text-metadata mb-2">In Stock</span>
+</div>
+<h3 class="font-h2 text-h2 text-text-primary mb-1">iPad Pro 12.9"</h3>
+<p class="font-mono-data text-mono-data text-text-secondary mb-stack">TAG: AST-2023-205</p>
+<div class="flex gap-2">
+<span class="font-metadata text-metadata text-text-secondary bg-surface-subtle px-2 py-1 rounded border border-border-default">M2</span>
+<span class="font-metadata text-metadata text-text-secondary bg-surface-subtle px-2 py-1 rounded border border-border-default">512GB</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Contextual Details & Recipient -->
+<div class="lg:col-span-5 flex flex-col gap-stack">
+<!-- Linked Accessories (Appears when asset is selected) -->
+<div class="bg-surface rounded-[16px] border border-border-default shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] p-card-padding">
+<h2 class="font-h2 text-h2 text-text-primary mb-stack flex items-center gap-2">
+<span class="material-symbols-outlined text-text-secondary text-[20px]" data-icon="cable">cable</span>
+                                Linked Accessories
+                            </h2>
+<p class="font-body text-body text-text-secondary mb-stack">Select accessories to include with AST-2023-089.</p>
+<div class="flex flex-col gap-2">
+<label class="flex items-center p-3 rounded-DEFAULT border border-primary-container bg-metric-amber/10 cursor-pointer">
+<input checked="" class="w-4 h-4 text-primary-container rounded border-primary-container focus:ring-primary-container" type="checkbox"/>
+<div class="ml-3 flex flex-col">
+<span class="font-h3 text-h3 text-text-primary">140W USB-C Power Adapter</span>
+<span class="font-mono-data text-mono-data text-text-secondary">ACC-PWR-042</span>
+</div>
+</label>
+<label class="flex items-center p-3 rounded-DEFAULT border border-border-default bg-surface hover:bg-surface-subtle cursor-pointer transition-colors">
+<input class="w-4 h-4 text-primary-container rounded border-outline focus:ring-primary-container" type="checkbox"/>
+<div class="ml-3 flex flex-col">
+<span class="font-h3 text-h3 text-text-primary">USB-C to MagSafe 3 Cable (2 m)</span>
+<span class="font-mono-data text-mono-data text-text-secondary">ACC-CBL-118</span>
+</div>
+</label>
+<label class="flex items-center p-3 rounded-DEFAULT border border-primary-container bg-metric-amber/10 cursor-pointer">
+<input checked="" class="w-4 h-4 text-primary-container rounded border-primary-container focus:ring-primary-container" type="checkbox"/>
+<div class="ml-3 flex flex-col">
+<span class="font-h3 text-h3 text-text-primary">Incase 16" Laptop Sleeve</span>
+<span class="font-mono-data text-mono-data text-text-secondary">ACC-BAG-092</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Recipient Selection -->
+<div class="bg-surface rounded-[16px] border border-border-default shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] p-card-padding">
+<h2 class="font-h2 text-h2 text-text-primary mb-stack flex items-center gap-2">
+<span class="material-symbols-outlined text-text-secondary text-[20px]" data-icon="person_add">person_add</span>
+                                Select Recipient
+                            </h2>
+<!-- Recipient Search -->
+<div class="relative mb-stack">
+<span class="material-symbols-outlined absolute left-inline top-1/2 -translate-y-1/2 text-text-secondary" data-icon="search">search</span>
+<input class="w-full pl-10 pr-inline py-2 bg-surface border border-primary-container rounded-DEFAULT font-body text-body text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent shadow-sm" type="text" value="Sarah J"/>
+</div>
+<!-- Selected Recipient Card -->
+<div class="flex items-center p-inline rounded-DEFAULT border border-primary-container bg-metric-amber/10">
+<img alt="Profile picture of Sarah Jenkins, Engineering Dept" class="w-12 h-12 rounded-full border border-border-default mr-inline object-cover" data-alt="professional headshot of a young woman with dark hair in a corporate setting, soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwtakJ2rCE2OVQ-BAkajtwvc7Rno5ZInFFJH58qy4-AEKBCxRg3507BTIBGEfCpOSZibvnPjmSYRPdrhL273OL1hRZoQEUw80jeqJyTOTbbSlEMAD6N7ChR5WWoWZSnIdR4Rnt3kKHgHVKlm-bGirQha5ngzS9oeOZbOO1mDpAgyN-wsK9_jZuFoMe9M1v1AhdrkIiKtz9fv76JFk6SRhwvfN6Ko-Qq21peSXtXpqoAYiMV9Zr6pXTTSKAB0skATHNP16a4BVkvbbK"/>
+<div class="flex-1">
+<h3 class="font-h3 text-h3 text-text-primary">Sarah Jenkins</h3>
+<p class="font-metadata text-metadata text-text-secondary">Engineering • Frontend Developer</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="inline-flex items-center gap-1 font-metadata text-metadata text-text-secondary">
+<span class="material-symbols-outlined text-[14px]" data-icon="inventory_2">inventory_2</span>
+                                        Has 2 assets
+                                    </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-section-gap flex justify-end gap-inline border-t border-border-default pt-stack">
+<button class="px-6 py-2 bg-surface border border-outline text-text-primary font-h3 text-h3 rounded-DEFAULT hover:bg-surface-subtle transition-colors shadow-sm">
+                        Back
+                    </button>
+<button class="px-6 py-2 bg-text-primary text-surface font-h3 text-h3 rounded-DEFAULT hover:bg-inverse-surface transition-colors shadow-sm flex items-center gap-2">
+                        Continue to Review
+                        <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

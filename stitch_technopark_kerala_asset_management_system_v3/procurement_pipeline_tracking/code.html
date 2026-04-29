@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Procurement Pipeline Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "metric-sage": "#DCFCE7",
+                        "tertiary": "#00446d",
+                        "primary-fixed": "#ffdbcb",
+                        "secondary": "#625d5b",
+                        "surface-container-high": "#f7e4dd",
+                        "on-surface": "#231a15",
+                        "secondary-fixed": "#e9e1dd",
+                        "metric-amber": "#FEF3C7",
+                        "surface-subtle": "#FAFAF8",
+                        "background": "#fff8f6",
+                        "secondary-fixed-dim": "#ccc5c2",
+                        "border-default": "#EEEBE4",
+                        "primary-container": "#92400e",
+                        "status-critical": "#991B1B",
+                        "on-secondary-fixed-variant": "#4a4643",
+                        "tertiary-fixed": "#cee5ff",
+                        "surface-bright": "#fff8f6",
+                        "surface": "#FFFFFF",
+                        "metric-lavender": "#EDE9FE",
+                        "inverse-surface": "#392e2a",
+                        "surface-container-highest": "#f1dfd8",
+                        "on-background": "#231a15",
+                        "text-primary": "#1C1917",
+                        "surface-dim": "#e8d6cf",
+                        "secondary-container": "#e9e1dd",
+                        "primary-fixed-dim": "#ffb693",
+                        "surface-container": "#fdeae3",
+                        "primary": "#712c00",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#98cbff",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#f1dfd8",
+                        "on-tertiary-container": "#a8d3ff",
+                        "on-tertiary-fixed-variant": "#004a77",
+                        "inverse-primary": "#ffb693",
+                        "inverse-on-surface": "#ffede6",
+                        "accent-subtle": "#FEF3C7",
+                        "text-secondary": "#78716C",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ffc2a5",
+                        "outline-variant": "#dcc1b6",
+                        "on-surface-variant": "#55433a",
+                        "error-container": "#ffdad6",
+                        "canvas": "#FAF7F2",
+                        "on-secondary-container": "#686361",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#001d33",
+                        "status-checked-out": "#1E40AF",
+                        "outline": "#887269",
+                        "status-in-stock": "#166534",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#fff1eb",
+                        "surface-tint": "#9a4614",
+                        "on-primary-fixed": "#341000",
+                        "on-secondary-fixed": "#1e1b19",
+                        "tertiary-container": "#005c92",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "page-margin": "32px",
+                        "inline": "12px",
+                        "card-padding": "24px",
+                        "stack": "16px",
+                        "section-gap": "32px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "kpi-number": ["Inter"],
+                        "h2": ["Inter"],
+                        "body": ["Inter"],
+                        "metadata": ["Inter"],
+                        "table-header": ["Inter"],
+                        "mono-data": ["JetBrains Mono"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"]
+                    },
+                    "fontSize": {
+                        "kpi-number": ["28px", { "lineHeight": "1.1", "fontWeight": "600" }],
+                        "h2": ["16px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "metadata": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "table-header": ["12px", { "letterSpacing": "0.06em", "fontWeight": "500" }],
+                        "mono-data": ["13px", { "lineHeight": "1", "fontWeight": "400" }],
+                        "h3": ["14px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h1": ["22px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background min-h-screen text-text-primary font-body text-body antialiased">
+<!-- TopAppBar -->
+<header class="bg-stone-50/90 dark:bg-stone-950/90 backdrop-blur-md fixed top-0 w-full h-[60px] z-50 border-b border-stone-200 dark:border-stone-800 shadow-sm">
+<div class="flex items-center justify-between px-6 w-full max-w-[1400px] mx-auto h-full">
+<div class="flex items-center gap-4">
+<span class="text-lg font-black text-stone-900 dark:text-stone-50 tracking-tighter">Technopark AMS</span>
+</div>
+<div class="flex-1 max-w-md mx-8 hidden md:block">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" style="font-size: 20px;">search</span>
+<input class="w-full bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 rounded-md py-1.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50" placeholder="Search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-stone-600 dark:text-stone-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-stone-600 dark:text-stone-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<button class="p-2 text-stone-600 dark:text-stone-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="ml-2 h-8 w-8 rounded-full bg-surface-dim border border-border-default overflow-hidden">
+<img alt="Employee avatar" class="w-full h-full object-cover" data-alt="Professional headshot of a person in corporate attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe_bRkGYkBdfXNm6CMiYLeAQNZb_rJLZ7dAvI2_69EHGOQPIuhBya0YUfsT_LhKhTb7EXNNntOsXWvFbnjaZogfWiRtvsE_nVGaLvASYXZzUEu3MVNo1ZE7dw8u5wNSGDJ8GQrYnxPggcF1_HcLH53idCrC5xXZtbL6WZs2SPerAj0eLjS09F1nzd-BrbVxPzLLPEGEJUNhplcUTNYx_ByxQvEkHdNeCY5bYiqGmXU4LxpF0DkLiEoFeTEJXEqfmKJsVqDaBKFyBO6"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="hidden md:flex bg-stone-50 dark:bg-stone-900 fixed left-0 top-0 h-screen w-[248px] pt-[60px] border-r border-stone-200 dark:border-stone-800 flex-col overflow-y-auto px-2 py-4">
+<div class="px-4 py-4 mb-4 border-b border-border-default flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-amber-100 flex items-center justify-center text-amber-900 font-bold">
+                TP
+            </div>
+<div>
+<div class="text-amber-900 dark:text-amber-100 font-bold leading-tight">Technopark</div>
+<div class="text-[10px] text-stone-500 uppercase tracking-wider">Management System</div>
+</div>
+</div>
+<button class="mx-2 mb-6 bg-text-primary text-surface rounded py-2 px-4 flex items-center justify-center gap-2 font-medium hover:bg-stone-800 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+            New Request
+        </button>
+<div class="flex-1 space-y-1">
+<a class="text-stone-600 dark:text-stone-400 px-4 py-3 flex items-center gap-3 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-all duration-200 ease-in-out font-inter text-sm antialiased" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="text-stone-600 dark:text-stone-400 px-4 py-3 flex items-center gap-3 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-all duration-200 ease-in-out font-inter text-sm antialiased" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Asset Portal
+            </a>
+<a class="bg-amber-50 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 border-l-4 border-amber-600 font-semibold px-4 py-3 flex items-center gap-3 rounded-r-md transition-all duration-200 ease-in-out font-inter text-sm antialiased" href="#">
+<span class="material-symbols-outlined" data-weight="fill">account_tree</span>
+                Procurement
+            </a>
+<a class="text-stone-600 dark:text-stone-400 px-4 py-3 flex items-center gap-3 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-all duration-200 ease-in-out font-inter text-sm antialiased" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                Reports
+            </a>
+</div>
+<div class="mt-auto border-t border-border-default pt-4 space-y-1">
+<a class="text-stone-600 dark:text-stone-400 px-4 py-3 flex items-center gap-3 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-all duration-200 ease-in-out font-inter text-sm antialiased" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+                Support
+            </a>
+<a class="text-stone-600 dark:text-stone-400 px-4 py-3 flex items-center gap-3 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-all duration-200 ease-in-out font-inter text-sm antialiased" href="#">
+<span class="material-symbols-outlined">inventory</span>
+                Archive
+            </a>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="md:ml-[248px] pt-[60px] p-page-margin min-h-screen">
+<div class="max-w-[1400px] mx-auto space-y-section-gap">
+<!-- Header Area -->
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-h1 text-h1 text-text-primary tracking-tight">Procurement Pipeline</h1>
+<p class="font-body text-body text-text-secondary mt-1">Track and manage active purchase requests through delivery.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded font-medium hover:-translate-y-[2px] hover:shadow-sm transition-all flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">filter_list</span>
+                        Filter
+                    </button>
+<button class="bg-text-primary text-surface px-4 py-2 rounded font-medium hover:-translate-y-[2px] hover:shadow-sm transition-all">
+                        Export Report
+                    </button>
+</div>
+</div>
+<!-- Visual Pipeline Aggregation -->
+<div class="grid grid-cols-5 gap-4">
+<div class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] hover:-translate-y-[2px] transition-transform relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-surface-dim"></div>
+<div class="font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-2">Draft Phase</div>
+<div class="font-kpi-number text-kpi-number text-text-primary">12</div>
+<div class="font-metadata text-metadata text-text-secondary mt-1">₹4.2L est.</div>
+</div>
+<div class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] hover:-translate-y-[2px] transition-transform relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-metric-amber"></div>
+<div class="font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-2">Pending Approval</div>
+<div class="font-kpi-number text-kpi-number text-text-primary">8</div>
+<div class="font-metadata text-metadata text-text-secondary mt-1">₹12.5L est.</div>
+</div>
+<div class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] hover:-translate-y-[2px] transition-transform relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-metric-lavender"></div>
+<div class="font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-2">PO Issued</div>
+<div class="font-kpi-number text-kpi-number text-text-primary">15</div>
+<div class="font-metadata text-metadata text-text-secondary mt-1">₹34.8L committed</div>
+</div>
+<div class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] hover:-translate-y-[2px] transition-transform relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-metric-sage"></div>
+<div class="font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-2">Awaiting Receipt</div>
+<div class="font-kpi-number text-kpi-number text-text-primary">4</div>
+<div class="font-metadata text-metadata text-text-secondary mt-1">Next delivery in 2d</div>
+</div>
+<div class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] hover:-translate-y-[2px] transition-transform relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-status-in-stock"></div>
+<div class="font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-2">Ready to Register</div>
+<div class="font-kpi-number text-kpi-number text-text-primary">7</div>
+<div class="font-metadata text-metadata text-text-secondary mt-1">Items in holding</div>
+</div>
+</div>
+<!-- High Density Data Table -->
+<div class="bg-surface rounded-xl border border-border-default shadow-[0_4px_4px_0_rgba(0,0,0,0.02)] overflow-hidden">
+<div class="px-6 py-4 border-b border-border-default bg-surface-subtle flex justify-between items-center">
+<h2 class="font-h2 text-h2 text-text-primary">Active Procurement Queue</h2>
+<div class="text-sm text-text-secondary">Showing 1-10 of 46 entries</div>
+</div>
+<div class="overflow-x-auto">
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-metric-lavender opacity-0 group-hover:opacity-100 transition-opacity"></div><table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-subtle border-b border-border-default">
+<th class="font-table-header text-table-header text-text-secondary py-3 px-6 w-24">PR ID</th>
+<th class="font-table-header text-table-header text-text-secondary py-3 px-6">CATEGORY</th>
+<th class="font-table-header text-table-header text-text-secondary py-3 px-6 w-20 text-right">QTY</th>
+<th class="font-table-header text-table-header text-text-secondary py-3 px-6 w-32 text-right">EST. COST</th>
+<th class="font-table-header text-table-header text-text-secondary py-3 px-6 w-40">EXPECTED</th>
+<th class="font-table-header text-table-header text-text-secondary py-3 px-6 w-56">PIPELINE STAGE</th>
+</tr>
+</thead>
+<tbody class="font-body text-body">
+<!-- Row 1: Draft -->
+<tr class="border-b border-border-default bg-surface hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-6 font-mono-data text-mono-data text-text-primary">PR-8092</td>
+<td class="py-3 px-6">Networking Gear</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">12</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">₹ 4,50,000</td>
+<td class="py-3 px-6 text-text-secondary">TBD</td>
+<td class="py-3 px-6">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-surface-dim border border-border-default"></div>
+<span class="text-sm font-medium text-text-secondary">Draft</span>
+</div>
+<div class="w-full bg-surface-subtle h-1 rounded-full mt-1.5 overflow-hidden flex">
+<div class="bg-surface-dim w-1/5 h-full"></div>
+</div>
+</td>
+</tr>
+<!-- Row 2: Approval -->
+<tr class="border-b border-border-default bg-surface-subtle hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-6 font-mono-data text-mono-data text-text-primary">PR-8088</td>
+<td class="py-3 px-6">Office Furniture</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">45</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">₹ 8,25,000</td>
+<td class="py-3 px-6 text-text-secondary">TBD</td>
+<td class="py-3 px-6">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-metric-amber border border-amber-200"></div>
+<span class="text-sm font-medium text-amber-800">Pending Approval</span>
+</div>
+<div class="w-full bg-surface-dim h-1 rounded-full mt-1.5 overflow-hidden flex">
+<div class="bg-metric-amber w-2/5 h-full"></div>
+</div>
+</td>
+</tr>
+<!-- Row 3: PO Issued (Highlighted) -->
+<tr class="border-b border-border-default bg-surface hover:bg-accent-subtle transition-colors group relative">
+<td class="py-3 px-6 font-mono-data text-mono-data text-text-primary">PR-8075</td>
+<td class="py-3 px-6 font-medium">Dell Latitude Laptops</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">20</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">₹ 14,00,000</td>
+<td class="py-3 px-6">24 Oct 2023</td>
+<td class="py-3 px-6">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-metric-lavender border border-purple-200"></div>
+<span class="text-sm font-medium text-purple-800">PO Issued</span>
+</div>
+<div class="w-full bg-surface-dim h-1 rounded-full mt-1.5 overflow-hidden flex">
+<div class="bg-metric-lavender w-3/5 h-full"></div>
+</div>
+</td>
+<!-- Highlight Indicator -->
+</tr>
+<!-- Row 4: Receipt -->
+<tr class="border-b border-border-default bg-surface-subtle hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-6 font-mono-data text-mono-data text-text-primary">PR-8062</td>
+<td class="py-3 px-6">A4 Printer Paper</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">100</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">₹ 25,000</td>
+<td class="py-3 px-6 text-status-critical font-medium">18 Oct 2023</td>
+<td class="py-3 px-6">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-metric-sage border border-green-200"></div>
+<span class="text-sm font-medium text-green-800">Awaiting Receipt</span>
+</div>
+<div class="w-full bg-surface-dim h-1 rounded-full mt-1.5 overflow-hidden flex">
+<div class="bg-metric-sage w-4/5 h-full"></div>
+</div>
+</td>
+</tr>
+<!-- Row 5: Register -->
+<tr class="border-b border-border-default bg-surface hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-6 font-mono-data text-mono-data text-text-primary">PR-8055</td>
+<td class="py-3 px-6">Conference Room Displays</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">4</td>
+<td class="py-3 px-6 text-right font-mono-data text-mono-data">₹ 3,20,000</td>
+<td class="py-3 px-6 text-text-secondary">Arrived</td>
+<td class="py-3 px-6">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-status-in-stock"></div>
+<span class="text-sm font-medium text-status-in-stock">Ready to Register</span>
+</div>
+<div class="w-full bg-surface-dim h-1 rounded-full mt-1.5 overflow-hidden flex">
+<div class="bg-status-in-stock w-full h-full"></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</body></html>

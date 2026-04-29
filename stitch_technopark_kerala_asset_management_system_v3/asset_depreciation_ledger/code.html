@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Asset Depreciation Ledger - Technopark AMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#ffdbcb",
+                    "canvas": "#FAF7F2",
+                    "surface-container": "#fdeae3",
+                    "secondary-fixed": "#e9e1dd",
+                    "secondary-container": "#e9e1dd",
+                    "on-tertiary": "#ffffff",
+                    "metric-amber": "#FEF3C7",
+                    "surface-container-high": "#f7e4dd",
+                    "on-secondary-container": "#686361",
+                    "surface-container-low": "#fff1eb",
+                    "surface-container-highest": "#f1dfd8",
+                    "error": "#ba1a1a",
+                    "surface": "#FFFFFF",
+                    "secondary": "#625d5b",
+                    "metric-sage": "#DCFCE7",
+                    "on-primary-fixed-variant": "#7a3000",
+                    "surface-dim": "#e8d6cf",
+                    "primary-fixed-dim": "#ffb693",
+                    "border-default": "#EEEBE4",
+                    "outline": "#887269",
+                    "on-tertiary-container": "#a8d3ff",
+                    "surface-container-lowest": "#ffffff",
+                    "accent-subtle": "#FEF3C7",
+                    "outline-variant": "#dcc1b6",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "metric-lavender": "#EDE9FE",
+                    "text-primary": "#1C1917",
+                    "status-checked-out": "#1E40AF",
+                    "on-surface": "#231a15",
+                    "tertiary-container": "#005c92",
+                    "surface-subtle": "#FAFAF8",
+                    "primary": "#712c00",
+                    "inverse-surface": "#392e2a",
+                    "status-in-stock": "#166534",
+                    "on-secondary-fixed": "#1e1b19",
+                    "surface-variant": "#f1dfd8",
+                    "text-secondary": "#78716C",
+                    "surface-bright": "#fff8f6",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#ffb693",
+                    "on-tertiary-fixed": "#001d33",
+                    "on-surface-variant": "#55433a",
+                    "background": "#fff8f6",
+                    "tertiary-fixed-dim": "#98cbff",
+                    "on-tertiary-fixed-variant": "#004a77",
+                    "on-primary-container": "#ffc2a5",
+                    "surface-tint": "#9a4614",
+                    "inverse-on-surface": "#ffede6",
+                    "error-container": "#ffdad6",
+                    "on-background": "#231a15",
+                    "on-primary-fixed": "#341000",
+                    "tertiary-fixed": "#cee5ff",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#92400e",
+                    "on-secondary-fixed-variant": "#4a4643",
+                    "secondary-fixed-dim": "#ccc5c2",
+                    "tertiary": "#00446d",
+                    "status-critical": "#991B1B"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "inline": "12px",
+                    "base": "4px",
+                    "page-margin": "32px",
+                    "stack": "16px",
+                    "section-gap": "32px",
+                    "card-padding": "24px"
+            },
+            "fontFamily": {
+                    "table-header": [
+                            "Inter"
+                    ],
+                    "metadata": [
+                            "Inter"
+                    ],
+                    "mono-data": [
+                            "JetBrains Mono"
+                    ],
+                    "body": [
+                            "Inter"
+                    ],
+                    "h3": [
+                            "Inter"
+                    ],
+                    "h2": [
+                            "Inter"
+                    ],
+                    "kpi-number": [
+                            "Inter"
+                    ],
+                    "h1": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "table-header": [
+                            "12px",
+                            {
+                                    "letterSpacing": "0.06em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "metadata": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "mono-data": [
+                            "13px",
+                            {
+                                    "lineHeight": "1",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "h3": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "h2": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "kpi-number": [
+                            "28px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "h1": [
+                            "22px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for dense tables */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF7F2; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D6D3CE; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #887269; 
+        }
+    </style>
+</head>
+<body class="bg-canvas flex h-screen overflow-hidden text-text-primary">
+<!-- SideNavBar -->
+<aside class="bg-[#FAF9F6] dark:bg-stone-950 fixed left-0 top-0 h-full w-[248px] border-r border-[#EEEBE4] dark:border-stone-800 flex flex-col h-screen py-6 z-50">
+<!-- Brand Header -->
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h1 class="text-xl font-black text-[#1C1917] dark:text-stone-50 leading-tight">Technopark Kerala</h1>
+<p class="font-['Inter'] text-sm font-medium text-text-secondary">Asset Hub</p>
+</div>
+</div>
+<!-- CTA -->
+<div class="px-6 mb-6">
+<button class="w-full bg-[#1C1917] text-white hover:bg-stone-800 transition-colors rounded-lg py-2.5 font-['Inter'] text-sm font-medium flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Add New Asset
+            </button>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 overflow-y-auto space-y-1">
+<a class="flex items-center px-6 py-3 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-[#F5F2ED] dark:hover:bg-stone-900 translate-x-1 duration-200 gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-[#92400E]">dashboard</span>
+<span class="font-['Inter'] text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center px-6 py-3 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-[#F5F2ED] dark:hover:bg-stone-900 translate-x-1 duration-200 gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-[#92400E]">inventory_2</span>
+<span class="font-['Inter'] text-sm font-medium">Asset Registry</span>
+</a>
+<a class="flex items-center px-6 py-3 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-[#F5F2ED] dark:hover:bg-stone-900 translate-x-1 duration-200 gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-[#92400E]">engineering</span>
+<span class="font-['Inter'] text-sm font-medium">Work Orders</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center px-6 py-3 bg-[#FEF3C7] text-[#92400E] border-l-4 border-[#92400E] dark:bg-amber-900/20 translate-x-1 duration-200 gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-['Inter'] text-sm font-medium">Financial Ledgers</span>
+</a>
+<a class="flex items-center px-6 py-3 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-[#F5F2ED] dark:hover:bg-stone-900 translate-x-1 duration-200 gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-[#92400E]">analytics</span>
+<span class="font-['Inter'] text-sm font-medium">Reporting</span>
+</a>
+</nav>
+<!-- Footer Links -->
+<div class="mt-auto pt-4 border-t border-[#EEEBE4] dark:border-stone-800 space-y-1">
+<a class="flex items-center px-6 py-3 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-[#F5F2ED] dark:hover:bg-stone-900 translate-x-1 duration-200 gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-['Inter'] text-sm font-medium">System Settings</span>
+</a>
+<a class="flex items-center px-6 py-3 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-[#F5F2ED] dark:hover:bg-stone-900 translate-x-1 duration-200 gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="font-['Inter'] text-sm font-medium">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="ml-[248px] flex-1 flex flex-col min-h-screen bg-canvas">
+<!-- TopNavBar -->
+<header class="bg-[#FAF9F6] dark:bg-stone-950 docked full-width top-0 h-[60px] border-b border-[#EEEBE4] dark:border-stone-800 shadow-sm flex justify-between items-center px-8 w-full sticky top-0 z-40">
+<!-- Left Side: Brand/Search -->
+<div class="flex items-center gap-6">
+<div class="text-lg font-bold text-stone-900 dark:text-stone-50 tracking-tight">
+                    Technopark AMS
+                </div>
+<!-- Search Bar -->
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-[18px]">search</span>
+<input class="w-full pl-9 pr-4 py-1.5 bg-surface border border-[#EEEBE4] rounded-md font-['Inter'] text-sm tracking-tight text-stone-900 focus:outline-none focus:border-[#92400E] focus:ring-1 focus:ring-[#92400E] transition-colors" placeholder="Search assets, records..." type="text"/>
+</div>
+</div>
+<!-- Right Side: Actions -->
+<div class="flex items-center gap-4">
+<button class="font-['Inter'] text-sm tracking-tight text-[#92400E] dark:text-amber-500 font-medium hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors px-3 py-1.5 rounded-md cursor-pointer active:opacity-80 transition-opacity">
+                    Audit Logs
+                </button>
+<div class="flex items-center gap-1 border-l border-[#EEEBE4] pl-4 ml-2">
+<button class="w-8 h-8 flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors rounded-full cursor-pointer active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors rounded-full cursor-pointer active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors rounded-full cursor-pointer active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="ml-2 w-8 h-8 rounded-full bg-stone-200 border border-stone-300 overflow-hidden cursor-pointer active:opacity-80 transition-opacity">
+<img alt="Administrator profile picture" class="w-full h-full object-cover" data-alt="Default administrator avatar with initials" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvJxl17Wuzfzja-KV7WmvViZpvXWRD0RhGWxOK4p5uCV5AGrDKXTAmjOxZDNHLSbnEydjpgU7aRBai9lVr_tWIul5zgHSr_lqz3yRNawomCxBO1xE-ySDb3LB_pLT9kKhLQ-N2ozG4RZLY8XJuqDgcKH2os9BacffKIxCo1J9ZzbFJzDTSCCi3cq25oB80Z9SmHY2lnTuo6gRVvf9KJBbrblLY4V0Q_-THuOntdC9b-plLtRtDqNcT7FWJM2imVK7bpuqBUi8VpM0o"/>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Canvas -->
+<div class="flex-1 overflow-y-auto p-page-margin">
+<div class="max-w-[1400px] mx-auto space-y-section-gap">
+<!-- Page Header: Asset Identity -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="font-metadata text-metadata text-text-secondary">Financial Ledgers</span>
+<span class="material-symbols-outlined text-[14px] text-text-secondary">chevron_right</span>
+<span class="font-metadata text-metadata text-primary-container font-medium">Asset Depreciation</span>
+</div>
+<h2 class="font-h1 text-h1 text-text-primary mb-1">Laptop Alpha #TAG-1001</h2>
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-surface-variant text-on-surface-variant border border-outline-variant">
+                                Category: IT Equipment
+                            </span>
+<span class="inline-flex items-center gap-1 text-xs font-medium text-status-in-stock">
+<span class="w-2 h-2 rounded-full bg-status-in-stock"></span> Active Asset
+                            </span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-h3 text-h3 hover:bg-surface-subtle transition-colors flex items-center gap-2 shadow-sm -translate-y-0 hover:-translate-y-[1px]">
+<span class="material-symbols-outlined text-[18px]">print</span>
+                            Print
+                        </button>
+<button class="px-4 py-2 bg-[#1C1917] text-white rounded-lg font-h3 text-h3 hover:bg-stone-800 transition-colors flex items-center gap-2 shadow-sm -translate-y-0 hover:-translate-y-[1px]">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Export CSV
+                        </button>
+</div>
+</div>
+<!-- KPI Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- KPI 1 -->
+<div class="bg-surface border border-border-default rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform duration-200">
+<div class="flex items-center justify-between mb-4">
+<span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider">Total Cost</span>
+<span class="material-symbols-outlined text-text-secondary bg-surface-subtle p-1.5 rounded-md">payments</span>
+</div>
+<div class="font-kpi-number text-kpi-number text-text-primary">₹1,20,000</div>
+<div class="font-metadata text-metadata text-text-secondary mt-1">Initial acquisition value</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface border border-border-default rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform duration-200">
+<div class="flex items-center justify-between mb-4">
+<span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider">Accumulated Depreciation</span>
+<span class="material-symbols-outlined text-text-secondary bg-surface-subtle p-1.5 rounded-md">trending_down</span>
+</div>
+<div class="font-kpi-number text-kpi-number text-error">₹45,000</div>
+<div class="font-metadata text-metadata text-text-secondary mt-1">Total written off to date</div>
+</div>
+<!-- KPI 3 (Sage Fill) -->
+<div class="bg-metric-sage border border-status-in-stock/20 rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform duration-200 relative overflow-hidden">
+<div class="absolute right-0 top-0 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[120px] -mt-4 -mr-4" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div class="flex items-center justify-between mb-4 relative z-10">
+<span class="font-metadata text-metadata text-status-in-stock uppercase tracking-wider font-semibold">Net Book Value</span>
+<span class="material-symbols-outlined text-status-in-stock bg-white/50 p-1.5 rounded-md">account_balance_wallet</span>
+</div>
+<div class="font-kpi-number text-kpi-number text-status-in-stock relative z-10">₹75,000</div>
+<div class="font-metadata text-metadata text-status-in-stock/80 mt-1 relative z-10">Current carrying value</div>
+</div>
+</div>
+<!-- Dense Table Section -->
+<div class="bg-surface border border-border-default rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="px-card-padding py-4 border-b border-border-default bg-surface flex items-center justify-between">
+<h3 class="font-h2 text-h2 text-text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">calendar_month</span>
+                            Depreciation Schedule
+                        </h3>
+<div class="flex items-center gap-2">
+<span class="font-metadata text-metadata text-text-secondary">Method:</span>
+<span class="font-metadata text-metadata font-medium text-text-primary bg-surface-subtle px-2 py-1 rounded border border-border-default">Straight Line (SLM)</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-subtle border-b border-border-default">
+<tr>
+<th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 sticky left-0 bg-surface-subtle z-10">Year</th>
+<th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 text-right">Beginning Value</th>
+<th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 text-right">Depreciation Rate (%)</th>
+<th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 text-right">Depreciation Expense</th>
+<th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 text-right">Ending Value</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-default">
+<!-- Row 1 -->
+<tr class="bg-surface hover:bg-metric-amber transition-colors group">
+<td class="font-body text-body text-text-primary px-6 py-4 sticky left-0 bg-surface group-hover:bg-metric-amber transition-colors font-medium">2021-22</td>
+<td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right">₹1,20,000</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">12.50%</td>
+<td class="font-mono-data text-mono-data text-error px-6 py-4 text-right">-₹15,000</td>
+<td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right font-medium">₹1,05,000</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-surface-subtle hover:bg-metric-amber transition-colors group">
+<td class="font-body text-body text-text-primary px-6 py-4 sticky left-0 bg-surface-subtle group-hover:bg-metric-amber transition-colors font-medium">2022-23</td>
+<td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right">₹1,05,000</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">12.50%</td>
+<td class="font-mono-data text-mono-data text-error px-6 py-4 text-right">-₹15,000</td>
+<td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right font-medium">₹90,000</td>
+</tr>
+<!-- Row 3 -->
+<tr class="bg-surface hover:bg-metric-amber transition-colors group">
+<td class="font-body text-body text-text-primary px-6 py-4 sticky left-0 bg-surface group-hover:bg-metric-amber transition-colors font-medium">2023-24</td>
+<td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right">₹90,000</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">12.50%</td>
+<td class="font-mono-data text-mono-data text-error px-6 py-4 text-right">-₹15,000</td>
+<td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right font-medium">₹75,000</td>
+</tr>
+<!-- Row 4 (Current) -->
+<tr class="bg-metric-amber/30 hover:bg-metric-amber transition-colors group border-l-4 border-l-primary-container">
+<td class="font-body text-body text-primary-container px-6 py-4 sticky left-0 bg-metric-amber/30 group-hover:bg-metric-amber transition-colors font-semibold flex items-center gap-2">
+                                        2024-25 <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary-container text-white uppercase tracking-wider">Current</span>
+</td>
+<td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right">₹75,000</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">12.50%</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right italic">Projected</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right italic">₹60,000</td>
+</tr>
+<!-- Row 5 (Future) -->
+<tr class="bg-surface-subtle hover:bg-metric-amber transition-colors group opacity-70">
+<td class="font-body text-body text-text-secondary px-6 py-4 sticky left-0 bg-surface-subtle group-hover:bg-metric-amber transition-colors font-medium">2025-26</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">₹60,000</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">12.50%</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right italic">Projected</td>
+<td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right italic">₹45,000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer Summary -->
+<div class="px-6 py-3 border-t border-border-default bg-surface flex justify-end items-center gap-6">
+<div class="flex flex-col items-end">
+<span class="font-metadata text-metadata text-text-secondary">YTD Depreciation</span>
+<span class="font-mono-data text-mono-data text-error font-medium">-₹45,000</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

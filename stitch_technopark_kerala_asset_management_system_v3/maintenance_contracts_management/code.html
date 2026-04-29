@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Maintenance Scheduling &amp; Contracts</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#ffc2a5",
+                        "on-secondary-fixed-variant": "#4a4643",
+                        "secondary": "#625d5b",
+                        "surface-tint": "#9a4614",
+                        "surface-container-highest": "#f1dfd8",
+                        "tertiary-container": "#005c92",
+                        "secondary-container": "#e9e1dd",
+                        "primary": "#712c00",
+                        "inverse-on-surface": "#ffede6",
+                        "status-in-stock": "#166534",
+                        "metric-lavender": "#EDE9FE",
+                        "border-default": "#EEEBE4",
+                        "surface-dim": "#e8d6cf",
+                        "inverse-primary": "#ffb693",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#fff8f6",
+                        "tertiary-fixed-dim": "#98cbff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#004a77",
+                        "tertiary": "#00446d",
+                        "surface-container": "#fdeae3",
+                        "on-background": "#231a15",
+                        "tertiary-fixed": "#cee5ff",
+                        "on-secondary-container": "#686361",
+                        "secondary-fixed-dim": "#ccc5c2",
+                        "surface-container-high": "#f7e4dd",
+                        "outline-variant": "#dcc1b6",
+                        "outline": "#887269",
+                        "on-secondary-fixed": "#1e1b19",
+                        "on-surface": "#231a15",
+                        "on-primary-fixed": "#341000",
+                        "metric-sage": "#DCFCE7",
+                        "secondary-fixed": "#e9e1dd",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-secondary": "#ffffff",
+                        "text-primary": "#1C1917",
+                        "text-secondary": "#78716C",
+                        "canvas": "#FAF7F2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#ffdbcb",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#001d33",
+                        "inverse-surface": "#392e2a",
+                        "metric-amber": "#FEF3C7",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#55433a",
+                        "surface-container-low": "#fff1eb",
+                        "surface-variant": "#f1dfd8",
+                        "status-checked-out": "#1E40AF",
+                        "surface-subtle": "#FAFAF8",
+                        "surface": "#FFFFFF",
+                        "primary-container": "#92400e",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "background": "#fff8f6",
+                        "on-tertiary-container": "#a8d3ff",
+                        "accent-subtle": "#FEF3C7",
+                        "status-critical": "#991B1B"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "inline": "12px",
+                        "stack": "16px",
+                        "section-gap": "32px",
+                        "card-padding": "24px",
+                        "page-margin": "32px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["JetBrains Mono"],
+                        "h2": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-number": ["Inter"],
+                        "body": ["Inter"],
+                        "metadata": ["Inter"],
+                        "h1": ["Inter"],
+                        "h3": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["13px", {"lineHeight": "1", "fontWeight": "400"}],
+                        "h2": ["16px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "table-header": ["12px", {"letterSpacing": "0.06em", "fontWeight": "500"}],
+                        "kpi-number": ["28px", {"lineHeight": "1.1", "fontWeight": "600"}],
+                        "body": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "metadata": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "h1": ["22px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "h3": ["14px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-canvas min-h-screen text-text-primary antialiased">
+<!-- Shared Component: SideNavBar -->
+<nav class="bg-[#FFFBF0] dark:bg-stone-900 fixed left-0 top-0 w-[248px] h-screen border-r border-[#EEEBE4] dark:border-stone-800 z-50 flex flex-col h-full py-6 px-4">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+                TK
+            </div>
+<div>
+<h1 class="font-black tracking-tighter text-stone-900 dark:text-stone-50 font-h2 text-h2 leading-tight">Technopark Kerala</h1>
+<p class="font-metadata text-metadata text-text-secondary">Management Portal</p>
+</div>
+</div>
+<button class="mb-6 w-full py-2.5 px-4 bg-primary-container text-on-primary text-center rounded-lg font-h3 text-h3 flex items-center justify-center gap-2 hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            Add New Asset
+        </button>
+<div class="flex-1 overflow-y-auto space-y-1">
+<!-- Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer font-['Inter'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer font-['Inter'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Asset Audits</span>
+</a>
+<!-- Active State Context: Maintenance -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-amber-100/50 dark:bg-amber-900/20 text-amber-900 dark:text-amber-400 border-l-4 border-amber-600 cursor-pointer font-['Inter'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+<span>Maintenance</span>
+</a>
+<!-- Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer font-['Inter'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="verified">verified</span>
+<span>Software Licenses</span>
+</a>
+<!-- Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer font-['Inter'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span>User Management</span>
+</a>
+</div>
+<div class="mt-auto pt-6 border-t border-border-default space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer font-['Inter'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>System Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer font-['Inter'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+<!-- Shared Component: TopAppBar -->
+<header class="bg-stone-50/90 dark:bg-stone-950/90 backdrop-blur-md fixed top-0 right-0 h-[60px] z-40 border-b border-stone-200 dark:border-stone-800 shadow-sm flex items-center justify-between pl-[248px] pr-8 w-full font-['Inter'] antialiased tracking-tight">
+<div class="flex items-center gap-4 flex-1">
+<!-- search_bar: "on_left" logic mapped conceptually, though input not explicitly in JSON structure, placing it left per instructions -->
+<div class="relative w-64 hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-surface border border-border-default rounded-full text-sm focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body text-body text-text-primary" placeholder="Search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors rounded-full flex items-center justify-center active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors rounded-full flex items-center justify-center active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="h-8 w-px bg-border-default mx-2"></div>
+<button class="flex items-center gap-2 pl-2 pr-1 py-1 text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors rounded-full active:scale-95 duration-150">
+<span class="font-h3 text-h3 hidden sm:block">Admin</span>
+<img alt="Administrator Profile" class="w-8 h-8 rounded-full border border-border-default" data-alt="Default placeholder avatar with initials AU on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0GIrO0HizF05NlE_Kxd508cbOg4jbNJ8-udOLdxPFDUIvCFYoC9zf9NvgWTv04ejyrF30mpkdqH_hd10a3JgR-ROawbEWQNdKMUMvW04eP0tQcY7FbKBEcTIaFhrnuIMVvqYMC-qR3rFRYEZ2S7H1rTrBGkxp71RHE86PKtU6E6zh5NqTth8aEPuuv__GcsKpv1hTcwhsR8p2Zd_Ju6KbNFocWybRHVEg8kklsHTlaGYJh9h4WhbEgGnQRzEJbdFEVadpNHNo5S5l"/>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[60px] pl-[248px] w-full min-h-screen">
+<div class="max-w-[1400px] mx-auto p-section-gap space-y-section-gap">
+<!-- Page Header & Tabs -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border-default pb-4">
+<div>
+<h1 class="font-h1 text-h1 text-text-primary mb-2">Maintenance Operations</h1>
+<p class="font-body text-body text-text-secondary">Manage work orders, view preventive schedules, and oversee active service contracts.</p>
+</div>
+<div class="flex items-center p-1 bg-surface-subtle border border-border-default rounded-lg">
+<button class="px-4 py-1.5 rounded-md bg-surface border border-border-default shadow-sm font-h3 text-h3 text-text-primary">Work Orders</button>
+<button class="px-4 py-1.5 rounded-md font-body text-body text-text-secondary hover:text-text-primary transition-colors">Schedules</button>
+<button class="px-4 py-1.5 rounded-md font-body text-body text-text-secondary hover:text-text-primary transition-colors">Contracts</button>
+</div>
+</div>
+<!-- Bento Grid: KPIs -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-inline">
+<!-- KPI 1: Overdue (Peach/Error context) -->
+<div class="bg-error-container rounded-xl p-card-padding flex flex-col justify-between hover:-translate-y-[2px] transition-transform cursor-pointer shadow-sm border border-error-container">
+<div class="flex items-center justify-between mb-4">
+<span class="font-h2 text-h2 text-on-error-container">Overdue Services</span>
+<div class="w-10 h-10 rounded-full bg-white/40 flex items-center justify-center text-on-error-container">
+<span class="material-symbols-outlined">warning</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-number text-kpi-number text-on-error-container mb-1">12</div>
+<p class="font-metadata text-metadata text-on-error-container/80 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+                            +3 since yesterday
+                        </p>
+</div>
+</div>
+<!-- KPI 2: Upcoming (Amber) -->
+<div class="bg-metric-amber rounded-xl p-card-padding flex flex-col justify-between hover:-translate-y-[2px] transition-transform cursor-pointer shadow-sm border border-border-default">
+<div class="flex items-center justify-between mb-4">
+<span class="font-h2 text-h2 text-on-background">Upcoming Tasks</span>
+<div class="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-on-background">
+<span class="material-symbols-outlined">event_upcoming</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-number text-kpi-number text-on-background mb-1">45</div>
+<p class="font-metadata text-metadata text-text-secondary flex items-center gap-1">
+                            Scheduled next 7 days
+                        </p>
+</div>
+</div>
+<!-- KPI 3: Active Contracts (Lavender) -->
+<div class="bg-metric-lavender rounded-xl p-card-padding flex flex-col justify-between hover:-translate-y-[2px] transition-transform cursor-pointer shadow-sm border border-border-default">
+<div class="flex items-center justify-between mb-4">
+<span class="font-h2 text-h2 text-on-background">Active Contracts</span>
+<div class="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-on-background">
+<span class="material-symbols-outlined">assignment</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-number text-kpi-number text-on-background mb-1">18</div>
+<p class="font-metadata text-metadata text-text-secondary flex items-center gap-1">
+                            2 expiring this month
+                        </p>
+</div>
+</div>
+</div>
+<!-- Main Layout Grid (2/3 Table, 1/3 Schedule) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-inline">
+<!-- Left: High Density Work Orders Table -->
+<div class="lg:col-span-2 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden flex flex-col">
+<div class="p-5 border-b border-border-default flex items-center justify-between bg-white">
+<h2 class="font-h2 text-h2 text-text-primary">Active Work Orders</h2>
+<button class="text-primary-container font-h3 text-h3 flex items-center gap-1 hover:underline">
+                            View All <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-subtle border-b border-border-default font-table-header text-table-header text-text-secondary uppercase">
+<th class="p-3 pl-5 font-medium">Order ID</th>
+<th class="p-3 font-medium">Asset &amp; Location</th>
+<th class="p-3 font-medium">Issue</th>
+<th class="p-3 font-medium">Severity</th>
+<th class="p-3 pr-5 font-medium text-right">Target Date</th>
+</tr>
+</thead>
+<tbody class="font-body text-body text-text-primary divide-y divide-border-default">
+<!-- Row 1 -->
+<tr class="hover:bg-metric-amber/20 transition-colors group cursor-pointer border-l-4 border-l-transparent hover:border-l-primary-container">
+<td class="p-3 pl-5 font-mono-data text-mono-data text-text-secondary">WO-4092</td>
+<td class="p-3">
+<div class="font-medium text-text-primary">HVAC Unit B-East</div>
+<div class="font-metadata text-metadata text-text-secondary">Bhavani Building, Roof</div>
+</td>
+<td class="p-3 text-text-secondary">Compressor failure, temp drop</td>
+<td class="p-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-status-critical text-white">Critical</span>
+</td>
+<td class="p-3 pr-5 text-right font-mono-data text-mono-data text-status-critical">Today</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-metric-amber/20 transition-colors group cursor-pointer border-l-4 border-l-transparent hover:border-l-primary-container">
+<td class="p-3 pl-5 font-mono-data text-mono-data text-text-secondary">WO-4088</td>
+<td class="p-3">
+<div class="font-medium text-text-primary">Main Server Rack 3</div>
+<div class="font-metadata text-metadata text-text-secondary">Tejaswini Data Center</div>
+</td>
+<td class="p-3 text-text-secondary">UPS Battery replacement due</td>
+<td class="p-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-surface-tint text-white">High</span>
+</td>
+<td class="p-3 pr-5 text-right font-mono-data text-mono-data text-text-primary">Oct 24, 2023</td>
+</tr>
+<!-- Row 3 -->
+<tr class="bg-surface-subtle hover:bg-metric-amber/20 transition-colors group cursor-pointer border-l-4 border-l-transparent hover:border-l-primary-container">
+<td class="p-3 pl-5 font-mono-data text-mono-data text-text-secondary">WO-4085</td>
+<td class="p-3">
+<div class="font-medium text-text-primary">Elevator Bank A</div>
+<div class="font-metadata text-metadata text-text-secondary">Nila Building, Lobby</div>
+</td>
+<td class="p-3 text-text-secondary">Routine quarterly inspection</td>
+<td class="p-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-metric-amber text-on-background">Medium</span>
+</td>
+<td class="p-3 pr-5 text-right font-mono-data text-mono-data text-text-primary">Oct 26, 2023</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-metric-amber/20 transition-colors group cursor-pointer border-l-4 border-l-transparent hover:border-l-primary-container">
+<td class="p-3 pl-5 font-mono-data text-mono-data text-text-secondary">WO-4080</td>
+<td class="p-3">
+<div class="font-medium text-text-primary">Landscape Sprinklers</div>
+<div class="font-metadata text-metadata text-text-secondary">Campus North Lawn</div>
+</td>
+<td class="p-3 text-text-secondary">Fix broken head Zone 4</td>
+<td class="p-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-surface-variant text-on-surface-variant">Low</span>
+</td>
+<td class="p-3 pr-5 text-right font-mono-data text-mono-data text-text-secondary">Oct 28, 2023</td>
+</tr>
+<!-- Row 5 -->
+<tr class="bg-surface-subtle hover:bg-metric-amber/20 transition-colors group cursor-pointer border-l-4 border-l-transparent hover:border-l-primary-container">
+<td class="p-3 pl-5 font-mono-data text-mono-data text-text-secondary">WO-4075</td>
+<td class="p-3">
+<div class="font-medium text-text-primary">Parking Barrier Gate</div>
+<div class="font-metadata text-metadata text-text-secondary">South Entrance</div>
+</td>
+<td class="p-3 text-text-secondary">Sensor alignment calibration</td>
+<td class="p-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-metric-amber text-on-background">Medium</span>
+</td>
+<td class="p-3 pr-5 text-right font-mono-data text-mono-data text-text-primary">Oct 29, 2023</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right: Calendar Schedule View -->
+<div class="bg-surface rounded-xl border border-border-default shadow-sm p-5 flex flex-col h-full">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-h2 text-h2 text-text-primary">Schedule</h2>
+<div class="flex gap-1">
+<button class="p-1 hover:bg-surface-subtle rounded text-text-secondary"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="p-1 hover:bg-surface-subtle rounded text-text-secondary"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+<div class="text-center font-h3 text-h3 mb-4 text-text-primary">October 2023</div>
+<!-- Mini Calendar Grid -->
+<div class="grid grid-cols-7 gap-1 text-center font-metadata text-metadata mb-4">
+<div class="text-text-secondary pb-1">S</div>
+<div class="text-text-secondary pb-1">M</div>
+<div class="text-text-secondary pb-1">T</div>
+<div class="text-text-secondary pb-1">W</div>
+<div class="text-text-secondary pb-1">T</div>
+<div class="text-text-secondary pb-1">F</div>
+<div class="text-text-secondary pb-1">S</div>
+<!-- Dates (Mocked) -->
+<div class="p-1 text-text-secondary opacity-50">29</div>
+<div class="p-1 text-text-secondary opacity-50">30</div>
+<div class="p-1 text-text-secondary opacity-50">1</div>
+<div class="p-1">2</div>
+<div class="p-1">3</div>
+<div class="p-1">4</div>
+<div class="p-1">5</div>
+<div class="p-1">6</div>
+<div class="p-1">7</div>
+<div class="p-1">8</div>
+<div class="p-1">9</div>
+<div class="p-1 relative">10<span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-surface-tint rounded-full"></span></div>
+<div class="p-1">11</div>
+<div class="p-1">12</div>
+<div class="p-1">13</div>
+<div class="p-1">14</div>
+<div class="p-1">15</div>
+<div class="p-1">16</div>
+<div class="p-1">17</div>
+<div class="p-1 relative">18<span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-surface-tint rounded-full"></span></div>
+<div class="p-1">19</div>
+<div class="p-1">20</div>
+<div class="p-1">21</div>
+<div class="p-1">22</div>
+<div class="p-1 bg-primary-container text-white rounded font-bold shadow-sm">23</div>
+<div class="p-1 relative font-bold text-primary-container">24<span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-status-critical rounded-full"></span></div>
+<div class="p-1">25</div>
+<div class="p-1">26</div>
+</div>
+<!-- Upcoming List -->
+<div class="mt-auto border-t border-border-default pt-4 space-y-3">
+<div class="text-metadata font-table-header uppercase tracking-wider text-text-secondary">Today's Focus</div>
+<div class="flex gap-3 items-start p-2 rounded-lg hover:bg-surface-subtle transition-colors cursor-pointer border border-transparent hover:border-border-default">
+<div class="w-2 h-2 rounded-full bg-status-critical mt-1.5 flex-shrink-0"></div>
+<div>
+<div class="font-h3 text-h3 text-text-primary">HVAC Unit B-East Check</div>
+<div class="font-metadata text-metadata text-text-secondary">10:00 AM • Maintenance Team</div>
+</div>
+</div>
+<div class="flex gap-3 items-start p-2 rounded-lg hover:bg-surface-subtle transition-colors cursor-pointer border border-transparent hover:border-border-default">
+<div class="w-2 h-2 rounded-full bg-surface-tint mt-1.5 flex-shrink-0"></div>
+<div>
+<div class="font-h3 text-h3 text-text-primary">Vendor Walkthrough</div>
+<div class="font-metadata text-metadata text-text-secondary">2:00 PM • Elevators Inc.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Work Order Detail Drawer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#4a4643",
+                        "on-primary-container": "#ffc2a5",
+                        "tertiary-container": "#005c92",
+                        "inverse-on-surface": "#ffede6",
+                        "secondary-container": "#e9e1dd",
+                        "primary": "#712c00",
+                        "secondary": "#625d5b",
+                        "surface-tint": "#9a4614",
+                        "surface-container-highest": "#f1dfd8",
+                        "border-default": "#EEEBE4",
+                        "surface-bright": "#fff8f6",
+                        "surface-dim": "#e8d6cf",
+                        "inverse-primary": "#ffb693",
+                        "error-container": "#ffdad6",
+                        "status-in-stock": "#166534",
+                        "metric-lavender": "#EDE9FE",
+                        "tertiary": "#00446d",
+                        "surface-container": "#fdeae3",
+                        "on-background": "#231a15",
+                        "on-tertiary-fixed-variant": "#004a77",
+                        "tertiary-fixed-dim": "#98cbff",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#686361",
+                        "tertiary-fixed": "#cee5ff",
+                        "on-secondary-fixed": "#1e1b19",
+                        "secondary-fixed-dim": "#ccc5c2",
+                        "outline": "#887269",
+                        "surface-container-high": "#f7e4dd",
+                        "outline-variant": "#dcc1b6",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#231a15",
+                        "on-primary-fixed": "#341000",
+                        "metric-sage": "#DCFCE7",
+                        "primary-fixed-dim": "#ffb693",
+                        "secondary-fixed": "#e9e1dd",
+                        "text-secondary": "#78716C",
+                        "text-primary": "#1C1917",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "canvas": "#FAF7F2",
+                        "metric-amber": "#FEF3C7",
+                        "on-tertiary-fixed": "#001d33",
+                        "inverse-surface": "#392e2a",
+                        "primary-fixed": "#ffdbcb",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#55433a",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "surface-subtle": "#FAFAF8",
+                        "surface-container-low": "#fff1eb",
+                        "surface-variant": "#f1dfd8",
+                        "status-checked-out": "#1E40AF",
+                        "background": "#fff8f6",
+                        "surface": "#FFFFFF",
+                        "primary-container": "#92400e",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "status-critical": "#991B1B",
+                        "on-tertiary-container": "#a8d3ff",
+                        "accent-subtle": "#FEF3C7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "inline": "12px",
+                        "stack": "16px",
+                        "section-gap": "32px",
+                        "card-padding": "24px",
+                        "page-margin": "32px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-number": ["Inter"],
+                        "mono-data": ["JetBrains Mono"],
+                        "h2": ["Inter"],
+                        "h3": ["Inter"],
+                        "metadata": ["Inter"],
+                        "h1": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "table-header": ["12px", { "letterSpacing": "0.06em", "fontWeight": "500" }],
+                        "kpi-number": ["28px", { "lineHeight": "1.1", "fontWeight": "600" }],
+                        "mono-data": ["13px", { "lineHeight": "1", "fontWeight": "400" }],
+                        "h2": ["16px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h3": ["14px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "metadata": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "h1": ["22px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-canvas text-text-primary min-h-screen flex antialiased">
+<!-- Sidebar Overlay (Simulation) -->
+<div class="fixed inset-0 bg-stone-900/25 z-40 transition-opacity"></div>
+<!-- Drawer Component -->
+<div class="fixed right-0 top-0 bottom-0 w-full max-w-[520px] bg-surface shadow-[0_0_24px_rgba(0,0,0,0.1)] z-50 flex flex-col overflow-hidden transform transition-transform translate-x-0">
+<!-- Drawer Header -->
+<div class="flex-none px-card-padding py-stack border-b border-border-default bg-surface-subtle flex items-start justify-between">
+<div class="flex flex-col gap-base">
+<div class="flex items-center gap-inline">
+<span class="font-h1 text-h1 text-text-primary">WO-2026-084</span>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-metric-amber text-primary-container font-metadata text-metadata font-medium">
+<span class="sr-only">Status:</span>
+                        In Progress
+                    </span>
+</div>
+<div class="flex items-center gap-2 text-text-secondary font-body text-body">
+<span class="material-symbols-outlined text-[18px]">laptop_mac</span>
+<span>Dell Latitude 5420</span>
+<span class="text-outline-variant">•</span>
+<span class="font-mono-data text-mono-data text-secondary">AST-7721</span>
+</div>
+</div>
+<button aria-label="Close drawer" class="p-2 text-text-secondary hover:text-text-primary hover:bg-surface-variant rounded transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Drawer Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto bg-canvas p-card-padding flex flex-col gap-section-gap">
+<!-- Issue Details Card -->
+<section class="bg-surface rounded-xl border border-border-default shadow-sm p-card-padding flex flex-col gap-stack">
+<h2 class="font-h2 text-h2 text-text-primary flex items-center gap-2 border-b border-border-default pb-2">
+<span class="material-symbols-outlined text-primary-container">info</span>
+                    Issue Details
+                </h2>
+<div class="flex flex-col gap-4">
+<div>
+<span class="block font-metadata text-metadata text-text-secondary mb-1">Reported Issue</span>
+<p class="font-body text-body text-text-primary">Broken right hinge, screen detaching from base. Needs replacement of hinge assembly.</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<span class="block font-metadata text-metadata text-text-secondary mb-1">Reported By</span>
+<div class="flex items-center gap-2">
+<img alt="Avatar" class="w-6 h-6 rounded-full" data-alt="Professional headshot of a man with short hair and glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc7ZllO-vTcgGU7mouexrMLTNGVjYftyDksYCFG0Vb7mowJLS9S8fD2tdrvDT53g9S80MCRIx8HIXkeh5KVTJxchb5_b0_Jyso8MN5tDwnB3PNMXBwi2zzmbRo6ddGLCUJCFd5ciTyPedmT7kUiTmEW3plLyNasSReVthzTO4IEUuqJI66ygjDeO-1CLkr3eAME3rvGf5thHv6FQubPPgVDoXY76dsddW6ModaQNhEL6pDY1T2NaJZHCFmC9vM5gHayDWriD2Y3SND"/>
+<span class="font-body text-body text-text-primary">Amit Patel</span>
+</div>
+</div>
+<div>
+<span class="block font-metadata text-metadata text-text-secondary mb-1">Date Reported</span>
+<span class="font-body text-body text-text-primary">Oct 12, 2026, 09:15 AM</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Assignment Card -->
+<section class="bg-surface rounded-xl border border-border-default shadow-sm p-card-padding flex flex-col gap-stack">
+<h2 class="font-h2 text-h2 text-text-primary flex items-center gap-2 border-b border-border-default pb-2">
+<span class="material-symbols-outlined text-primary-container">assignment_ind</span>
+                    Assignment
+                </h2>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-primary-container font-h3 text-h3">
+                            RK
+                        </div>
+<div>
+<span class="block font-h3 text-h3 text-text-primary">Rajesh Kumar</span>
+<span class="block font-metadata text-metadata text-text-secondary">Senior IT Technician</span>
+</div>
+</div>
+<button class="px-3 py-1.5 border border-border-default rounded text-text-primary hover:bg-surface-subtle transition-colors font-body text-body flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+                        Reassign
+                    </button>
+</div>
+</section>
+<!-- Parts & Labour Table -->
+<section class="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden flex flex-col">
+<div class="p-card-padding border-b border-border-default bg-surface-subtle">
+<h2 class="font-h2 text-h2 text-text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">build</span>
+                        Parts &amp; Labour
+                    </h2>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-subtle border-b border-border-default">
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase">Item / Task</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase text-right">Qty/Hrs</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase text-right">Rate</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="font-body text-body text-text-primary">
+<tr class="border-b border-border-default hover:bg-surface-subtle transition-colors">
+<td class="py-3 px-4">Latitude 5420 Hinge Kit (L+R)</td>
+<td class="py-3 px-4 text-right">1</td>
+<td class="py-3 px-4 text-right">₹3,200</td>
+<td class="py-3 px-4 text-right font-medium">₹3,200</td>
+</tr>
+<tr class="hover:bg-surface-subtle transition-colors">
+<td class="py-3 px-4">Labour - Hardware Repair</td>
+<td class="py-3 px-4 text-right">2 hrs</td>
+<td class="py-3 px-4 text-right">₹650</td>
+<td class="py-3 px-4 text-right font-medium">₹1,300</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-surface-variant flex justify-between items-center border-t border-border-default">
+<span class="font-h2 text-h2 text-text-primary">Grand Total</span>
+<span class="font-kpi-number text-kpi-number text-text-primary">₹4,500</span>
+</div>
+</section>
+<!-- Work Log Thread -->
+<section class="bg-surface rounded-xl border border-border-default shadow-sm p-card-padding flex flex-col gap-stack">
+<h2 class="font-h2 text-h2 text-text-primary flex items-center gap-2 border-b border-border-default pb-2">
+<span class="material-symbols-outlined text-primary-container">history</span>
+                    Work Log
+                </h2>
+<div class="relative pl-6 border-l-2 border-border-default flex flex-col gap-6 ml-2 mt-2">
+<!-- Log Item 1 -->
+<div class="relative">
+<div class="absolute -left-[35px] top-1 w-6 h-6 rounded-full bg-metric-amber border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[12px] text-primary-container">comment</span>
+</div>
+<div class="bg-surface-subtle border border-border-default rounded-lg p-3">
+<div class="flex justify-between items-start mb-2">
+<span class="font-h3 text-h3 text-text-primary">Rajesh Kumar</span>
+<span class="font-metadata text-metadata text-text-secondary">Today, 11:30 AM</span>
+</div>
+<p class="font-body text-body text-text-primary">Parts arrived from inventory. Beginning disassembly to replace hinges.</p>
+</div>
+</div>
+<!-- Log Item 2 -->
+<div class="relative">
+<div class="absolute -left-[35px] top-1 w-6 h-6 rounded-full bg-surface-variant border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[12px] text-text-secondary">inventory_2</span>
+</div>
+<div class="bg-surface border border-border-default rounded-lg p-3">
+<div class="flex justify-between items-start mb-2">
+<span class="font-h3 text-h3 text-text-primary">System Auto-Log</span>
+<span class="font-metadata text-metadata text-text-secondary">Yesterday, 04:15 PM</span>
+</div>
+<p class="font-body text-body text-text-secondary italic">Status changed to 'In Progress'. Hinge Kit (AST-PRT-092) checked out from Main Store.</p>
+</div>
+</div>
+<!-- Log Item 3 -->
+<div class="relative">
+<div class="absolute -left-[35px] top-1 w-6 h-6 rounded-full bg-surface-variant border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[12px] text-text-secondary">add</span>
+</div>
+<div class="bg-surface border border-border-default rounded-lg p-3">
+<div class="flex justify-between items-start mb-2">
+<span class="font-h3 text-h3 text-text-primary">Amit Patel</span>
+<span class="font-metadata text-metadata text-text-secondary">Oct 12, 09:15 AM</span>
+</div>
+<p class="font-body text-body text-text-secondary">Work order created.</p>
+</div>
+</div>
+</div>
+<!-- Add Note Input -->
+<div class="mt-4 flex gap-2">
+<input class="flex-1 bg-surface border border-border-default rounded px-3 py-2 font-body text-body text-text-primary focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-shadow" placeholder="Add an update to the work log..." type="text"/>
+<button class="bg-text-primary text-on-primary px-4 py-2 rounded font-body text-body font-medium hover:bg-stone-800 transition-colors">Post</button>
+</div>
+</section>
+</div>
+<!-- Drawer Footer Actions -->
+<div class="flex-none p-card-padding border-t border-border-default bg-surface flex justify-end gap-3 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+<button class="px-4 py-2 border border-border-default rounded text-text-primary font-body text-body font-medium hover:bg-surface-subtle transition-colors">
+                Hold Work
+            </button>
+<button class="px-4 py-2 bg-text-primary text-on-primary rounded font-body text-body font-medium hover:bg-stone-800 transition-colors flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                Mark as Complete
+            </button>
+</div>
+</div>
+</body></html>

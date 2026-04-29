@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stockrooms &amp; Consumables - Technopark Asset Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#e9e1dd",
+                        "primary": "#712c00",
+                        "inverse-on-surface": "#ffede6",
+                        "tertiary-container": "#005c92",
+                        "surface-tint": "#9a4614",
+                        "surface-container-highest": "#f1dfd8",
+                        "secondary": "#625d5b",
+                        "surface-dim": "#e8d6cf",
+                        "inverse-primary": "#ffb693",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#fff8f6",
+                        "border-default": "#EEEBE4",
+                        "metric-lavender": "#EDE9FE",
+                        "status-in-stock": "#166534",
+                        "on-secondary-fixed-variant": "#4a4643",
+                        "on-primary-container": "#ffc2a5",
+                        "on-secondary-fixed": "#1e1b19",
+                        "surface-container-high": "#f7e4dd",
+                        "outline-variant": "#dcc1b6",
+                        "outline": "#887269",
+                        "secondary-fixed-dim": "#ccc5c2",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#e9e1dd",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-surface": "#231a15",
+                        "on-primary-fixed": "#341000",
+                        "metric-sage": "#DCFCE7",
+                        "tertiary": "#00446d",
+                        "surface-container": "#fdeae3",
+                        "on-background": "#231a15",
+                        "tertiary-fixed-dim": "#98cbff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#004a77",
+                        "on-secondary-container": "#686361",
+                        "tertiary-fixed": "#cee5ff",
+                        "on-surface-variant": "#55433a",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-subtle": "#FAFAF8",
+                        "surface-variant": "#f1dfd8",
+                        "status-checked-out": "#1E40AF",
+                        "surface-container-low": "#fff1eb",
+                        "canvas": "#FAF7F2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "text-primary": "#1C1917",
+                        "text-secondary": "#78716C",
+                        "on-tertiary-fixed": "#001d33",
+                        "inverse-surface": "#392e2a",
+                        "metric-amber": "#FEF3C7",
+                        "primary-fixed": "#ffdbcb",
+                        "on-primary": "#ffffff",
+                        "status-critical": "#991B1B",
+                        "on-tertiary-container": "#a8d3ff",
+                        "accent-subtle": "#FEF3C7",
+                        "background": "#fff8f6",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface": "#FFFFFF",
+                        "primary-container": "#92400e",
+                        "metric-pink": "#FCE7F3" 
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "card": "16px"
+                    },
+                    "spacing": {
+                        "stack": "16px",
+                        "section-gap": "32px",
+                        "card-padding": "24px",
+                        "inline": "12px",
+                        "page-margin": "32px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["JetBrains Mono"],
+                        "h2": ["Inter"],
+                        "body": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-number": ["Inter"],
+                        "metadata": ["Inter"],
+                        "h1": ["Inter"],
+                        "h3": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["13px", { "lineHeight": "1", "fontWeight": "400" }],
+                        "h2": ["16px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "table-header": ["12px", { "letterSpacing": "0.06em", "fontWeight": "500" }],
+                        "kpi-number": ["28px", { "lineHeight": "1.1", "fontWeight": "600" }],
+                        "metadata": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "h1": ["22px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "h3": ["14px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Subtle lift for cards */
+        .card-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-canvas text-on-surface antialiased min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col py-6 space-y-4 h-full z-50 bg-[#FAF7F2] dark:bg-stone-950 font-['Inter'] font-medium fixed left-0 top-0 h-screen w-[248px] border-r border-[#EEEBE4] dark:border-stone-800 shadow-none">
+<div class="px-6 mb-8 flex items-center space-x-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">domain</span>
+</div>
+<div>
+<h1 class="text-lg font-black text-amber-900 dark:text-amber-600 leading-none">Technopark</h1>
+<p class="text-[11px] text-text-secondary mt-1 tracking-wider uppercase">Asset Management</p>
+</div>
+</div>
+<div class="px-4 flex-1">
+<ul class="space-y-2">
+<li>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-400 border-l-4 border-amber-800 transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Stockrooms</span>
+</a>
+</li>
+<li>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-[#F3EFE7] dark:hover:bg-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span>Audit Sessions</span>
+</a>
+</li>
+<li>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-[#F3EFE7] dark:hover:bg-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span>Maintenance</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="px-6 mt-auto">
+<button class="w-full bg-[#1C1917] text-white py-2.5 rounded-lg font-medium hover:bg-black transition-colors flex items-center justify-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Initiate Audit</span>
+</button>
+</div>
+<div class="px-4 mt-6 border-t border-[#EEEBE4] pt-4">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center space-x-3 px-4 py-2 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-[#F3EFE7] dark:hover:bg-stone-900 transition-colors text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center space-x-3 px-4 py-2 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-[#F3EFE7] dark:hover:bg-stone-900 transition-colors text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+<span>Support</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 md:ml-[248px] flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-8 w-full z-40 bg-[#FAF7F2] dark:bg-stone-950 font-['Inter'] text-sm tracking-tight fixed top-0 h-[60px] border-b border-[#EEEBE4] dark:border-stone-800 shadow-sm md:w-[calc(100%-248px)] left-0 md:left-[248px]">
+<div class="flex items-center">
+<span class="text-xl font-bold text-stone-900 dark:text-stone-100">Technopark Asset Hub</span>
+</div>
+<div class="flex items-center space-x-6">
+<!-- Search on Right -->
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400 text-[18px]">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-surface-subtle border border-border-default rounded-md text-sm focus:outline-none focus:border-amber-800 focus:ring-1 focus:ring-amber-800 w-64 placeholder-stone-400 transition-colors" placeholder="Search assets, tags..." type="text"/>
+</div>
+<div class="flex items-center space-x-4 text-stone-600 dark:text-stone-400">
+<button class="hover:bg-amber-50 dark:hover:bg-stone-900 p-1.5 rounded-full transition-all active:scale-95 duration-150 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="hover:bg-amber-50 dark:hover:bg-stone-900 p-1.5 rounded-full transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="hover:bg-amber-50 dark:hover:bg-stone-900 p-1.5 rounded-full transition-all active:scale-95 duration-150 flex items-center">
+<img alt="Administrator Profile" class="w-7 h-7 rounded-full border border-border-default" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrYrHDueuUD3DBk72DHuH2i9LgA43k82PVRVPFX-T4OhdtfZD7WwAWZyOeg1IJTPJdIOQMBeESjVss5YBzZclsCGwsLuE0DLQoAqQc3gvNGJjHBao0EInpTncRpi4_XiTDfw3eeGmWApjfKQ4JCgQOg6uYMpjNKQ7dQDQh6EU44pNjjlQA9zBklAm70xTG4JtZl6-xM2pVTqb0BSbjlGLbvZrjZFnH2yv31Pw7M8viup5t5QyQnCmHTHO5ArtiMX54QLKRNNW0LR39"/>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 mt-[60px] p-page-margin max-w-[1400px] w-full mx-auto">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-section-gap">
+<div>
+<h1 class="font-h1 text-h1 text-text-primary">Stockrooms &amp; Consumables</h1>
+<p class="font-body text-body text-text-secondary mt-1">Manage physical inventory locations and consumable supplies.</p>
+</div>
+<button class="bg-[#1C1917] text-white px-4 py-2 rounded-lg font-medium hover:bg-black transition-colors flex items-center space-x-2 text-sm shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add New Stock</span>
+</button>
+</div>
+<!-- KPI Cards Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-section-gap">
+<!-- Card 1 -->
+<div class="bg-metric-amber rounded-card p-card-padding card-lift border border-amber-200 cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="font-metadata text-metadata text-amber-900 uppercase tracking-wider font-semibold">Total Stockrooms</span>
+<span class="material-symbols-outlined text-amber-700">warehouse</span>
+</div>
+<div class="font-kpi-number text-kpi-number text-amber-950 mb-1">12</div>
+<div class="font-metadata text-metadata text-amber-800">Across 8 buildings</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-metric-lavender rounded-card p-card-padding card-lift border border-purple-200 cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="font-metadata text-metadata text-purple-900 uppercase tracking-wider font-semibold">Total Assets in Stock</span>
+<span class="material-symbols-outlined text-purple-700">devices</span>
+</div>
+<div class="font-kpi-number text-kpi-number text-purple-950 mb-1">412</div>
+<div class="font-metadata text-metadata text-purple-800">Ready for checkout</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-metric-pink rounded-card p-card-padding card-lift border border-pink-200 cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="font-metadata text-metadata text-pink-900 uppercase tracking-wider font-semibold">Low Consumables</span>
+<span class="material-symbols-outlined text-pink-700">warning</span>
+</div>
+<div class="font-kpi-number text-kpi-number text-pink-950 mb-1">8</div>
+<div class="font-metadata text-metadata text-pink-800">Requires reorder</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-metric-sage rounded-card p-card-padding card-lift border border-green-200 cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="font-metadata text-metadata text-green-900 uppercase tracking-wider font-semibold">Inventory Value</span>
+<span class="material-symbols-outlined text-green-700">account_balance_wallet</span>
+</div>
+<div class="font-kpi-number text-kpi-number text-green-950 mb-1">₹42,15,000</div>
+<div class="font-metadata text-metadata text-green-800">Fixed + Consumables</div>
+</div>
+</div>
+<!-- Hybrid Layout: Two Column -->
+<div class="flex flex-col lg:flex-row gap-6 mb-section-gap">
+<!-- Left Column: Locations List (240px) -->
+<div class="lg:w-[240px] flex-shrink-0">
+<div class="bg-surface border border-border-default rounded-card shadow-sm overflow-hidden h-full flex flex-col">
+<div class="p-4 border-b border-border-default bg-surface-subtle">
+<h2 class="font-h2 text-h2 text-text-primary">Locations</h2>
+</div>
+<div class="flex-1 overflow-y-auto p-2">
+<ul class="space-y-1">
+<li>
+<button class="w-full text-left px-3 py-2.5 rounded-lg bg-amber-50 border-l-4 border-amber-800 text-amber-900 flex justify-between items-center group transition-colors">
+<div class="flex flex-col">
+<span class="font-body text-body font-medium">Central IT Store</span>
+<span class="font-metadata text-metadata text-amber-700">Bhavani Bldg</span>
+</div>
+<span class="bg-amber-200 text-amber-900 text-xs px-2 py-0.5 rounded-full font-medium">156</span>
+</button>
+</li>
+<li>
+<button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-subtle text-text-primary flex justify-between items-center group transition-colors border-l-4 border-transparent">
+<div class="flex flex-col">
+<span class="font-body text-body font-medium">Nila B-Wing Store</span>
+<span class="font-metadata text-metadata text-text-secondary">Nila Bldg</span>
+</div>
+<span class="bg-surface-variant text-text-secondary text-xs px-2 py-0.5 rounded-full font-medium">84</span>
+</button>
+</li>
+<li>
+<button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-subtle text-text-primary flex justify-between items-center group transition-colors border-l-4 border-transparent">
+<div class="flex flex-col">
+<span class="font-body text-body font-medium">Facilities Supply</span>
+<span class="font-metadata text-metadata text-text-secondary">Thejaswini</span>
+</div>
+<span class="bg-surface-variant text-text-secondary text-xs px-2 py-0.5 rounded-full font-medium">112</span>
+</button>
+</li>
+<li>
+<button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-subtle text-text-primary flex justify-between items-center group transition-colors border-l-4 border-transparent">
+<div class="flex flex-col">
+<span class="font-body text-body font-medium">Network Hub East</span>
+<span class="font-metadata text-metadata text-text-secondary">Gayathri</span>
+</div>
+<span class="bg-surface-variant text-text-secondary text-xs px-2 py-0.5 rounded-full font-medium">60</span>
+</button>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Right Column: Asset Registry Table -->
+<div class="flex-1">
+<div class="bg-surface border border-border-default rounded-card shadow-sm overflow-hidden flex flex-col h-full">
+<!-- Table Toolbar -->
+<div class="p-4 border-b border-border-default flex justify-between items-center bg-surface">
+<div>
+<h2 class="font-h2 text-h2 text-text-primary">Central IT Store Registry</h2>
+<p class="font-metadata text-metadata text-text-secondary mt-0.5">Showing fixed assets currently in stock</p>
+</div>
+<div class="flex space-x-2">
+<button class="px-3 py-1.5 border border-border-default rounded-md text-sm font-medium text-text-primary hover:bg-surface-subtle transition-colors flex items-center space-x-1">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+<span>Filter</span>
+</button>
+<button class="px-3 py-1.5 border border-border-default rounded-md text-sm font-medium text-text-primary hover:bg-surface-subtle transition-colors flex items-center space-x-1">
+<span class="material-symbols-outlined text-[16px]">download</span>
+<span>Export</span>
+</button>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-default bg-surface-subtle font-table-header text-table-header text-text-secondary uppercase">
+<th class="py-3 px-4 w-12">
+<input class="rounded border-border-default text-primary-container focus:ring-primary-container" type="checkbox"/>
+</th>
+<th class="py-3 px-4">Tag ID</th>
+<th class="py-3 px-4">Asset Name</th>
+<th class="py-3 px-4">Category</th>
+<th class="py-3 px-4">Condition</th>
+<th class="py-3 px-4 text-right">Date Stocked</th>
+</tr>
+</thead>
+<tbody class="font-body text-body text-text-primary divide-y divide-border-default">
+<!-- Row 1 -->
+<tr class="hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4 border-l-[3px] border-transparent group-hover:border-amber-500">
+<input class="rounded border-border-default text-primary-container focus:ring-primary-container" type="checkbox"/>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-2023-401</td>
+<td class="py-3 px-4 font-medium">Dell Latitude 5420</td>
+<td class="py-3 px-4 text-text-secondary">Laptops</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                New
+                                            </span>
+</td>
+<td class="py-3 px-4 text-right text-text-secondary">12 Oct 2023</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4 border-l-[3px] border-transparent group-hover:border-amber-500">
+<input class="rounded border-border-default text-primary-container focus:ring-primary-container" type="checkbox"/>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-2023-405</td>
+<td class="py-3 px-4 font-medium">ThinkPad T14 Gen 2</td>
+<td class="py-3 px-4 text-text-secondary">Laptops</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                                Refurbished
+                                            </span>
+</td>
+<td class="py-3 px-4 text-right text-text-secondary">15 Oct 2023</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4 border-l-[3px] border-transparent group-hover:border-amber-500">
+<input class="rounded border-border-default text-primary-container focus:ring-primary-container" type="checkbox"/>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-2022-112</td>
+<td class="py-3 px-4 font-medium">Cisco Catalyst 9300</td>
+<td class="py-3 px-4 text-text-secondary">Networking</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Good
+                                            </span>
+</td>
+<td class="py-3 px-4 text-right text-text-secondary">01 Nov 2022</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4 border-l-[3px] border-transparent group-hover:border-amber-500">
+<input class="rounded border-border-default text-primary-container focus:ring-primary-container" type="checkbox"/>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-2023-550</td>
+<td class="py-3 px-4 font-medium">Samsung 27" Monitor</td>
+<td class="py-3 px-4 text-text-secondary">Peripherals</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                New
+                                            </span>
+</td>
+<td class="py-3 px-4 text-right text-text-secondary">20 Oct 2023</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4 border-l-[3px] border-transparent group-hover:border-amber-500">
+<input class="rounded border-border-default text-primary-container focus:ring-primary-container" type="checkbox"/>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-2021-089</td>
+<td class="py-3 px-4 font-medium">Polycom RealPresence</td>
+<td class="py-3 px-4 text-text-secondary">A/V Equip</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Damaged
+                                            </span>
+</td>
+<td class="py-3 px-4 text-right text-text-secondary">15 Mar 2021</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination -->
+<div class="p-3 border-t border-border-default bg-surface flex items-center justify-between">
+<span class="font-metadata text-metadata text-text-secondary">Showing 1 to 5 of 156 entries</span>
+<div class="flex space-x-1">
+<button class="p-1 rounded text-text-secondary hover:bg-surface-subtle disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="w-7 h-7 rounded bg-primary-container text-white text-sm font-medium flex items-center justify-center">1</button>
+<button class="w-7 h-7 rounded text-text-secondary hover:bg-surface-subtle text-sm font-medium flex items-center justify-center">2</button>
+<button class="w-7 h-7 rounded text-text-secondary hover:bg-surface-subtle text-sm font-medium flex items-center justify-center">3</button>
+<button class="p-1 rounded text-text-secondary hover:bg-surface-subtle">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Consumables Section (Bento Grid Style) -->
+<div>
+<div class="flex justify-between items-center mb-4">
+<div>
+<h2 class="font-h2 text-h2 text-text-primary">Consumables Inventory</h2>
+<p class="font-metadata text-metadata text-text-secondary mt-0.5">Track supplies that require frequent reordering</p>
+</div>
+<a class="text-primary-container hover:text-amber-900 font-medium text-sm flex items-center space-x-1" href="#">
+<span>View All Consumables</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Consumable Item 1 -->
+<div class="bg-surface border border-border-default rounded-card p-5 card-lift relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined">print</span>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-text-primary">HP 206X Toner (Black)</h3>
+<span class="font-metadata text-metadata text-text-secondary">SKU: CON-TNR-001</span>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<div class="flex justify-between items-end mb-1">
+<span class="font-metadata text-metadata text-text-secondary">Stock Level</span>
+<span class="font-medium text-sm text-text-primary">4 / 20 Units</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2">
+<div class="bg-red-500 h-2 rounded-full" style="width: 20%"></div>
+</div>
+<p class="font-metadata text-metadata text-red-600 mt-1 flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">warning</span> Below reorder point (5)
+                            </p>
+</div>
+<button class="w-full py-2 border border-border-default rounded-lg text-sm font-medium hover:bg-surface-subtle transition-colors flex justify-center items-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+<span>Create Reorder</span>
+</button>
+</div>
+<!-- Consumable Item 2 -->
+<div class="bg-surface border border-border-default rounded-card p-5 card-lift relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600">
+<span class="material-symbols-outlined">battery_charging_full</span>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-text-primary">AA Alkaline Batteries</h3>
+<span class="font-metadata text-metadata text-text-secondary">SKU: CON-BAT-045</span>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<div class="flex justify-between items-end mb-1">
+<span class="font-metadata text-metadata text-text-secondary">Stock Level</span>
+<span class="font-medium text-sm text-text-primary">145 / 200 Units</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2">
+<div class="bg-green-500 h-2 rounded-full" style="width: 72.5%"></div>
+</div>
+<p class="font-metadata text-metadata text-text-secondary mt-1">Healthy stock level</p>
+</div>
+<button class="w-full py-2 border border-border-default rounded-lg text-sm font-medium hover:bg-surface-subtle transition-colors flex justify-center items-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">update</span>
+<span>Update Count</span>
+</button>
+</div>
+<!-- Consumable Item 3 -->
+<div class="bg-surface border border-border-default rounded-card p-5 card-lift relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">
+<span class="material-symbols-outlined">cable</span>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-text-primary">Cat6 Ethernet Cable (2m)</h3>
+<span class="font-metadata text-metadata text-text-secondary">SKU: CON-CBL-102</span>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<div class="flex justify-between items-end mb-1">
+<span class="font-metadata text-metadata text-text-secondary">Stock Level</span>
+<span class="font-medium text-sm text-text-primary">12 / 50 Units</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2">
+<div class="bg-amber-500 h-2 rounded-full" style="width: 24%"></div>
+</div>
+<p class="font-metadata text-metadata text-amber-600 mt-1 flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">info</span> Nearing reorder point (10)
+                            </p>
+</div>
+<button class="w-full py-2 border border-border-default rounded-lg text-sm font-medium hover:bg-surface-subtle transition-colors flex justify-center items-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+<span>Create Reorder</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

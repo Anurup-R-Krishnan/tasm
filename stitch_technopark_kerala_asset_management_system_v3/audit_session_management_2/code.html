@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audit Session Management - Technopark Kerala AMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#e9e1dd",
+                        "primary": "#712c00",
+                        "inverse-on-surface": "#ffede6",
+                        "tertiary-container": "#005c92",
+                        "surface-tint": "#9a4614",
+                        "surface-container-highest": "#f1dfd8",
+                        "secondary": "#625d5b",
+                        "surface-dim": "#e8d6cf",
+                        "inverse-primary": "#ffb693",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#fff8f6",
+                        "border-default": "#EEEBE4",
+                        "metric-lavender": "#EDE9FE",
+                        "status-in-stock": "#166534",
+                        "on-secondary-fixed-variant": "#4a4643",
+                        "on-primary-container": "#ffc2a5",
+                        "on-secondary-fixed": "#1e1b19",
+                        "surface-container-high": "#f7e4dd",
+                        "outline-variant": "#dcc1b6",
+                        "outline": "#887269",
+                        "secondary-fixed-dim": "#ccc5c2",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#e9e1dd",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-surface": "#231a15",
+                        "on-primary-fixed": "#341000",
+                        "metric-sage": "#DCFCE7",
+                        "tertiary": "#00446d",
+                        "surface-container": "#fdeae3",
+                        "on-background": "#231a15",
+                        "tertiary-fixed-dim": "#98cbff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#004a77",
+                        "on-secondary-container": "#686361",
+                        "tertiary-fixed": "#cee5ff",
+                        "on-surface-variant": "#55433a",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-subtle": "#FAFAF8",
+                        "surface-variant": "#f1dfd8",
+                        "status-checked-out": "#1E40AF",
+                        "surface-container-low": "#fff1eb",
+                        "canvas": "#FAF7F2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "text-primary": "#1C1917",
+                        "text-secondary": "#78716C",
+                        "on-tertiary-fixed": "#001d33",
+                        "inverse-surface": "#392e2a",
+                        "metric-amber": "#FEF3C7",
+                        "primary-fixed": "#ffdbcb",
+                        "on-primary": "#ffffff",
+                        "status-critical": "#991B1B",
+                        "on-tertiary-container": "#a8d3ff",
+                        "accent-subtle": "#FEF3C7",
+                        "background": "#fff8f6",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface": "#FFFFFF",
+                        "primary-container": "#92400e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack": "16px",
+                        "section-gap": "32px",
+                        "card-padding": "24px",
+                        "inline": "12px",
+                        "page-margin": "32px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["JetBrains Mono"],
+                        "h2": ["Inter"],
+                        "body": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-number": ["Inter"],
+                        "metadata": ["Inter"],
+                        "h1": ["Inter"],
+                        "h3": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["13px", { "lineHeight": "1", "fontWeight": "400" }],
+                        "h2": ["16px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "table-header": ["12px", { "letterSpacing": "0.06em", "fontWeight": "500" }],
+                        "kpi-number": ["28px", { "lineHeight": "1.1", "fontWeight": "600" }],
+                        "metadata": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "h1": ["22px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "h3": ["14px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-canvas text-on-surface font-body text-body antialiased selection:bg-metric-amber selection:text-primary">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full h-[60px] border-b border-[#EEEBE4] dark:border-stone-800 shadow-sm bg-[#FAF7F2] dark:bg-stone-950 flex justify-between items-center px-8 z-40 transition-colors duration-200">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-stone-900 dark:text-stone-100 font-h1 tracking-tight">Technopark Asset Hub</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden md:block">
+<input class="pl-10 pr-4 py-2 bg-surface border border-border-default rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary-container w-64 transition-all" placeholder="Search..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[20px]">search</span>
+</div>
+<div class="flex items-center gap-inline text-amber-800 dark:text-amber-500">
+<button class="p-2 hover:bg-amber-50 dark:hover:bg-stone-900 rounded-full transition-all active:scale-95 duration-150 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full border-2 border-canvas"></span>
+</button>
+<button class="p-2 hover:bg-amber-50 dark:hover:bg-stone-900 rounded-full transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="p-2 hover:bg-amber-50 dark:hover:bg-stone-900 rounded-full transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-[60px] h-[calc(100vh-60px)] w-[248px] border-r border-[#EEEBE4] dark:border-stone-800 shadow-none bg-[#FAF7F2] dark:bg-stone-950 flex flex-col py-6 space-y-4 z-50 transition-transform duration-200 hidden md:flex">
+<div class="px-6 pb-6 border-b border-border-default mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-bold font-h2 shrink-0">TK</div>
+<div class="flex flex-col">
+<span class="text-lg font-black text-amber-900 dark:text-amber-600 font-h2 leading-none">Technopark</span>
+<span class="text-xs text-text-secondary mt-1">Asset Management</span>
+</div>
+</div>
+<button class="w-full mt-6 bg-[#1C1917] hover:bg-black text-white rounded-lg py-2.5 px-4 font-medium text-sm flex items-center justify-center gap-2 transition-all active:translate-y-[1px] shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Initiate Audit
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto px-4 space-y-1 font-['Inter'] font-medium">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-[#F3EFE7] dark:hover:bg-stone-900 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-amber-800 transition-colors">inventory_2</span>
+<span>Stockrooms</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-400 border-l-4 border-amber-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">fact_check</span>
+<span>Audit Sessions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-[#F3EFE7] dark:hover:bg-stone-900 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-amber-800 transition-colors">handshake</span>
+<span>Maintenance</span>
+</a>
+</div>
+<div class="mt-auto px-4 pt-4 border-t border-border-default space-y-1 font-['Inter'] font-medium">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-[#F3EFE7] dark:hover:bg-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-[#F3EFE7] dark:hover:bg-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+<span>Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="pt-[60px] md:pl-[248px] min-h-screen p-page-margin">
+<div class="max-w-[1400px] mx-auto space-y-section-gap">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h1 class="font-h1 text-h1 text-text-primary">Audit Session Management</h1>
+<p class="font-body text-body text-text-secondary mt-1">Monitor active audits and resolve asset discrepancies across all facilities.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-surface border border-[#D6D3CE] text-text-primary px-4 py-2 rounded-lg font-medium text-sm hover:bg-surface-subtle transition-colors flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export Report
+                    </button>
+</div>
+</div>
+<!-- KPI Metric Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-inline">
+<!-- Card 1: Active Sessions -->
+<div class="bg-metric-amber rounded-xl p-card-padding shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer border border-transparent hover:border-amber-200">
+<div class="flex justify-between items-start mb-4">
+<span class="font-metadata text-metadata text-amber-900 uppercase tracking-wider font-semibold">Active Sessions</span>
+<div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-800">
+<span class="material-symbols-outlined text-[18px]">radar</span>
+</div>
+</div>
+<div class="font-kpi-number text-kpi-number text-amber-950 mb-1">2</div>
+<div class="font-metadata text-metadata text-amber-800/80">Thejaswini, Nila</div>
+</div>
+<!-- Card 2: Verified Assets -->
+<div class="bg-metric-lavender rounded-xl p-card-padding shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer border border-transparent hover:border-violet-200">
+<div class="flex justify-between items-start mb-4">
+<span class="font-metadata text-metadata text-violet-900 uppercase tracking-wider font-semibold">Verified Assets</span>
+<div class="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-violet-800">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+</div>
+<div class="font-kpi-number text-kpi-number text-violet-950 mb-1">84%</div>
+<div class="font-metadata text-metadata text-violet-800/80">Current month progress</div>
+</div>
+<!-- Card 3: Discrepancies -->
+<div class="bg-primary-fixed rounded-xl p-card-padding shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer border border-transparent hover:border-orange-200">
+<div class="flex justify-between items-start mb-4">
+<span class="font-metadata text-metadata text-orange-900 uppercase tracking-wider font-semibold">Discrepancies</span>
+<div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-800">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+</div>
+<div class="font-kpi-number text-kpi-number text-orange-950 mb-1">14</div>
+<div class="font-metadata text-metadata text-orange-800/80">Unregistered or Missing</div>
+</div>
+<!-- Card 4: Last Full Audit -->
+<div class="bg-metric-sage rounded-xl p-card-padding shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer border border-transparent hover:border-green-200">
+<div class="flex justify-between items-start mb-4">
+<span class="font-metadata text-metadata text-green-900 uppercase tracking-wider font-semibold">Last Full Audit</span>
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-800">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</div>
+</div>
+<div class="font-kpi-number text-kpi-number text-green-950 mb-1">15 Mar</div>
+<div class="font-metadata text-metadata text-green-800/80">3472 assets verified</div>
+</div>
+</div>
+<!-- Bento Grid Layout for Main Content -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-stack items-start">
+<!-- Left Column: Active Audit Sessions Table (Span 7) -->
+<div class="xl:col-span-7 bg-surface rounded-xl border border-border-default shadow-[0_4px_12px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col h-full">
+<div class="p-5 border-b border-border-default flex justify-between items-center bg-surface-subtle">
+<h2 class="font-h2 text-h2 text-text-primary">Ongoing Audit Sessions</h2>
+<button class="text-primary-container hover:text-primary font-medium text-sm transition-colors flex items-center gap-1">
+                            View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-default bg-surface">
+<th class="py-3 px-5 font-table-header text-table-header text-text-secondary uppercase">ID</th>
+<th class="py-3 px-5 font-table-header text-table-header text-text-secondary uppercase">Scope</th>
+<th class="py-3 px-5 font-table-header text-table-header text-text-secondary uppercase">Auditor</th>
+<th class="py-3 px-5 font-table-header text-table-header text-text-secondary uppercase">Progress</th>
+<th class="py-3 px-5 font-table-header text-table-header text-text-secondary uppercase text-right">Status</th>
+</tr>
+</thead>
+<tbody class="font-body text-body text-text-primary divide-y divide-border-default">
+<tr class="hover:bg-accent-subtle transition-colors group relative border-l-4 border-primary-container bg-surface-subtle">
+<td class="py-4 px-5 font-mono-data text-mono-data text-text-secondary">#AUD-2401</td>
+<td class="py-4 px-5">
+<div class="font-medium text-text-primary">Thejaswini Building</div>
+<div class="text-xs text-text-secondary mt-0.5">Floor 4 - IT ODC</div>
+</td>
+<td class="py-4 px-5">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-xs flex items-center justify-center font-medium">RK</div>
+<span>Rahul K.</span>
+</div>
+</td>
+<td class="py-4 px-5">
+<div class="flex items-center gap-2 w-full max-w-[120px]">
+<div class="w-full bg-surface-variant rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary-container h-1.5 rounded-full" style="width: 65%"></div>
+</div>
+<span class="text-xs font-mono-data text-text-secondary">65%</span>
+</div>
+</td>
+<td class="py-4 px-5 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5 animate-pulse"></span>
+                                            Active
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-accent-subtle transition-colors group bg-surface">
+<td class="py-4 px-5 font-mono-data text-mono-data text-text-secondary pl-[21px]">#AUD-2402</td>
+<td class="py-4 px-5">
+<div class="font-medium text-text-primary">Nila Building</div>
+<div class="text-xs text-text-secondary mt-0.5">Ground Floor - Logistics</div>
+</td>
+<td class="py-4 px-5">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-xs flex items-center justify-center font-medium">AM</div>
+<span>Anjali M.</span>
+</div>
+</td>
+<td class="py-4 px-5">
+<div class="flex items-center gap-2 w-full max-w-[120px]">
+<div class="w-full bg-surface-variant rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary-container h-1.5 rounded-full" style="width: 22%"></div>
+</div>
+<span class="text-xs font-mono-data text-text-secondary">22%</span>
+</div>
+</td>
+<td class="py-4 px-5 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5 animate-pulse"></span>
+                                            Active
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-accent-subtle transition-colors group bg-surface">
+<td class="py-4 px-5 font-mono-data text-mono-data text-text-secondary pl-[21px]">#AUD-2398</td>
+<td class="py-4 px-5">
+<div class="font-medium text-text-primary">Bhavani Building</div>
+<div class="text-xs text-text-secondary mt-0.5">Server Room A</div>
+</td>
+<td class="py-4 px-5">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-xs flex items-center justify-center font-medium">SP</div>
+<span>Suresh P.</span>
+</div>
+</td>
+<td class="py-4 px-5">
+<div class="flex items-center gap-2 w-full max-w-[120px]">
+<div class="w-full bg-surface-variant rounded-full h-1.5 overflow-hidden">
+<div class="bg-status-in-stock h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+<span class="text-xs font-mono-data text-text-secondary">100%</span>
+</div>
+</td>
+<td class="py-4 px-5 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-200">
+                                            Completed
+                                        </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Column: Discrepancy Resolution (Span 5) -->
+<div class="xl:col-span-5 flex flex-col gap-stack h-full">
+<div class="bg-surface rounded-xl border border-border-default shadow-[0_4px_12px_rgba(0,0,0,0.03)] flex flex-col overflow-hidden">
+<div class="p-5 border-b border-border-default flex justify-between items-center bg-error-container/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-status-critical">assignment_late</span>
+<h2 class="font-h2 text-h2 text-text-primary">Action Required</h2>
+</div>
+<span class="bg-status-critical text-white text-xs font-bold px-2 py-1 rounded-full">14 Pending</span>
+</div>
+<div class="p-2 flex-1 overflow-y-auto max-h-[400px] space-y-2 bg-surface-subtle">
+<!-- Discrepancy Item 1 -->
+<div class="bg-surface p-4 rounded-lg border border-border-default shadow-sm hover:border-outline-variant transition-colors">
+<div class="flex justify-between items-start mb-2">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-mono-data text-mono-data text-text-secondary">INV-2023-8942</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-700 border border-red-200">Missing</span>
+</div>
+<h3 class="font-h3 text-h3 text-text-primary">Dell Latitude 5420 Laptop</h3>
+<p class="font-metadata text-metadata text-text-secondary mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                            Expected: Thejaswini, Floor 4
+                                        </p>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 bg-surface border border-[#D6D3CE] text-text-primary py-1.5 rounded text-sm font-medium hover:bg-surface-subtle transition-colors">Locate</button>
+<button class="flex-1 bg-surface border border-error-container text-status-critical py-1.5 rounded text-sm font-medium hover:bg-error-container/30 transition-colors">Mark Lost</button>
+</div>
+</div>
+<!-- Discrepancy Item 2 -->
+<div class="bg-surface p-4 rounded-lg border border-border-default shadow-sm hover:border-outline-variant transition-colors">
+<div class="flex justify-between items-start mb-2">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-mono-data text-mono-data text-text-secondary">Unknown Asset</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-orange-50 text-orange-700 border border-orange-200">Unregistered</span>
+</div>
+<h3 class="font-h3 text-h3 text-text-primary">Cisco Meraki MR46 AP</h3>
+<p class="font-metadata text-metadata text-text-secondary mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">my_location</span>
+                                            Found: Nila, Logistics Area
+                                        </p>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="w-full bg-[#1C1917] hover:bg-black text-white py-1.5 rounded text-sm font-medium transition-colors">Register New Asset</button>
+</div>
+</div>
+<!-- Discrepancy Item 3 -->
+<div class="bg-surface p-4 rounded-lg border border-border-default shadow-sm hover:border-outline-variant transition-colors">
+<div class="flex justify-between items-start mb-2">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-mono-data text-mono-data text-text-secondary">INV-2022-4110</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-yellow-50 text-yellow-700 border border-yellow-200">Location Mismatch</span>
+</div>
+<h3 class="font-h3 text-h3 text-text-primary">Herman Miller Aeron Chair</h3>
+<p class="font-metadata text-metadata text-text-secondary mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">swap_horiz</span>
+                                            Expected: Bhavani | Found: Thejaswini
+                                        </p>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 bg-primary-container text-white py-1.5 rounded text-sm font-medium hover:bg-primary transition-colors shadow-sm">Confirm New Location</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

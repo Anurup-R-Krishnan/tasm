@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scheduled Maintenance Tracker - Technopark Kerala AMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#a8d3ff",
+                      "accent-subtle": "#FEF3C7",
+                      "status-critical": "#991B1B",
+                      "surface": "#FFFFFF",
+                      "primary-container": "#92400e",
+                      "on-primary-fixed-variant": "#7a3000",
+                      "background": "#fff8f6",
+                      "surface-container-low": "#fff1eb",
+                      "surface-variant": "#f1dfd8",
+                      "status-checked-out": "#1E40AF",
+                      "surface-subtle": "#FAFAF8",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#55433a",
+                      "primary-fixed": "#ffdbcb",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed": "#001d33",
+                      "inverse-surface": "#392e2a",
+                      "metric-amber": "#FEF3C7",
+                      "text-primary": "#1C1917",
+                      "text-secondary": "#78716C",
+                      "canvas": "#FAF7F2",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-surface": "#231a15",
+                      "on-primary-fixed": "#341000",
+                      "metric-sage": "#DCFCE7",
+                      "secondary-fixed": "#e9e1dd",
+                      "primary-fixed-dim": "#ffb693",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed-dim": "#ccc5c2",
+                      "surface-container-high": "#f7e4dd",
+                      "outline-variant": "#dcc1b6",
+                      "outline": "#887269",
+                      "on-secondary-fixed": "#1e1b19",
+                      "tertiary-fixed": "#cee5ff",
+                      "on-secondary-container": "#686361",
+                      "tertiary-fixed-dim": "#98cbff",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#004a77",
+                      "tertiary": "#00446d",
+                      "surface-container": "#fdeae3",
+                      "on-background": "#231a15",
+                      "status-in-stock": "#166534",
+                      "metric-lavender": "#EDE9FE",
+                      "border-default": "#EEEBE4",
+                      "surface-dim": "#e8d6cf",
+                      "inverse-primary": "#ffb693",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#fff8f6",
+                      "secondary": "#625d5b",
+                      "surface-tint": "#9a4614",
+                      "surface-container-highest": "#f1dfd8",
+                      "tertiary-container": "#005c92",
+                      "secondary-container": "#e9e1dd",
+                      "primary": "#712c00",
+                      "inverse-on-surface": "#ffede6",
+                      "on-primary-container": "#ffc2a5",
+                      "on-secondary-fixed-variant": "#4a4643"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "page-margin": "32px",
+                      "stack": "16px",
+                      "section-gap": "32px",
+                      "card-padding": "24px",
+                      "inline": "12px"
+              },
+              "fontFamily": {
+                      "h3": [
+                              "Inter"
+                      ],
+                      "metadata": [
+                              "Inter"
+                      ],
+                      "h1": [
+                              "Inter"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "kpi-number": [
+                              "Inter"
+                      ],
+                      "mono-data": [
+                              "JetBrains Mono"
+                      ],
+                      "h2": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "h3": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "metadata": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h1": [
+                              "22px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "table-header": [
+                              "12px",
+                              {
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "kpi-number": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "mono-data": [
+                              "13px",
+                              {
+                                      "lineHeight": "1",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h2": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+      </style>
+</head>
+<body class="bg-canvas text-text-primary font-body text-body antialiased selection:bg-accent-subtle selection:text-text-primary">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col pt-[60px] pb-6 bg-surface border-r border-border-default fixed left-0 top-0 h-full w-[248px] z-40">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container text-on-primary flex items-center justify-center font-bold">TP</div>
+<div>
+<h1 class="text-h2 font-h2 text-text-primary">TechPark Admin</h1>
+<p class="text-metadata font-metadata text-text-secondary">Asset Management</p>
+</div>
+</div>
+<div class="px-4 mb-6">
+<button class="w-full bg-primary-container text-on-primary py-2 px-4 rounded-lg text-body font-body font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Audit
+            </button>
+</div>
+<div class="flex-1 flex flex-col gap-1 px-2">
+<a class="text-text-secondary py-3 px-4 flex items-center gap-3 rounded-lg hover:bg-surface-subtle hover:text-text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body text-body font-medium">Stockrooms</span>
+</a>
+<a class="bg-accent-subtle text-primary-container border-l-4 border-primary-container py-3 px-4 flex items-center gap-3 rounded-r-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handyman</span>
+<span class="font-body text-body font-medium">Maintenance</span>
+</a>
+<a class="text-text-secondary py-3 px-4 flex items-center gap-3 rounded-lg hover:bg-surface-subtle hover:text-text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-body text-body font-medium">Mobile Audit</span>
+</a>
+<a class="text-text-secondary py-3 px-4 flex items-center gap-3 rounded-lg hover:bg-surface-subtle hover:text-text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body text-body font-medium">Reports</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-1 px-2 border-t border-border-default pt-4">
+<a class="text-text-secondary py-2 px-4 flex items-center gap-3 rounded-lg hover:bg-surface-subtle transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-metadata text-metadata">Settings</span>
+</a>
+<a class="text-text-secondary py-2 px-4 flex items-center gap-3 rounded-lg hover:bg-surface-subtle transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+<span class="font-metadata text-metadata">Support</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full h-[60px] z-50 bg-[#FCF9F2] flex items-center justify-between px-8 border-b border-border-default shadow-sm md:pl-[280px]">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface border border-border-default rounded-md text-body font-body focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container w-[300px]" placeholder="Search assets, tags..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4 text-text-secondary">
+<button class="hover:text-primary-container transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-status-critical rounded-full"></span>
+</button>
+<button class="hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="hover:text-primary-container transition-colors">
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full border border-border-default" data-alt="Professional headshot of a corporate user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIFKuKGIyz-ZDyrjPrnO0xCUHPUC2wfrA-Gc-0PLNm4DJmWJaTi4WjqCwcN-5Vy0TiEluPzZl-jQKgowhW8ePu3ZBEZ-LNAgEtm-Sb3HjhjqT-z4rLDe5B52JsQ480OSbfsSRQ6fwdOOiGSYe9fmZ3ekyhmryDR7xgPWMpXl1awwEYgFdZprTCKVo-kaBFazWkC0VUEuGCDHXJYUp_Q9yJKh7ezfjj__8csO5fk_PapEKjHUU8n-bHeKoKN3-qIs0Be0A3njvYMRH6"/>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="md:ml-[248px] pt-[60px] min-h-screen p-page-margin max-w-[1400px]">
+<!-- Page Header -->
+<div class="flex justify-between items-center mb-section-gap">
+<div>
+<h2 class="text-h1 font-h1 text-text-primary mb-1">Maintenance Schedules</h2>
+<p class="text-body font-body text-text-secondary">Track and manage upcoming asset maintenance across facilities.</p>
+</div>
+<button class="bg-text-primary text-surface px-5 py-2.5 rounded-lg text-body font-body font-medium hover:bg-opacity-90 transition-colors shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
+                Add Schedule
+            </button>
+</div>
+<!-- Filters & Controls Bar -->
+<div class="bg-surface p-4 rounded-xl border border-border-default shadow-[0_4px_4px_rgba(0,0,0,0.02)] mb-stack flex flex-wrap gap-4 items-center justify-between">
+<div class="flex gap-4">
+<div class="relative">
+<select class="appearance-none bg-surface-subtle border border-border-default text-body font-body text-text-primary rounded-md pl-4 pr-10 py-2 focus:outline-none focus:border-primary-container">
+<option>All Frequencies</option>
+<option>Monthly</option>
+<option>Quarterly</option>
+<option>Annual</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none text-[20px]">expand_more</span>
+</div>
+<div class="relative">
+<select class="appearance-none bg-surface-subtle border border-border-default text-body font-body text-text-primary rounded-md pl-4 pr-10 py-2 focus:outline-none focus:border-primary-container">
+<option>All Statuses</option>
+<option>Scheduled</option>
+<option>In Progress</option>
+<option>Overdue</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-text-secondary hover:text-text-primary border border-transparent hover:border-border-default rounded-md transition-all">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="p-2 text-text-secondary hover:text-text-primary border border-transparent hover:border-border-default rounded-md transition-all">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- High-Density Table Card -->
+<div class="bg-surface rounded-xl border border-border-default shadow-[0_4px_4px_rgba(0,0,0,0.02)] overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-subtle border-b border-border-default">
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase">Asset Name</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase">Tag ID</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase">Maintenance Type</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase">Frequency</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase">Last Done</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase">Next Due</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase">Vendor</th>
+<th class="py-3 px-4 font-table-header text-table-header text-text-secondary uppercase text-right">Status</th>
+<th class="py-3 px-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-default text-body font-body text-text-primary">
+<!-- Row 1: Overdue (< 7d / Overdue) -->
+<tr class="hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4">
+<div class="font-h3 text-h3 text-text-primary">HVAC Chiller Unit A</div>
+<div class="text-metadata font-metadata text-text-secondary">Bhavani Building, Roof</div>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-HV-001</td>
+<td class="py-3 px-4">AMC Service</td>
+<td class="py-3 px-4">Quarterly</td>
+<td class="py-3 px-4 text-text-secondary">12 Aug 2023</td>
+<td class="py-3 px-4">
+<span class="flex items-center gap-1 text-status-critical font-medium">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+                                    12 Nov 2023
+                                </span>
+</td>
+<td class="py-3 px-4 text-text-secondary">BlueStar Services</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata font-metadata bg-error-container text-on-error-container">
+                                    Overdue
+                                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="text-text-secondary hover:text-primary-container opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Upcoming (7-30d) -->
+<tr class="bg-surface-subtle hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4">
+<div class="font-h3 text-h3 text-text-primary">Elevator Passenger 3</div>
+<div class="text-metadata font-metadata text-text-secondary">Nila Building, Lobby</div>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-EL-042</td>
+<td class="py-3 px-4">Inspection</td>
+<td class="py-3 px-4">Monthly</td>
+<td class="py-3 px-4 text-text-secondary">28 Oct 2023</td>
+<td class="py-3 px-4">
+<span class="flex items-center gap-1 text-primary-container font-medium">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                    28 Nov 2023
+                                </span>
+</td>
+<td class="py-3 px-4 text-text-secondary">Otis Elevators</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata font-metadata bg-surface-container-high text-on-surface-variant">
+                                    Scheduled
+                                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="text-text-secondary hover:text-primary-container opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Healthy (> 30d) -->
+<tr class="hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4">
+<div class="font-h3 text-h3 text-text-primary">Server Rack Cooling Sys</div>
+<div class="text-metadata font-metadata text-text-secondary">Thejaswini, Datacenter</div>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-IT-105</td>
+<td class="py-3 px-4">Calibration</td>
+<td class="py-3 px-4">Annual</td>
+<td class="py-3 px-4 text-text-secondary">15 Jan 2023</td>
+<td class="py-3 px-4">
+<span class="flex items-center gap-1 text-status-in-stock">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                    15 Jan 2024
+                                </span>
+</td>
+<td class="py-3 px-4 text-text-secondary">Internal IT</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata font-metadata bg-surface-container-high text-on-surface-variant">
+                                    Scheduled
+                                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="text-text-secondary hover:text-primary-container opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: In Progress -->
+<tr class="bg-surface-subtle border-l-[3px] border-l-primary-container hover:bg-accent-subtle transition-colors group">
+<td class="py-3 px-4">
+<div class="font-h3 text-h3 text-text-primary">Diesel Generator 500kVA</div>
+<div class="text-metadata font-metadata text-text-secondary">Gayathri Building, Exterior</div>
+</td>
+<td class="py-3 px-4 font-mono-data text-mono-data text-text-secondary">AST-DG-008</td>
+<td class="py-3 px-4">AMC Service</td>
+<td class="py-3 px-4">Quarterly</td>
+<td class="py-3 px-4 text-text-secondary">20 Aug 2023</td>
+<td class="py-3 px-4">
+<span class="flex items-center gap-1 text-status-checked-out font-medium">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+                                    20 Nov 2023
+                                </span>
+</td>
+<td class="py-3 px-4 text-text-secondary">Cummins Power</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata font-metadata bg-tertiary-container text-on-tertiary">
+                                    In Progress
+                                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="text-text-secondary hover:text-primary-container opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="border-t border-border-default px-4 py-3 flex items-center justify-between bg-surface text-metadata font-metadata text-text-secondary">
+<div>Showing 1 to 4 of 48 entries</div>
+<div class="flex gap-1">
+<button class="px-2 py-1 rounded border border-border-default hover:bg-surface-subtle disabled:opacity-50" disabled="">Prev</button>
+<button class="px-3 py-1 rounded border border-primary-container bg-primary-container text-on-primary">1</button>
+<button class="px-3 py-1 rounded border border-border-default hover:bg-surface-subtle">2</button>
+<button class="px-3 py-1 rounded border border-border-default hover:bg-surface-subtle">3</button>
+<button class="px-2 py-1 rounded border border-border-default hover:bg-surface-subtle">Next</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

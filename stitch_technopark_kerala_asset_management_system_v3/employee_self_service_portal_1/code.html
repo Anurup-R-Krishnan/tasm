@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Employee Self-Service - Technopark AMS</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#001d33",
+                      "surface-variant": "#f1dfd8",
+                      "metric-lavender": "#EDE9FE",
+                      "metric-amber": "#FEF3C7",
+                      "inverse-primary": "#ffb693",
+                      "canvas": "#FAF7F2",
+                      "primary": "#712c00",
+                      "outline": "#887269",
+                      "accent-subtle": "#FEF3C7",
+                      "text-primary": "#1C1917",
+                      "on-secondary-container": "#686361",
+                      "on-tertiary-fixed-variant": "#004a77",
+                      "primary-fixed": "#ffdbcb",
+                      "surface-container-highest": "#f1dfd8",
+                      "error": "#ba1a1a",
+                      "tertiary": "#00446d",
+                      "on-tertiary": "#ffffff",
+                      "status-checked-out": "#1E40AF",
+                      "on-error": "#ffffff",
+                      "background": "#fff8f6",
+                      "surface": "#FFFFFF",
+                      "tertiary-fixed": "#cee5ff",
+                      "surface-container-high": "#f7e4dd",
+                      "surface-container-low": "#fff1eb",
+                      "surface-bright": "#fff8f6",
+                      "on-surface-variant": "#55433a",
+                      "tertiary-container": "#005c92",
+                      "secondary-fixed-dim": "#ccc5c2",
+                      "on-surface": "#231a15",
+                      "status-in-stock": "#166534",
+                      "on-primary-fixed": "#341000",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#a8d3ff",
+                      "secondary": "#625d5b",
+                      "on-primary": "#ffffff",
+                      "inverse-on-surface": "#ffede6",
+                      "status-critical": "#991B1B",
+                      "text-secondary": "#78716C",
+                      "on-secondary-fixed": "#1e1b19",
+                      "on-background": "#231a15",
+                      "on-primary-container": "#ffc2a5",
+                      "secondary-container": "#e9e1dd",
+                      "on-secondary-fixed-variant": "#4a4643",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed-dim": "#98cbff",
+                      "primary-container": "#92400e",
+                      "on-primary-fixed-variant": "#7a3000",
+                      "inverse-surface": "#392e2a",
+                      "on-error-container": "#93000a",
+                      "surface-dim": "#e8d6cf",
+                      "surface-tint": "#9a4614",
+                      "outline-variant": "#dcc1b6",
+                      "secondary-fixed": "#e9e1dd",
+                      "surface-container": "#fdeae3",
+                      "metric-sage": "#DCFCE7",
+                      "primary-fixed-dim": "#ffb693",
+                      "surface-subtle": "#FAFAF8",
+                      "border-default": "#EEEBE4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack": "16px",
+                      "inline": "12px",
+                      "section-gap": "32px",
+                      "page-margin": "32px",
+                      "card-padding": "24px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "kpi-number": ["Inter"],
+                      "h2": ["Inter"],
+                      "table-header": ["Inter"],
+                      "h1": ["Inter"],
+                      "metadata": ["Inter"],
+                      "h3": ["Inter"],
+                      "body": ["Inter"],
+                      "mono-data": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "kpi-number": ["28px", { "lineHeight": "1.1", "fontWeight": "600" }],
+                      "h2": ["16px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                      "table-header": ["12px", { "letterSpacing": "0.06em", "fontWeight": "500" }],
+                      "h1": ["22px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                      "metadata": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                      "h3": ["14px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                      "body": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                      "mono-data": ["13px", { "lineHeight": "1", "fontWeight": "400" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body class="bg-canvas font-body text-body text-text-primary antialiased h-screen overflow-hidden flex">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full h-[60px] border-b border-[#EEEBE4] dark:border-stone-800 bg-[#FFFFFF] dark:bg-stone-900 flex justify-between items-center px-8 z-50 bg-white/80 backdrop-blur-md shadow-sm font-['Inter'] text-sm">
+<div class="flex items-center gap-4 w-[200px]">
+<!-- Search placeholder for structure if needed, but not primarily visible on self-service usually. Left aligned brand as per instruction. -->
+<span class="text-lg font-bold text-stone-900 dark:text-stone-50">Technopark AMS</span>
+</div>
+<div class="flex items-center gap-inline">
+<button class="flex items-center justify-center w-10 h-10 rounded-full text-stone-500 dark:text-stone-400 hover:bg-amber-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="flex items-center justify-center w-10 h-10 rounded-full text-stone-500 dark:text-stone-400 hover:bg-amber-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="flex items-center justify-center w-10 h-10 rounded-full text-stone-500 dark:text-stone-400 hover:bg-amber-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="h-6 w-px bg-border-default mx-2"></div>
+<button class="font-h3 text-h3 text-primary hover:text-surface-tint transition-colors px-4 py-2 rounded-lg cursor-pointer active:scale-95 duration-150">
+                Quick Action
+            </button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-border-default ml-2 cursor-pointer active:scale-95 duration-150" data-alt="close up professional headshot of an employee in business casual attire smiling slightly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWxeAe3vXGhIwrn4GSsREBtdw_Ce0CEmvaUTfpRXkGURnjFAfvb-iQ_5JuZcIVMPTjKWmzAOKIl_mdJfs-INxHIFYzz185HlR8xTgXiOEaS6pds143buGq48dDknR6cmycCSCtHrb1TtCulTgoiEFROjVXStnD8SqP8cBFOd9mK46WF6UVIsBE9Zi7AWa9Q_du83esZxnQSTh3SI3gD-vsn_ldzUHXBeMTiLPh-qHzDXoWXEZ5dxomOvSho0wMMPg8Be2gKiKxbwRp"/>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[248px] border-r border-[#EEEBE4] dark:border-stone-800 bg-[#FCFAF7] dark:bg-stone-950 flex flex-col pt-[60px] z-40 overflow-y-auto font-['Inter'] text-[13px] leading-tight">
+<div class="p-card-padding flex items-center gap-3 border-b border-border-default">
+<div class="w-10 h-10 bg-metric-amber rounded-lg flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+</div>
+<div>
+<div class="font-black text-amber-900 dark:text-amber-500 tracking-tight">Technopark Kerala</div>
+<div class="font-metadata text-metadata text-text-secondary mt-1">Asset Management</div>
+</div>
+</div>
+<nav class="flex-1 py-4 flex flex-col gap-1 pr-4">
+<a class="flex items-center gap-3 text-stone-600 dark:text-stone-400 hover:text-amber-700 py-3 px-4 transition-all hover:bg-amber-50 dark:hover:bg-stone-900 translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                Asset Registry
+            </a>
+<!-- ACTIVE TAB: Self-Service -->
+<a class="flex items-center gap-3 bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 border-l-4 border-amber-600 rounded-r-lg font-semibold py-3 px-4 translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="person_gesture">gesture</span>
+                Self-Service
+            </a>
+<a class="flex items-center gap-3 text-stone-600 dark:text-stone-400 hover:text-amber-700 py-3 px-4 transition-all hover:bg-amber-50 dark:hover:bg-stone-900 translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+                Procurement
+            </a>
+<a class="flex items-center gap-3 text-stone-600 dark:text-stone-400 hover:text-amber-700 py-3 px-4 transition-all hover:bg-amber-50 dark:hover:bg-stone-900 translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Financials
+            </a>
+<a class="flex items-center gap-3 text-stone-600 dark:text-stone-400 hover:text-amber-700 py-3 px-4 transition-all hover:bg-amber-50 dark:hover:bg-stone-900 translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+                Audit Logs
+            </a>
+</nav>
+<div class="p-4 border-t border-border-default mt-auto">
+<button class="w-full flex items-center justify-center gap-2 bg-surface border border-outline-variant text-text-primary px-4 py-2 rounded-lg hover:bg-surface-subtle transition-colors mb-stack">
+<span class="material-symbols-outlined" data-icon="add" style="font-size: 18px;">add</span>
+                Add New Asset
+            </button>
+<a class="flex items-center gap-3 text-stone-600 dark:text-stone-400 hover:text-amber-700 py-3 px-4 transition-all hover:bg-amber-50 dark:hover:bg-stone-900 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Sign Out
+            </a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 ml-[248px] mt-[60px] h-[calc(100vh-60px)] overflow-y-auto p-page-margin relative z-0">
+<div class="max-w-[1400px] mx-auto flex flex-col gap-section-gap">
+<!-- Page Header & Primary Action -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-stack border-b border-border-default pb-stack">
+<div>
+<h1 class="font-h1 text-h1 text-text-primary mb-1">Employee Self-Service</h1>
+<p class="font-body text-body text-text-secondary">Manage your assigned assets and submit new requests.</p>
+</div>
+<button class="bg-surface-tint text-on-primary hover:bg-primary transition-colors px-6 py-3 rounded-lg shadow-[0_4px_12px_rgba(154,70,20,0.2)] flex items-center gap-2 active:scale-95 duration-150 group">
+<span class="material-symbols-outlined group-hover:rotate-90 transition-transform duration-300" data-icon="add_circle" data-weight="fill">add_circle</span>
+<span class="font-h3 text-h3">Request New Asset</span>
+</button>
+</header>
+<!-- My Assets Section (Bento Grid Style) -->
+<section>
+<h2 class="font-h2 text-h2 text-text-primary mb-stack flex items-center gap-2">
+<span class="material-symbols-outlined text-text-secondary" data-icon="devices">devices</span>
+                    My Assigned Assets
+                </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack">
+<!-- Asset Card 1: Laptop -->
+<div class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-transform duration-200 flex flex-col h-full relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-metric-lavender/30 rounded-bl-[100px] -z-10 group-hover:scale-110 transition-transform"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-metric-lavender rounded-lg flex items-center justify-center text-tertiary-container shadow-sm border border-white/50">
+<span class="material-symbols-outlined" data-icon="laptop_mac">laptop_mac</span>
+</div>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-metadata font-metadata bg-surface-container text-status-checked-out border border-[#dbeafe]">
+                                Checked Out
+                            </span>
+</div>
+<div class="mb-6 flex-1">
+<h3 class="font-h3 text-h3 text-text-primary mb-1">MacBook Pro 14"</h3>
+<p class="font-metadata text-metadata text-text-secondary mb-3">M2 Pro, 16GB RAM, 512GB SSD</p>
+<div class="space-y-2 bg-surface-subtle p-3 rounded-lg border border-border-default/50">
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary">Asset Tag</span>
+<span class="font-mono-data text-mono-data text-text-primary">AST-23-0892</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary">Assigned</span>
+<span class="font-metadata text-metadata text-text-primary">Jan 12, 2024</span>
+</div>
+</div>
+</div>
+<button class="w-full py-2.5 bg-surface border border-outline-variant rounded-lg font-h3 text-h3 text-text-primary hover:bg-surface-subtle hover:border-outline transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-text-secondary" data-icon="report" style="font-size: 18px;">report</span>
+                            Report Issue
+                        </button>
+</div>
+<!-- Asset Card 2: Phone -->
+<div class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-transform duration-200 flex flex-col h-full relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-metric-amber/30 rounded-bl-[100px] -z-10 group-hover:scale-110 transition-transform"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-metric-amber rounded-lg flex items-center justify-center text-primary-container shadow-sm border border-white/50">
+<span class="material-symbols-outlined" data-icon="smartphone">smartphone</span>
+</div>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-metadata font-metadata bg-surface-container text-status-checked-out border border-[#dbeafe]">
+                                Checked Out
+                            </span>
+</div>
+<div class="mb-6 flex-1">
+<h3 class="font-h3 text-h3 text-text-primary mb-1">iPhone 14 Pro</h3>
+<p class="font-metadata text-metadata text-text-secondary mb-3">Space Black, 256GB - Corporate Plan</p>
+<div class="space-y-2 bg-surface-subtle p-3 rounded-lg border border-border-default/50">
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary">Asset Tag</span>
+<span class="font-mono-data text-mono-data text-text-primary">MOB-22-1104</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary">Assigned</span>
+<span class="font-metadata text-metadata text-text-primary">Nov 05, 2023</span>
+</div>
+</div>
+</div>
+<button class="w-full py-2.5 bg-surface border border-outline-variant rounded-lg font-h3 text-h3 text-text-primary hover:bg-surface-subtle hover:border-outline transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-text-secondary" data-icon="report" style="font-size: 18px;">report</span>
+                            Report Issue
+                        </button>
+</div>
+<!-- Asset Card 3: ID Card -->
+<div class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-transform duration-200 flex flex-col h-full relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-metric-sage/30 rounded-bl-[100px] -z-10 group-hover:scale-110 transition-transform"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-metric-sage rounded-lg flex items-center justify-center text-status-in-stock shadow-sm border border-white/50">
+<span class="material-symbols-outlined" data-icon="badge">badge</span>
+</div>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-metadata font-metadata bg-surface-container text-status-checked-out border border-[#dbeafe]">
+                                Active
+                            </span>
+</div>
+<div class="mb-6 flex-1">
+<h3 class="font-h3 text-h3 text-text-primary mb-1">Corporate Access Card</h3>
+<p class="font-metadata text-metadata text-text-secondary mb-3">Building A &amp; B, Data Center Level 1</p>
+<div class="space-y-2 bg-surface-subtle p-3 rounded-lg border border-border-default/50">
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary">Card ID</span>
+<span class="font-mono-data text-mono-data text-text-primary">ACC-99-402</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary">Expires</span>
+<span class="font-metadata text-metadata text-text-primary">Dec 31, 2025</span>
+</div>
+</div>
+</div>
+<button class="w-full py-2.5 bg-surface border border-outline-variant rounded-lg font-h3 text-h3 text-text-primary hover:bg-surface-subtle hover:border-outline transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-text-secondary" data-icon="report" style="font-size: 18px;">report</span>
+                            Report Lost
+                        </button>
+</div>
+</div>
+</section>
+<!-- My Requests Timeline Section -->
+<section class="mb-section-gap">
+<h2 class="font-h2 text-h2 text-text-primary mb-stack flex items-center gap-2">
+<span class="material-symbols-outlined text-text-secondary" data-icon="history">history</span>
+                    Recent Requests
+                </h2>
+<div class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.03)]">
+<div class="relative border-l-2 border-border-default ml-4 space-y-8 pb-4">
+<!-- Timeline Item 1 -->
+<div class="relative pl-8">
+<div class="absolute -left-[17px] top-1 w-8 h-8 bg-surface border-2 border-primary-container rounded-full flex items-center justify-center text-primary-container shadow-sm">
+<span class="material-symbols-outlined" data-icon="hourglass_empty" style="font-size: 16px;">hourglass_empty</span>
+</div>
+<div class="bg-surface-subtle border border-border-default p-4 rounded-lg">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-h3 text-h3 text-text-primary">Ergonomic Keyboard &amp; Mouse</h4>
+<span class="font-metadata text-metadata text-text-secondary">Today, 09:41 AM</span>
+</div>
+<p class="font-body text-body text-text-secondary mb-2">REQ-2024-0512 • Peripheral Hardware</p>
+<div class="flex items-center gap-2">
+<span class="inline-flex w-2 h-2 rounded-full bg-amber-500"></span>
+<span class="font-metadata text-metadata text-text-primary font-medium">Pending Approval</span>
+<span class="font-metadata text-metadata text-text-secondary ml-2 border-l border-border-default pl-2">Awaiting Manager Sign-off</span>
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative pl-8">
+<div class="absolute -left-[17px] top-1 w-8 h-8 bg-surface border-2 border-tertiary rounded-full flex items-center justify-center text-tertiary shadow-sm">
+<span class="material-symbols-outlined" data-icon="sync" style="font-size: 16px;">sync</span>
+</div>
+<div class="bg-surface-subtle border border-border-default p-4 rounded-lg">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-h3 text-h3 text-text-primary">Dual Monitor Stand</h4>
+<span class="font-metadata text-metadata text-text-secondary">Oct 15, 2024</span>
+</div>
+<p class="font-body text-body text-text-secondary mb-2">REQ-2024-0498 • Office Equipment</p>
+<div class="flex items-center gap-2">
+<span class="inline-flex w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-metadata text-metadata text-text-primary font-medium">Processing</span>
+<span class="font-metadata text-metadata text-text-secondary ml-2 border-l border-border-default pl-2">IT Procurement Team</span>
+</div>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative pl-8">
+<div class="absolute -left-[17px] top-1 w-8 h-8 bg-surface border-2 border-status-in-stock rounded-full flex items-center justify-center text-status-in-stock shadow-sm">
+<span class="material-symbols-outlined" data-icon="check" style="font-size: 16px;">check</span>
+</div>
+<div class="bg-metric-sage/20 border border-[#bbf7d0] p-4 rounded-lg">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-h3 text-h3 text-text-primary">Privacy Screen Filter 14"</h4>
+<span class="font-metadata text-metadata text-text-secondary">Oct 12, 2024</span>
+</div>
+<p class="font-body text-body text-text-secondary mb-2">REQ-2024-0455 • Accessories</p>
+<div class="flex items-center gap-2">
+<span class="inline-flex w-2 h-2 rounded-full bg-status-in-stock"></span>
+<span class="font-metadata text-metadata text-status-in-stock font-medium">Ready for Pickup</span>
+<span class="font-metadata text-metadata text-text-secondary ml-2 border-l border-border-default pl-2">IT Helpdesk, Ground Floor</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 text-center">
+<button class="font-h3 text-h3 text-primary hover:text-surface-tint hover:underline transition-all">
+                            View All Request History
+                        </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

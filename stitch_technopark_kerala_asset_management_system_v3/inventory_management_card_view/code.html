@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inventory Management - Technopark Kerala AMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#93000a",
+                      "surface-tint": "#9a4614",
+                      "error": "#ba1a1a",
+                      "canvas": "#FAF7F2",
+                      "on-tertiary-container": "#a8d3ff",
+                      "surface-container-high": "#f7e4dd",
+                      "error-container": "#ffdad6",
+                      "surface-subtle": "#FAFAF8",
+                      "on-surface-variant": "#55433a",
+                      "metric-amber": "#FEF3C7",
+                      "on-secondary-fixed": "#1e1b19",
+                      "inverse-primary": "#ffb693",
+                      "outline": "#887269",
+                      "surface-dim": "#e8d6cf",
+                      "surface-container-highest": "#f1dfd8",
+                      "on-secondary-container": "#686361",
+                      "tertiary-container": "#005c92",
+                      "surface-variant": "#f1dfd8",
+                      "secondary-fixed-dim": "#ccc5c2",
+                      "on-secondary-fixed-variant": "#4a4643",
+                      "surface": "#FFFFFF",
+                      "on-primary-fixed-variant": "#7a3000",
+                      "accent-subtle": "#FEF3C7",
+                      "tertiary": "#00446d",
+                      "primary-fixed-dim": "#ffb693",
+                      "status-critical": "#991B1B",
+                      "secondary": "#625d5b",
+                      "on-error": "#ffffff",
+                      "surface-container-low": "#fff1eb",
+                      "inverse-on-surface": "#ffede6",
+                      "on-secondary": "#ffffff",
+                      "border-default": "#EEEBE4",
+                      "on-tertiary-fixed": "#001d33",
+                      "surface-container": "#fdeae3",
+                      "tertiary-fixed-dim": "#98cbff",
+                      "text-primary": "#1C1917",
+                      "on-tertiary-fixed-variant": "#004a77",
+                      "secondary-container": "#e9e1dd",
+                      "primary": "#712c00",
+                      "on-surface": "#231a15",
+                      "background": "#fff8f6",
+                      "primary-fixed": "#ffdbcb",
+                      "secondary-fixed": "#e9e1dd",
+                      "status-in-stock": "#166534",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed": "#341000",
+                      "on-background": "#231a15",
+                      "status-checked-out": "#1E40AF",
+                      "tertiary-fixed": "#cee5ff",
+                      "text-secondary": "#78716C",
+                      "outline-variant": "#dcc1b6",
+                      "inverse-surface": "#392e2a",
+                      "surface-bright": "#fff8f6",
+                      "primary-container": "#92400e",
+                      "on-primary-container": "#ffc2a5",
+                      "on-primary": "#ffffff",
+                      "metric-lavender": "#EDE9FE",
+                      "metric-sage": "#DCFCE7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "page-margin": "32px",
+                      "section-gap": "32px",
+                      "card-padding": "24px",
+                      "stack": "16px",
+                      "inline": "12px"
+              },
+              "fontFamily": {
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "mono-data": [
+                              "JetBrains Mono"
+                      ],
+                      "kpi-number": [
+                              "Inter"
+                      ],
+                      "metadata": [
+                              "Inter"
+                      ],
+                      "h2": [
+                              "Inter"
+                      ],
+                      "h1": [
+                              "Inter"
+                      ],
+                      "h3": [
+                              "Inter"
+                      ],
+                      "body": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "table-header": [
+                              "12px",
+                              {
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "mono-data": [
+                              "13px",
+                              {
+                                      "lineHeight": "1",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "kpi-number": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "metadata": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h2": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "h1": [
+                              "22px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "h3": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-canvas text-on-surface font-body text-body min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<header class="bg-[#FFFFFF] dark:bg-stone-900 font-['Inter'] antialiased h-[60px] w-full border-b sticky top-0 z-50 border-stone-200 dark:border-stone-800 shadow-sm flex items-center justify-between px-6 w-full hidden md:flex">
+<div class="flex items-center gap-inline">
+<span class="text-lg font-bold text-stone-900 dark:text-stone-50">Technopark Kerala AMS</span>
+</div>
+<div class="flex-1 flex justify-start px-8">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-subtle border border-border-default rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all" placeholder="Search assets, tags..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-inline">
+<button class="p-2 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:opacity-80 rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="p-2 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:opacity-80 rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help</span>
+</button>
+<button class="p-2 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:opacity-80 rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-stone-200 overflow-hidden ml-2 border border-border-default">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="professional headshot of a man with short hair wearing a dark shirt against a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2rNTfnQwElPBfLu-Vccmt1kV3zo_-M7JNntvUlgnNAL8P1-QIyp_xqncjQHUpAOPoLFEklOUOc-mZgtwbk-Y77qTTGZU4w-jCsm-p6XCCZUxYfi6kZDArXGNzmMvrhvfAdFfwYO4zCaYsglXAlD_ghJj93KPYdyysT4maVx86nqCqVJs-NHCauA-RYn_EgnN42K8XCrkI6eh293_fkZ3N1Zw-lQFusa5i3P__KawTtXPu9hOzkPqUZC2gatzZJKfBmDnT3yTGvKe-"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-[#FAF9F6] dark:bg-stone-950 font-['Inter'] text-sm font-medium w-[248px] h-screen border-r sticky left-0 top-0 border-stone-200 dark:border-stone-800 shadow-none flex flex-col h-full py-4 hidden md:flex shrink-0 z-40">
+<div class="px-6 mb-6">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">domain</span>
+</div>
+<div>
+<h2 class="text-amber-800 dark:text-amber-600 font-black leading-tight">Technopark Kerala</h2>
+<p class="text-xs text-stone-500">Asset Management</p>
+</div>
+</div>
+<button class="w-full bg-text-primary text-surface py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-stone-800 transition-colors duration-200 ease-in-out">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">add</span>
+                    Add New Asset
+                </button>
+</div>
+<div class="flex-1 overflow-y-auto px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all duration-200 ease-in-out cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-900 dark:text-amber-200 border-l-4 border-amber-700 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all duration-200 ease-in-out cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+                    Inventory
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all duration-200 ease-in-out cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_month</span>
+                    Reservations
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all duration-200 ease-in-out cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_balance_wallet</span>
+                    Financial Ledger
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all duration-200 ease-in-out cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">fact_check</span>
+                    Asset Audits
+                </a>
+</div>
+<div class="px-3 mt-auto pt-4 border-t border-stone-200 dark:border-stone-800 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all duration-200 ease-in-out cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">contact_support</span>
+                    Support
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all duration-200 ease-in-out cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+                    Settings
+                </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-page-margin">
+<!-- Page Header & Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack mb-section-gap">
+<div>
+<h1 class="font-h1 text-h1 text-text-primary mb-1">Inventory Management</h1>
+<p class="font-body text-body text-text-secondary">Manage and track assets across all campus locations.</p>
+</div>
+<div class="flex items-center gap-inline">
+<button class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg font-body text-body flex items-center gap-2 hover:-translate-y-[2px] transition-transform shadow-sm">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">filter_list</span>
+                        Filters
+                    </button>
+<button class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg font-body text-body flex items-center gap-2 hover:-translate-y-[2px] transition-transform shadow-sm">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">download</span>
+                        Export
+                    </button>
+</div>
+</div>
+<!-- Status Summary Pills -->
+<div class="flex flex-wrap gap-inline mb-section-gap">
+<button class="bg-metric-amber border border-amber-200 px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium text-amber-900 hover:bg-amber-200 transition-colors">
+<span class="w-2 h-2 rounded-full bg-amber-600"></span>
+                    All Assets
+                    <span class="ml-1 px-1.5 py-0.5 bg-amber-900/10 rounded-full text-xs">1,248</span>
+</button>
+<button class="bg-surface border border-border-default px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium text-text-primary hover:bg-surface-subtle transition-colors shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-in-stock"></span>
+                    In Stock
+                    <span class="ml-1 px-1.5 py-0.5 bg-stone-100 rounded-full text-xs">842</span>
+</button>
+<button class="bg-surface border border-border-default px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium text-text-primary hover:bg-surface-subtle transition-colors shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-checked-out"></span>
+                    Checked Out
+                    <span class="ml-1 px-1.5 py-0.5 bg-stone-100 rounded-full text-xs">315</span>
+</button>
+<button class="bg-surface border border-border-default px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium text-text-primary hover:bg-surface-subtle transition-colors shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-critical"></span>
+                    Under Repair
+                    <span class="ml-1 px-1.5 py-0.5 bg-stone-100 rounded-full text-xs">91</span>
+</button>
+</div>
+<!-- Hybrid Layout: Sidebar + Grid -->
+<div class="flex flex-col lg:flex-row gap-section-gap">
+<!-- Category Sidebar -->
+<aside class="w-full lg:w-[240px] shrink-0 space-y-6">
+<!-- Categories -->
+<div class="bg-surface border border-border-default rounded-[16px] p-4 shadow-sm">
+<h3 class="font-h3 text-h3 text-text-primary mb-3 px-2">Categories</h3>
+<ul class="space-y-1">
+<li>
+<button class="w-full text-left px-2 py-1.5 rounded-md bg-amber-50 text-primary-container font-medium text-sm flex justify-between items-center">
+<span>IT Equipment</span>
+<span class="text-xs bg-amber-100 px-1.5 rounded-full">540</span>
+</button>
+</li>
+<li>
+<button class="w-full text-left px-2 py-1.5 rounded-md text-text-secondary hover:bg-surface-subtle hover:text-text-primary font-medium text-sm flex justify-between items-center transition-colors">
+<span>Furniture</span>
+<span class="text-xs bg-stone-100 px-1.5 rounded-full">420</span>
+</button>
+</li>
+<li>
+<button class="w-full text-left px-2 py-1.5 rounded-md text-text-secondary hover:bg-surface-subtle hover:text-text-primary font-medium text-sm flex justify-between items-center transition-colors">
+<span>Vehicles</span>
+<span class="text-xs bg-stone-100 px-1.5 rounded-full">45</span>
+</button>
+</li>
+<li>
+<button class="w-full text-left px-2 py-1.5 rounded-md text-text-secondary hover:bg-surface-subtle hover:text-text-primary font-medium text-sm flex justify-between items-center transition-colors">
+<span>HVAC Systems</span>
+<span class="text-xs bg-stone-100 px-1.5 rounded-full">120</span>
+</button>
+</li>
+<li>
+<button class="w-full text-left px-2 py-1.5 rounded-md text-text-secondary hover:bg-surface-subtle hover:text-text-primary font-medium text-sm flex justify-between items-center transition-colors">
+<span>Security Gear</span>
+<span class="text-xs bg-stone-100 px-1.5 rounded-full">123</span>
+</button>
+</li>
+</ul>
+</div>
+<!-- Locations -->
+<div class="bg-surface border border-border-default rounded-[16px] p-4 shadow-sm">
+<h3 class="font-h3 text-h3 text-text-primary mb-3 px-2">Locations</h3>
+<ul class="space-y-1">
+<li>
+<label class="flex items-center gap-2 px-2 py-1.5 cursor-pointer">
+<input checked="" class="rounded border-stone-300 text-primary-container focus:ring-primary-container" type="checkbox"/>
+<span class="text-sm text-text-primary">Bhavani Building</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-2 px-2 py-1.5 cursor-pointer">
+<input class="rounded border-stone-300 text-primary-container focus:ring-primary-container" type="checkbox"/>
+<span class="text-sm text-text-secondary">Thejaswini</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-2 px-2 py-1.5 cursor-pointer">
+<input class="rounded border-stone-300 text-primary-container focus:ring-primary-container" type="checkbox"/>
+<span class="text-sm text-text-secondary">Nila</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-2 px-2 py-1.5 cursor-pointer">
+<input class="rounded border-stone-300 text-primary-container focus:ring-primary-container" type="checkbox"/>
+<span class="text-sm text-text-secondary">Gayathri</span>
+</label>
+</li>
+</ul>
+</div>
+</aside>
+<!-- Asset Grid -->
+<div class="flex-1">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-stack">
+<!-- Asset Card 1 -->
+<div class="bg-surface border border-border-default rounded-[16px] overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all cursor-pointer group flex flex-col">
+<div class="h-40 bg-stone-100 relative overflow-hidden">
+<img alt="MacBook Pro" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="sleek modern silver laptop on a clean wooden desk with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTNo2hWSWLbvgJaP8tQ-NqXWeugO_-AYHMMKjmQKoTlRXohk96QV2ZcEyY3Ydc3XnLM5g-lrUAyGl7K577xvxiBep-KQPVgheeEMpbMI5wiAGuLeNKnYvbyRvZHAf9mMV_uG8soLr4rsqswxRr-xGLt-nR0Eschbo1nHeHczVqqVUG9uhUmtIi63bLdfIruu5nVeFAZQ_ZsOJ7IeHBDBNAG1wLrujWfj2gE2mma18vJcDczJu98nEavsVS0ZCcboi3WsRfLbq0GXAr"/>
+<div class="absolute top-3 right-3">
+<span class="bg-status-in-stock text-white text-xs font-medium px-2 py-1 rounded-md shadow-sm">In Stock</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-h3 text-h3 text-text-primary line-clamp-1">MacBook Pro 16" M2 Max</h3>
+<button class="text-stone-400 hover:text-primary-container">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">more_vert</span>
+</button>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="font-mono-data text-mono-data text-stone-500 bg-stone-100 px-2 py-1 rounded">AST-IT-4092</span>
+</div>
+<div class="space-y-2 mt-auto pt-3 border-t border-border-default">
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                            Bhavani, Floor 3
+                                        </span>
+<span class="font-h3 text-h3 text-text-primary">₹ 2,45,000</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Asset Card 2 -->
+<div class="bg-surface border border-border-default rounded-[16px] overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all cursor-pointer group flex flex-col">
+<div class="h-40 bg-stone-100 relative overflow-hidden">
+<img alt="Ergonomic Chair" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="modern black ergonomic office chair in a bright studio setting with minimal background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDe1NLE63SBTb2I-UTfZxv_w-6uYobEx-lr0h1jf8A2xuk7tvdaMiiEeDxy2AuIX_9R7n5Qv5qaen-5fYzpnI-c78Vaj3U_1NjabAj_9Le4h6rnZc-tDSSbv-hYaB-_cbvSspQobSnzeHCCVehaX5HRZt_JlOOafmeAf0DJi1tbXHnDEySJiLtu6_dXmBg28aXQ7seRpVWr9yqU83cUjB9hxuQr9nVX28q2EQxarqniH0iQUKne4cDADW6If5J_lNVS5TL04k-GMbZy"/>
+<div class="absolute top-3 right-3">
+<span class="bg-status-checked-out text-white text-xs font-medium px-2 py-1 rounded-md shadow-sm">Checked Out</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-h3 text-h3 text-text-primary line-clamp-1">Herman Miller Aeron Chair</h3>
+<button class="text-stone-400 hover:text-primary-container">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">more_vert</span>
+</button>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="font-mono-data text-mono-data text-stone-500 bg-stone-100 px-2 py-1 rounded">AST-FN-1104</span>
+<span class="text-xs text-text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">person</span>
+                                        Rahul M.
+                                    </span>
+</div>
+<div class="space-y-2 mt-auto pt-3 border-t border-border-default">
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                            Thejaswini, Floor 5
+                                        </span>
+<span class="font-h3 text-h3 text-text-primary">₹ 1,12,500</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Asset Card 3 -->
+<div class="bg-surface border border-border-default rounded-[16px] overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all cursor-pointer group flex flex-col border-l-4 border-l-status-critical">
+<div class="h-40 bg-stone-100 relative overflow-hidden">
+<div class="absolute inset-0 bg-stone-200 flex items-center justify-center">
+<span class="material-symbols-outlined text-stone-400 text-4xl">print</span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="bg-status-critical text-white text-xs font-medium px-2 py-1 rounded-md shadow-sm">Under Repair</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-h3 text-h3 text-text-primary line-clamp-1">HP Enterprise LaserJet Pro</h3>
+<button class="text-stone-400 hover:text-primary-container">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">more_vert</span>
+</button>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="font-mono-data text-mono-data text-stone-500 bg-stone-100 px-2 py-1 rounded">AST-IT-3392</span>
+</div>
+<div class="space-y-2 mt-auto pt-3 border-t border-border-default">
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary flex items-center gap-1 text-status-critical">
+<span class="material-symbols-outlined text-[14px]">build</span>
+                                            IT Service Desk
+                                        </span>
+<span class="font-h3 text-h3 text-text-primary">₹ 45,000</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Asset Card 4 -->
+<div class="bg-surface border border-border-default rounded-[16px] overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all cursor-pointer group flex flex-col">
+<div class="h-40 bg-stone-100 relative overflow-hidden">
+<img alt="Dell Monitor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="large curved computer monitor on a clean desk workspace setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcF3salIx4WbBhN-IUX5OHt4P3HcwxPorpA3vfCDRT1Q-vFUeVbzzfRkAzBhtLbGht_sTmJSUS3xAcWtKH-S-NrZ4GmaVad5iEEruILtx4Y_vCDpirLAOH88Q0RMWGNPzaSJfYX-E2mVNna8B2fRNagFwIgTTVXI5B69B6U5y7ha9dptjiArkVZWZemjsOsBbA-xQ8NizbIMTBwwUQazaDib7SVg4TMjpGh7Si4DBWM4tcfLGqUhmN9gL2OOLAQiVehX7u5MtCkp3w"/>
+<div class="absolute top-3 right-3">
+<span class="bg-status-in-stock text-white text-xs font-medium px-2 py-1 rounded-md shadow-sm">In Stock</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-h3 text-h3 text-text-primary line-clamp-1">Dell UltraSharp 27" 4K Monitor</h3>
+<button class="text-stone-400 hover:text-primary-container">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">more_vert</span>
+</button>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="font-mono-data text-mono-data text-stone-500 bg-stone-100 px-2 py-1 rounded">AST-IT-5120</span>
+</div>
+<div class="space-y-2 mt-auto pt-3 border-t border-border-default">
+<div class="flex justify-between items-center">
+<span class="font-metadata text-metadata text-text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                            Nila, Floor 2
+                                        </span>
+<span class="font-h3 text-h3 text-text-primary">₹ 42,000</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-8 flex items-center justify-between border-t border-border-default pt-4">
+<span class="text-sm text-text-secondary">Showing 1 to 4 of 540 assets</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-border-default rounded bg-surface text-stone-400 cursor-not-allowed text-sm">Previous</button>
+<button class="px-3 py-1 bg-primary-container text-white rounded text-sm font-medium">1</button>
+<button class="px-3 py-1 border border-border-default rounded bg-surface text-text-primary hover:bg-surface-subtle text-sm">2</button>
+<button class="px-3 py-1 border border-border-default rounded bg-surface text-text-primary hover:bg-surface-subtle text-sm">3</button>
+<span class="px-2 py-1 text-stone-400">...</span>
+<button class="px-3 py-1 border border-border-default rounded bg-surface text-text-primary hover:bg-surface-subtle text-sm">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
