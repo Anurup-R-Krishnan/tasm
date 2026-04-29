@@ -147,238 +147,200 @@
    <table class="w-full text-left border-collapse">
     <thead>
      <tr class="bg-surface-subtle border-b border-border-default text-table-header font-table-header text-text-secondary uppercase">
-      <th class="py-2 px-3 w-10 text-center">
+      <th class="py-3 px-4 w-12 text-center">
        <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
       </th>
-      <th class="py-2 px-3">
+      <th class="py-3 px-4">
        Tag ID
       </th>
-      <th class="py-2 px-3">
+      <th class="py-3 px-4">
        Asset Name
       </th>
-      <th class="py-2 px-3">
+      <th class="py-3 px-4">
        Category
       </th>
-      <th class="py-2 px-3">
+      <th class="py-3 px-4">
        Status
       </th>
-      <th class="py-2 px-3">
-       Custodian/Stockroom
+      <th class="py-3 px-4">
+       Custodian
       </th>
-      <th class="py-2 px-3">
+      <th class="py-3 px-4">
        Location
       </th>
-      <th class="py-2 px-3">
-       Purchase Date
-      </th>
-      <th class="py-2 px-3">
-       Warranty
-      </th>
-      <th class="py-2 px-3 text-right">
+      <th class="py-3 px-4 text-right">
        Actions
       </th>
      </tr>
     </thead>
-    <tbody class="text-[13px] font-body text-text-primary divide-y divide-border-default">
+    <tbody class="text-body font-body text-text-primary divide-y divide-border-default">
      <!-- Row 1 (Simulating selection/active detail view) -->
-     <tr class="bg-[#FFFBEB] hover:bg-[#FEF3C7] transition-colors group cursor-pointer border-l-[3px] border-l-[#92400E]">
-      <td class="py-2 px-3 text-center">
+     <tr class="bg-accent-subtle/30 hover:bg-accent-subtle transition-colors group cursor-pointer border-l-4 border-l-primary-container">
+      <td class="py-3 px-4 text-center">
        <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
       </td>
-      <td class="py-2 px-3 font-mono-data text-mono-data text-primary-container underline decoration-primary-container/30 underline-offset-2">
+      <td class="py-3 px-4 font-mono-data text-mono-data text-primary-container underline decoration-primary-container/30 underline-offset-2">
        TAG-1082
       </td>
-      <td class="py-2 px-3 font-medium">
+      <td class="py-3 px-4 font-medium">
        MacBook Pro 16"
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        IT Equipment
       </td>
-      <td class="py-2 px-3">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-tertiary-fixed text-status-checked-out border border-tertiary-fixed-dim/50">
+      <td class="py-3 px-4">
+       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-tertiary-fixed text-status-checked-out border border-tertiary-fixed-dim/50">
         Checked Out
        </span>
       </td>
-      <td class="py-2 px-3">
+      <td class="py-3 px-4">
        Sarah Jenkins
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        Bldg 3, Fl 4
       </td>
-      <td class="py-2 px-3 text-text-secondary">
-       12 Oct 2023
-      </td>
-      <td class="py-2 px-3">
-       <span class="text-status-in-stock font-medium">
-        Active
-       </span>
-      </td>
-      <td class="py-2 px-3 text-right space-x-1">
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="visibility">
+      <td class="py-3 px-4 text-right space-x-1">
+       <button class="p-1.5 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="visibility">
          visibility
         </span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="edit">
+       <button class="p-1.5 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="edit">
          edit
         </span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="more_vert">
+       <button class="p-1.5 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="more_vert">
          more_vert
         </span>
        </button>
       </td>
      </tr>
      <!-- Row 2 -->
-     <tr class="bg-surface hover:bg-[#FEF3C7] transition-colors group cursor-pointer border-l-[3px] border-l-transparent">
-      <td class="py-2 px-3 text-center">
+     <tr class="bg-surface hover:bg-accent-subtle transition-colors group cursor-pointer border-l-4 border-l-transparent">
+      <td class="py-3 px-4 text-center">
        <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
       </td>
-      <td class="py-2 px-3 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
+      <td class="py-3 px-4 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
        TAG-2094
       </td>
-      <td class="py-2 px-3 font-medium">
+      <td class="py-3 px-4 font-medium">
        Dell Ultrasharp 27"
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        IT Peripherals
       </td>
-      <td class="py-2 px-3">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-metric-sage text-status-in-stock border border-metric-sage/50">
+      <td class="py-3 px-4">
+       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-metric-sage text-status-in-stock border border-metric-sage/50">
         In Stock
        </span>
       </td>
-      <td class="py-2 px-3 text-text-secondary">
-       Main IT Store
+      <td class="py-3 px-4 text-text-secondary">
+       --
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        IT Storage A
       </td>
-      <td class="py-2 px-3 text-text-secondary">
-       05 Jan 2021
-      </td>
-      <td class="py-2 px-3">
-       <span class="text-status-critical font-medium">
-        Expired
-       </span>
-      </td>
-      <td class="py-2 px-3 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="visibility">
+      <td class="py-3 px-4 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+       <button class="p-1.5 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="visibility">
          visibility
         </span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="edit">
+       <button class="p-1.5 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="edit">
          edit
         </span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="more_vert">
+       <button class="p-1.5 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="more_vert">
          more_vert
         </span>
        </button>
       </td>
      </tr>
      <!-- Row 3 -->
-     <tr class="bg-surface hover:bg-[#FEF3C7] transition-colors group cursor-pointer border-l-[3px] border-l-transparent">
-      <td class="py-2 px-3 text-center">
+     <tr class="bg-surface-subtle hover:bg-accent-subtle transition-colors group cursor-pointer border-l-4 border-l-transparent">
+      <td class="py-3 px-4 text-center">
        <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
       </td>
-      <td class="py-2 px-3 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
+      <td class="py-3 px-4 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
        TAG-0921
       </td>
-      <td class="py-2 px-3 font-medium">
+      <td class="py-3 px-4 font-medium">
        Herman Miller Aeron
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        Furniture
       </td>
-      <td class="py-2 px-3">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-tertiary-fixed text-status-checked-out border border-tertiary-fixed-dim/50">
+      <td class="py-3 px-4">
+       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-tertiary-fixed text-status-checked-out border border-tertiary-fixed-dim/50">
         Checked Out
        </span>
       </td>
-      <td class="py-2 px-3">
+      <td class="py-3 px-4">
        David Chen
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        Bldg 1, Fl 2
       </td>
-      <td class="py-2 px-3 text-text-secondary">
-       18 Aug 2022
-      </td>
-      <td class="py-2 px-3">
-       <span class="text-status-in-stock font-medium">
-        Active
-       </span>
-      </td>
-      <td class="py-2 px-3 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="visibility">
+      <td class="py-3 px-4 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+       <button class="p-1.5 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="visibility">
          visibility
         </span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="edit">
+       <button class="p-1.5 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="edit">
          edit
         </span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="more_vert">
+       <button class="p-1.5 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="more_vert">
          more_vert
         </span>
        </button>
       </td>
      </tr>
      <!-- Row 4 -->
-     <tr class="bg-surface hover:bg-[#FEF3C7] transition-colors group cursor-pointer border-l-[3px] border-l-transparent">
-      <td class="py-2 px-3 text-center">
+     <tr class="bg-surface hover:bg-accent-subtle transition-colors group cursor-pointer border-l-4 border-l-transparent">
+      <td class="py-3 px-4 text-center">
        <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
       </td>
-      <td class="py-2 px-3 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
+      <td class="py-3 px-4 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
        TAG-3312
       </td>
-      <td class="py-2 px-3 font-medium">
+      <td class="py-3 px-4 font-medium">
        Conference Table Oak
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        Furniture
       </td>
-      <td class="py-2 px-3">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-error-container text-status-critical border border-error-container/50">
+      <td class="py-3 px-4">
+       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-error-container text-status-critical border border-error-container/50">
         Under Repair
        </span>
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        Facilities
       </td>
-      <td class="py-2 px-3 text-text-secondary">
+      <td class="py-3 px-4 text-text-secondary">
        Maint Workshop
       </td>
-      <td class="py-2 px-3 text-text-secondary">
-       22 Mar 2019
-      </td>
-      <td class="py-2 px-3">
-       <span class="text-status-critical font-medium">
-        Expired
-       </span>
-      </td>
-      <td class="py-2 px-3 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="visibility">
+      <td class="py-3 px-4 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+       <button class="p-1.5 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="visibility">
          visibility
         </span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="edit">
+       <button class="p-1.5 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="edit">
          edit
         </span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="more_vert">
+       <button class="p-1.5 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
+        <span class="material-symbols-outlined text-[18px]" data-icon="more_vert">
          more_vert
         </span>
        </button>
@@ -447,5 +409,5 @@
 </template>
 
 <script setup lang="ts">
-// Autogenerated from asset_registry
+// Autogenerated from asset_registry_with_detail_drawer
 </script>
