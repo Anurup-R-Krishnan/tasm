@@ -32,5 +32,10 @@ func ConnectDB() {
 	log.Println("Database connection established")
 
 	// Auto-migrate
-	DB.AutoMigrate(&models.Asset{})
+	DB.AutoMigrate(
+		&models.Asset{},
+		&models.AuditSession{},
+		&models.Consumable{},
+		&models.MaintenanceContract{},
+	)
 }
