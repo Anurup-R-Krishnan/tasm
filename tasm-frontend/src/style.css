@@ -68,6 +68,31 @@
   --font-table-header: 'Inter', sans-serif;
   --font-metadata: 'Inter', sans-serif;
   --font-h3: 'Inter', sans-serif;
+
+  /* Font Sizes */
+  --text-body: 14px;
+  --text-body--line-height: 1.5;
+  --text-kpi-number: 28px;
+  --text-kpi-number--line-height: 1.1;
+  --text-h1: 22px;
+  --text-h1--line-height: 1.2;
+  --text-mono-data: 13px;
+  --text-mono-data--line-height: 1;
+  --text-h2: 16px;
+  --text-h2--line-height: 1.4;
+  --text-table-header: 12px;
+  --text-metadata: 12px;
+  --text-metadata--line-height: 1.4;
+  --text-h3: 14px;
+  --text-h3--line-height: 1.4;
+
+  /* Spacing */
+  --spacing-card-padding: 24px;
+  --spacing-page-margin: 32px;
+  --spacing-inline: 12px;
+  --spacing-stack: 16px;
+  --spacing-section-gap: 32px;
+  --spacing-base: 4px;
 }
 
 body {
