@@ -413,7 +413,7 @@
      Showing 1 to 5 of 42 entries
     </span>
     <div class="flex items-center gap-1">
-     <button class="p-1 text-text-secondary hover:text-text-primary disabled:opacity-50" disabled="">
+     <button class="p-1 text-text-secondary hover:text-text-primary disabled:opacity-50" disabled>
       <span class="material-symbols-outlined text-[20px]">
        chevron_left
       </span>

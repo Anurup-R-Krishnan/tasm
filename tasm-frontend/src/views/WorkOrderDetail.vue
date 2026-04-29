@@ -333,7 +333,7 @@
        Mark as Resolved
       </button>
       <div class="pt-2">
-       <button class="w-full py-2.5 bg-[#1C1917] text-white rounded-lg font-h3 text-h3 hover:bg-stone-800 transition-colors flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled="">
+       <button class="w-full py-2.5 bg-[#1C1917] text-white rounded-lg font-h3 text-h3 hover:bg-stone-800 transition-colors flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
         <span class="material-symbols-outlined text-[18px]">
          lock
         </span>

@@ -418,7 +418,7 @@
      Showing 1 to 5 of 248 entries
     </span>
     <div class="flex gap-1">
-     <button class="w-8 h-8 rounded border border-border-default flex items-center justify-center text-text-secondary hover:bg-surface disabled:opacity-50" disabled="">
+     <button class="w-8 h-8 rounded border border-border-default flex items-center justify-center text-text-secondary hover:bg-surface disabled:opacity-50" disabled>
       <span class="material-symbols-outlined text-[18px]">
        chevron_left
       </span>

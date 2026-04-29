@@ -115,7 +115,7 @@
        </label>
        <div class="relative">
         <select class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform">
-         <option selected="" value="assets">
+         <option selected value="assets">
           Fixed Assets
          </option>
          <option value="wo">
@@ -148,7 +148,7 @@
          <option value="qtd">
           Quarter to Date (QTD)
          </option>
-         <option selected="" value="ytd">
+         <option selected value="ytd">
           Year to Date (YTD)
          </option>
          <option value="custom">
@@ -177,7 +177,7 @@
       <!-- Checkbox Item -->
       <label class="flex items-center gap-3 cursor-pointer group">
        <div class="relative flex items-center justify-center w-5 h-5">
-        <input checked="" class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
+        <input checked class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
         <span class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity">
          check
         </span>
@@ -188,7 +188,7 @@
       </label>
       <label class="flex items-center gap-3 cursor-pointer group">
        <div class="relative flex items-center justify-center w-5 h-5">
-        <input checked="" class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
+        <input checked class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
         <span class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity">
          check
         </span>
@@ -199,7 +199,7 @@
       </label>
       <label class="flex items-center gap-3 cursor-pointer group">
        <div class="relative flex items-center justify-center w-5 h-5">
-        <input checked="" class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
+        <input checked class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
         <span class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity">
          check
         </span>
@@ -210,7 +210,7 @@
       </label>
       <label class="flex items-center gap-3 cursor-pointer group">
        <div class="relative flex items-center justify-center w-5 h-5">
-        <input checked="" class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
+        <input checked class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
         <span class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity">
          check
         </span>
@@ -232,7 +232,7 @@
       </label>
       <label class="flex items-center gap-3 cursor-pointer group">
        <div class="relative flex items-center justify-center w-5 h-5">
-        <input checked="" class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
+        <input checked class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" type="checkbox"/>
         <span class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity">
          check
         </span>

@@ -416,7 +416,7 @@
     users
    </p>
    <div class="flex items-center gap-2">
-    <button class="p-1.5 border border-border-default rounded bg-surface text-text-secondary hover:bg-canvas disabled:opacity-50" disabled="">
+    <button class="p-1.5 border border-border-default rounded bg-surface text-text-secondary hover:bg-canvas disabled:opacity-50" disabled>
      <span class="material-symbols-outlined" style="font-size: 20px;">
       chevron_left
      </span>

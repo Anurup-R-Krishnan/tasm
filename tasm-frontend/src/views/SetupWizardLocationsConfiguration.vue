@@ -218,7 +218,7 @@
      <tr class="bg-amber-50/30 border-t-2 border-amber-100">
       <td class="py-3 px-4">
        <select class="w-full bg-white border border-stone-300 rounded-md py-1.5 px-3 text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600">
-        <option disabled="" selected="" value="">
+        <option disabled selected value="">
          Select Building...
         </option>
         <option value="tejaswini">

@@ -192,7 +192,7 @@
      </p>
      <div class="flex flex-col gap-2">
       <label class="flex items-center p-3 rounded-DEFAULT border border-primary-container bg-metric-amber/10 cursor-pointer">
-       <input checked="" class="w-4 h-4 text-primary-container rounded border-primary-container focus:ring-primary-container" type="checkbox"/>
+       <input checked class="w-4 h-4 text-primary-container rounded border-primary-container focus:ring-primary-container" type="checkbox"/>
        <div class="ml-3 flex flex-col">
         <span class="font-h3 text-h3 text-text-primary">
          140W USB-C Power Adapter
@@ -214,7 +214,7 @@
        </div>
       </label>
       <label class="flex items-center p-3 rounded-DEFAULT border border-primary-container bg-metric-amber/10 cursor-pointer">
-       <input checked="" class="w-4 h-4 text-primary-container rounded border-primary-container focus:ring-primary-container" type="checkbox"/>
+       <input checked class="w-4 h-4 text-primary-container rounded border-primary-container focus:ring-primary-container" type="checkbox"/>
        <div class="ml-3 flex flex-col">
         <span class="font-h3 text-h3 text-text-primary">
          Incase 16" Laptop Sleeve

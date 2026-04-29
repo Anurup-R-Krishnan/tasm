@@ -222,7 +222,7 @@
    </div>
    <div class="mt-auto pt-4 border-t border-border-default flex justify-end gap-2">
     <select class="form-select w-full bg-surface border border-[#D6D3CE] rounded text-body font-body text-text-primary py-1.5 px-3 focus:ring-primary focus:border-primary">
-     <option disabled="" selected="" value="">
+     <option disabled selected value="">
       Select Action...
      </option>
      <option value="confirm">
@@ -276,7 +276,7 @@
    </div>
    <div class="mt-auto pt-4 border-t border-border-default flex justify-end gap-2">
     <select class="form-select w-full bg-surface border border-[#D6D3CE] rounded text-body font-body text-text-primary py-1.5 px-3 focus:ring-primary focus:border-primary">
-     <option disabled="" selected="" value="">
+     <option disabled selected value="">
       Select Action...
      </option>
      <option value="confirm">
@@ -327,7 +327,7 @@
    </div>
    <div class="mt-auto pt-4 border-t border-border-default flex justify-end gap-2">
     <select class="form-select w-full bg-surface border border-[#D6D3CE] rounded text-body font-body text-text-primary py-1.5 px-3 focus:ring-primary focus:border-primary">
-     <option disabled="" selected="" value="">
+     <option disabled selected value="">
       Select Action...
      </option>
      <option value="register">

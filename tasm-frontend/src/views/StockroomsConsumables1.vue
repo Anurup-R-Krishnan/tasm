@@ -299,7 +299,7 @@
      Showing 1 to 4 of 1,245 entries
     </span>
     <div class="flex gap-1">
-     <button class="p-1 border border-border-default rounded hover:bg-surface-subtle disabled:opacity-50" disabled="">
+     <button class="p-1 border border-border-default rounded hover:bg-surface-subtle disabled:opacity-50" disabled>
       <span class="material-symbols-outlined text-[18px]">
        chevron_left
       </span>

@@ -279,7 +279,7 @@
      Showing 1-5 of 142 logs
     </span>
     <div class="flex gap-1">
-     <button class="p-1 rounded hover:bg-stone-200 disabled:opacity-50" disabled="">
+     <button class="p-1 rounded hover:bg-stone-200 disabled:opacity-50" disabled>
       <span class="material-symbols-outlined text-[18px]">
        chevron_left
       </span>

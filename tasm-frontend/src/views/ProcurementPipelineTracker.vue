@@ -310,7 +310,7 @@
     Showing 1 to 3 of 42 entries
    </span>
    <div class="flex gap-1">
-    <button class="px-2 py-1 border border-border-default rounded bg-surface disabled:opacity-50" disabled="">
+    <button class="px-2 py-1 border border-border-default rounded bg-surface disabled:opacity-50" disabled>
      Prev
     </button>
     <button class="px-2 py-1 border border-amber-500 rounded bg-amber-50 text-amber-900 font-medium">

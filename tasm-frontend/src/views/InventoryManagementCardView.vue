@@ -130,7 +130,7 @@
     <ul class="space-y-1">
      <li>
       <label class="flex items-center gap-2 px-2 py-1.5 cursor-pointer">
-       <input checked="" class="rounded border-stone-300 text-primary-container focus:ring-primary-container" type="checkbox"/>
+       <input checked class="rounded border-stone-300 text-primary-container focus:ring-primary-container" type="checkbox"/>
        <span class="text-sm text-text-primary">
         Bhavani Building
        </span>

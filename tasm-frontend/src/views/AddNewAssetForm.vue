@@ -60,7 +60,7 @@
        </label>
        <div class="relative">
         <select class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white pr-8">
-         <option disabled="" selected="" value="">
+         <option disabled selected value="">
           Select Category
          </option>
          <option>
@@ -87,7 +87,7 @@
        </label>
        <div class="relative">
         <select class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white pr-8">
-         <option disabled="" selected="" value="">
+         <option disabled selected value="">
           Select Sub-category
          </option>
          <option>
@@ -186,7 +186,7 @@
        </label>
        <div class="relative">
         <select class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white pr-8">
-         <option disabled="" selected="" value="">
+         <option disabled selected value="">
           Select Vendor
          </option>
          <option>

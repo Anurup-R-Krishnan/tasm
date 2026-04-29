@@ -348,7 +348,7 @@
       Showing 1 to 5 of 156 entries
      </span>
      <div class="flex space-x-1">
-      <button class="p-1 rounded text-text-secondary hover:bg-surface-subtle disabled:opacity-50" disabled="">
+      <button class="p-1 rounded text-text-secondary hover:bg-surface-subtle disabled:opacity-50" disabled>
        <span class="material-symbols-outlined text-[20px]">
         chevron_left
        </span>
