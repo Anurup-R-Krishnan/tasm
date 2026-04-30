@@ -37,5 +37,6 @@ func ConnectDB() {
 		&models.AuditSession{},
 		&models.Consumable{},
 		&models.MaintenanceContract{},
+		&models.WorkOrder{},
 	)
 }

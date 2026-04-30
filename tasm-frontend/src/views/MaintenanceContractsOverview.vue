@@ -106,158 +106,40 @@
      New Order
     </button>
    </div>
-   <div class="overflow-x-auto">
-    <table class="w-full text-left border-collapse">
-     <thead>
-      <tr>
-       <th class="font-table-header text-table-header text-text-secondary py-3 px-4 bg-surface-subtle border-b border-border-default uppercase">
-        ID
-       </th>
-       <th class="font-table-header text-table-header text-text-secondary py-3 px-4 bg-surface-subtle border-b border-border-default uppercase">
-        Asset / Location
-       </th>
-       <th class="font-table-header text-table-header text-text-secondary py-3 px-4 bg-surface-subtle border-b border-border-default uppercase">
-        Severity
-       </th>
-       <th class="font-table-header text-table-header text-text-secondary py-3 px-4 bg-surface-subtle border-b border-border-default uppercase">
-        Reported
-       </th>
-       <th class="font-table-header text-table-header text-text-secondary py-3 px-4 bg-surface-subtle border-b border-border-default uppercase text-right">
-        Actions
-       </th>
-      </tr>
-     </thead>
-     <tbody class="font-body text-body text-text-primary">
-      <!-- Row 1 (Critical) -->
-      <tr class="border-b border-border-default hover:bg-metric-amber transition-colors bg-surface group cursor-pointer border-l-[3px] border-l-status-critical">
-       <td class="py-4 px-4 font-mono-data text-mono-data text-text-secondary">
-        WO-8922
-       </td>
-       <td class="py-4 px-4">
-        <div class="font-medium text-text-primary">
-         HVAC Unit B-East
-        </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-0.5">
-         Bldg 4, Roof
-        </div>
-       </td>
-       <td class="py-4 px-4">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-status-critical text-on-error">
-         <span class="sr-only">
-          Severity:
-         </span>
-         Critical
-        </span>
-       </td>
-       <td class="py-4 px-4 text-text-secondary">
-        2 hrs ago
-       </td>
-       <td class="py-4 px-4 text-right">
-        <button class="text-text-secondary hover:text-text-primary">
-         <span class="material-symbols-outlined text-[20px]">
-          more_vert
-         </span>
-        </button>
-       </td>
-      </tr>
-      <!-- Row 2 (High) -->
-      <tr class="border-b border-border-default hover:bg-metric-amber transition-colors bg-surface-subtle group cursor-pointer border-l-[3px] border-l-transparent hover:border-l-primary-container">
-       <td class="py-4 px-4 font-mono-data text-mono-data text-text-secondary">
-        WO-8921
-       </td>
-       <td class="py-4 px-4">
-        <div class="font-medium text-text-primary">
-         Elevator Bank 2
-        </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-0.5">
-         Bldg 1, Lobby
-        </div>
-       </td>
-       <td class="py-4 px-4">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-primary-container text-on-primary-container">
-         <span class="sr-only">
-          Severity:
-         </span>
-         High
-        </span>
-       </td>
-       <td class="py-4 px-4 text-text-secondary">
-        5 hrs ago
-       </td>
-       <td class="py-4 px-4 text-right">
-        <button class="text-text-secondary hover:text-text-primary">
-         <span class="material-symbols-outlined text-[20px]">
-          more_vert
-         </span>
-        </button>
-       </td>
-      </tr>
-      <!-- Row 3 (Medium) -->
-      <tr class="border-b border-border-default hover:bg-metric-amber transition-colors bg-surface group cursor-pointer border-l-[3px] border-l-transparent hover:border-l-primary-container">
-       <td class="py-4 px-4 font-mono-data text-mono-data text-text-secondary">
-        WO-8918
-       </td>
-       <td class="py-4 px-4">
-        <div class="font-medium text-text-primary">
-         Water Leak
-        </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-0.5">
-         Cafeteria Restroom
-        </div>
-       </td>
-       <td class="py-4 px-4">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-surface-variant text-on-surface-variant">
-         <span class="sr-only">
-          Severity:
-         </span>
-         Medium
-        </span>
-       </td>
-       <td class="py-4 px-4 text-text-secondary">
-        1 day ago
-       </td>
-       <td class="py-4 px-4 text-right">
-        <button class="text-text-secondary hover:text-text-primary">
-         <span class="material-symbols-outlined text-[20px]">
-          more_vert
-         </span>
-        </button>
-       </td>
-      </tr>
-      <!-- Row 4 (Low) -->
-      <tr class="hover:bg-metric-amber transition-colors bg-surface-subtle group cursor-pointer border-l-[3px] border-l-transparent hover:border-l-primary-container">
-       <td class="py-4 px-4 font-mono-data text-mono-data text-text-secondary">
-        WO-8915
-       </td>
-       <td class="py-4 px-4">
-        <div class="font-medium text-text-primary">
-         Flickering Lights
-        </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-0.5">
-         Office Suite 300
-        </div>
-       </td>
-       <td class="py-4 px-4">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-secondary-container text-on-secondary-container border border-border-default">
-         <span class="sr-only">
-          Severity:
-         </span>
-         Low
-        </span>
-       </td>
-       <td class="py-4 px-4 text-text-secondary">
-        2 days ago
-       </td>
-       <td class="py-4 px-4 text-right">
-        <button class="text-text-secondary hover:text-text-primary">
-         <span class="material-symbols-outlined text-[20px]">
-          more_vert
-         </span>
-        </button>
-       </td>
-      </tr>
-     </tbody>
-    </table>
+   <div class="overflow-x-auto border-t border-border-default">
+    <DataTable :value="workOrders" :loading="loadingWorkOrders" paginator :rows="5" tableStyle="min-width: 40rem" class="w-full">
+      <Column field="workOrderId" header="ID" sortable>
+        <template #body="slotProps">
+          <span class="font-mono-data text-mono-data text-text-secondary">{{ slotProps.data.workOrderId }}</span>
+        </template>
+      </Column>
+      <Column header="Asset / Location" sortable field="title">
+        <template #body="slotProps">
+          <div class="font-medium text-text-primary">{{ slotProps.data.title }}</div>
+          <div class="font-metadata text-metadata text-text-secondary mt-0.5">{{ slotProps.data.assetLocation }}</div>
+        </template>
+      </Column>
+      <Column field="severity" header="Severity" sortable>
+        <template #body="slotProps">
+          <span v-if="slotProps.data.severity === 'Critical'" class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-status-critical text-on-error">Critical</span>
+          <span v-else-if="slotProps.data.severity === 'High'" class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-primary-container text-on-primary-container">High</span>
+          <span v-else-if="slotProps.data.severity === 'Medium'" class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-surface-variant text-on-surface-variant">Medium</span>
+          <span v-else class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-secondary-container text-on-secondary-container border border-border-default">Low</span>
+        </template>
+      </Column>
+      <Column field="createdAt" header="Reported" sortable>
+        <template #body="slotProps">
+          <span class="text-text-secondary">{{ new Date(slotProps.data.createdAt).toLocaleDateString() }}</span>
+        </template>
+      </Column>
+      <Column header="Actions" alignFrozen="right">
+        <template #body>
+          <button class="text-text-secondary hover:text-text-primary">
+            <span class="material-symbols-outlined text-[20px]">more_vert</span>
+          </button>
+        </template>
+      </Column>
+    </DataTable>
    </div>
    <div class="p-4 border-t border-border-default bg-surface text-center">
     <a class="font-metadata text-metadata text-tertiary hover:underline" href="#">
@@ -278,101 +160,33 @@
     </button>
    </div>
    <div class="flex flex-col p-4 gap-2">
-    <!-- List Item 1 -->
-    <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-surface-subtle transition-colors cursor-pointer border border-transparent hover:border-border-default">
-     <div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center shrink-0">
-      <span class="material-symbols-outlined text-on-error-container text-[20px]">
-       corporate_fare
-      </span>
-     </div>
-     <div class="flex-1 min-w-0">
-      <h3 class="font-h3 text-h3 text-text-primary truncate">
-       Apex Security Services
-      </h3>
-      <p class="font-metadata text-metadata text-text-secondary truncate mt-0.5">
-       Facility guarding contract
-      </p>
-     </div>
-     <div class="text-right shrink-0">
-      <div class="font-h3 text-h3 text-status-critical">
-       5 days
-      </div>
-      <div class="font-metadata text-metadata text-text-secondary">
-       Oct 12
-      </div>
-     </div>
-    </div>
-    <!-- List Item 2 -->
-    <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-surface-subtle transition-colors cursor-pointer border border-transparent hover:border-border-default">
-     <div class="w-10 h-10 rounded-full bg-metric-lavender flex items-center justify-center shrink-0">
-      <span class="material-symbols-outlined text-tertiary text-[20px]">
-       cleaning_services
-      </span>
-     </div>
-     <div class="flex-1 min-w-0">
-      <h3 class="font-h3 text-h3 text-text-primary truncate">
-       ProClean Janitorial
-      </h3>
-      <p class="font-metadata text-metadata text-text-secondary truncate mt-0.5">
-       Nightly deep clean SLA
-      </p>
-     </div>
-     <div class="text-right shrink-0">
-      <div class="font-h3 text-h3 text-text-primary">
-       14 days
-      </div>
-      <div class="font-metadata text-metadata text-text-secondary">
-       Oct 21
-      </div>
-     </div>
-    </div>
-    <!-- List Item 3 -->
-    <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-surface-subtle transition-colors cursor-pointer border border-transparent hover:border-border-default">
+    <!-- Dynamic List Item -->
+    <div v-for="contract in contracts" :key="contract.id" class="flex items-start gap-4 p-3 rounded-lg hover:bg-surface-subtle transition-colors cursor-pointer border border-transparent hover:border-border-default">
      <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center shrink-0">
       <span class="material-symbols-outlined text-on-surface-variant text-[20px]">
-       hvac
+       assignment
       </span>
      </div>
      <div class="flex-1 min-w-0">
       <h3 class="font-h3 text-h3 text-text-primary truncate">
-       ClimateTech Solutions
+       {{ contract.vendorName }}
       </h3>
       <p class="font-metadata text-metadata text-text-secondary truncate mt-0.5">
-       Quarterly preventive maint.
+       {{ contract.serviceType }}
       </p>
      </div>
      <div class="text-right shrink-0">
-      <div class="font-h3 text-h3 text-text-primary">
-       28 days
+      <div class="font-h3 text-h3" :class="getDaysRemaining(contract.endDate) <= 7 ? 'text-status-critical' : 'text-text-primary'">
+       {{ getDaysRemaining(contract.endDate) }} days
       </div>
       <div class="font-metadata text-metadata text-text-secondary">
-       Nov 04
+       {{ new Date(contract.endDate).toLocaleDateString() }}
       </div>
      </div>
     </div>
-    <!-- List Item 4 -->
-    <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-surface-subtle transition-colors cursor-pointer border border-transparent hover:border-border-default">
-     <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center shrink-0">
-      <span class="material-symbols-outlined text-on-surface-variant text-[20px]">
-       router
-      </span>
-     </div>
-     <div class="flex-1 min-w-0">
-      <h3 class="font-h3 text-h3 text-text-primary truncate">
-       DataLink ISP
-      </h3>
-      <p class="font-metadata text-metadata text-text-secondary truncate mt-0.5">
-       Campus broadband
-      </p>
-     </div>
-     <div class="text-right shrink-0">
-      <div class="font-h3 text-h3 text-text-primary">
-       45 days
-      </div>
-      <div class="font-metadata text-metadata text-text-secondary">
-       Nov 21
-      </div>
-     </div>
+    
+    <div v-if="contracts.length === 0 && !loadingContracts" class="text-center py-4 text-text-secondary text-sm">
+      No upcoming renewals.
     </div>
    </div>
    <div class="p-4 mt-auto border-t border-border-default text-center">
@@ -387,5 +201,67 @@
 </template>
 
 <script setup lang="ts">
-// Autogenerated from maintenance_contracts_overview
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+interface WorkOrder {
+  id: number;
+  workOrderId: string;
+  title: string;
+  assetLocation: string;
+  issue: string;
+  severity: string;
+  createdAt: string;
+}
+
+interface MaintenanceContract {
+  id: number;
+  vendorName: string;
+  serviceType: string;
+  endDate: string;
+}
+
+const workOrders = ref<WorkOrder[]>([])
+const contracts = ref<MaintenanceContract[]>([])
+const loadingWorkOrders = ref(true)
+const loadingContracts = ref(true)
+
+const fetchWorkOrders = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/work-orders')
+    if (res.ok) {
+      workOrders.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch work orders:', error)
+  } finally {
+    loadingWorkOrders.value = false
+  }
+}
+
+const fetchContracts = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/contracts')
+    if (res.ok) {
+      contracts.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch contracts:', error)
+  } finally {
+    loadingContracts.value = false
+  }
+}
+
+const getDaysRemaining = (endDateStr: string) => {
+  const endDate = new Date(endDateStr)
+  const today = new Date()
+  const diffTime = endDate.getTime() - today.getTime()
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+}
+
+onMounted(() => {
+  fetchWorkOrders()
+  fetchContracts()
+})
 </script>
