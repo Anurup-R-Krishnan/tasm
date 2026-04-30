@@ -124,322 +124,61 @@
    </div>
   </div>
   <!-- Data Table Card -->
-  <div class="bg-surface border border-border-default rounded-xl shadow-[0_4px_4px_-4px_rgba(0,0,0,0.05)] overflow-hidden">
-   <div class="overflow-x-auto">
-    <table class="w-full text-left border-collapse">
-     <thead>
-      <tr class="border-b border-border-default bg-surface-subtle">
-       <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-        User Details
-       </th>
-       <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-        Role
-       </th>
-       <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-        Department
-       </th>
-       <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-        Status
-       </th>
-       <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-        Last Login
-       </th>
-       <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase text-right">
-        Actions
-       </th>
-      </tr>
-     </thead>
-     <tbody class="divide-y divide-border-default">
-      <!-- Row 1 -->
-      <tr class="hover:bg-metric-amber/20 transition-colors group">
-       <td class="py-3 px-6">
-        <div class="flex items-center gap-3">
-         <img alt="Sarah Jenning avatar" class="w-10 h-10 rounded-full border border-border-default" data-alt="Corporate headshot profile picture placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZdgQy-OPHRMaNQgoc-EeRFDD_U5mDG_496gjRkgvfPWvNgIvdIHYpsMSrxo0whamO7FR9-27OqWsZxqb7hGzdCUd1Z-NRmixGhy3JcLeDqoYF8z7smzEm8p0qa5NSo80m1vbQMH9Zipq4kVpt8tJc2hIti0BEnS0oz2NrkBYB_UK1AmxeYG3Ucag5Z1YYM1Js3p_1FljtfXVOErm6lk15oSHjJR_1LH7oobOlt6KlSTlaaDRFnjJyPzxAw5YflfqlpVFMWh4k7RN1"/>
-         <div>
-          <div class="font-h3 text-h3 text-text-primary group-hover:text-primary transition-colors">
-           Sarah Jenning
-          </div>
-          <div class="font-metadata text-metadata text-text-secondary">
-           sarah.j@technopark.gov.in
-          </div>
-         </div>
+  <div class="bg-surface border border-border-default rounded-xl shadow-[0_4px_4px_-4px_rgba(0,0,0,0.05)] overflow-hidden p-4">
+   <DataTable :value="users" :loading="loading" paginator :rows="10" tableStyle="min-width: 50rem" class="w-full text-left">
+    <Column field="name" header="User Details" sortable>
+     <template #body="slotProps">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-full bg-surface-variant border border-border-default flex items-center justify-center text-on-surface-variant font-h3">
+        {{ slotProps.data.name.charAt(0) }}
+       </div>
+       <div>
+        <div class="font-h3 text-h3 text-text-primary group-hover:text-primary transition-colors">
+         {{ slotProps.data.name }}
         </div>
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-fixed">
-         Admin
-        </span>
-       </td>
-       <td class="py-3 px-6 font-body text-body text-text-primary">
-        Operations Core
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center gap-1.5 text-status-in-stock">
-         <span class="w-2 h-2 rounded-full bg-status-in-stock">
-         </span>
-         <span class="font-metadata text-metadata font-medium">
-          Active
-         </span>
-        </span>
-       </td>
-       <td class="py-3 px-6 font-mono-data text-mono-data text-text-secondary">
-        Today, 09:41 AM
-       </td>
-       <td class="py-3 px-6 text-right">
-        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-         <button class="p-1.5 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-md transition-colors" title="Edit User">
-          <span class="material-symbols-outlined text-[18px]">
-           edit
-          </span>
-         </button>
-         <button class="p-1.5 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-md transition-colors" title="Deactivate">
-          <span class="material-symbols-outlined text-[18px]">
-           block
-          </span>
-         </button>
+        <div class="font-metadata text-metadata text-text-secondary">
+         {{ slotProps.data.email }}
         </div>
-       </td>
-      </tr>
-      <!-- Row 2 -->
-      <tr class="bg-surface-subtle hover:bg-metric-amber/20 transition-colors group">
-       <td class="py-3 px-6">
-        <div class="flex items-center gap-3">
-         <div class="w-10 h-10 rounded-full bg-surface-variant border border-border-default flex items-center justify-center text-on-surface-variant font-h3">
-          RK
-         </div>
-         <div>
-          <div class="font-h3 text-h3 text-text-primary group-hover:text-primary transition-colors">
-           Rajesh Kumar
-          </div>
-          <div class="font-metadata text-metadata text-text-secondary">
-           r.kumar@technopark.gov.in
-          </div>
-         </div>
-        </div>
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-primary-fixed text-on-primary-fixed">
-         Asset Manager
-        </span>
-       </td>
-       <td class="py-3 px-6 font-body text-body text-text-primary">
-        IT Services
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center gap-1.5 text-status-in-stock">
-         <span class="w-2 h-2 rounded-full bg-status-in-stock">
-         </span>
-         <span class="font-metadata text-metadata font-medium">
-          Active
-         </span>
-        </span>
-       </td>
-       <td class="py-3 px-6 font-mono-data text-mono-data text-text-secondary">
-        Oct 24, 14:30 PM
-       </td>
-       <td class="py-3 px-6 text-right">
-        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-         <button class="p-1.5 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-md transition-colors" title="Edit User">
-          <span class="material-symbols-outlined text-[18px]">
-           edit
-          </span>
-         </button>
-         <button class="p-1.5 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-md transition-colors" title="Deactivate">
-          <span class="material-symbols-outlined text-[18px]">
-           block
-          </span>
-         </button>
-        </div>
-       </td>
-      </tr>
-      <!-- Row 3 -->
-      <tr class="hover:bg-metric-amber/20 transition-colors group">
-       <td class="py-3 px-6">
-        <div class="flex items-center gap-3">
-         <img alt="Anita Desai avatar" class="w-10 h-10 rounded-full border border-border-default" data-alt="Corporate headshot profile picture placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5b969R1kMBN7--t9xy7HenQt6OEZ7q5x4_5RgP3gWgPoM5V3Gj81eWJyUhEQ5OMVmpeKCHLb3eRK0-gxmTPK4VPSZVzL5bSrsiie6Ek4zr12fgxMSOv7GV8fYHdq3SJwka29VmS1DweUQvES_p5j32lguULm20u2CB-rLBLJ19ZhycRSEvrhlCGoFAtJwaeoMGKLXA-X_UQXazrUCUa8ofh6uAp_L_Qmg4RsoQKd3939FsLRFpqKdaoJAvQcOOywJmtbT5K4So_tF"/>
-         <div>
-          <div class="font-h3 text-h3 text-text-primary group-hover:text-primary transition-colors">
-           Anita Desai
-          </div>
-          <div class="font-metadata text-metadata text-text-secondary">
-           a.desai@technopark.gov.in
-          </div>
-         </div>
-        </div>
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-surface-container-high text-on-surface-variant">
-         Dept Head
-        </span>
-       </td>
-       <td class="py-3 px-6 font-body text-body text-text-primary">
-        Facilities Management
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center gap-1.5 text-status-in-stock">
-         <span class="w-2 h-2 rounded-full bg-status-in-stock">
-         </span>
-         <span class="font-metadata text-metadata font-medium">
-          Active
-         </span>
-        </span>
-       </td>
-       <td class="py-3 px-6 font-mono-data text-mono-data text-text-secondary">
-        Oct 23, 08:15 AM
-       </td>
-       <td class="py-3 px-6 text-right">
-        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-         <button class="p-1.5 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-md transition-colors" title="Edit User">
-          <span class="material-symbols-outlined text-[18px]">
-           edit
-          </span>
-         </button>
-         <button class="p-1.5 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-md transition-colors" title="Deactivate">
-          <span class="material-symbols-outlined text-[18px]">
-           block
-          </span>
-         </button>
-        </div>
-       </td>
-      </tr>
-      <!-- Row 4 -->
-      <tr class="bg-surface-subtle hover:bg-metric-amber/20 transition-colors group">
-       <td class="py-3 px-6">
-        <div class="flex items-center gap-3">
-         <div class="w-10 h-10 rounded-full bg-surface-variant border border-border-default flex items-center justify-center text-on-surface-variant font-h3">
-          MM
-         </div>
-         <div>
-          <div class="font-h3 text-h3 text-text-primary group-hover:text-primary transition-colors">
-           Michael Menon
-          </div>
-          <div class="font-metadata text-metadata text-text-secondary">
-           m.menon@technopark.gov.in
-          </div>
-         </div>
-        </div>
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-metric-lavender text-tertiary-container">
-         Finance
-        </span>
-       </td>
-       <td class="py-3 px-6 font-body text-body text-text-primary">
-        Finance &amp; Accts
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center gap-1.5 text-text-secondary">
-         <span class="w-2 h-2 rounded-full bg-outline">
-         </span>
-         <span class="font-metadata text-metadata font-medium">
-          Inactive
-         </span>
-        </span>
-       </td>
-       <td class="py-3 px-6 font-mono-data text-mono-data text-text-secondary">
-        Sep 12, 11:05 AM
-       </td>
-       <td class="py-3 px-6 text-right">
-        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-         <button class="p-1.5 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-md transition-colors" title="Edit User">
-          <span class="material-symbols-outlined text-[18px]">
-           edit
-          </span>
-         </button>
-         <button class="p-1.5 text-text-secondary hover:text-status-in-stock hover:bg-metric-sage/50 rounded-md transition-colors" title="Reactivate">
-          <span class="material-symbols-outlined text-[18px]">
-           check_circle
-          </span>
-         </button>
-        </div>
-       </td>
-      </tr>
-      <!-- Row 5 -->
-      <tr class="hover:bg-metric-amber/20 transition-colors group border-l-4 border-l-primary bg-metric-amber/10">
-       <td class="py-3 px-6">
-        <div class="flex items-center gap-3">
-         <img alt="Priya Nair avatar" class="w-10 h-10 rounded-full border border-border-default" data-alt="Corporate headshot profile picture placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVWSVgl6wyhyF9swWtkfHN2La8HoRacljzHoa6ubQq7xG_A8t2O7bKos1BHsKKgKxB8cAdfgDv20ch-tOSEPlnbXegxtsUbbA-p6_CGkStZlEJUF9U7fDgo3lLKPdAArS46t2lgjVOuufipwI2VkNmbYLCpiZBpMh6WTnFcxeeQjKFiNYw7Al9eCcNvUHAUYNS5AWYHHxh7t9gYQKt1yfXWTLbhaQDw66DFWVhwG8nOW3vf3aG0H2Slz_QsPZLC2zrI6lcaa8PIy36"/>
-         <div>
-          <div class="font-h3 text-h3 text-text-primary group-hover:text-primary transition-colors">
-           Priya Nair
-          </div>
-          <div class="font-metadata text-metadata text-text-secondary">
-           p.nair@technopark.gov.in
-          </div>
-         </div>
-        </div>
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-secondary-container text-on-secondary-container">
-         Auditor
-        </span>
-       </td>
-       <td class="py-3 px-6 font-body text-body text-text-primary">
-        External Audit
-       </td>
-       <td class="py-3 px-6">
-        <span class="inline-flex items-center gap-1.5 text-status-in-stock">
-         <span class="w-2 h-2 rounded-full bg-status-in-stock">
-         </span>
-         <span class="font-metadata text-metadata font-medium">
-          Active
-         </span>
-        </span>
-       </td>
-       <td class="py-3 px-6 font-mono-data text-mono-data text-text-secondary">
-        Yesterday, 16:20 PM
-       </td>
-       <td class="py-3 px-6 text-right">
-        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-         <button class="p-1.5 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-md transition-colors" title="Edit User">
-          <span class="material-symbols-outlined text-[18px]">
-           edit
-          </span>
-         </button>
-         <button class="p-1.5 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-md transition-colors" title="Deactivate">
-          <span class="material-symbols-outlined text-[18px]">
-           block
-          </span>
-         </button>
-        </div>
-       </td>
-      </tr>
-     </tbody>
-    </table>
-   </div>
-   <!-- Pagination -->
-   <div class="px-6 py-4 border-t border-border-default flex items-center justify-between bg-surface-subtle">
-    <span class="font-metadata text-metadata text-text-secondary">
-     Showing 1 to 5 of 42 entries
-    </span>
-    <div class="flex items-center gap-1">
-     <button class="p-1 text-text-secondary hover:text-text-primary disabled:opacity-50" disabled>
-      <span class="material-symbols-outlined text-[20px]">
-       chevron_left
+       </div>
+      </div>
+     </template>
+    </Column>
+    <Column field="role" header="Role" sortable></Column>
+    <Column field="department" header="Department" sortable></Column>
+    <Column field="status" header="Status" sortable>
+     <template #body="slotProps">
+      <span class="inline-flex items-center gap-1.5" :class="slotProps.data.status === 'Active' ? 'text-status-in-stock' : 'text-text-secondary'">
+       <span class="w-2 h-2 rounded-full" :class="slotProps.data.status === 'Active' ? 'bg-status-in-stock' : 'bg-outline'"></span>
+       <span class="font-metadata text-metadata font-medium">
+        {{ slotProps.data.status }}
+       </span>
       </span>
-     </button>
-     <button class="w-8 h-8 rounded-md bg-primary text-on-primary font-metadata text-metadata font-medium flex items-center justify-center">
-      1
-     </button>
-     <button class="w-8 h-8 rounded-md text-text-secondary hover:bg-surface-variant font-metadata text-metadata font-medium flex items-center justify-center transition-colors">
-      2
-     </button>
-     <button class="w-8 h-8 rounded-md text-text-secondary hover:bg-surface-variant font-metadata text-metadata font-medium flex items-center justify-center transition-colors">
-      3
-     </button>
-     <span class="text-text-secondary px-1">
-      ...
-     </span>
-     <button class="w-8 h-8 rounded-md text-text-secondary hover:bg-surface-variant font-metadata text-metadata font-medium flex items-center justify-center transition-colors">
-      9
-     </button>
-     <button class="p-1 text-text-secondary hover:text-text-primary">
-      <span class="material-symbols-outlined text-[20px]">
-       chevron_right
+     </template>
+    </Column>
+    <Column field="lastLogin" header="Last Login" sortable>
+     <template #body="slotProps">
+      <span class="font-mono-data text-mono-data text-text-secondary">
+       {{ new Date(slotProps.data.lastLogin).toLocaleString() }}
       </span>
-     </button>
-    </div>
-   </div>
+     </template>
+    </Column>
+    <Column header="Actions" bodyStyle="text-align: right">
+     <template #body>
+      <div class="flex items-center justify-end gap-2">
+       <button class="p-1.5 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-md transition-colors" title="Edit User">
+        <span class="material-symbols-outlined text-[18px]">
+         edit
+        </span>
+       </button>
+       <button class="p-1.5 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-md transition-colors" title="Deactivate">
+        <span class="material-symbols-outlined text-[18px]">
+         block
+        </span>
+       </button>
+      </div>
+     </template>
+    </Column>
+   </DataTable>
   </div>
  </div>
 </main>
@@ -447,5 +186,38 @@
 </template>
 
 <script setup lang="ts">
-// Autogenerated from user_management_settings
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+interface SystemUser {
+  id: number;
+  employeeId: string;
+  name: string;
+  email: string;
+  department: string;
+  role: string;
+  status: string;
+  lastLogin: string;
+}
+
+const users = ref<SystemUser[]>([])
+const loading = ref(true)
+
+const fetchUsers = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/users')
+    if (res.ok) {
+      users.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch users:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchUsers()
+})
 </script>

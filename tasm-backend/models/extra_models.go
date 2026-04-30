@@ -149,3 +149,28 @@ type DepreciationSchedule struct {
 	CurrentValue   float64        `json:"currentValue"`
 	Method         string         `json:"method"` // Straight Line, Declining Balance
 }
+
+// User Management Models
+type SystemUser struct {
+	ID             uint           `gorm:"primarykey" json:"id"`
+	CreatedAt      time.Time      `json:"createdAt"`
+	UpdatedAt      time.Time      `json:"updatedAt"`
+	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
+	EmployeeID     string         `json:"employeeId"`
+	Name           string         `json:"name"`
+	Email          string         `json:"email"`
+	Department     string         `json:"department"`
+	Role           string         `json:"role"`
+	Status         string         `json:"status"` // Active, Inactive
+	LastLogin      time.Time      `json:"lastLogin"`
+}
+
+type UserRole struct {
+	ID             uint           `gorm:"primarykey" json:"id"`
+	CreatedAt      time.Time      `json:"createdAt"`
+	UpdatedAt      time.Time      `json:"updatedAt"`
+	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
+	RoleName       string         `json:"roleName"`
+	Description    string         `json:"description"`
+	UsersCount     int            `json:"usersCount"`
+}

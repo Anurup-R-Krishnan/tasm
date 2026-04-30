@@ -43,9 +43,13 @@ func ConnectDB() error {
 		&models.LedgerEntry{},
 		&models.LeaseAgreement{},
 		&models.DepreciationSchedule{},
+		&models.SystemUser{},
+		&models.UserRole{},
 	); err != nil {
-		return err
+		log.Fatalf("Failed to auto-migrate extra models: %v", err)
 	}
+
+	seedExtraData(db)
 
 	return nil
 }
