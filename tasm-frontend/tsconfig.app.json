@@ -9,7 +9,7 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "allowJs": false,
-    "checkJs": true,
+    "checkJs": false,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
@@ -19,5 +19,5 @@
     "extendedDiagnostics": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["dist", "node_modules", "build", ".next", "out"]
+  "exclude": ["dist", "node_modules", "build", ".next", "out", "playwright-report", "test-results"]
 }
