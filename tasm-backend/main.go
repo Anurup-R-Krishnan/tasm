@@ -34,6 +34,9 @@ func main() {
 	{
 		api.GET("/assets", handlers.GetAssets)
 		api.POST("/assets", handlers.CreateAsset)
+		
+		api.GET("/consumables", handlers.GetConsumables)
+		api.POST("/consumables", handlers.CreateConsumable)
 	}
 
 	log.Println("Starting Go backend on :8080")
