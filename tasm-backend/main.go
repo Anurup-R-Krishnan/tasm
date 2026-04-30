@@ -58,6 +58,10 @@ func main() {
 		
 		api.GET("/procurements", handlers.GetProcurements)
 		api.POST("/procurements", handlers.CreateProcurement)
+		
+		api.GET("/ledgers", handlers.GetLedgers)
+		api.GET("/leases", handlers.GetLeases)
+		api.GET("/depreciations", handlers.GetDepreciations)
 	}
 
 	port := os.Getenv("PORT")

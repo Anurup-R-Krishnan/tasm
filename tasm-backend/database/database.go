@@ -40,6 +40,9 @@ func ConnectDB() error {
 		&models.MaintenanceContract{},
 		&models.WorkOrder{},
 		&models.ProcurementRequest{},
+		&models.LedgerEntry{},
+		&models.LeaseAgreement{},
+		&models.DepreciationSchedule{},
 	); err != nil {
 		return err
 	}
