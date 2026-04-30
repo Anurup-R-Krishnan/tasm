@@ -39,6 +39,7 @@ func ConnectDB() error {
 		&models.Consumable{},
 		&models.MaintenanceContract{},
 		&models.WorkOrder{},
+		&models.ProcurementRequest{},
 	); err != nil {
 		return err
 	}

@@ -57,3 +57,19 @@ type WorkOrder struct {
 	TargetDate    time.Time      `json:"targetDate"`
 	Status        string         `json:"status"` // Open, In Progress, Closed
 }
+
+type ProcurementRequest struct {
+	ID                uint           `gorm:"primarykey" json:"id"`
+	CreatedAt         time.Time      `json:"createdAt"`
+	UpdatedAt         time.Time      `json:"updatedAt"`
+	DeletedAt         gorm.DeletedAt `gorm:"index" json:"-"`
+	Title             string         `json:"title"`
+	Status            string         `json:"status"` // Draft, Pending Approval, PO Raised, Shipping, Received
+	Priority          string         `json:"priority"` // Low, Medium, High
+	EstimatedValue    float64        `json:"estimatedValue"`
+	ActualValue       float64        `json:"actualValue"`
+	RequestorName     string         `json:"requestorName"`
+	RequestorInitials string         `json:"requestorInitials"`
+	Department        string         `json:"department"`
+	PONumber          string         `json:"poNumber"`
+}
