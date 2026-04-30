@@ -154,153 +154,79 @@
       <span class="material-symbols-outlined text-primary-container">
        calendar_month
       </span>
-      Depreciation Schedule
+      Depreciation Schedules
      </h3>
-     <div class="flex items-center gap-2">
-      <span class="font-metadata text-metadata text-text-secondary">
-       Method:
-      </span>
-      <span class="font-metadata text-metadata font-medium text-text-primary bg-surface-subtle px-2 py-1 rounded border border-border-default">
-       Straight Line (SLM)
-      </span>
-     </div>
     </div>
-    <div class="overflow-x-auto">
-     <table class="w-full text-left border-collapse">
-      <thead class="bg-surface-subtle border-b border-border-default">
-       <tr>
-        <th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 sticky left-0 bg-surface-subtle z-10">
-         Year
-        </th>
-        <th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 text-right">
-         Beginning Value
-        </th>
-        <th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 text-right">
-         Depreciation Rate (%)
-        </th>
-        <th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 text-right">
-         Depreciation Expense
-        </th>
-        <th class="font-table-header text-table-header text-text-secondary uppercase px-6 py-3 text-right">
-         Ending Value
-        </th>
-       </tr>
-      </thead>
-      <tbody class="divide-y divide-border-default">
-       <!-- Row 1 -->
-       <tr class="bg-surface hover:bg-metric-amber transition-colors group">
-        <td class="font-body text-body text-text-primary px-6 py-4 sticky left-0 bg-surface group-hover:bg-metric-amber transition-colors font-medium">
-         2021-22
-        </td>
-        <td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right">
-         ₹1,20,000
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">
-         12.50%
-        </td>
-        <td class="font-mono-data text-mono-data text-error px-6 py-4 text-right">
-         -₹15,000
-        </td>
-        <td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right font-medium">
-         ₹1,05,000
-        </td>
-       </tr>
-       <!-- Row 2 -->
-       <tr class="bg-surface-subtle hover:bg-metric-amber transition-colors group">
-        <td class="font-body text-body text-text-primary px-6 py-4 sticky left-0 bg-surface-subtle group-hover:bg-metric-amber transition-colors font-medium">
-         2022-23
-        </td>
-        <td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right">
-         ₹1,05,000
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">
-         12.50%
-        </td>
-        <td class="font-mono-data text-mono-data text-error px-6 py-4 text-right">
-         -₹15,000
-        </td>
-        <td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right font-medium">
-         ₹90,000
-        </td>
-       </tr>
-       <!-- Row 3 -->
-       <tr class="bg-surface hover:bg-metric-amber transition-colors group">
-        <td class="font-body text-body text-text-primary px-6 py-4 sticky left-0 bg-surface group-hover:bg-metric-amber transition-colors font-medium">
-         2023-24
-        </td>
-        <td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right">
-         ₹90,000
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">
-         12.50%
-        </td>
-        <td class="font-mono-data text-mono-data text-error px-6 py-4 text-right">
-         -₹15,000
-        </td>
-        <td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right font-medium">
-         ₹75,000
-        </td>
-       </tr>
-       <!-- Row 4 (Current) -->
-       <tr class="bg-metric-amber/30 hover:bg-metric-amber transition-colors group border-l-4 border-l-primary-container">
-        <td class="font-body text-body text-primary-container px-6 py-4 sticky left-0 bg-metric-amber/30 group-hover:bg-metric-amber transition-colors font-semibold flex items-center gap-2">
-         2024-25
-         <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary-container text-white uppercase tracking-wider">
-          Current
-         </span>
-        </td>
-        <td class="font-mono-data text-mono-data text-text-primary px-6 py-4 text-right">
-         ₹75,000
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">
-         12.50%
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right italic">
-         Projected
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right italic">
-         ₹60,000
-        </td>
-       </tr>
-       <!-- Row 5 (Future) -->
-       <tr class="bg-surface-subtle hover:bg-metric-amber transition-colors group opacity-70">
-        <td class="font-body text-body text-text-secondary px-6 py-4 sticky left-0 bg-surface-subtle group-hover:bg-metric-amber transition-colors font-medium">
-         2025-26
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">
-         ₹60,000
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right">
-         12.50%
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right italic">
-         Projected
-        </td>
-        <td class="font-mono-data text-mono-data text-text-secondary px-6 py-4 text-right italic">
-         ₹45,000
-        </td>
-       </tr>
-      </tbody>
-     </table>
-    </div>
-    <!-- Table Footer Summary -->
-    <div class="px-6 py-3 border-t border-border-default bg-surface flex justify-end items-center gap-6">
-     <div class="flex flex-col items-end">
-      <span class="font-metadata text-metadata text-text-secondary">
-       YTD Depreciation
-      </span>
-      <span class="font-mono-data text-mono-data text-error font-medium">
-       -₹45,000
-      </span>
-     </div>
+    <div class="overflow-x-auto p-4">
+     <DataTable :value="schedules" :loading="loading" paginator :rows="10" tableStyle="min-width: 50rem" class="w-full text-left">
+      <Column field="assetId" header="Asset ID" sortable>
+       <template #body="slotProps">
+        <span class="font-mono-data text-mono-data text-surface-tint">
+         {{ slotProps.data.assetId }}
+        </span>
+       </template>
+      </Column>
+      <Column field="assetName" header="Asset Name" sortable></Column>
+      <Column field="purchaseValue" header="Purchase Value" sortable>
+       <template #body="slotProps">
+        <span class="font-mono-data text-mono-data">
+         ₹ {{ slotProps.data.purchaseValue?.toLocaleString() }}
+        </span>
+       </template>
+      </Column>
+      <Column field="currentValue" header="Current Value" sortable>
+       <template #body="slotProps">
+        <span class="font-mono-data text-mono-data text-primary-container">
+         ₹ {{ slotProps.data.currentValue?.toLocaleString() }}
+        </span>
+       </template>
+      </Column>
+      <Column field="method" header="Method" sortable>
+       <template #body="slotProps">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-surface-variant text-on-surface-variant border border-outline-variant">
+         {{ slotProps.data.method }}
+        </span>
+       </template>
+      </Column>
+     </DataTable>
     </div>
    </div>
   </div>
  </div>
 </main>
-
 </template>
 
 <script setup lang="ts">
-// Autogenerated from asset_depreciation_ledger
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+interface DepreciationSchedule {
+  id: number;
+  assetId: string;
+  assetName: string;
+  purchaseValue: number;
+  currentValue: number;
+  method: string;
+}
+
+const schedules = ref<DepreciationSchedule[]>([])
+const loading = ref(true)
+
+const fetchSchedules = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/depreciations')
+    if (res.ok) {
+      schedules.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch depreciation schedules:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchSchedules()
+})
 </script>
