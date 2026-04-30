@@ -112,43 +112,7 @@ type DepreciationSchedule struct {
 	Method         string         `json:"method"` // Straight Line, Declining Balance
 }
 
-type LedgerEntry struct {
-	ID            uint           `gorm:"primarykey" json:"id"`
-	CreatedAt     time.Time      `json:"createdAt"`
-	UpdatedAt     time.Time      `json:"updatedAt"`
-	DeletedAt     gorm.DeletedAt `gorm:"index" json:"-"`
-	TransactionID string         `json:"transactionId"`
-	Date          time.Time      `json:"date"`
-	Description   string         `json:"description"`
-	Amount        float64        `json:"amount"`
-	Type          string         `json:"type"` // Credit, Debit
-	Category      string         `json:"category"`
-}
 
-type LeaseAgreement struct {
-	ID             uint           `gorm:"primarykey" json:"id"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updatedAt"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
-	LeaseID        string         `json:"leaseId"`
-	Vendor         string         `json:"vendor"`
-	StartDate      time.Time      `json:"startDate"`
-	EndDate        time.Time      `json:"endDate"`
-	MonthlyCost    float64        `json:"monthlyCost"`
-	Status         string         `json:"status"` // Active, Expired
-}
-
-type DepreciationSchedule struct {
-	ID             uint           `gorm:"primarykey" json:"id"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updatedAt"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
-	AssetID        string         `json:"assetId"`
-	AssetName      string         `json:"assetName"`
-	PurchaseValue  float64        `json:"purchaseValue"`
-	CurrentValue   float64        `json:"currentValue"`
-	Method         string         `json:"method"` // Straight Line, Declining Balance
-}
 
 // User Management Models
 type SystemUser struct {

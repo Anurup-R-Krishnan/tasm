@@ -143,303 +143,78 @@
    </div>
   </div>
   <!-- Main Table Container -->
-  <div class="bg-surface rounded-xl border border-border-default overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
-   <table class="w-full text-left border-collapse">
-    <thead>
-     <tr class="bg-surface-subtle border-b border-border-default text-table-header font-table-header text-text-secondary uppercase">
-      <th class="py-2 px-3 w-10 text-center">
-       <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
-      </th>
-      <th class="py-2 px-3">
-       Tag ID
-      </th>
-      <th class="py-2 px-3">
-       Asset Name
-      </th>
-      <th class="py-2 px-3">
-       Category
-      </th>
-      <th class="py-2 px-3">
-       Status
-      </th>
-      <th class="py-2 px-3">
-       Custodian/Stockroom
-      </th>
-      <th class="py-2 px-3">
-       Location
-      </th>
-      <th class="py-2 px-3">
-       Purchase Date
-      </th>
-      <th class="py-2 px-3">
-       Warranty
-      </th>
-      <th class="py-2 px-3 text-right">
-       Actions
-      </th>
-     </tr>
-    </thead>
-    <tbody class="text-[13px] font-body text-text-primary divide-y divide-border-default">
-     <!-- Row 1 (Simulating selection/active detail view) -->
-     <tr class="bg-[#FFFBEB] hover:bg-[#FEF3C7] transition-colors group cursor-pointer border-l-[3px] border-l-[#92400E]">
-      <td class="py-2 px-3 text-center">
-       <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
-      </td>
-      <td class="py-2 px-3 font-mono-data text-mono-data text-primary-container underline decoration-primary-container/30 underline-offset-2">
-       TAG-1082
-      </td>
-      <td class="py-2 px-3 font-medium">
-       MacBook Pro 16"
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       IT Equipment
-      </td>
-      <td class="py-2 px-3">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-tertiary-fixed text-status-checked-out border border-tertiary-fixed-dim/50">
-        Checked Out
-       </span>
-      </td>
-      <td class="py-2 px-3">
-       Sarah Jenkins
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       Bldg 3, Fl 4
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       12 Oct 2023
-      </td>
-      <td class="py-2 px-3">
-       <span class="text-status-in-stock font-medium">
-        Active
-       </span>
-      </td>
-      <td class="py-2 px-3 text-right space-x-1">
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="visibility">
-         visibility
-        </span>
+  <div class="bg-surface rounded-xl border border-border-default overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.02)] p-4">
+   <DataTable :value="assets" :loading="loading" paginator :rows="10" tableStyle="min-width: 50rem" class="w-full text-left">
+    <Column header="">
+     <template #body>
+      <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
+     </template>
+    </Column>
+    <Column field="tagId" header="Tag ID" sortable>
+     <template #body="slotProps">
+      <router-link :to="`/asset-detail/${slotProps.data.id}`" class="font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2 cursor-pointer">
+       {{ slotProps.data.tagId }}
+      </router-link>
+     </template>
+    </Column>
+    <Column field="name" header="Asset Name" sortable>
+     <template #body="slotProps">
+      <span class="font-medium">{{ slotProps.data.name }}</span>
+     </template>
+    </Column>
+    <Column field="category" header="Category" sortable>
+     <template #body="slotProps">
+      <span class="text-text-secondary">{{ slotProps.data.category }}</span>
+     </template>
+    </Column>
+    <Column field="status" header="Status" sortable>
+     <template #body="slotProps">
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border"
+            :class="{
+              'bg-metric-sage text-status-in-stock border-metric-sage/50': slotProps.data.status === 'In Stock',
+              'bg-tertiary-fixed text-status-checked-out border-tertiary-fixed-dim/50': slotProps.data.status === 'Checked Out',
+              'bg-surface-variant text-text-secondary border-border-default': slotProps.data.status === 'Reserved'
+            }">
+       {{ slotProps.data.status }}
+      </span>
+     </template>
+    </Column>
+    <Column field="custodian" header="Custodian/Stockroom" sortable></Column>
+    <Column field="location" header="Location" sortable>
+     <template #body="slotProps">
+      <span class="text-text-secondary">{{ slotProps.data.location }}</span>
+     </template>
+    </Column>
+    <Column field="purchaseDate" header="Purchase Date" sortable>
+     <template #body="slotProps">
+      <span class="text-text-secondary">
+       {{ new Date(slotProps.data.purchaseDate).toLocaleDateString() }}
+      </span>
+     </template>
+    </Column>
+    <Column field="warrantyStatus" header="Warranty" sortable>
+     <template #body="slotProps">
+      <span :class="slotProps.data.warrantyStatus === 'Active' ? 'text-status-in-stock font-medium' : 'text-status-critical font-medium'">
+       {{ slotProps.data.warrantyStatus }}
+      </span>
+     </template>
+    </Column>
+    <Column header="Actions" bodyStyle="text-align: right">
+     <template #body>
+      <div class="flex items-center justify-end space-x-1">
+       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface-subtle rounded transition-colors">
+        <span class="material-symbols-outlined text-[16px]">visibility</span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="edit">
-         edit
-        </span>
+       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface-subtle rounded transition-colors">
+        <span class="material-symbols-outlined text-[16px]">edit</span>
        </button>
-       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="more_vert">
-         more_vert
-        </span>
+       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface-subtle rounded transition-colors">
+        <span class="material-symbols-outlined text-[16px]">more_vert</span>
        </button>
-      </td>
-     </tr>
-     <!-- Row 2 -->
-     <tr class="bg-surface hover:bg-[#FEF3C7] transition-colors group cursor-pointer border-l-[3px] border-l-transparent">
-      <td class="py-2 px-3 text-center">
-       <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
-      </td>
-      <td class="py-2 px-3 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
-       TAG-2094
-      </td>
-      <td class="py-2 px-3 font-medium">
-       Dell Ultrasharp 27"
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       IT Peripherals
-      </td>
-      <td class="py-2 px-3">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-metric-sage text-status-in-stock border border-metric-sage/50">
-        In Stock
-       </span>
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       Main IT Store
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       IT Storage A
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       05 Jan 2021
-      </td>
-      <td class="py-2 px-3">
-       <span class="text-status-critical font-medium">
-        Expired
-       </span>
-      </td>
-      <td class="py-2 px-3 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="visibility">
-         visibility
-        </span>
-       </button>
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="edit">
-         edit
-        </span>
-       </button>
-       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="more_vert">
-         more_vert
-        </span>
-       </button>
-      </td>
-     </tr>
-     <!-- Row 3 -->
-     <tr class="bg-surface hover:bg-[#FEF3C7] transition-colors group cursor-pointer border-l-[3px] border-l-transparent">
-      <td class="py-2 px-3 text-center">
-       <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
-      </td>
-      <td class="py-2 px-3 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
-       TAG-0921
-      </td>
-      <td class="py-2 px-3 font-medium">
-       Herman Miller Aeron
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       Furniture
-      </td>
-      <td class="py-2 px-3">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-tertiary-fixed text-status-checked-out border border-tertiary-fixed-dim/50">
-        Checked Out
-       </span>
-      </td>
-      <td class="py-2 px-3">
-       David Chen
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       Bldg 1, Fl 2
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       18 Aug 2022
-      </td>
-      <td class="py-2 px-3">
-       <span class="text-status-in-stock font-medium">
-        Active
-       </span>
-      </td>
-      <td class="py-2 px-3 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="visibility">
-         visibility
-        </span>
-       </button>
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="edit">
-         edit
-        </span>
-       </button>
-       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="more_vert">
-         more_vert
-        </span>
-       </button>
-      </td>
-     </tr>
-     <!-- Row 4 -->
-     <tr class="bg-surface hover:bg-[#FEF3C7] transition-colors group cursor-pointer border-l-[3px] border-l-transparent">
-      <td class="py-2 px-3 text-center">
-       <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container" type="checkbox"/>
-      </td>
-      <td class="py-2 px-3 font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2">
-       TAG-3312
-      </td>
-      <td class="py-2 px-3 font-medium">
-       Conference Table Oak
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       Furniture
-      </td>
-      <td class="py-2 px-3">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-error-container text-status-critical border border-error-container/50">
-        Under Repair
-       </span>
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       Facilities
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       Maint Workshop
-      </td>
-      <td class="py-2 px-3 text-text-secondary">
-       22 Mar 2019
-      </td>
-      <td class="py-2 px-3">
-       <span class="text-status-critical font-medium">
-        Expired
-       </span>
-      </td>
-      <td class="py-2 px-3 text-right space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="visibility">
-         visibility
-        </span>
-       </button>
-       <button class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="edit">
-         edit
-        </span>
-       </button>
-       <button class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded transition-colors">
-        <span class="material-symbols-outlined text-[16px]" data-icon="more_vert">
-         more_vert
-        </span>
-       </button>
-      </td>
-     </tr>
-    </tbody>
-   </table>
-   <!-- Pagination Footer -->
-   <div class="bg-surface px-4 py-3 border-t border-border-default flex items-center justify-between sm:px-6">
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-     <div>
-      <p class="text-sm text-text-secondary">
-       Showing
-       <span class="font-medium text-text-primary">
-        1
-       </span>
-       to
-       <span class="font-medium text-text-primary">
-        10
-       </span>
-       of
-       <span class="font-medium text-text-primary">
-        1,248
-       </span>
-       results
-      </p>
-     </div>
-     <div>
-      <nav aria-label="Pagination" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-       <button class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-border-default bg-surface text-sm font-medium text-text-secondary hover:bg-surface-subtle">
-        <span class="sr-only">
-         Previous
-        </span>
-        <span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">
-         chevron_left
-        </span>
-       </button>
-       <button class="relative inline-flex items-center px-4 py-2 border border-border-default bg-surface-subtle text-sm font-medium text-primary-container">
-        1
-       </button>
-       <button class="relative inline-flex items-center px-4 py-2 border border-border-default bg-surface text-sm font-medium text-text-secondary hover:bg-surface-subtle">
-        2
-       </button>
-       <button class="relative inline-flex items-center px-4 py-2 border border-border-default bg-surface text-sm font-medium text-text-secondary hover:bg-surface-subtle">
-        3
-       </button>
-       <span class="relative inline-flex items-center px-4 py-2 border border-border-default bg-surface text-sm font-medium text-text-secondary">
-        ...
-       </span>
-       <button class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-border-default bg-surface text-sm font-medium text-text-secondary hover:bg-surface-subtle">
-        <span class="sr-only">
-         Next
-        </span>
-        <span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">
-         chevron_right
-        </span>
-       </button>
-      </nav>
-     </div>
-    </div>
-   </div>
+      </div>
+     </template>
+    </Column>
+   </DataTable>
   </div>
  </div>
 </main>
@@ -447,5 +222,39 @@
 </template>
 
 <script setup lang="ts">
-// Autogenerated from asset_registry
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+interface Asset {
+  id: number;
+  tagId: string;
+  name: string;
+  category: string;
+  status: string;
+  custodian: string;
+  location: string;
+  purchaseDate: string;
+  warrantyStatus: string;
+}
+
+const assets = ref<Asset[]>([])
+const loading = ref(true)
+
+const fetchAssets = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/assets')
+    if (res.ok) {
+      assets.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch assets:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchAssets()
+})
 </script>

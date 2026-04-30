@@ -49,7 +49,5 @@ func ConnectDB() error {
 		log.Fatalf("Failed to auto-migrate extra models: %v", err)
 	}
 
-	seedExtraData(db)
-
 	return nil
 }

@@ -42,6 +42,7 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.GET("/assets", handlers.GetAssets)
+		api.GET("/assets/:id", handlers.GetAssetByID)
 		api.POST("/assets", handlers.CreateAsset)
 
 		api.GET("/consumables", handlers.GetConsumables)
