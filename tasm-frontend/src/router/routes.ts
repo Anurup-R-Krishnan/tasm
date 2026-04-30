@@ -65,7 +65,6 @@ export const appRoutes: AppRouteDefinition[] = [
   { path: 'asset-detail/:id', name: 'AssetDetail', title: 'Asset Detail', component: () => import('../views/AssetDetail.vue') },
   { path: 'maintenance-contracts-overview', name: 'MaintenanceContractsOverview', title: 'Maintenance Contracts Overview', component: () => import('../views/MaintenanceContractsOverview.vue') },
   { path: 'user-access-role-control', name: 'UserAccessRoleControl', title: 'User Access Role Control', component: () => import('../views/UserAccessRoleControl.vue') },
-  { path: 'asset-check-out-step-2-select-recipient', name: 'AssetCheckOutStep2SelectRecipient', title: 'Asset Check Out Recipient', component: () => import('../views/AssetCheckOutStep2SelectRecipient.vue') },
   { path: 'scheduled-maintenance-tracker', name: 'ScheduledMaintenanceTracker', title: 'Scheduled Maintenance Tracker', component: () => import('../views/ScheduledMaintenanceTracker.vue') },
   { path: 'maintenance-service-history-log', name: 'MaintenanceServiceHistoryLog', title: 'Maintenance Service History Log', component: () => import('../views/MaintenanceServiceHistoryLog.vue') },
   { path: 'audit-discrepancy-resolution', name: 'AuditDiscrepancyResolution', title: 'Audit Discrepancy Resolution', component: () => import('../views/AuditDiscrepancyResolution.vue') },
