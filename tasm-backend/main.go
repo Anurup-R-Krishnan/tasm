@@ -52,6 +52,9 @@ func main() {
 
 		api.GET("/work-orders", handlers.GetWorkOrders)
 		api.POST("/work-orders", handlers.CreateWorkOrder)
+		
+		api.GET("/audits", handlers.GetAudits)
+		api.POST("/audits", handlers.CreateAudit)
 	}
 
 	port := os.Getenv("PORT")

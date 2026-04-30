@@ -29,153 +29,70 @@
     </span>
    </button>
   </div>
-  <div class="overflow-x-auto">
-   <table class="w-full text-left border-collapse">
-    <thead>
-     <tr class="border-b border-border-default bg-surface">
-      <th class="font-table-header text-table-header text-text-secondary py-3 px-6 uppercase">
-       Session ID
-      </th>
-      <th class="font-table-header text-table-header text-text-secondary py-3 px-6 uppercase">
-       Scope
-      </th>
-      <th class="font-table-header text-table-header text-text-secondary py-3 px-6 uppercase">
-       Date
-      </th>
-      <th class="font-table-header text-table-header text-text-secondary py-3 px-6 uppercase">
-       Verified %
-      </th>
-      <th class="font-table-header text-table-header text-text-secondary py-3 px-6 uppercase">
-       Missing
-      </th>
-      <th class="font-table-header text-table-header text-text-secondary py-3 px-6 uppercase">
-       Unregistered
-      </th>
-      <th class="font-table-header text-table-header text-text-secondary py-3 px-6 uppercase">
-       Status
-      </th>
-      <th class="font-table-header text-table-header text-text-secondary py-3 px-6 uppercase text-right">
-       Action
-      </th>
-     </tr>
-    </thead>
-    <tbody class="font-body text-body">
-     <tr class="border-b border-border-default hover:bg-metric-amber transition-colors bg-surface group">
-      <td class="py-4 px-6 font-mono-data text-mono-data text-text-primary border-l-[3px] border-amber-600">
-       AUD-2023-11-A
-      </td>
-      <td class="py-4 px-6 text-text-primary">
-       Gayathri - Floor 2
-      </td>
-      <td class="py-4 px-6 text-text-secondary">
-       Nov 14, 2023
-      </td>
-      <td class="py-4 px-6">
-       <div class="flex items-center gap-2">
-        <span class="font-medium">
-         85%
-        </span>
-        <div class="w-16 h-1.5 bg-surface-variant rounded-full overflow-hidden">
-         <div class="h-full bg-amber-500 w-[85%] rounded-full">
-         </div>
+  <div class="overflow-x-auto border-t border-border-default">
+   <DataTable :value="audits" :loading="loadingAudits" paginator :rows="5" tableStyle="min-width: 50rem" class="w-full">
+    <Column field="sessionId" header="Session ID" sortable>
+     <template #body="slotProps">
+      <span class="font-mono-data text-mono-data text-text-primary border-l-[3px]" :class="slotProps.data.status === 'In Progress' ? 'border-amber-600 pl-2' : 'border-transparent pl-2'">
+       {{ slotProps.data.sessionId }}
+      </span>
+     </template>
+    </Column>
+    <Column field="location" header="Scope" sortable>
+     <template #body="slotProps">
+      <span class="text-text-primary">{{ slotProps.data.location }}</span>
+     </template>
+    </Column>
+    <Column field="createdAt" header="Date" sortable>
+     <template #body="slotProps">
+      <span class="text-text-secondary">{{ new Date(slotProps.data.createdAt).toLocaleDateString() }}</span>
+     </template>
+    </Column>
+    <Column field="verifiedPercent" header="Verified %" sortable>
+     <template #body="slotProps">
+      <div class="flex items-center gap-2">
+       <span class="font-medium" :class="slotProps.data.verifiedPercent === 100 ? 'text-status-in-stock' : ''">
+        {{ slotProps.data.verifiedPercent }}%
+       </span>
+       <div class="w-16 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+        <div class="h-full rounded-full" :class="slotProps.data.verifiedPercent === 100 ? 'bg-status-in-stock' : 'bg-amber-500'" :style="'width: ' + slotProps.data.verifiedPercent + '%'">
         </div>
        </div>
-      </td>
-      <td class="py-4 px-6 text-status-critical font-medium">
-       12
-      </td>
-      <td class="py-4 px-6 text-primary-container">
-       3
-      </td>
-      <td class="py-4 px-6">
-       <span class="inline-flex items-center px-2 py-1 rounded bg-metric-lavender text-tertiary-container font-metadata text-metadata font-medium">
-        In Progress
-       </span>
-      </td>
-      <td class="py-4 px-6 text-right">
-       <button class="text-primary hover:text-amber-800 font-medium transition-colors">
-        View Report
-       </button>
-      </td>
-     </tr>
-     <tr class="border-b border-border-default hover:bg-metric-amber transition-colors bg-surface-subtle">
-      <td class="py-4 px-6 font-mono-data text-mono-data text-text-primary border-l-[3px] border-transparent">
-       AUD-2023-10-F
-      </td>
-      <td class="py-4 px-6 text-text-primary">
-       Bhavani - IT Server Room
-      </td>
-      <td class="py-4 px-6 text-text-secondary">
-       Oct 28, 2023
-      </td>
-      <td class="py-4 px-6">
-       <div class="flex items-center gap-2">
-        <span class="font-medium text-status-in-stock">
-         100%
-        </span>
-        <div class="w-16 h-1.5 bg-surface-variant rounded-full overflow-hidden">
-         <div class="h-full bg-status-in-stock w-[100%] rounded-full">
-         </div>
-        </div>
-       </div>
-      </td>
-      <td class="py-4 px-6 text-text-secondary">
-       0
-      </td>
-      <td class="py-4 px-6 text-text-secondary">
-       0
-      </td>
-      <td class="py-4 px-6">
-       <span class="inline-flex items-center px-2 py-1 rounded bg-metric-sage text-status-in-stock font-metadata text-metadata font-medium">
-        Completed
-       </span>
-      </td>
-      <td class="py-4 px-6 text-right">
-       <button class="text-primary hover:text-amber-800 font-medium transition-colors">
-        View Report
-       </button>
-      </td>
-     </tr>
-     <tr class="border-b border-border-default hover:bg-metric-amber transition-colors bg-surface">
-      <td class="py-4 px-6 font-mono-data text-mono-data text-text-primary border-l-[3px] border-transparent">
-       AUD-2023-10-E
-      </td>
-      <td class="py-4 px-6 text-text-primary">
-       Thejaswini - Ground Floor
-      </td>
-      <td class="py-4 px-6 text-text-secondary">
-       Oct 15, 2023
-      </td>
-      <td class="py-4 px-6">
-       <div class="flex items-center gap-2">
-        <span class="font-medium">
-         98%
-        </span>
-        <div class="w-16 h-1.5 bg-surface-variant rounded-full overflow-hidden">
-         <div class="h-full bg-status-in-stock w-[98%] rounded-full">
-         </div>
-        </div>
-       </div>
-      </td>
-      <td class="py-4 px-6 text-status-critical font-medium">
-       2
-      </td>
-      <td class="py-4 px-6 text-text-secondary">
-       0
-      </td>
-      <td class="py-4 px-6">
-       <span class="inline-flex items-center px-2 py-1 rounded bg-metric-sage text-status-in-stock font-metadata text-metadata font-medium">
-        Completed
-       </span>
-      </td>
-      <td class="py-4 px-6 text-right">
-       <button class="text-primary hover:text-amber-800 font-medium transition-colors">
-        View Report
-       </button>
-      </td>
-     </tr>
-    </tbody>
-   </table>
+      </div>
+     </template>
+    </Column>
+    <Column field="missingCount" header="Missing" sortable>
+     <template #body="slotProps">
+      <span :class="slotProps.data.missingCount > 0 ? 'text-status-critical font-medium' : 'text-text-secondary'">
+       {{ slotProps.data.missingCount }}
+      </span>
+     </template>
+    </Column>
+    <Column field="unregisteredCount" header="Unregistered" sortable>
+     <template #body="slotProps">
+      <span :class="slotProps.data.unregisteredCount > 0 ? 'text-primary-container' : 'text-text-secondary'">
+       {{ slotProps.data.unregisteredCount }}
+      </span>
+     </template>
+    </Column>
+    <Column field="status" header="Status" sortable>
+     <template #body="slotProps">
+      <span v-if="slotProps.data.status === 'In Progress'" class="inline-flex items-center px-2 py-1 rounded bg-metric-lavender text-tertiary-container font-metadata text-metadata font-medium">
+       In Progress
+      </span>
+      <span v-else class="inline-flex items-center px-2 py-1 rounded bg-metric-sage text-status-in-stock font-metadata text-metadata font-medium">
+       Completed
+      </span>
+     </template>
+    </Column>
+    <Column header="Action" alignFrozen="right">
+     <template #body>
+      <button class="text-primary hover:text-amber-800 font-medium transition-colors">
+       View Report
+      </button>
+     </template>
+    </Column>
+   </DataTable>
   </div>
   <div class="px-card-padding py-3 border-t border-border-default bg-surface flex justify-end">
    <button class="text-text-secondary hover:text-text-primary font-metadata text-metadata transition-colors flex items-center gap-1">
@@ -350,5 +267,40 @@
 </template>
 
 <script setup lang="ts">
-// Autogenerated from audit_session_management_1
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+interface AuditSession {
+  id: number;
+  sessionId: string;
+  title: string;
+  status: string;
+  auditor: string;
+  location: string;
+  verifiedPercent: number;
+  missingCount: number;
+  unregisteredCount: number;
+  createdAt: string;
+}
+
+const audits = ref<AuditSession[]>([])
+const loadingAudits = ref(true)
+
+const fetchAudits = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/audits')
+    if (res.ok) {
+      audits.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch audits:', error)
+  } finally {
+    loadingAudits.value = false
+  }
+}
+
+onMounted(() => {
+  fetchAudits()
+})
 </script>

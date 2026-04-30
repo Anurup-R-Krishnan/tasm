@@ -10,10 +10,14 @@ type AuditSession struct {
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
-	Title     string         `json:"title"`
-	Status    string         `json:"status"` // e.g. In Progress, Completed
-	Auditor   string         `json:"auditor"`
-	Location  string         `json:"location"`
+	Title             string         `json:"title"`
+	Status            string         `json:"status"` // e.g. In Progress, Completed
+	Auditor           string         `json:"auditor"`
+	Location          string         `json:"location"`
+	SessionID         string         `json:"sessionId"`
+	VerifiedPercent   int            `json:"verifiedPercent"`
+	MissingCount      int            `json:"missingCount"`
+	UnregisteredCount int            `json:"unregisteredCount"`
 }
 
 type Consumable struct {
