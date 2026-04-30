@@ -251,200 +251,89 @@
      <input class="pl-9 pr-4 py-1.5 rounded-lg border border-border-default bg-surface-subtle text-sm focus:outline-none focus:ring-1 focus:ring-surface-tint focus:border-surface-tint w-[200px]" placeholder="Search entries..." type="text"/>
     </div>
    </div>
-   <div class="overflow-x-auto custom-scrollbar">
-    <table class="w-full text-left border-collapse min-w-[800px]">
-     <thead>
-      <tr class="bg-surface-subtle border-b border-border-default">
-       <th class="px-4 py-3 font-table-header text-table-header text-text-secondary whitespace-nowrap">
-        ENTRY ID
-       </th>
-       <th class="px-4 py-3 font-table-header text-table-header text-text-secondary whitespace-nowrap">
-        DATE
-       </th>
-       <th class="px-4 py-3 font-table-header text-table-header text-text-secondary whitespace-nowrap">
-        CATEGORY
-       </th>
-       <th class="px-4 py-3 font-table-header text-table-header text-text-secondary">
-        DESCRIPTION
-       </th>
-       <th class="px-4 py-3 font-table-header text-table-header text-text-secondary text-right whitespace-nowrap">
-        DEBIT (₹)
-       </th>
-       <th class="px-4 py-3 font-table-header text-table-header text-text-secondary text-right whitespace-nowrap">
-        CREDIT (₹)
-       </th>
-       <th class="px-4 py-3 font-table-header text-table-header text-text-secondary text-right whitespace-nowrap">
-        BALANCE (₹)
-       </th>
-      </tr>
-     </thead>
-     <tbody class="font-body text-body text-text-primary divide-y divide-border-default">
-      <!-- Row 1 -->
-      <tr class="hover:bg-metric-amber/20 transition-colors bg-surface group cursor-pointer">
-       <td class="px-4 py-3 font-mono-data text-mono-data text-surface-tint">
-        TRX-9921
-       </td>
-       <td class="px-4 py-3 whitespace-nowrap">
-        24 Oct 2023
-       </td>
-       <td class="px-4 py-3">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-container text-primary-container font-metadata text-metadata border border-surface-dim">
-         IT Hardware
-        </span>
-       </td>
-       <td class="px-4 py-3 max-w-[200px] truncate" title="Procurement of 50 Dell Latitude Laptops for new joiners">
-        Procurement of 50 Dell Latitude Laptops for new...
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data">
-        35,50,000.00
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data text-text-secondary">
-        -
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data font-medium">
-        12,45,50,000.00
-       </td>
-      </tr>
-      <!-- Row 2 -->
-      <tr class="hover:bg-metric-amber/20 transition-colors bg-surface-subtle group cursor-pointer">
-       <td class="px-4 py-3 font-mono-data text-mono-data text-surface-tint">
-        DEP-8432
-       </td>
-       <td class="px-4 py-3 whitespace-nowrap">
-        30 Sep 2023
-       </td>
-       <td class="px-4 py-3">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed-variant font-metadata text-metadata border border-tertiary-fixed-dim">
-         Depreciation
-        </span>
-       </td>
-       <td class="px-4 py-3 max-w-[200px] truncate" title="Q3 Straight-Line Depreciation across all vehicle assets">
-        Q3 Straight-Line Depreciation across all vehicle...
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data text-text-secondary">
-        -
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data">
-        4,25,000.00
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data font-medium">
-        12,10,00,000.00
-       </td>
-      </tr>
-      <!-- Row 3 -->
-      <tr class="hover:bg-metric-amber/20 transition-colors bg-surface group cursor-pointer border-l-[3px] border-l-surface-tint">
-       <td class="px-4 py-3 font-mono-data text-mono-data text-surface-tint pl-3">
-        TRX-9905
-       </td>
-       <td class="px-4 py-3 whitespace-nowrap">
-        15 Sep 2023
-       </td>
-       <td class="px-4 py-3">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-container text-primary-container font-metadata text-metadata border border-surface-dim">
-         Infrastructure
-        </span>
-       </td>
-       <td class="px-4 py-3 max-w-[200px] truncate" title="HVAC System upgrade for Phase 3 Building">
-        HVAC System upgrade for Phase 3 Building
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data">
-        1,12,00,000.00
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data text-text-secondary">
-        -
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data font-medium">
-        12,14,25,000.00
-       </td>
-      </tr>
-      <!-- Row 4 -->
-      <tr class="hover:bg-metric-amber/20 transition-colors bg-surface-subtle group cursor-pointer">
-       <td class="px-4 py-3 font-mono-data text-mono-data text-surface-tint">
-        DIS-1120
-       </td>
-       <td class="px-4 py-3 whitespace-nowrap">
-        05 Sep 2023
-       </td>
-       <td class="px-4 py-3">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-error-container text-on-error-container font-metadata text-metadata border border-surface-dim">
-         Disposal
-        </span>
-       </td>
-       <td class="px-4 py-3 max-w-[200px] truncate" title="Sale of obsolete server racks (End of Life)">
-        Sale of obsolete server racks (End of Life)
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data text-text-secondary">
-        -
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data">
-        8,50,000.00
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data font-medium">
-        11,02,25,000.00
-       </td>
-      </tr>
-      <!-- Row 5 -->
-      <tr class="hover:bg-metric-amber/20 transition-colors bg-surface group cursor-pointer">
-       <td class="px-4 py-3 font-mono-data text-mono-data text-surface-tint">
-        TRX-9884
-       </td>
-       <td class="px-4 py-3 whitespace-nowrap">
-        22 Aug 2023
-       </td>
-       <td class="px-4 py-3">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-container text-primary-container font-metadata text-metadata border border-surface-dim">
-         Furniture
-        </span>
-       </td>
-       <td class="px-4 py-3 max-w-[200px] truncate" title="Ergonomic chairs for new incubation center">
-        Ergonomic chairs for new incubation center
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data">
-        15,75,000.00
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data text-text-secondary">
-        -
-       </td>
-       <td class="px-4 py-3 text-right font-mono-data text-mono-data font-medium">
-        11,10,75,000.00
-       </td>
-      </tr>
-     </tbody>
-    </table>
-   </div>
-   <!-- Table Pagination -->
-   <div class="px-card-padding py-3 border-t border-border-default flex justify-between items-center bg-surface-subtle">
-    <span class="font-metadata text-metadata text-text-secondary">
-     Showing 1 to 5 of 248 entries
-    </span>
-    <div class="flex gap-1">
-     <button class="w-8 h-8 rounded border border-border-default flex items-center justify-center text-text-secondary hover:bg-surface disabled:opacity-50" disabled>
-      <span class="material-symbols-outlined text-[18px]">
-       chevron_left
-      </span>
-     </button>
-     <button class="w-8 h-8 rounded border border-surface-tint bg-surface-tint text-white font-metadata text-metadata flex items-center justify-center">
-      1
-     </button>
-     <button class="w-8 h-8 rounded border border-border-default bg-surface hover:bg-surface-subtle text-text-primary font-metadata text-metadata flex items-center justify-center">
-      2
-     </button>
-     <button class="w-8 h-8 rounded border border-border-default bg-surface hover:bg-surface-subtle text-text-primary font-metadata text-metadata flex items-center justify-center">
-      3
-     </button>
-     <button class="w-8 h-8 rounded border border-border-default flex items-center justify-center text-text-secondary hover:bg-surface">
-      <span class="material-symbols-outlined text-[18px]">
-       chevron_right
-      </span>
-     </button>
-    </div>
+   <div class="overflow-x-auto p-4">
+    <DataTable :value="ledgers" :loading="loading" paginator :rows="10" tableStyle="min-width: 50rem" class="w-full text-left">
+     <Column field="transactionId" header="ENTRY ID" sortable>
+      <template #body="slotProps">
+       <span class="font-mono-data text-mono-data text-surface-tint">
+        {{ slotProps.data.transactionId }}
+       </span>
+      </template>
+     </Column>
+     <Column field="date" header="DATE" sortable>
+      <template #body="slotProps">
+       <span class="whitespace-nowrap">{{ new Date(slotProps.data.date).toLocaleDateString() }}</span>
+      </template>
+     </Column>
+     <Column field="category" header="CATEGORY" sortable>
+      <template #body="slotProps">
+       <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-container text-primary-container font-metadata text-metadata border border-surface-dim">
+        {{ slotProps.data.category }}
+       </span>
+      </template>
+     </Column>
+     <Column field="description" header="DESCRIPTION">
+      <template #body="slotProps">
+       <div class="max-w-[200px] truncate" :title="slotProps.data.description">
+        {{ slotProps.data.description }}
+       </div>
+      </template>
+     </Column>
+     <Column header="DEBIT (₹)" alignFrozen="right">
+      <template #body="slotProps">
+       <span v-if="slotProps.data.type === 'Debit'" class="font-mono-data text-mono-data">
+        {{ slotProps.data.amount?.toLocaleString() }}
+       </span>
+       <span v-else class="font-mono-data text-mono-data text-text-secondary">-</span>
+      </template>
+     </Column>
+     <Column header="CREDIT (₹)" alignFrozen="right">
+      <template #body="slotProps">
+       <span v-if="slotProps.data.type === 'Credit'" class="font-mono-data text-mono-data">
+        {{ slotProps.data.amount?.toLocaleString() }}
+       </span>
+       <span v-else class="font-mono-data text-mono-data text-text-secondary">-</span>
+      </template>
+     </Column>
+    </DataTable>
    </div>
   </div>
  </div>
 </main>
-
 </template>
 
 <script setup lang="ts">
-// Autogenerated from financial_ledger_detail
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+interface LedgerEntry {
+  id: number;
+  transactionId: string;
+  date: string;
+  description: string;
+  amount: number;
+  type: string;
+  category: string;
+}
+
+const ledgers = ref<LedgerEntry[]>([])
+const loading = ref(true)
+
+const fetchLedgers = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/ledgers')
+    if (res.ok) {
+      ledgers.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch ledgers:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchLedgers()
+})
 </script>
