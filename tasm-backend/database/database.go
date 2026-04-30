@@ -1,9 +1,7 @@
 package database
 
 import (
-	"fmt"
 	"log"
-	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -12,31 +10,38 @@ import (
 
 var DB *gorm.DB
 
-func ConnectDB() {
-	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Kolkata",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
-		os.Getenv("DB_PORT"),
-	)
-	
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+func ConnectDB() error {
+	config, err := LoadConfig()
 	if err != nil {
-		log.Println("Failed to connect to database. Waiting for DB...")
-		return
+		return err
+	}
+
+	db, err := gorm.Open(postgres.Open(config.DSN()), &gorm.Config{})
+	if err != nil {
+		return err
+	}
+
+	sqlDB, err := db.DB()
+	if err != nil {
+		return err
+	}
+
+	if err := sqlDB.Ping(); err != nil {
+		return err
 	}
 
 	DB = db
-	log.Println("Database connection established")
+	log.Printf("Database connection established for %s@%s:%s/%s", config.User, config.Host, config.Port, config.Name)
 
-	// Auto-migrate
-	DB.AutoMigrate(
+	if err := DB.AutoMigrate(
 		&models.Asset{},
 		&models.AuditSession{},
 		&models.Consumable{},
 		&models.MaintenanceContract{},
 		&models.WorkOrder{},
-	)
+	); err != nil {
+		return err
+	}
+
+	return nil
 }

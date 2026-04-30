@@ -2,19 +2,23 @@ package handlers
 
 import (
 	"net/http"
+
 	"github.com/gin-gonic/gin"
-	"tasm-backend/database"
 	"tasm-backend/models"
 )
 
 func GetContracts(c *gin.Context) {
-	var contracts []models.MaintenanceContract
-	if database.DB == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+	db, ok := requireDB(c)
+	if !ok {
 		return
 	}
-	
-	database.DB.Find(&contracts)
+
+	var contracts []models.MaintenanceContract
+	if err := db.Order("start_date desc").Find(&contracts).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load contracts"})
+		return
+	}
+
 	c.JSON(http.StatusOK, contracts)
 }
 
@@ -24,24 +28,32 @@ func CreateContract(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
-	if database.DB == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+
+	db, ok := requireDB(c)
+	if !ok {
 		return
 	}
 
-	database.DB.Create(&contract)
+	if err := db.Create(&contract).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create contract"})
+		return
+	}
+
 	c.JSON(http.StatusCreated, contract)
 }
 
 func GetWorkOrders(c *gin.Context) {
-	var workOrders []models.WorkOrder
-	if database.DB == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+	db, ok := requireDB(c)
+	if !ok {
 		return
 	}
-	
-	database.DB.Find(&workOrders)
+
+	var workOrders []models.WorkOrder
+	if err := db.Order("target_date asc").Find(&workOrders).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load work orders"})
+		return
+	}
+
 	c.JSON(http.StatusOK, workOrders)
 }
 
@@ -51,12 +63,16 @@ func CreateWorkOrder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
-	if database.DB == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+
+	db, ok := requireDB(c)
+	if !ok {
 		return
 	}
 
-	database.DB.Create(&workOrder)
+	if err := db.Create(&workOrder).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create work order"})
+		return
+	}
+
 	c.JSON(http.StatusCreated, workOrder)
 }

@@ -2,19 +2,23 @@ package handlers
 
 import (
 	"net/http"
+
 	"github.com/gin-gonic/gin"
-	"tasm-backend/database"
 	"tasm-backend/models"
 )
 
 func GetAssets(c *gin.Context) {
-	var assets []models.Asset
-	if database.DB == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+	db, ok := requireDB(c)
+	if !ok {
 		return
 	}
-	
-	database.DB.Find(&assets)
+
+	var assets []models.Asset
+	if err := db.Order("created_at desc").Find(&assets).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load assets"})
+		return
+	}
+
 	c.JSON(http.StatusOK, assets)
 }
 
@@ -24,12 +28,16 @@ func CreateAsset(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
-	if database.DB == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+
+	db, ok := requireDB(c)
+	if !ok {
 		return
 	}
 
-	database.DB.Create(&asset)
+	if err := db.Create(&asset).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create asset"})
+		return
+	}
+
 	c.JSON(http.StatusCreated, asset)
 }
