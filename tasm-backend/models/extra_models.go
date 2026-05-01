@@ -144,6 +144,44 @@ type SystemUser struct {
 	LastLogin      time.Time      `json:"lastLogin"`
 }
 
+type AuditDiscrepancy struct {
+	ID                uint           `gorm:"primarykey" json:"id"`
+	CreatedAt         time.Time      `json:"createdAt"`
+	UpdatedAt         time.Time      `json:"updatedAt"`
+	DeletedAt         gorm.DeletedAt `gorm:"index" json:"-"`
+	AssetTag          string         `json:"assetTag"`
+	IssueType         string         `json:"issueType"` // Missing, Location Mismatch, Unregistered
+	LastKnownLocation string         `json:"lastKnownLocation"`
+	ScannedLocation   string         `json:"scannedLocation"`
+	RecommendedAction string         `json:"recommendedAction"`
+}
+
+type Reservation struct {
+	ID        uint           `gorm:"primarykey" json:"id"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+	Title     string         `json:"title"`
+	Type      string         `json:"type"` // Meeting Room, Vehicle, AV Equipment
+	Status    string         `json:"status"` // Active, Upcoming
+	StartTime time.Time      `json:"startTime"`
+	EndTime   time.Time      `json:"endTime"`
+	Location  string         `json:"location"`
+	BookedBy  string         `json:"bookedBy"`
+}
+
+type Location struct {
+	ID        uint           `gorm:"primarykey" json:"id"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+	Name      string         `json:"name"`
+	Type      string         `json:"type"` // Office, Data Center, Warehouse
+	Address   string         `json:"address"`
+	Capacity  int            `json:"capacity"`
+	Status    string         `json:"status"` // Active, Inactive
+}
+
 type UserRole struct {
 	ID             uint           `gorm:"primarykey" json:"id"`
 	CreatedAt      time.Time      `json:"createdAt"`
@@ -165,3 +203,4 @@ type SystemAlert struct {
 	Source    string         `json:"source"`
 	IsRead    bool           `json:"isRead"`
 }
+

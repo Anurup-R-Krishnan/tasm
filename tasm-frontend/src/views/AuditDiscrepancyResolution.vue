@@ -86,177 +86,86 @@
     </select>
    </div>
   </div>
-  <div class="overflow-x-auto">
-   <table class="w-full text-left border-collapse">
-    <thead>
-     <tr class="bg-surface border-b border-border-default">
-      <th class="p-4 w-12">
-       <input class="rounded border-outline-variant text-amber-600 focus:ring-amber-500" type="checkbox"/>
-      </th>
-      <th class="p-4 font-table-header text-table-header text-text-secondary uppercase">
-       Asset Tag
-      </th>
-      <th class="p-4 font-table-header text-table-header text-text-secondary uppercase">
-       Issue Type
-      </th>
-      <th class="p-4 font-table-header text-table-header text-text-secondary uppercase">
-       Last Known Location
-      </th>
-      <th class="p-4 font-table-header text-table-header text-text-secondary uppercase">
-       Scanned Location
-      </th>
-      <th class="p-4 font-table-header text-table-header text-text-secondary uppercase">
-       Recommended Action
-      </th>
-      <th class="p-4 font-table-header text-table-header text-text-secondary uppercase text-right">
-       Actions
-      </th>
-     </tr>
-    </thead>
-    <tbody class="divide-y divide-border-default">
-     <tr class="bg-surface hover:bg-accent-subtle transition-colors group relative border-l-4 border-l-transparent hover:border-l-amber-500">
-      <td class="p-4">
-       <input class="rounded border-outline-variant text-amber-600 focus:ring-amber-500" type="checkbox"/>
-      </td>
-      <td class="p-4 font-mono-data text-mono-data text-text-primary">
-       AST-992-LX
-      </td>
-      <td class="p-4">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-metric-amber text-on-primary-container border border-amber-200">
-        Location Mismatch
-       </span>
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary">
-       C-Wing, Server Rm 2
-      </td>
-      <td class="p-4 font-body text-body text-text-primary font-medium">
-       B-Wing, IT Store
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary">
-       Update to B-Wing
-      </td>
-      <td class="p-4 text-right space-x-2">
-       <button class="px-3 py-1.5 bg-surface border border-border-default rounded font-metadata text-metadata text-text-primary hover:bg-stone-50 transition-colors">
-        Confirm New
-       </button>
-      </td>
-     </tr>
-     <tr class="bg-surface-subtle hover:bg-accent-subtle transition-colors group relative border-l-4 border-l-transparent hover:border-l-amber-500">
-      <td class="p-4">
-       <input class="rounded border-outline-variant text-amber-600 focus:ring-amber-500" type="checkbox"/>
-      </td>
-      <td class="p-4 font-mono-data text-mono-data text-text-primary">
-       MAC-844-PR
-      </td>
-      <td class="p-4">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-error-container text-on-error-container border border-red-200">
-        Missing
-       </span>
-      </td>
-      <td class="p-4 font-body text-body text-text-primary font-medium">
-       C-Wing, Desk 104
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary italic">
-       Not Scanned
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary">
-       Investigate / Mark Lost
-      </td>
-      <td class="p-4 text-right space-x-2">
-       <button class="px-3 py-1.5 bg-surface border border-border-default rounded font-metadata text-metadata text-text-primary hover:bg-stone-50 transition-colors">
-        Mark Lost
-       </button>
-      </td>
-     </tr>
-     <tr class="bg-surface hover:bg-accent-subtle transition-colors group relative border-l-4 border-l-transparent hover:border-l-amber-500">
-      <td class="p-4">
-       <input class="rounded border-outline-variant text-amber-600 focus:ring-amber-500" type="checkbox"/>
-      </td>
-      <td class="p-4 font-mono-data text-mono-data text-text-primary">
-       MON-112-DK
-      </td>
-      <td class="p-4">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-metric-lavender text-tertiary border border-purple-200">
-        Unregistered
-       </span>
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary italic">
-       None
-      </td>
-      <td class="p-4 font-body text-body text-text-primary font-medium">
-       C-Wing, Meeting Rm B
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary">
-       Register New Asset
-      </td>
-      <td class="p-4 text-right space-x-2">
-       <button class="px-3 py-1.5 bg-[#1C1917] text-white rounded font-metadata text-metadata hover:opacity-90 transition-opacity">
+  <div class="overflow-x-auto p-4">
+   <DataTable :value="discrepancies" :loading="loading" paginator :rows="10" class="w-full text-left" rowHover>
+    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+    <Column field="assetTag" header="Asset Tag" sortable>
+     <template #body="slotProps">
+      <span class="font-mono-data text-mono-data text-text-primary">{{ slotProps.data.assetTag }}</span>
+     </template>
+    </Column>
+    <Column field="issueType" header="Issue Type" sortable>
+     <template #body="slotProps">
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata border"
+            :class="slotProps.data.issueType === 'Location Mismatch' ? 'bg-metric-amber text-on-primary-container border-amber-200' : (slotProps.data.issueType === 'Missing' ? 'bg-error-container text-on-error-container border-red-200' : 'bg-metric-lavender text-tertiary border-purple-200')">
+       {{ slotProps.data.issueType }}
+      </span>
+     </template>
+    </Column>
+    <Column field="lastKnownLocation" header="Last Known Location" sortable>
+     <template #body="slotProps">
+      <span class="font-body text-body" :class="slotProps.data.lastKnownLocation === 'None' ? 'text-text-secondary italic' : 'text-text-secondary'">
+       {{ slotProps.data.lastKnownLocation }}
+      </span>
+     </template>
+    </Column>
+    <Column field="scannedLocation" header="Scanned Location" sortable>
+     <template #body="slotProps">
+      <span class="font-body text-body font-medium" :class="slotProps.data.scannedLocation === 'Not Scanned' ? 'text-text-secondary italic' : 'text-text-primary'">
+       {{ slotProps.data.scannedLocation }}
+      </span>
+     </template>
+    </Column>
+    <Column field="recommendedAction" header="Recommended Action" sortable>
+     <template #body="slotProps">
+      <span class="font-body text-body" :class="slotProps.data.issueType === 'Missing' && slotProps.data.recommendedAction.includes('High Priority') ? 'text-status-critical font-medium' : 'text-text-secondary'">
+       {{ slotProps.data.recommendedAction }}
+      </span>
+     </template>
+    </Column>
+    <Column header="Actions" alignFrozen="right">
+     <template #body="slotProps">
+      <div class="space-x-2 text-right">
+       <button v-if="slotProps.data.issueType === 'Unregistered'" class="px-3 py-1.5 bg-[#1C1917] text-white rounded font-metadata text-metadata hover:opacity-90 transition-opacity">
         Register
        </button>
-      </td>
-     </tr>
-     <tr class="bg-surface-subtle hover:bg-accent-subtle transition-colors group relative border-l-4 border-l-transparent hover:border-l-amber-500">
-      <td class="p-4">
-       <input class="rounded border-outline-variant text-amber-600 focus:ring-amber-500" type="checkbox"/>
-      </td>
-      <td class="p-4 font-mono-data text-mono-data text-text-primary">
-       AST-945-LX
-      </td>
-      <td class="p-4">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-metric-amber text-on-primary-container border border-amber-200">
-        Location Mismatch
-       </span>
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary">
-       C-Wing, Desk 88
-      </td>
-      <td class="p-4 font-body text-body text-text-primary font-medium">
-       C-Wing, Desk 89
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary">
-       Update to Desk 89
-      </td>
-      <td class="p-4 text-right space-x-2">
-       <button class="px-3 py-1.5 bg-surface border border-border-default rounded font-metadata text-metadata text-text-primary hover:bg-stone-50 transition-colors">
-        Confirm New
-       </button>
-      </td>
-     </tr>
-     <tr class="bg-surface hover:bg-accent-subtle transition-colors group relative border-l-4 border-l-transparent hover:border-l-amber-500">
-      <td class="p-4">
-       <input class="rounded border-outline-variant text-amber-600 focus:ring-amber-500" type="checkbox"/>
-      </td>
-      <td class="p-4 font-mono-data text-mono-data text-text-primary">
-       SRV-004-PR
-      </td>
-      <td class="p-4">
-       <span class="inline-flex items-center px-2 py-0.5 rounded-full font-metadata text-metadata bg-error-container text-on-error-container border border-red-200">
-        Missing
-       </span>
-      </td>
-      <td class="p-4 font-body text-body text-text-primary font-medium">
-       Data Center Alpha
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary italic">
-       Not Scanned
-      </td>
-      <td class="p-4 font-body text-body text-text-secondary text-status-critical font-medium">
-       High Priority Investigate
-      </td>
-      <td class="p-4 text-right space-x-2">
-       <button class="px-3 py-1.5 bg-surface border border-border-default rounded font-metadata text-metadata text-text-primary hover:bg-stone-50 transition-colors">
+       <button v-else-if="slotProps.data.issueType === 'Missing'" class="px-3 py-1.5 bg-surface border border-border-default rounded font-metadata text-metadata text-text-primary hover:bg-stone-50 transition-colors">
         Mark Lost
        </button>
-      </td>
-     </tr>
-    </tbody>
-   </table>
+       <button v-else class="px-3 py-1.5 bg-surface border border-border-default rounded font-metadata text-metadata text-text-primary hover:bg-stone-50 transition-colors">
+        Confirm New
+       </button>
+      </div>
+     </template>
+    </Column>
+   </DataTable>
   </div>
  </div>
 </main>
-
 </template>
 
 <script setup lang="ts">
-// Autogenerated from audit_discrepancy_resolution
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+const discrepancies = ref<any[]>([])
+const loading = ref(true)
+
+const fetchDiscrepancies = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/discrepancies')
+    if (res.ok) {
+      discrepancies.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch discrepancies:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchDiscrepancies()
+})
 </script>
