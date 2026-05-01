@@ -1,1 +1,11 @@
 node_modules/
+
+# Build artifacts
+tasm-backend/server
+tasm-backend/tasm-api
+
+# Design reference (77MB, not source code)
+stitch_technopark_*/
+
+# IDE / tool artifacts
+.qodo/

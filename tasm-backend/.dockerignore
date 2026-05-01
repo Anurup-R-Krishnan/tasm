@@ -1,0 +1,4 @@
+server
+tasm-api
+.env
+.golangci.yml
