@@ -215,114 +215,57 @@
       View All
      </button>
     </div>
-    <div class="overflow-x-auto">
-     <table class="w-full text-left border-collapse">
-      <thead>
-       <tr class="bg-surface-subtle border-b border-border-default">
-        <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Asset / Resource
-        </th>
-        <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Reserved By
-        </th>
-        <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Date &amp; Time
-        </th>
-        <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Status
-        </th>
-        <th class="py-3 px-6 font-table-header text-table-header text-text-secondary uppercase text-right">
-         Action
-        </th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr class="border-b border-border-default hover:bg-metric-amber/20 transition-colors group relative">
-        <td class="py-3 px-6">
-         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded bg-tertiary-container/10 flex items-center justify-center text-tertiary-container">
-           <span class="material-symbols-outlined text-[18px]">
-            meeting_room
-           </span>
-          </div>
-          <div>
-           <p class="font-h3 text-h3 text-text-primary">
-            Conference Room A
-           </p>
-           <p class="font-mono-data text-mono-data text-text-secondary mt-1">
-            RM-001
-           </p>
-          </div>
-         </div>
-        </td>
-        <td class="py-3 px-6 font-body text-body text-text-primary">
-         Sarah Jenkins
-        </td>
-        <td class="py-3 px-6">
-         <p class="font-body text-body text-text-primary">
-          Oct 14, 2023
-         </p>
-         <p class="font-metadata text-metadata text-text-secondary">
-          09:00 AM - 11:00 AM
-         </p>
-        </td>
-        <td class="py-3 px-6">
-         <span class="inline-flex items-center px-2 py-1 rounded-md bg-metric-sage/50 text-status-in-stock font-metadata text-metadata border border-metric-sage">
-          Confirmed
-         </span>
-        </td>
-        <td class="py-3 px-6 text-right">
-         <button class="p-1.5 text-text-secondary hover:text-text-primary rounded-md hover:bg-surface-subtle transition-colors">
-          <span class="material-symbols-outlined text-[20px]">
-           more_vert
+    <div class="overflow-x-auto p-4">
+     <DataTable :value="reservations" :loading="loading" paginator :rows="5" class="w-full text-left" rowHover>
+      <Column field="title" header="Asset / Resource" sortable>
+       <template #body="slotProps">
+        <div class="flex items-center gap-3">
+         <div class="w-8 h-8 rounded flex items-center justify-center"
+              :class="slotProps.data.type === 'Meeting Room' ? 'bg-tertiary-container/10 text-tertiary-container' : (slotProps.data.type === 'Vehicle' ? 'bg-surface-tint/10 text-surface-tint' : 'bg-status-in-stock/10 text-status-in-stock')">
+          <span class="material-symbols-outlined text-[18px]">
+           {{ slotProps.data.type === 'Meeting Room' ? 'meeting_room' : (slotProps.data.type === 'Vehicle' ? 'directions_car' : 'print') }}
           </span>
-         </button>
-        </td>
-       </tr>
-       <tr class="border-b border-border-default hover:bg-metric-amber/20 transition-colors group relative border-l-4 border-l-surface-tint bg-metric-amber/10">
-        <td class="py-3 px-6">
-         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded bg-surface-tint/10 flex items-center justify-center text-surface-tint">
-           <span class="material-symbols-outlined text-[18px]">
-            directions_car
-           </span>
-          </div>
-          <div>
-           <p class="font-h3 text-h3 text-text-primary">
-            Toyota Innova Crysta
-           </p>
-           <p class="font-mono-data text-mono-data text-text-secondary mt-1">
-            KL-01-AB-1234
-           </p>
-          </div>
          </div>
-        </td>
-        <td class="py-3 px-6 font-body text-body text-text-primary">
-         Rahul Menon
-        </td>
-        <td class="py-3 px-6">
-         <p class="font-body text-body text-text-primary">
-          Oct 16, 2023
-         </p>
-         <p class="font-metadata text-metadata text-text-secondary">
-          Full Day
-         </p>
-        </td>
-        <td class="py-3 px-6">
-         <span class="inline-flex items-center px-2 py-1 rounded-md bg-metric-amber/50 text-surface-tint font-metadata text-metadata border border-metric-amber">
-          Pending Approval
+         <div>
+          <p class="font-h3 text-h3 text-text-primary">
+           {{ slotProps.data.title }}
+          </p>
+          <p class="font-mono-data text-mono-data text-text-secondary mt-1">
+           {{ slotProps.data.location }}
+          </p>
+         </div>
+        </div>
+       </template>
+      </Column>
+      <Column field="bookedBy" header="Reserved By" sortable></Column>
+      <Column field="startTime" header="Date & Time" sortable>
+       <template #body="slotProps">
+        <p class="font-body text-body text-text-primary">
+         {{ new Date(slotProps.data.startTime).toLocaleDateString() }}
+        </p>
+        <p class="font-metadata text-metadata text-text-secondary">
+         {{ new Date(slotProps.data.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }} - {{ new Date(slotProps.data.endTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}
+        </p>
+       </template>
+      </Column>
+      <Column field="status" header="Status" sortable>
+       <template #body="slotProps">
+        <span class="inline-flex items-center px-2 py-1 rounded-md font-metadata text-metadata border"
+              :class="slotProps.data.status === 'Active' ? 'bg-metric-sage/50 text-status-in-stock border-metric-sage' : 'bg-metric-amber/50 text-surface-tint border-metric-amber'">
+         {{ slotProps.data.status === 'Active' ? 'Confirmed' : 'Pending Approval' }}
+        </span>
+       </template>
+      </Column>
+      <Column header="Action" alignFrozen="right">
+       <template #body>
+        <button class="p-1.5 text-text-secondary hover:text-text-primary rounded-md hover:bg-surface-subtle transition-colors text-right">
+         <span class="material-symbols-outlined text-[20px]">
+          more_vert
          </span>
-        </td>
-        <td class="py-3 px-6 text-right">
-         <button class="p-1.5 text-text-secondary hover:text-text-primary rounded-md hover:bg-surface-subtle transition-colors">
-          <span class="material-symbols-outlined text-[20px]">
-           more_vert
-          </span>
-         </button>
-        </td>
-       </tr>
-      </tbody>
-     </table>
+        </button>
+       </template>
+      </Column>
+     </DataTable>
     </div>
    </div>
   </div>
@@ -344,7 +287,7 @@
       </p>
      </div>
     </div>
-    <form class="space-y-5">
+    <form class="space-y-5" @submit.prevent>
      <!-- Asset Type -->
      <div class="space-y-2">
       <label class="font-h3 text-h3 text-text-primary block">
@@ -445,5 +388,27 @@
 </template>
 
 <script setup lang="ts">
-// Autogenerated from reservations_bookings
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+const reservations = ref<any[]>([])
+const loading = ref(true)
+
+const fetchReservations = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/reservations')
+    if (res.ok) {
+      reservations.value = await res.json()
+    }
+  } catch (error) {
+    console.error('Failed to fetch reservations:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchReservations()
+})
 </script>
