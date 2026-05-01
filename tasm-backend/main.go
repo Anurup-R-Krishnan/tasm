@@ -64,6 +64,7 @@ func main() {
 		api.GET("/ledgers", handlers.GetLedgers)
 		api.GET("/leases", handlers.GetLeases)
 		api.GET("/depreciations", handlers.GetDepreciations)
+		api.GET("/software-licenses", handlers.GetSoftwareLicenses)
 
 		// User Management APIs
 		api.GET("/users", handlers.GetUsers)

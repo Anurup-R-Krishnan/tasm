@@ -37,7 +37,7 @@
      </div>
     </div>
     <div class="font-kpi-number text-kpi-number text-text-primary">
-     ₹ 42,85,000
+     ₹ {{ totalPipelineValue.toLocaleString() }}
     </div>
     <div class="font-metadata text-metadata text-text-secondary mt-2 flex items-center gap-1">
      <span class="text-status-in-stock flex items-center">
@@ -62,10 +62,10 @@
      </div>
     </div>
     <div class="font-kpi-number text-kpi-number text-text-primary">
-     ₹ 18,20,000
+     ₹ {{ approvedValue.toLocaleString() }}
     </div>
     <div class="font-metadata text-metadata text-text-secondary mt-2">
-     Across 14 purchase orders
+     Across {{ procurements.filter(p => p.status !== 'Draft' && p.status !== 'Pending Approval').length }} purchase orders
     </div>
    </div>
    <!-- Metric Card 3 (Placeholder for balance visually) -->
@@ -81,7 +81,7 @@
      </div>
     </div>
     <div class="font-kpi-number text-kpi-number text-text-primary">
-     ₹ 8,45,000
+     ₹ {{ pendingApprovalValue.toLocaleString() }}
     </div>
     <div class="font-metadata text-metadata text-text-secondary mt-2 text-primary">
      Requires management review
@@ -160,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 
@@ -180,6 +180,22 @@ interface ProcurementRequest {
 
 const procurements = ref<ProcurementRequest[]>([])
 const loadingProcurements = ref(true)
+
+const totalPipelineValue = computed(() => {
+  return procurements.value.reduce((sum, item) => sum + (item.estimatedValue || 0), 0)
+})
+
+const pendingApprovalValue = computed(() => {
+  return procurements.value
+    .filter(p => p.status === 'Pending Approval')
+    .reduce((sum, item) => sum + (item.estimatedValue || 0), 0)
+})
+
+const approvedValue = computed(() => {
+  return procurements.value
+    .filter(p => p.status !== 'Draft' && p.status !== 'Pending Approval')
+    .reduce((sum, item) => sum + (item.estimatedValue || 0), 0)
+})
 
 const fetchProcurements = async () => {
   try {

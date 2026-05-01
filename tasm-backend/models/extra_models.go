@@ -114,6 +114,19 @@ type DepreciationSchedule struct {
 	Method         string         `json:"method"` // Straight Line, Declining Balance
 }
 
+type SoftwareLicense struct {
+	ID             uint           `gorm:"primarykey" json:"id"`
+	CreatedAt      time.Time      `json:"createdAt"`
+	UpdatedAt      time.Time      `json:"updatedAt"`
+	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
+	SoftwareName   string         `json:"softwareName"`
+	PlanName       string         `json:"planName"`
+	Status         string         `json:"status"` // Active, Expiring Soon, Expired
+	TotalSeats     int            `json:"totalSeats"`
+	UsedSeats      int            `json:"usedSeats"`
+	RenewalDate    time.Time      `json:"renewalDate"`
+	AnnualCost     float64        `json:"annualCost"`
+}
 
 
 // User Management Models
