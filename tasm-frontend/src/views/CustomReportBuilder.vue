@@ -114,8 +114,8 @@
         Primary Entity
        </label>
        <div class="relative">
-        <select class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform">
-         <option selected value="assets">
+        <select v-model="selectedEntity" class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform">
+         <option value="assets">
           Fixed Assets
          </option>
          <option value="wo">
@@ -302,128 +302,28 @@
        Live Preview
       </h2>
       <span class="font-metadata text-metadata text-text-secondary bg-surface-variant px-2 py-1 rounded">
-       Showing first 5 rows
+       Showing first {{ reportData.length }} rows
       </span>
      </div>
-     <div class="overflow-x-auto rounded-lg border border-border-default shadow-sm">
-      <table class="w-full text-left border-collapse">
-       <thead>
-        <tr class="bg-surface-subtle border-b border-border-default font-table-header text-table-header text-text-secondary">
-         <th class="py-3 px-4 uppercase tracking-wider">
-          Asset ID
-         </th>
-         <th class="py-3 px-4 uppercase tracking-wider">
-          Asset Name
-         </th>
-         <th class="py-3 px-4 uppercase tracking-wider">
-          Category
-         </th>
-         <th class="py-3 px-4 uppercase tracking-wider">
-          Location
-         </th>
-         <th class="py-3 px-4 uppercase tracking-wider">
-          Status
-         </th>
-        </tr>
-       </thead>
-       <tbody class="font-mono-data text-mono-data text-text-primary divide-y divide-border-default">
-        <tr class="hover:bg-accent-subtle transition-colors group">
-         <td class="py-3 px-4 group-hover:text-primary">
-          AST-1042
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Dell Precision 5550
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          IT Equipment
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Bldg 3, Floor 2
-         </td>
-         <td class="py-3 px-4">
-          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-metric-sage text-status-in-stock">
-           Active
-          </span>
-         </td>
-        </tr>
-        <tr class="hover:bg-accent-subtle transition-colors group">
-         <td class="py-3 px-4 group-hover:text-primary">
-          AST-1043
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Cisco Meraki MR46
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          IT Equipment
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Bldg 3, Ceiling Hub
-         </td>
-         <td class="py-3 px-4">
-          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-metric-sage text-status-in-stock">
-           Active
-          </span>
-         </td>
-        </tr>
-        <tr class="hover:bg-accent-subtle transition-colors group">
-         <td class="py-3 px-4 group-hover:text-primary">
-          AST-1050
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Herman Miller Aeron
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Furniture
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Bldg 1, Exec Suite
-         </td>
-         <td class="py-3 px-4">
-          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-metric-sage text-status-in-stock">
-           Active
-          </span>
-         </td>
-        </tr>
-        <tr class="hover:bg-accent-subtle transition-colors group">
-         <td class="py-3 px-4 group-hover:text-primary">
-          AST-1055
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          MacBook Pro 16"
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          IT Equipment
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Remote / Assigned
-         </td>
-         <td class="py-3 px-4">
-          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-metric-lavender text-status-checked-out">
-           Assigned
-          </span>
-         </td>
-        </tr>
-        <tr class="hover:bg-accent-subtle transition-colors group">
-         <td class="py-3 px-4 group-hover:text-primary">
-          AST-1061
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Epson Projector ProL
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          AV Equipment
-         </td>
-         <td class="py-3 px-4 font-body text-body">
-          Conf Room A
-         </td>
-         <td class="py-3 px-4">
-          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-error-container text-status-critical">
-           Maintenance
-          </span>
-         </td>
-        </tr>
-       </tbody>
-      </table>
+     <div class="overflow-x-auto rounded-lg border border-border-default shadow-sm p-4">
+      <DataTable :value="reportData" :loading="loading" paginator :rows="5" class="w-full text-left">
+       <Column field="tagId" header="Asset ID" sortable>
+        <template #body="slotProps">
+         <span class="font-mono-data text-mono-data text-text-primary group-hover:text-primary">{{ slotProps.data.tagId }}</span>
+        </template>
+       </Column>
+       <Column field="name" header="Asset Name" sortable></Column>
+       <Column field="category" header="Category" sortable></Column>
+       <Column field="location" header="Location" sortable></Column>
+       <Column field="status" header="Status" sortable>
+        <template #body="slotProps">
+         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium"
+               :class="slotProps.data.status === 'Active' ? 'bg-metric-sage text-status-in-stock' : (slotProps.data.status === 'Assigned' ? 'bg-metric-lavender text-status-checked-out' : 'bg-error-container text-status-critical')">
+          {{ slotProps.data.status }}
+         </span>
+        </template>
+       </Column>
+      </DataTable>
      </div>
     </div>
     <!-- Action Bar -->
@@ -453,9 +353,43 @@
   </div>
  </div>
 </main>
-
 </template>
 
 <script setup lang="ts">
-// Autogenerated from custom_report_builder
+import { ref, watch, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+const selectedEntity = ref('assets')
+const reportData = ref<any[]>([])
+const loading = ref(false)
+
+const fetchReportData = async () => {
+  loading.value = true
+  try {
+    let endpoint = ''
+    if (selectedEntity.value === 'assets') endpoint = 'http://localhost:8080/api/assets'
+    else if (selectedEntity.value === 'wo') endpoint = 'http://localhost:8080/api/work-orders'
+    else if (selectedEntity.value === 'depreciation') endpoint = 'http://localhost:8080/api/depreciations'
+    else endpoint = 'http://localhost:8080/api/assets'
+
+    const res = await fetch(endpoint)
+    if (res.ok) {
+      const data = await res.json()
+      reportData.value = data
+    }
+  } catch (err) {
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+watch(selectedEntity, () => {
+  fetchReportData()
+})
+
+onMounted(() => {
+  fetchReportData()
+})
 </script>

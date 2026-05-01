@@ -153,3 +153,15 @@ type UserRole struct {
 	Description    string         `json:"description"`
 	UsersCount     int            `json:"usersCount"`
 }
+
+type SystemAlert struct {
+	ID        uint           `gorm:"primarykey" json:"id"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+	Title     string         `json:"title"`
+	Message   string         `json:"message"`
+	Type      string         `json:"type"` // Critical, Warning, Info
+	Source    string         `json:"source"`
+	IsRead    bool           `json:"isRead"`
+}

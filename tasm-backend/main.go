@@ -69,6 +69,9 @@ func main() {
 		// User Management APIs
 		api.GET("/users", handlers.GetUsers)
 		api.GET("/roles", handlers.GetRoles)
+
+		// Settings & Dashboard APIs
+		api.GET("/alerts", handlers.GetAlerts)
 	}
 
 	port := os.Getenv("PORT")

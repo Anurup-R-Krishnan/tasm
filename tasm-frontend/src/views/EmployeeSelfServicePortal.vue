@@ -68,147 +68,49 @@
      View All History
     </button>
    </div>
-   <div class="bg-surface border border-border-default rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] overflow-hidden">
-    <div class="overflow-x-auto">
-     <table class="w-full text-left border-collapse">
-      <thead>
-       <tr class="bg-surface-subtle border-b border-border-default">
-        <th class="py-4 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Asset Name
-        </th>
-        <th class="py-4 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Tag ID
-        </th>
-        <th class="py-4 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Checked Out
-        </th>
-        <th class="py-4 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Expected Return
-        </th>
-        <th class="py-4 px-6 font-table-header text-table-header text-text-secondary uppercase">
-         Status
-        </th>
-        <th class="py-4 px-6 font-table-header text-table-header text-text-secondary uppercase text-right">
-         Action
-        </th>
-       </tr>
-      </thead>
-      <tbody class="font-body text-body text-text-primary">
-       <!-- Row 1: Pending Ack -->
-       <tr class="border-b border-border-default hover:bg-metric-amber/20 transition-colors relative">
-        <td class="py-4 px-6 border-l-[3px] border-amber-500">
-         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded bg-stone-100 flex items-center justify-center text-stone-500 shrink-0">
-           <span class="material-symbols-outlined">
-            laptop_mac
-           </span>
-          </div>
-          <div class="font-medium">
-           MacBook Pro 16" (M2)
-          </div>
-         </div>
-        </td>
-        <td class="py-4 px-6 font-mono-data text-mono-data text-text-secondary">
-         AST-2023-891
-        </td>
-        <td class="py-4 px-6">
-         Oct 12, 2023
-        </td>
-        <td class="py-4 px-6 text-text-secondary">
-         Indefinite
-        </td>
-        <td class="py-4 px-6">
-         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-metric-amber text-amber-900">
-          <span class="sr-only">
-           Status:
+    <div class="bg-surface border border-border-default rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] overflow-hidden p-4">
+     <DataTable :value="myAssets" :loading="loading" class="w-full text-left">
+      <Column field="name" header="Asset Name" sortable>
+       <template #body="slotProps">
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 rounded bg-stone-100 flex items-center justify-center text-stone-500 shrink-0">
+          <span class="material-symbols-outlined">
+           {{ slotProps.data.category === 'Laptops' ? 'laptop_mac' : (slotProps.data.category === 'Mobile Devices' ? 'smartphone' : 'devices') }}
           </span>
-          Pending Ack.
-         </span>
-        </td>
-        <td class="py-4 px-6 text-right">
-         <button class="text-sm font-medium text-primary hover:bg-primary/10 px-3 py-1.5 rounded transition-colors">
-          Acknowledge
-         </button>
-        </td>
-       </tr>
-       <!-- Row 2: Pending Ack -->
-       <tr class="border-b border-border-default hover:bg-metric-amber/20 transition-colors relative">
-        <td class="py-4 px-6 border-l-[3px] border-amber-500">
-         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded bg-stone-100 flex items-center justify-center text-stone-500 shrink-0">
-           <span class="material-symbols-outlined">
-            monitor
-           </span>
-          </div>
-          <div class="font-medium">
-           Dell UltraSharp 27" 4K
-          </div>
          </div>
-        </td>
-        <td class="py-4 px-6 font-mono-data text-mono-data text-text-secondary">
-         AST-2023-892
-        </td>
-        <td class="py-4 px-6">
-         Oct 12, 2023
-        </td>
-        <td class="py-4 px-6 text-text-secondary">
-         Indefinite
-        </td>
-        <td class="py-4 px-6">
-         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-metric-amber text-amber-900">
-          <span class="sr-only">
-           Status:
-          </span>
-          Pending Ack.
-         </span>
-        </td>
-        <td class="py-4 px-6 text-right">
-         <button class="text-sm font-medium text-primary hover:bg-primary/10 px-3 py-1.5 rounded transition-colors">
-          Acknowledge
-         </button>
-        </td>
-       </tr>
-       <!-- Row 3: Checked Out -->
-       <tr class="border-b border-border-default hover:bg-surface-subtle transition-colors">
-        <td class="py-4 px-6 border-l-[3px] border-transparent">
-         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded bg-stone-100 flex items-center justify-center text-stone-500 shrink-0">
-           <span class="material-symbols-outlined">
-            smartphone
-           </span>
-          </div>
-          <div class="font-medium">
-           iPhone 14 Pro
-          </div>
+         <div class="font-medium">
+          {{ slotProps.data.name }}
          </div>
-        </td>
-        <td class="py-4 px-6 font-mono-data text-mono-data text-text-secondary">
-         AST-2022-445
-        </td>
-        <td class="py-4 px-6">
-         Jan 15, 2023
-        </td>
-        <td class="py-4 px-6">
-         Jan 15, 2025
-        </td>
-        <td class="py-4 px-6">
-         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-status-checked-out text-white">
-          <span class="sr-only">
-           Status:
-          </span>
-          Checked Out
-         </span>
-        </td>
-        <td class="py-4 px-6 text-right">
-         <button class="text-sm font-medium text-text-secondary hover:text-text-primary px-3 py-1.5 rounded transition-colors">
-          Report Issue
-         </button>
-        </td>
-       </tr>
-      </tbody>
-     </table>
+        </div>
+       </template>
+      </Column>
+      <Column field="tagId" header="Tag ID" sortable>
+       <template #body="slotProps">
+        <span class="font-mono-data text-mono-data text-text-secondary">{{ slotProps.data.tagId }}</span>
+       </template>
+      </Column>
+      <Column field="purchaseDate" header="Checked Out" sortable>
+       <template #body="slotProps">
+        <span>{{ new Date(slotProps.data.purchaseDate).toLocaleDateString() }}</span>
+       </template>
+      </Column>
+      <Column field="status" header="Status" sortable>
+       <template #body="slotProps">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+              :class="slotProps.data.status === 'Active' ? 'bg-metric-sage text-green-900' : 'bg-status-checked-out text-white'">
+         {{ slotProps.data.status }}
+        </span>
+       </template>
+      </Column>
+      <Column header="Action" alignFrozen="right">
+       <template #body>
+        <button class="text-sm font-medium text-primary hover:bg-primary/10 px-3 py-1.5 rounded transition-colors">
+         Report Issue
+        </button>
+       </template>
+      </Column>
+     </DataTable>
     </div>
-   </div>
   </section>
   <!-- Bottom Row: Reservations & Requests -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-section-gap">
@@ -386,5 +288,29 @@
 </template>
 
 <script setup lang="ts">
-// Autogenerated from employee_self_service_portal
+import { ref, onMounted } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+const myAssets = ref<any[]>([])
+const loading = ref(true)
+
+const fetchMyAssets = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/assets')
+    if (res.ok) {
+      // In a real app we would filter by logged in user, mock for now
+      const allAssets = await res.json()
+      myAssets.value = allAssets.slice(0, 3) 
+    }
+  } catch (error) {
+    console.error('Failed to fetch assets:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchMyAssets()
+})
 </script>
