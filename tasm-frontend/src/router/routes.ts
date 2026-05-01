@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-export interface AppRouteDefinition {
+interface AppRouteDefinition {
   path: string;
   name: string;
   title: string;

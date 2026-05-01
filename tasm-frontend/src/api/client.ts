@@ -1,9 +1,8 @@
 const defaultApiBaseUrl = 'http://localhost:8080/api';
 
-export const API_BASE_URL =
-  import.meta.env['VITE_API_BASE_URL']?.replace(/\/$/, '') ?? defaultApiBaseUrl;
+const API_BASE_URL = import.meta.env['VITE_API_BASE_URL']?.replace(/\/$/, '') ?? defaultApiBaseUrl;
 
-export class ApiError extends Error {
+class ApiError extends Error {
   status: number;
 
   constructor(message: string, status: number) {
