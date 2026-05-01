@@ -148,7 +148,7 @@ const loading = ref(true)
 
 const fetchAsset = async () => {
   try {
-    const res = await fetch(`http://localhost:8080/api/assets/${route.params.id}`)
+    const res = await fetch(`http://localhost:8080/api/assets/${route.params['id']}`)
     if (res.ok) {
       asset.value = await res.json()
     }

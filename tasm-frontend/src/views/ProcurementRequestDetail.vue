@@ -413,7 +413,7 @@ const fetchRequest = async () => {
     if (res.ok) {
       const allRequests: ProcurementRequest[] = await res.json()
       // Fallback to first if no ID route param provided in this demo
-      request.value = allRequests.length > 0 ? allRequests[0] : null
+      request.value = (allRequests.length > 0 ? allRequests[0] : null) ?? null
     }
   } catch (error) {
     console.error('Failed to fetch procurements:', error)

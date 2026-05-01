@@ -196,7 +196,7 @@ const filterType = ref('')
 
 const form = ref({
   assetLocation: '',
-  targetDate: new Date().toISOString().split('T')[0],
+  targetDate: new Date().toISOString().split('T')[0] || '',
   title: 'Preventive Maintenance',
   technician: '',
   cost: 0,
@@ -262,7 +262,7 @@ const submitLog = async () => {
 const resetForm = () => {
   form.value = {
     assetLocation: '',
-    targetDate: new Date().toISOString().split('T')[0],
+    targetDate: new Date().toISOString().split('T')[0] || '',
     title: 'Preventive Maintenance',
     technician: '',
     cost: 0,
