@@ -1,1 +1,2 @@
 npx lint-staged
+command -v gitleaks >/dev/null 2>&1 && gitleaks protect --staged --verbose || echo "⚠️  gitleaks not found, skipping secret scan"

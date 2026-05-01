@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine AS builder
+FROM golang:1.26-alpine AS builder
 
 WORKDIR /app
 
@@ -16,6 +16,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o tasm-api .
 
 # Final stage
 FROM alpine:latest
+
+RUN apk add --no-cache tzdata
 
 WORKDIR /app
 

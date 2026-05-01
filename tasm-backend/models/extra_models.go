@@ -6,18 +6,19 @@ import (
 )
 
 type AuditSession struct {
-	ID                uint           `gorm:"primarykey" json:"id"`
-	CreatedAt         time.Time      `json:"createdAt"`
-	UpdatedAt         time.Time      `json:"updatedAt"`
-	DeletedAt         gorm.DeletedAt `gorm:"index" json:"-"`
-	Title             string         `json:"title"`
-	Status            string         `json:"status"` // e.g. In Progress, Completed
-	Auditor           string         `json:"auditor"`
-	Location          string         `json:"location"`
-	SessionID         string         `json:"sessionId"`
-	VerifiedPercent   int            `json:"verifiedPercent"`
-	MissingCount      int            `json:"missingCount"`
-	UnregisteredCount int            `json:"unregisteredCount"`
+	ID               uint           `gorm:"primarykey" json:"id"`
+	CreatedAt        time.Time      `json:"createdAt"`
+	UpdatedAt        time.Time      `json:"updatedAt"`
+	DeletedAt        gorm.DeletedAt `gorm:"index" json:"-"`
+	Title            string         `json:"title"`
+	StartDate        time.Time      `json:"startDate"`
+	EndDate          *time.Time     `json:"endDate"`
+	Status           string         `json:"status"` // e.g. Active, Completed
+	TotalAssets      int            `json:"totalAssets"`
+	ScannedAssets    int            `json:"scannedAssets"`
+	DiscrepancyCount int            `json:"discrepancyCount"`
+	AuditorName      string         `json:"auditorName"`
+	Progress         int            `json:"progress"`
 }
 
 type Consumable struct {

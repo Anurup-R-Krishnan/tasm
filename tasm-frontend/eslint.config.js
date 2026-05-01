@@ -4,7 +4,7 @@ import vueParser from 'vue-eslint-parser';
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', '.vite/**', 'public/**']
+    ignores: ['dist/**', 'node_modules/**', '.vite/**', 'public/**'],
   },
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/essential'],
@@ -19,7 +19,7 @@ export default [
     },
     rules: {
       'vue/multi-word-component-names': 'off',
-      '@typescript-eslint/no-explicit-any': 'off'
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ];
