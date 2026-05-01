@@ -2,11 +2,11 @@ package handlers
 
 import (
 	"net/http"
-	"time"
 
-	"github.com/gin-gonic/gin"
 	"tasm-backend/database"
 	"tasm-backend/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetReservations(c *gin.Context) {
@@ -18,18 +18,46 @@ func GetReservations(c *gin.Context) {
 
 	database.DB.Order("id desc").Find(&reservations)
 
-	if len(reservations) == 0 {
-		now := time.Now()
-		reservations = []models.Reservation{
-			{Title: "Nila 102", Type: "Meeting Room", Status: "Active", StartTime: now.Add(-time.Hour), EndTime: now.Add(time.Hour), Location: "Nila Building", BookedBy: "Alice Johnson"},
-			{Title: "Epson Projector Pro", Type: "AV Equipment", Status: "Upcoming", StartTime: now.Add(2 * time.Hour), EndTime: now.Add(4 * time.Hour), Location: "IT Store", BookedBy: "Bob Smith"},
-			{Title: "Corporate Van", Type: "Vehicle", Status: "Upcoming", StartTime: now.AddDate(0, 0, 1), EndTime: now.AddDate(0, 0, 2), Location: "Parking Basement", BookedBy: "Charlie Davis"},
-		}
-		for _, r := range reservations {
-			database.DB.Create(&r)
-		}
-		database.DB.Order("id desc").Find(&reservations)
+	c.JSON(http.StatusOK, reservations)
+}
+
+func UpdateReservation(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
 	}
 
-	c.JSON(http.StatusOK, reservations)
+	var item models.Reservation
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteReservation(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.Reservation{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
 }

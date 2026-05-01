@@ -1,55 +1,6 @@
 <template>
   <main class="flex-1 flex flex-col min-w-0">
     <!-- TopNavBar (Shared Component) -->
-    <header
-      class="h-[60px] w-full border-b sticky top-0 z-50 border-stone-200 dark:border-stone-800 shadow-sm bg-[#FFFFFF] dark:bg-stone-900 flex items-center justify-between px-6 font-['Inter'] antialiased"
-    >
-      <div class="flex items-center gap-4">
-        <!-- Search Bar Placeholder based on "search_bar": "on_left" -->
-        <div class="relative hidden md:block">
-          <span
-            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-[18px]"
-          >
-            search
-          </span>
-          <input
-            class="pl-10 pr-4 py-1.5 rounded-full border border-border-default bg-surface-subtle focus:outline-none focus:ring-2 focus:ring-surface-tint focus:border-transparent font-body text-body text-text-primary w-[240px]"
-            placeholder="Search ledger..."
-            type="text"
-          />
-        </div>
-      </div>
-      <div class="flex items-center gap-4">
-        <!-- Trailing Icons -->
-        <button
-          class="w-8 h-8 rounded-full flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:opacity-80"
-        >
-          <span class="material-symbols-outlined text-[20px]"> notifications </span>
-        </button>
-        <button
-          class="w-8 h-8 rounded-full flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:opacity-80"
-        >
-          <span class="material-symbols-outlined text-[20px]"> help </span>
-        </button>
-        <button
-          class="w-8 h-8 rounded-full flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer active:opacity-80"
-        >
-          <span class="material-symbols-outlined text-[20px]"> settings </span>
-        </button>
-        <div class="w-px h-6 bg-border-default mx-1"></div>
-        <!-- Profile Avatar -->
-        <div
-          class="w-8 h-8 rounded-full bg-tertiary-container overflow-hidden cursor-pointer active:opacity-80 border border-border-default"
-        >
-          <img
-            alt="User Profile Avatar"
-            class="w-full h-full object-cover"
-            data-alt="Professional headshot of a corporate admin user on a neutral background"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJj4xaxAuI5MwjnYN4bZfvrd7KmTpOfz0qOzYJCJZWGidD0nvdchDT3wowYcsPLzhXJC6lDvCdr3Kvctc0AkQE9Fg2CMIrQa2psh1KXtMOO5hTl--JYbrs3sW8_nKBJ3CDszLfmkKEzmYla6Kny4iROF6mTVReLBeBSAxQiqqNTpFJIMYYim7KMlRtadQqPkJxpYocdSZHgioe_zHaETWNW3QwBu_sTEmRKsq7Vsdj8S7jUefdtzXKXUiGpjIJ1miqJM-QRU0oe3w6"
-          />
-        </div>
-      </div>
-    </header>
     <!-- Page Content -->
     <div class="p-page-margin w-full max-w-[1400px] mx-auto flex-1">
       <!-- Page Header -->

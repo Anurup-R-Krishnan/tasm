@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetLocations(c *gin.Context) {
@@ -15,18 +16,6 @@ func GetLocations(c *gin.Context) {
 	}
 
 	database.DB.Order("id desc").Find(&locations)
-
-	if len(locations) == 0 {
-		locations = []models.Location{
-			{Name: "Headquarters", Type: "Office", Address: "123 Main St, New York, NY", Capacity: 500, Status: "Active"},
-			{Name: "Data Center Alpha", Type: "Data Center", Address: "45 Tech Park, Austin, TX", Capacity: 50, Status: "Active"},
-			{Name: "West Coast Hub", Type: "Office", Address: "900 Market St, San Francisco, CA", Capacity: 200, Status: "Active"},
-		}
-		for _, l := range locations {
-			database.DB.Create(&l)
-		}
-		database.DB.Order("id desc").Find(&locations)
-	}
 
 	c.JSON(http.StatusOK, locations)
 }
@@ -45,4 +34,45 @@ func CreateLocation(c *gin.Context) {
 
 	database.DB.Create(&loc)
 	c.JSON(http.StatusCreated, loc)
+}
+
+func UpdateLocation(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var item models.Location
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteLocation(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.Location{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
 }

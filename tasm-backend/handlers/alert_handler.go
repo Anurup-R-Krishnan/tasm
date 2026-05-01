@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetAlerts(c *gin.Context) {
@@ -16,17 +17,46 @@ func GetAlerts(c *gin.Context) {
 
 	database.DB.Order("id desc").Find(&alerts)
 
-	if len(alerts) == 0 {
-		alerts = []models.SystemAlert{
-			{Title: "Warranty Expired", Message: "Main Generator B (GEN-B-002) warranty has expired. Immediate renewal required.", Type: "Critical", Source: "Asset Management", IsRead: false},
-			{Title: "Maintenance Due", Message: "HVAC Unit 4 (HVAC-004) scheduled maintenance is due in 3 days.", Type: "Warning", Source: "Maintenance", IsRead: false},
-			{Title: "Stock Low", Message: "Server Rack Screws inventory dropping below threshold (current: 45, min: 50).", Type: "Info", Source: "Inventory", IsRead: false},
-		}
-		for _, a := range alerts {
-			database.DB.Create(&a)
-		}
-		database.DB.Order("id desc").Find(&alerts)
+	c.JSON(http.StatusOK, alerts)
+}
+
+func UpdateAlert(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
 	}
 
-	c.JSON(http.StatusOK, alerts)
+	var item models.SystemAlert
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteAlert(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.SystemAlert{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
 }

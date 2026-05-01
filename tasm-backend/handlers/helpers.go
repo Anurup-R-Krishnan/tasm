@@ -3,9 +3,10 @@ package handlers
 import (
 	"net/http"
 
+	"tasm-backend/database"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"tasm-backend/database"
 )
 
 func requireDB(c *gin.Context) (*gorm.DB, bool) {

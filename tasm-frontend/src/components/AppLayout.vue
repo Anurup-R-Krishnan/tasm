@@ -2,9 +2,12 @@
   <div class="min-h-screen bg-canvas">
     <AppHeader />
     <AppSidebar />
-    <main class="ml-[248px] pt-[60px] p-[32px] max-w-[1400px] mx-auto space-y-[32px]">
-      <router-view />
-    </main>
+    <!-- Single source of layout truth -->
+    <div class="md:pl-[248px] pt-[60px]">
+      <main class="p-page-margin max-w-[1400px] mx-auto w-full min-h-[calc(100vh-60px)]">
+        <router-view />
+      </main>
+    </div>
   </div>
 </template>
 

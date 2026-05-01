@@ -1,28 +1,6 @@
 <template>
   <main class="flex-1 flex flex-col md:ml-[248px] min-h-screen max-w-[1400px]">
     <!-- TopNavBar (Mobile Only) -->
-    <header
-      class="md:hidden flex justify-between items-center px-6 w-full bg-stone-50 dark:bg-stone-950 text-amber-700 dark:text-amber-500 font-sans text-sm font-medium tracking-tight fixed top-0 h-[60px] z-40 border-b border-stone-200 dark:border-stone-800 shadow-sm dark:shadow-none"
-    >
-      <div class="text-lg font-extrabold text-stone-900 dark:text-stone-50">Technopark Kerala</div>
-      <div class="flex items-center gap-4">
-        <button
-          class="text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-150"
-        >
-          <span class="material-symbols-outlined"> notifications </span>
-        </button>
-        <button
-          class="text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-150"
-        >
-          <span class="material-symbols-outlined"> help </span>
-        </button>
-        <button
-          class="text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-150"
-        >
-          <span class="material-symbols-outlined"> settings </span>
-        </button>
-      </div>
-    </header>
     <!-- Page Content -->
     <div class="flex-1 p-page-margin mt-[60px] md:mt-0 flex flex-col gap-section-gap">
       <!-- Header Section -->
@@ -170,7 +148,7 @@
             </template>
           </Column>
           <Column header="Actions" bodyStyle="text-align: right">
-            <template #body>
+            <template #body="slotProps">
               <div class="flex items-center justify-end gap-2">
                 <button
                   class="p-1.5 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-md transition-colors"
@@ -179,10 +157,11 @@
                   <span class="material-symbols-outlined text-[18px]"> edit </span>
                 </button>
                 <button
+                  @click="deleteUser(slotProps.data.id)"
                   class="p-1.5 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-md transition-colors"
-                  title="Deactivate"
+                  title="Delete User"
                 >
-                  <span class="material-symbols-outlined text-[18px]"> block </span>
+                  <span class="material-symbols-outlined text-[18px]"> delete </span>
                 </button>
               </div>
             </template>
@@ -222,6 +201,22 @@ const fetchUsers = async () => {
     console.error('Failed to fetch users:', error);
   } finally {
     loading.value = false;
+  }
+};
+
+const deleteUser = async (id: number) => {
+  if (!confirm('Are you sure you want to delete this user?')) return;
+  try {
+    const res = await fetch(`http://localhost:8080/api/users/${id}`, {
+      method: 'DELETE',
+    });
+    if (res.ok) {
+      users.value = users.value.filter((u) => u.id !== id);
+    } else {
+      alert('Failed to delete user');
+    }
+  } catch (error) {
+    console.error('Error deleting user:', error);
   }
 };
 

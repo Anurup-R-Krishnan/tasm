@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
-	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetAudits(c *gin.Context) {
@@ -16,19 +16,6 @@ func GetAudits(c *gin.Context) {
 	}
 
 	database.DB.Order("id desc").Find(&audits)
-
-	if len(audits) == 0 {
-		pastDate := time.Now().AddDate(0, -1, 0)
-		audits = []models.AuditSession{
-			{Title: "Q3 IT Asset Audit", StartDate: time.Now().AddDate(0, 0, -5), Status: "Active", TotalAssets: 450, ScannedAssets: 320, DiscrepancyCount: 12, AuditorName: "Sarah Jenkins", Progress: 71},
-			{Title: "Annual Compliance 2024", StartDate: pastDate.AddDate(0, 0, -15), EndDate: &pastDate, Status: "Completed", TotalAssets: 1200, ScannedAssets: 1200, DiscrepancyCount: 5, AuditorName: "Mike Ross", Progress: 100},
-			{Title: "Furniture Inventory Audit", StartDate: time.Now().AddDate(0, 0, -1), Status: "Active", TotalAssets: 800, ScannedAssets: 150, DiscrepancyCount: 2, AuditorName: "Emma Clark", Progress: 18},
-		}
-		for _, a := range audits {
-			database.DB.Create(&a)
-		}
-		database.DB.Order("id desc").Find(&audits)
-	}
 
 	c.JSON(http.StatusOK, audits)
 }
@@ -58,19 +45,87 @@ func GetDiscrepancies(c *gin.Context) {
 
 	database.DB.Find(&discs)
 
-	if len(discs) == 0 {
-		discs = []models.AuditDiscrepancy{
-			{AssetTag: "AST-992-LX", IssueType: "Location Mismatch", LastKnownLocation: "C-Wing, Server Rm 2", ScannedLocation: "B-Wing, IT Store", RecommendedAction: "Update to B-Wing"},
-			{AssetTag: "MAC-844-PR", IssueType: "Missing", LastKnownLocation: "C-Wing, Desk 104", ScannedLocation: "Not Scanned", RecommendedAction: "Investigate / Mark Lost"},
-			{AssetTag: "MON-112-DK", IssueType: "Unregistered", LastKnownLocation: "None", ScannedLocation: "C-Wing, Meeting Rm B", RecommendedAction: "Register New Asset"},
-			{AssetTag: "AST-945-LX", IssueType: "Location Mismatch", LastKnownLocation: "C-Wing, Desk 88", ScannedLocation: "C-Wing, Desk 89", RecommendedAction: "Update to Desk 89"},
-			{AssetTag: "SRV-004-PR", IssueType: "Missing", LastKnownLocation: "Data Center Alpha", ScannedLocation: "Not Scanned", RecommendedAction: "High Priority Investigate"},
-		}
-		for _, d := range discs {
-			database.DB.Create(&d)
-		}
-		database.DB.Find(&discs)
+	c.JSON(http.StatusOK, discs)
+}
+
+func UpdateAudit(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
 	}
 
-	c.JSON(http.StatusOK, discs)
+	var item models.AuditSession
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteAudit(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.AuditSession{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
+}
+
+func UpdateDiscrepancy(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var item models.AuditSession
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteDiscrepancy(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.AuditSession{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
 }

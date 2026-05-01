@@ -1,64 +1,6 @@
 <template>
   <main class="flex-1 flex flex-col min-h-screen bg-canvas">
     <!-- TopNavBar -->
-    <header
-      class="bg-[#FAF9F6] dark:bg-stone-950 docked full-width top-0 h-[60px] border-b border-[#EEEBE4] dark:border-stone-800 shadow-sm flex justify-between items-center px-8 w-full sticky top-0 z-40"
-    >
-      <!-- Left Side: Brand/Search -->
-      <div class="flex items-center gap-6">
-        <div class="text-lg font-bold text-stone-900 dark:text-stone-50 tracking-tight">
-          Technopark AMS
-        </div>
-        <!-- Search Bar -->
-        <div class="relative w-64">
-          <span
-            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-[18px]"
-          >
-            search
-          </span>
-          <input
-            class="w-full pl-9 pr-4 py-1.5 bg-surface border border-[#EEEBE4] rounded-md font-['Inter'] text-sm tracking-tight text-stone-900 focus:outline-none focus:border-[#92400E] focus:ring-1 focus:ring-[#92400E] transition-colors"
-            placeholder="Search assets, records..."
-            type="text"
-          />
-        </div>
-      </div>
-      <!-- Right Side: Actions -->
-      <div class="flex items-center gap-4">
-        <button
-          class="font-['Inter'] text-sm tracking-tight text-[#92400E] dark:text-amber-500 font-medium hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors px-3 py-1.5 rounded-md cursor-pointer active:opacity-80 transition-opacity"
-        >
-          Audit Logs
-        </button>
-        <div class="flex items-center gap-1 border-l border-[#EEEBE4] pl-4 ml-2">
-          <button
-            class="w-8 h-8 flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors rounded-full cursor-pointer active:opacity-80 transition-opacity"
-          >
-            <span class="material-symbols-outlined text-[20px]"> notifications </span>
-          </button>
-          <button
-            class="w-8 h-8 flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors rounded-full cursor-pointer active:opacity-80 transition-opacity"
-          >
-            <span class="material-symbols-outlined text-[20px]"> help </span>
-          </button>
-          <button
-            class="w-8 h-8 flex items-center justify-center text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors rounded-full cursor-pointer active:opacity-80 transition-opacity"
-          >
-            <span class="material-symbols-outlined text-[20px]"> settings </span>
-          </button>
-          <button
-            class="ml-2 w-8 h-8 rounded-full bg-stone-200 border border-stone-300 overflow-hidden cursor-pointer active:opacity-80 transition-opacity"
-          >
-            <img
-              alt="Administrator profile picture"
-              class="w-full h-full object-cover"
-              data-alt="Default administrator avatar with initials"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvJxl17Wuzfzja-KV7WmvViZpvXWRD0RhGWxOK4p5uCV5AGrDKXTAmjOxZDNHLSbnEydjpgU7aRBai9lVr_tWIul5zgHSr_lqz3yRNawomCxBO1xE-ySDb3LB_pLT9kKhLQ-N2ozG4RZLY8XJuqDgcKH2os9BacffKIxCo1J9ZzbFJzDTSCCi3cq25oB80Z9SmHY2lnTuo6gRVvf9KJBbrblLY4V0Q_-THuOntdC9b-plLtRtDqNcT7FWJM2imVK7bpuqBUi8VpM0o"
-            />
-          </button>
-        </div>
-      </div>
-    </header>
     <!-- Scrollable Content Canvas -->
     <div class="flex-1 overflow-y-auto p-page-margin">
       <div class="max-w-[1400px] mx-auto space-y-section-gap">

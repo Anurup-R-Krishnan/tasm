@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetProcurements(c *gin.Context) {
@@ -15,18 +16,6 @@ func GetProcurements(c *gin.Context) {
 	}
 
 	database.DB.Order("id desc").Find(&requests)
-
-	if len(requests) == 0 {
-		requests = []models.ProcurementRequest{
-			{Title: "New Employee Laptops (x10)", Status: "Pending Approval", Priority: "High", EstimatedValue: 15000, RequestorName: "Alice Smith", Department: "IT", PONumber: "PO-2023-001"},
-			{Title: "Standing Desks (x5)", Status: "PO Raised", Priority: "Medium", EstimatedValue: 2500, RequestorName: "Bob Johnson", Department: "HR", PONumber: "PO-2023-002"},
-			{Title: "Office Supplies Q3", Status: "Received", Priority: "Low", EstimatedValue: 500, RequestorName: "Carol Williams", Department: "Admin", PONumber: "PO-2023-003"},
-		}
-		for _, req := range requests {
-			database.DB.Create(&req)
-		}
-		database.DB.Order("id desc").Find(&requests)
-	}
 
 	c.JSON(http.StatusOK, requests)
 }
@@ -45,4 +34,45 @@ func CreateProcurement(c *gin.Context) {
 
 	database.DB.Create(&request)
 	c.JSON(http.StatusCreated, request)
+}
+
+func UpdateProcurement(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var item models.ProcurementRequest
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteProcurement(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.ProcurementRequest{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
 }

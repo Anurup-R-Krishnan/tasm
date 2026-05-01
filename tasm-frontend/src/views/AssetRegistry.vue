@@ -1,58 +1,5 @@
 <template>
   <main class="flex-1 flex flex-col min-w-0">
-    <!-- TopNavBar Component -->
-    <header
-      class="h-[60px] w-full border-b sticky top-0 z-30 border-stone-200 dark:border-stone-800 shadow-sm bg-stone-50 dark:bg-stone-900 font-sans antialiased text-stone-900 dark:text-stone-100"
-    >
-      <div class="flex items-center justify-between px-6 w-full max-w-[1400px] mx-auto h-full">
-        <!-- Brand (Optional in Hybrid, but part of TopNavBar JSON) -->
-        <div
-          class="text-lg font-bold tracking-tight text-stone-900 dark:text-stone-50 flex items-center gap-4"
-        >
-          <div class="relative w-64">
-            <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[20px]"
-              data-icon="search"
-            >
-              search
-            </span>
-            <input
-              class="w-full pl-10 pr-4 py-1.5 bg-surface border border-border-default rounded-md text-sm focus:outline-none focus:border-primary-container"
-              placeholder="Search..."
-              type="text"
-            />
-          </div>
-        </div>
-        <!-- Trailing Actions -->
-        <div class="flex items-center gap-2">
-          <button
-            class="p-2 rounded-full text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer active:scale-95 duration-150"
-          >
-            <span class="material-symbols-outlined" data-icon="notifications"> notifications </span>
-          </button>
-          <button
-            class="p-2 rounded-full text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer active:scale-95 duration-150"
-          >
-            <span class="material-symbols-outlined" data-icon="settings"> settings </span>
-          </button>
-          <button
-            class="p-2 rounded-full text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer active:scale-95 duration-150"
-          >
-            <span class="material-symbols-outlined" data-icon="help"> help </span>
-          </button>
-          <div
-            class="ml-2 w-8 h-8 rounded-full bg-border-default overflow-hidden border border-border-default"
-          >
-            <img
-              alt="User profile"
-              class="w-full h-full object-cover"
-              data-alt="Close up portrait of a professional smiling slightly in natural lighting"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgoTg1INEPcxLsEzOeYnNxgTpLngLZZlBHcjv5aUMYnl6DakeZPzs2JyBmrTV_ZqDDAZahGRt8MV4vZ3Z2W_AiNmkUoseDdOU7c2jMe_9OahcIx-DFeX9SwWYDu9IVS0RL5dE4Ayl--_AmjpV0UW7hlbLB5wrQk-nfsJo2It5n2wpB4hrj2iFeI5T0f7oAbZVq8nPP-DW_sye8TTOfNNf8qZkaOt7MmTOK9eqieEUVs2CrfaKQqBQgh007sS6AfTPasBSBKTKPwWXi"
-            />
-          </div>
-        </div>
-      </div>
-    </header>
     <!-- Canvas Content -->
     <div class="p-page-margin max-w-[1400px] mx-auto w-full">
       <!-- Page Header -->
@@ -276,7 +223,7 @@
             </template>
           </Column>
           <Column header="Actions" bodyStyle="text-align: right">
-            <template #body>
+            <template #body="slotProps">
               <div class="flex items-center justify-end space-x-1">
                 <button
                   class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface-subtle rounded transition-colors"
@@ -289,9 +236,10 @@
                   <span class="material-symbols-outlined text-[16px]">edit</span>
                 </button>
                 <button
-                  class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface-subtle rounded transition-colors"
+                  @click="deleteAsset(slotProps.data.id)"
+                  class="p-1 text-text-secondary hover:text-status-critical hover:bg-surface-subtle rounded transition-colors"
                 >
-                  <span class="material-symbols-outlined text-[16px]">more_vert</span>
+                  <span class="material-symbols-outlined text-[16px]">delete</span>
                 </button>
               </div>
             </template>
@@ -332,6 +280,22 @@ const fetchAssets = async () => {
     console.error('Failed to fetch assets:', error);
   } finally {
     loading.value = false;
+  }
+};
+
+const deleteAsset = async (id: number) => {
+  if (!confirm('Are you sure you want to delete this asset?')) return;
+  try {
+    const res = await fetch(`http://localhost:8080/api/assets/${id}`, {
+      method: 'DELETE',
+    });
+    if (res.ok) {
+      assets.value = assets.value.filter((a) => a.id !== id);
+    } else {
+      alert('Failed to delete asset');
+    }
+  } catch (error) {
+    console.error('Error deleting asset:', error);
   }
 };
 

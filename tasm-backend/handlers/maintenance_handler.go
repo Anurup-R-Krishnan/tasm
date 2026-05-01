@@ -3,8 +3,9 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"tasm-backend/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetContracts(c *gin.Context) {
@@ -17,29 +18,6 @@ func GetContracts(c *gin.Context) {
 	if err := db.Order("start_date desc").Find(&contracts).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load contracts"})
 		return
-	}
-
-	if len(contracts) == 0 {
-		contracts = []models.MaintenanceContract{
-			{
-				VendorName:  "TechServe Solutions",
-				ServiceType: "IT Equipment Servicing",
-				StartDate:   db.NowFunc().AddDate(0, -6, 0),
-				EndDate:     db.NowFunc().AddDate(0, 6, 0),
-				Status:      "Active",
-			},
-			{
-				VendorName:  "Cooling Systems Inc.",
-				ServiceType: "HVAC Maintenance",
-				StartDate:   db.NowFunc().AddDate(-1, 0, 0),
-				EndDate:     db.NowFunc().AddDate(0, -1, 0),
-				Status:      "Expired",
-			},
-		}
-		for _, contract := range contracts {
-			db.Create(&contract)
-		}
-		db.Order("start_date desc").Find(&contracts)
 	}
 
 	c.JSON(http.StatusOK, contracts)
@@ -77,48 +55,6 @@ func GetWorkOrders(c *gin.Context) {
 		return
 	}
 
-	if len(workOrders) == 0 {
-		workOrders = []models.WorkOrder{
-			{
-				WorkOrderID:   "WO-2023-001",
-				Title:         "Fix AC in Server Room",
-				AssetLocation: "Server Room A",
-				Issue:         "AC unit is leaking water",
-				Severity:      "High",
-				TargetDate:    db.NowFunc().AddDate(0, 0, 2),
-				Status:        "Open",
-				Technician:    "",
-				Cost:          0,
-			},
-			{
-				WorkOrderID:   "WO-2023-002",
-				Title:         "Replace UPS Batteries",
-				AssetLocation: "Data Center Alpha",
-				Issue:         "UPS batteries are degraded",
-				Severity:      "Medium",
-				TargetDate:    db.NowFunc().AddDate(0, 1, 0),
-				Status:        "In Progress",
-				Technician:    "Ramesh K.",
-				Cost:          0,
-			},
-			{
-				WorkOrderID:   "WO-2023-003",
-				Title:         "Update Router Firmware",
-				AssetLocation: "Network Closet",
-				Issue:         "Security patch required",
-				Severity:      "Low",
-				TargetDate:    db.NowFunc().AddDate(0, 0, -7),
-				Status:        "Closed",
-				Technician:    "Suresh M.",
-				Cost:          3200.00,
-			},
-		}
-		for _, wo := range workOrders {
-			db.Create(&wo)
-		}
-		db.Order("target_date asc").Find(&workOrders)
-	}
-
 	c.JSON(http.StatusOK, workOrders)
 }
 
@@ -140,4 +76,86 @@ func CreateWorkOrder(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, workOrder)
+}
+
+func UpdateContract(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var item models.MaintenanceContract
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteContract(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.MaintenanceContract{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
+}
+
+func UpdateWorkOrder(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var item models.MaintenanceContract
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteWorkOrder(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.MaintenanceContract{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
 }

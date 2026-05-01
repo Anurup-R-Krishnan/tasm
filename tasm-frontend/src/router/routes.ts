@@ -184,6 +184,36 @@ export const appRoutes: AppRouteDefinition[] = [
     title: 'Setup Wizard Locations Configuration',
     component: () => import('../views/SetupWizardLocationsConfiguration.vue'),
   },
+  {
+    path: 'asset-check-out-step-2',
+    name: 'AssetCheckOutStep2',
+    title: 'Check-Out Wizard: Recipient',
+    component: () => import('../views/AssetCheckOutStep2.vue'),
+  },
+  {
+    path: 'inventory-card-view',
+    name: 'InventoryCardView',
+    title: 'Inventory Card View',
+    component: () => import('../views/InventoryCardView.vue'),
+  },
+  {
+    path: 'stockroom-inventory',
+    name: 'StockroomInventory',
+    title: 'Stockroom Inventory',
+    component: () => import('../views/StockroomInventory.vue'),
+  },
+  {
+    path: 'maintenance-schedule-contracts',
+    name: 'MaintenanceScheduleContracts',
+    title: 'Maintenance Schedule & Contracts',
+    component: () => import('../views/MaintenanceScheduleContracts.vue'),
+  },
+  {
+    path: 'reports-analytics-dashboard',
+    name: 'ReportsAnalyticsDashboard',
+    title: 'Reports & Analytics Dashboard',
+    component: () => import('../views/ReportsAnalyticsDashboard.vue'),
+  },
 ];
 
 export const sidebarRoutes = appRoutes.filter((route) => route.showInSidebar);

@@ -2,29 +2,6 @@
   <main class="flex-1 h-full overflow-y-auto bg-canvas">
     <div class="p-page-margin max-w-[1400px] mx-auto flex flex-col gap-section-gap">
       <!-- Header -->
-      <header class="flex justify-between items-end">
-        <div>
-          <h1 class="font-h1 text-h1 text-text-primary tracking-tight">Financial Analytics</h1>
-          <p class="font-metadata text-metadata text-text-secondary mt-1">
-            FY 2023-2024 • Data accurate as of today
-          </p>
-        </div>
-        <div class="flex gap-2">
-          <button
-            class="flex items-center gap-2 px-3 py-1.5 bg-surface border border-border-default rounded-md text-sm hover:bg-surface-subtle transition-colors text-text-secondary shadow-sm"
-          >
-            <span class="material-symbols-outlined text-[18px]"> calendar_today </span>
-            This Year
-            <span class="material-symbols-outlined text-[18px]"> expand_more </span>
-          </button>
-          <button
-            class="flex items-center gap-2 px-3 py-1.5 bg-surface border border-border-default rounded-md text-sm hover:bg-surface-subtle transition-colors text-text-secondary shadow-sm"
-          >
-            <span class="material-symbols-outlined text-[18px]"> download </span>
-            Export
-          </button>
-        </div>
-      </header>
       <!-- Top Row: Pastel KPI Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-inline">
         <!-- KPI 1 -->

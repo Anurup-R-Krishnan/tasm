@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetSoftwareLicenses(c *gin.Context) {
@@ -16,17 +17,46 @@ func GetSoftwareLicenses(c *gin.Context) {
 
 	database.DB.Order("id asc").Find(&licenses)
 
-	if len(licenses) == 0 {
-		licenses = []models.SoftwareLicense{
-			{SoftwareName: "Adobe Creative Cloud", PlanName: "Enterprise All Apps", Status: "Active", TotalSeats: 100, UsedSeats: 85, RenewalDate: database.DB.NowFunc().AddDate(0, 6, 0), AnnualCost: 84000},
-			{SoftwareName: "Microsoft 365", PlanName: "E5 License", Status: "Active", TotalSeats: 500, UsedSeats: 475, RenewalDate: database.DB.NowFunc().AddDate(0, 10, 0), AnnualCost: 228000},
-			{SoftwareName: "Figma", PlanName: "Organization Plan", Status: "Expiring Soon", TotalSeats: 50, UsedSeats: 50, RenewalDate: database.DB.NowFunc().AddDate(0, 0, 15), AnnualCost: 27000},
-		}
-		for _, l := range licenses {
-			database.DB.Create(&l)
-		}
-		database.DB.Order("id asc").Find(&licenses)
+	c.JSON(http.StatusOK, licenses)
+}
+
+func UpdateSoftwareLicense(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
 	}
 
-	c.JSON(http.StatusOK, licenses)
+	var item models.SoftwareLicense
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteSoftwareLicense(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.SoftwareLicense{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
 }

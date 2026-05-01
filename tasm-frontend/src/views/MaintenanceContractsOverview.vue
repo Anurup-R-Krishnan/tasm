@@ -148,9 +148,12 @@
               </template>
             </Column>
             <Column header="Actions" alignFrozen="right">
-              <template #body>
-                <button class="text-text-secondary hover:text-text-primary">
-                  <span class="material-symbols-outlined text-[20px]">more_vert</span>
+              <template #body="slotProps">
+                <button
+                  @click="deleteWorkOrder(slotProps.data.id)"
+                  class="p-1 text-text-secondary hover:text-status-critical rounded transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[20px]">delete</span>
                 </button>
               </template>
             </Column>
@@ -269,6 +272,22 @@ const fetchWorkOrders = async () => {
     console.error('Failed to fetch work orders:', error);
   } finally {
     loadingWorkOrders.value = false;
+  }
+};
+
+const deleteWorkOrder = async (id: number) => {
+  if (!confirm('Are you sure you want to delete this work order?')) return;
+  try {
+    const res = await fetch(`http://localhost:8080/api/work-orders/${id}`, {
+      method: 'DELETE',
+    });
+    if (res.ok) {
+      workOrders.value = workOrders.value.filter((w) => w.id !== id);
+    } else {
+      alert('Failed to delete work order');
+    }
+  } catch (error) {
+    console.error('Error deleting work order:', error);
   }
 };
 

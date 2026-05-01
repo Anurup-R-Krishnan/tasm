@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"tasm-backend/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetConsumables(c *gin.Context) {
@@ -18,43 +19,6 @@ func GetConsumables(c *gin.Context) {
 	if err := db.Order("name asc").Find(&consumables).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load consumables"})
 		return
-	}
-
-	if len(consumables) == 0 {
-		consumables = []models.Consumable{
-			{
-				Name:         "Printer Paper A4",
-				Category:     "Office Supplies",
-				CurrentStock: 45,
-				ReorderLevel: 20,
-				Location:     "Supply Room 1",
-			},
-			{
-				Name:         "Black Ink Cartridge (HP 64)",
-				Category:     "Printer Supplies",
-				CurrentStock: 5,
-				ReorderLevel: 10,
-				Location:     "IT Storage",
-			},
-			{
-				Name:         "Whiteboard Markers (Pack of 4)",
-				Category:     "Office Supplies",
-				CurrentStock: 30,
-				ReorderLevel: 15,
-				Location:     "Supply Room 2",
-			},
-			{
-				Name:         "AAA Batteries (Pack of 12)",
-				Category:     "Electronics",
-				CurrentStock: 12,
-				ReorderLevel: 25,
-				Location:     "IT Storage",
-			},
-		}
-		for _, cItem := range consumables {
-			db.Create(&cItem)
-		}
-		db.Order("name asc").Find(&consumables)
 	}
 
 	c.JSON(http.StatusOK, consumables)
@@ -100,4 +64,45 @@ func CreateConsumable(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, consumable)
+}
+
+func UpdateConsumable(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var item models.Consumable
+	if err := db.First(&item, "id = ?", id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&item); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func DeleteConsumable(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	if err := db.Delete(&models.Consumable{}, "id = ?", id).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Deleted successfully"})
 }

@@ -148,6 +148,17 @@
               <Tag :severity="stockSeverity(slotProps.data)" :value="stockLabel(slotProps.data)" />
             </template>
           </Column>
+          <Column header="Actions" alignFrozen="right">
+            <template #body="slotProps">
+              <button
+                @click="deleteConsumable(slotProps.data.id)"
+                class="p-1 text-text-secondary hover:text-status-critical rounded transition-colors"
+                title="Delete Item"
+              >
+                <span class="material-symbols-outlined text-[20px]">delete</span>
+              </button>
+            </template>
+          </Column>
         </DataTable>
       </div>
     </div>
@@ -221,6 +232,22 @@ async function fetchConsumables(): Promise<void> {
     errorMessage.value = error instanceof Error ? error.message : 'Failed to fetch consumables.';
   } finally {
     loading.value = false;
+  }
+}
+
+async function deleteConsumable(id: number): Promise<void> {
+  if (!confirm('Are you sure you want to delete this item?')) return;
+  try {
+    const res = await fetch(`http://localhost:8080/api/consumables/${id}`, {
+      method: 'DELETE',
+    });
+    if (res.ok) {
+      consumables.value = consumables.value.filter((c) => c.id !== id);
+    } else {
+      alert('Failed to delete item');
+    }
+  } catch (error) {
+    console.error('Error deleting item:', error);
   }
 }
 

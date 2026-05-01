@@ -1,48 +1,6 @@
 <template>
   <main class="flex-1 flex flex-col min-h-screen relative">
     <!-- Shared Component: TopNavBar -->
-    <header
-      class="flex justify-between items-center px-8 w-full sticky top-0 z-40 docked full-width top-0 h-[60px] border-b border-[#EEEBE4] dark:border-stone-800 bg-[#FAF9F6] dark:bg-stone-950 shadow-sm"
-    >
-      <div class="flex items-center gap-4">
-        <span class="text-lg font-bold text-stone-900 dark:text-stone-50 tracking-tight">
-          Technopark AMS
-        </span>
-      </div>
-      <div class="flex items-center gap-4">
-        <button
-          class="text-sm font-['Inter'] tracking-tight font-medium text-[#92400E] dark:text-amber-500 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors px-3 py-1.5 rounded-md cursor-pointer active:opacity-80 transition-opacity"
-        >
-          Audit Logs
-        </button>
-        <div class="h-6 w-px bg-border-default mx-2"></div>
-        <button
-          class="text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors p-2 rounded-full cursor-pointer active:opacity-80 transition-opacity flex items-center justify-center"
-        >
-          <span class="material-symbols-outlined"> notifications </span>
-        </button>
-        <button
-          class="text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors p-2 rounded-full cursor-pointer active:opacity-80 transition-opacity flex items-center justify-center"
-        >
-          <span class="material-symbols-outlined"> help </span>
-        </button>
-        <button
-          class="text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors p-2 rounded-full cursor-pointer active:opacity-80 transition-opacity flex items-center justify-center"
-        >
-          <span class="material-symbols-outlined"> settings </span>
-        </button>
-        <div
-          class="ml-2 w-8 h-8 rounded-full bg-surface-variant border border-border-default overflow-hidden"
-        >
-          <img
-            alt="Administrator profile picture"
-            class="w-full h-full object-cover"
-            data-alt="Default generic user avatar placeholder"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDQyI6D6pYFI5o-zexJ830H3OwEYxjVa1huf9qm35DZ8kKs7oPtkLUxJVk-Uhny1pTGMBLKDIYQSpQN-QUp_A_W3pWRkk0xeXFFCPPLHF_gGmEbS-CTf4naPUTlgKJ-iR_bCIy3CezG_PN7xkTtALvbLyiF30KQzHzy9SYMOiquhfJVWnXdWFp3JGcqEAqAVhrTRQO89a629w7k_MOVgwvN3J3RbjhSjFnbqfC4nfdgxK3cd3fgm78snyRrftPkk4ikMwJfJdNUqbq"
-          />
-        </div>
-      </div>
-    </header>
     <!-- Page Content Canvas -->
     <div class="p-page-margin max-w-[1400px] w-full mx-auto space-y-section-gap pb-24">
       <!-- Page Header -->

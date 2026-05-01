@@ -6,8 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gin-gonic/gin"
 	"tasm-backend/database"
+
+	"github.com/gin-gonic/gin"
 )
 
 func TestGetConsumablesReturnsServiceUnavailableWithoutDB(t *testing.T) {
