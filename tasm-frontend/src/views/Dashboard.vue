@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 md:pl-[248px] p-page-margin">
+  <main class="p-page-margin">
     <div class="max-w-[1400px] mx-auto space-y-section-gap">
       <!-- Top Row: Welcome Banner & Global Search -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -10,10 +10,8 @@
           </p>
         </div>
         <div class="flex gap-3">
-          <button
-            class="bg-primary hover:bg-primary/90 text-on-primary py-2 px-4 rounded-lg font-h3 flex items-center justify-center gap-2 transition-colors shadow-sm"
-          >
-            <span class="material-symbols-outlined text-[18px]">add</span>
+          <button class="btn-primary">
+            <span class="material-symbols-outlined">add_circle</span>
             New Entry
           </button>
         </div>
@@ -21,9 +19,7 @@
 
       <!-- KPI Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div
-          class="bg-surface rounded-xl p-card-padding border border-border-default shadow-sm flex items-start justify-between hover:-translate-y-0.5 transition-transform"
-        >
+        <div class="premium-card flex items-start justify-between">
           <div>
             <p class="font-metadata text-metadata text-text-secondary uppercase">Total Assets</p>
             <h2 class="font-kpi-number text-kpi-number text-text-primary mt-2">
@@ -43,9 +39,7 @@
           </div>
         </div>
 
-        <div
-          class="bg-surface rounded-xl p-card-padding border border-border-default shadow-sm flex items-start justify-between hover:-translate-y-0.5 transition-transform"
-        >
+        <div class="premium-card flex items-start justify-between">
           <div>
             <p class="font-metadata text-metadata text-text-secondary uppercase">
               Open Work Orders

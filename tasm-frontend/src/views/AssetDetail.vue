@@ -1,5 +1,5 @@
 <template>
-  <main class="md:pl-[248px] min-h-screen">
+  <main class="min-h-screen">
     <div v-if="loading" class="flex justify-center items-center py-20 text-stone-500">
       <span class="material-symbols-outlined animate-spin mr-2">refresh</span> Loading Asset...
     </div>

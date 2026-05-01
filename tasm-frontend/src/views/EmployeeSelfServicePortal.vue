@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 md:pl-[248px] p-page-margin">
+  <main class="p-page-margin">
     <div class="max-w-[1400px] mx-auto space-y-section-gap">
       <!-- Top Bento Row: Welcome & Quick Action -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-section-gap">
