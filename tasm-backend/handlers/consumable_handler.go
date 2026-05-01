@@ -20,6 +20,43 @@ func GetConsumables(c *gin.Context) {
 		return
 	}
 
+	if len(consumables) == 0 {
+		consumables = []models.Consumable{
+			{
+				Name:         "Printer Paper A4",
+				Category:     "Office Supplies",
+				CurrentStock: 45,
+				ReorderLevel: 20,
+				Location:     "Supply Room 1",
+			},
+			{
+				Name:         "Black Ink Cartridge (HP 64)",
+				Category:     "Printer Supplies",
+				CurrentStock: 5,
+				ReorderLevel: 10,
+				Location:     "IT Storage",
+			},
+			{
+				Name:         "Whiteboard Markers (Pack of 4)",
+				Category:     "Office Supplies",
+				CurrentStock: 30,
+				ReorderLevel: 15,
+				Location:     "Supply Room 2",
+			},
+			{
+				Name:         "AAA Batteries (Pack of 12)",
+				Category:     "Electronics",
+				CurrentStock: 12,
+				ReorderLevel: 25,
+				Location:     "IT Storage",
+			},
+		}
+		for _, cItem := range consumables {
+			db.Create(&cItem)
+		}
+		db.Order("name asc").Find(&consumables)
+	}
+
 	c.JSON(http.StatusOK, consumables)
 }
 

@@ -19,6 +19,29 @@ func GetContracts(c *gin.Context) {
 		return
 	}
 
+	if len(contracts) == 0 {
+		contracts = []models.MaintenanceContract{
+			{
+				VendorName:  "TechServe Solutions",
+				ServiceType: "IT Equipment Servicing",
+				StartDate:   db.NowFunc().AddDate(0, -6, 0),
+				EndDate:     db.NowFunc().AddDate(0, 6, 0),
+				Status:      "Active",
+			},
+			{
+				VendorName:  "Cooling Systems Inc.",
+				ServiceType: "HVAC Maintenance",
+				StartDate:   db.NowFunc().AddDate(-1, 0, 0),
+				EndDate:     db.NowFunc().AddDate(0, -1, 0),
+				Status:      "Expired",
+			},
+		}
+		for _, contract := range contracts {
+			db.Create(&contract)
+		}
+		db.Order("start_date desc").Find(&contracts)
+	}
+
 	c.JSON(http.StatusOK, contracts)
 }
 
@@ -52,6 +75,48 @@ func GetWorkOrders(c *gin.Context) {
 	if err := db.Order("target_date asc").Find(&workOrders).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load work orders"})
 		return
+	}
+
+	if len(workOrders) == 0 {
+		workOrders = []models.WorkOrder{
+			{
+				WorkOrderID:   "WO-2023-001",
+				Title:         "Fix AC in Server Room",
+				AssetLocation: "Server Room A",
+				Issue:         "AC unit is leaking water",
+				Severity:      "High",
+				TargetDate:    db.NowFunc().AddDate(0, 0, 2),
+				Status:        "Open",
+				Technician:    "",
+				Cost:          0,
+			},
+			{
+				WorkOrderID:   "WO-2023-002",
+				Title:         "Replace UPS Batteries",
+				AssetLocation: "Data Center Alpha",
+				Issue:         "UPS batteries are degraded",
+				Severity:      "Medium",
+				TargetDate:    db.NowFunc().AddDate(0, 1, 0),
+				Status:        "In Progress",
+				Technician:    "Ramesh K.",
+				Cost:          0,
+			},
+			{
+				WorkOrderID:   "WO-2023-003",
+				Title:         "Update Router Firmware",
+				AssetLocation: "Network Closet",
+				Issue:         "Security patch required",
+				Severity:      "Low",
+				TargetDate:    db.NowFunc().AddDate(0, 0, -7),
+				Status:        "Closed",
+				Technician:    "Suresh M.",
+				Cost:          3200.00,
+			},
+		}
+		for _, wo := range workOrders {
+			db.Create(&wo)
+		}
+		db.Order("target_date asc").Find(&workOrders)
 	}
 
 	c.JSON(http.StatusOK, workOrders)
