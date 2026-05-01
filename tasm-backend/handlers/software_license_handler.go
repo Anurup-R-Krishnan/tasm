@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
 )
@@ -13,7 +13,7 @@ func GetSoftwareLicenses(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
 	}
-	
+
 	database.DB.Order("id asc").Find(&licenses)
 
 	if len(licenses) == 0 {

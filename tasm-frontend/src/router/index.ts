@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import AppLayout from '../components/AppLayout.vue'
-import { appRoutes } from './routes'
+import { createRouter, createWebHistory } from 'vue-router';
+import AppLayout from '../components/AppLayout.vue';
+import { appRoutes } from './routes';
 
 const childRoutes = appRoutes.map((route) => ({
   path: route.path,
@@ -9,7 +9,7 @@ const childRoutes = appRoutes.map((route) => ({
     title: route.title,
   },
   component: route.component,
-}))
+}));
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +20,6 @@ const router = createRouter({
       children: childRoutes,
     },
   ],
-})
+});
 
-export default router
+export default router;

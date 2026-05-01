@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
 )
@@ -13,7 +13,7 @@ func GetLocations(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
 	}
-	
+
 	database.DB.Order("id desc").Find(&locations)
 
 	if len(locations) == 0 {
@@ -37,7 +37,7 @@ func CreateLocation(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	if database.DB == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return

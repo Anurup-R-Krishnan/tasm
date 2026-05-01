@@ -1,14 +1,14 @@
-import { apiRequest } from './client'
+import { apiRequest } from './client';
 
 export interface Consumable {
-  id: number
-  name: string
-  category: string
-  location: string
-  currentStock: number
-  reorderLevel: number
+  id: number;
+  name: string;
+  category: string;
+  location: string;
+  currentStock: number;
+  reorderLevel: number;
 }
 
 export function getConsumables(): Promise<Consumable[]> {
-  return apiRequest<Consumable[]>('/consumables')
+  return apiRequest<Consumable[]>('/consumables');
 }

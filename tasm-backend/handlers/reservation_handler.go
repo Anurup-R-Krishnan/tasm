@@ -15,7 +15,7 @@ func GetReservations(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
 	}
-	
+
 	database.DB.Order("id desc").Find(&reservations)
 
 	if len(reservations) == 0 {

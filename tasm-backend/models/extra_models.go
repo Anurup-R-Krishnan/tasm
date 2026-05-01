@@ -1,15 +1,15 @@
 package models
 
 import (
-	"time"
 	"gorm.io/gorm"
+	"time"
 )
 
 type AuditSession struct {
-	ID        uint           `gorm:"primarykey" json:"id"`
-	CreatedAt time.Time      `json:"createdAt"`
-	UpdatedAt time.Time      `json:"updatedAt"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+	ID                uint           `gorm:"primarykey" json:"id"`
+	CreatedAt         time.Time      `json:"createdAt"`
+	UpdatedAt         time.Time      `json:"updatedAt"`
+	DeletedAt         gorm.DeletedAt `gorm:"index" json:"-"`
 	Title             string         `json:"title"`
 	Status            string         `json:"status"` // e.g. In Progress, Completed
 	Auditor           string         `json:"auditor"`
@@ -66,7 +66,7 @@ type ProcurementRequest struct {
 	UpdatedAt         time.Time      `json:"updatedAt"`
 	DeletedAt         gorm.DeletedAt `gorm:"index" json:"-"`
 	Title             string         `json:"title"`
-	Status            string         `json:"status"` // Draft, Pending Approval, PO Raised, Shipping, Received
+	Status            string         `json:"status"`   // Draft, Pending Approval, PO Raised, Shipping, Received
 	Priority          string         `json:"priority"` // Low, Medium, High
 	EstimatedValue    float64        `json:"estimatedValue"`
 	ActualValue       float64        `json:"actualValue"`
@@ -90,58 +90,57 @@ type LedgerEntry struct {
 }
 
 type LeaseAgreement struct {
-	ID             uint           `gorm:"primarykey" json:"id"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updatedAt"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
-	LeaseID        string         `json:"leaseId"`
-	Vendor         string         `json:"vendor"`
-	StartDate      time.Time      `json:"startDate"`
-	EndDate        time.Time      `json:"endDate"`
-	MonthlyCost    float64        `json:"monthlyCost"`
-	Status         string         `json:"status"` // Active, Expired
+	ID          uint           `gorm:"primarykey" json:"id"`
+	CreatedAt   time.Time      `json:"createdAt"`
+	UpdatedAt   time.Time      `json:"updatedAt"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" json:"-"`
+	LeaseID     string         `json:"leaseId"`
+	Vendor      string         `json:"vendor"`
+	StartDate   time.Time      `json:"startDate"`
+	EndDate     time.Time      `json:"endDate"`
+	MonthlyCost float64        `json:"monthlyCost"`
+	Status      string         `json:"status"` // Active, Expired
 }
 
 type DepreciationSchedule struct {
-	ID             uint           `gorm:"primarykey" json:"id"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updatedAt"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
-	AssetID        string         `json:"assetId"`
-	AssetName      string         `json:"assetName"`
-	PurchaseValue  float64        `json:"purchaseValue"`
-	CurrentValue   float64        `json:"currentValue"`
-	Method         string         `json:"method"` // Straight Line, Declining Balance
+	ID            uint           `gorm:"primarykey" json:"id"`
+	CreatedAt     time.Time      `json:"createdAt"`
+	UpdatedAt     time.Time      `json:"updatedAt"`
+	DeletedAt     gorm.DeletedAt `gorm:"index" json:"-"`
+	AssetID       string         `json:"assetId"`
+	AssetName     string         `json:"assetName"`
+	PurchaseValue float64        `json:"purchaseValue"`
+	CurrentValue  float64        `json:"currentValue"`
+	Method        string         `json:"method"` // Straight Line, Declining Balance
 }
 
 type SoftwareLicense struct {
-	ID             uint           `gorm:"primarykey" json:"id"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updatedAt"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
-	SoftwareName   string         `json:"softwareName"`
-	PlanName       string         `json:"planName"`
-	Status         string         `json:"status"` // Active, Expiring Soon, Expired
-	TotalSeats     int            `json:"totalSeats"`
-	UsedSeats      int            `json:"usedSeats"`
-	RenewalDate    time.Time      `json:"renewalDate"`
-	AnnualCost     float64        `json:"annualCost"`
+	ID           uint           `gorm:"primarykey" json:"id"`
+	CreatedAt    time.Time      `json:"createdAt"`
+	UpdatedAt    time.Time      `json:"updatedAt"`
+	DeletedAt    gorm.DeletedAt `gorm:"index" json:"-"`
+	SoftwareName string         `json:"softwareName"`
+	PlanName     string         `json:"planName"`
+	Status       string         `json:"status"` // Active, Expiring Soon, Expired
+	TotalSeats   int            `json:"totalSeats"`
+	UsedSeats    int            `json:"usedSeats"`
+	RenewalDate  time.Time      `json:"renewalDate"`
+	AnnualCost   float64        `json:"annualCost"`
 }
-
 
 // User Management Models
 type SystemUser struct {
-	ID             uint           `gorm:"primarykey" json:"id"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updatedAt"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
-	EmployeeID     string         `json:"employeeId"`
-	Name           string         `json:"name"`
-	Email          string         `json:"email"`
-	Department     string         `json:"department"`
-	Role           string         `json:"role"`
-	Status         string         `json:"status"` // Active, Inactive
-	LastLogin      time.Time      `json:"lastLogin"`
+	ID         uint           `gorm:"primarykey" json:"id"`
+	CreatedAt  time.Time      `json:"createdAt"`
+	UpdatedAt  time.Time      `json:"updatedAt"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" json:"-"`
+	EmployeeID string         `json:"employeeId"`
+	Name       string         `json:"name"`
+	Email      string         `json:"email"`
+	Department string         `json:"department"`
+	Role       string         `json:"role"`
+	Status     string         `json:"status"` // Active, Inactive
+	LastLogin  time.Time      `json:"lastLogin"`
 }
 
 type AuditDiscrepancy struct {
@@ -162,7 +161,7 @@ type Reservation struct {
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 	Title     string         `json:"title"`
-	Type      string         `json:"type"` // Meeting Room, Vehicle, AV Equipment
+	Type      string         `json:"type"`   // Meeting Room, Vehicle, AV Equipment
 	Status    string         `json:"status"` // Active, Upcoming
 	StartTime time.Time      `json:"startTime"`
 	EndTime   time.Time      `json:"endTime"`
@@ -183,13 +182,13 @@ type Location struct {
 }
 
 type UserRole struct {
-	ID             uint           `gorm:"primarykey" json:"id"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updatedAt"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
-	RoleName       string         `json:"roleName"`
-	Description    string         `json:"description"`
-	UsersCount     int            `json:"usersCount"`
+	ID          uint           `gorm:"primarykey" json:"id"`
+	CreatedAt   time.Time      `json:"createdAt"`
+	UpdatedAt   time.Time      `json:"updatedAt"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" json:"-"`
+	RoleName    string         `json:"roleName"`
+	Description string         `json:"description"`
+	UsersCount  int            `json:"usersCount"`
 }
 
 type SystemAlert struct {
@@ -203,4 +202,3 @@ type SystemAlert struct {
 	Source    string         `json:"source"`
 	IsRead    bool           `json:"isRead"`
 }
-

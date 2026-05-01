@@ -53,19 +53,19 @@ func main() {
 
 		api.GET("/work-orders", handlers.GetWorkOrders)
 		api.POST("/work-orders", handlers.CreateWorkOrder)
-		
+
 		api.GET("/audits", handlers.GetAudits)
 		api.POST("/audits", handlers.CreateAudit)
 		api.GET("/discrepancies", handlers.GetDiscrepancies)
-		
+
 		api.GET("/procurements", handlers.GetProcurements)
 		api.POST("/procurements", handlers.CreateProcurement)
-		
+
 		api.GET("/reservations", handlers.GetReservations)
-		
+
 		api.GET("/locations", handlers.GetLocations)
 		api.POST("/locations", handlers.CreateLocation)
-		
+
 		// Financial APIs
 		api.GET("/ledgers", handlers.GetLedgers)
 		api.GET("/leases", handlers.GetLeases)

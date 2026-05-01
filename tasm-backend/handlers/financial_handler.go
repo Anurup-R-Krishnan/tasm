@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
 )
@@ -13,7 +13,7 @@ func GetLedgers(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
 	}
-	
+
 	database.DB.Order("date desc").Find(&ledgers)
 
 	if len(ledgers) == 0 {
@@ -39,7 +39,7 @@ func GetLeases(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
 	}
-	
+
 	database.DB.Order("start_date desc").Find(&leases)
 
 	if len(leases) == 0 {
@@ -63,7 +63,7 @@ func GetDepreciations(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
 	}
-	
+
 	database.DB.Order("id desc").Find(&schedules)
 
 	if len(schedules) == 0 {

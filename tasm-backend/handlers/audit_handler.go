@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"tasm-backend/database"
 	"tasm-backend/models"
 )
@@ -13,7 +13,7 @@ func GetAudits(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
 	}
-	
+
 	database.DB.Order("id desc").Find(&audits)
 
 	if len(audits) == 0 {
@@ -38,7 +38,7 @@ func CreateAudit(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	if database.DB == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
@@ -54,7 +54,7 @@ func GetDiscrepancies(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
 		return
 	}
-	
+
 	database.DB.Find(&discs)
 
 	if len(discs) == 0 {
