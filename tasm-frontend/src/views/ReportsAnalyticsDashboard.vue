@@ -1,447 +1,204 @@
 <template>
-  <main class="flex-1 flex flex-col min-h-screen relative">
-    <div class="p-page-margin max-w-[1400px] w-full mx-auto flex flex-col gap-section-gap pb-24">
-      <!-- Page Header -->
-      <div class="flex items-end justify-between">
-        <div>
-          <h1 class="font-h1 text-h1 text-text-primary tracking-tight">
-            Financial Reports &amp; Analytics
-          </h1>
-          <p class="font-body text-body text-text-secondary mt-1">Fiscal Year 2023-2024</p>
+  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap pb-24">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <h1 class="text-text-primary">Financial Reports & Analytics</h1>
+        <p class="text-text-secondary mt-1">
+          Detailed overview of asset lifecycle costs, procurement pipelines, and general ledger.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <button
+          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
+        >
+          <span class="material-symbols-outlined text-[18px]">calendar_month</span>
+          FY 2025-26
+        </button>
+        <button class="btn-primary">
+          <span class="material-symbols-outlined">download</span>
+          Export PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Financial KPI Row -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div v-for="kpi in financialKPIs" :key="kpi.label" class="premium-card">
+        <div class="flex justify-between items-start mb-4">
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            :class="kpi.bgClass"
+          >
+            <span class="material-symbols-outlined" :class="kpi.iconClass">{{ kpi.icon }}</span>
+          </div>
+          <span
+            class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-100"
+            >Live</span
+          >
         </div>
-        <div class="flex gap-inline">
-          <button
-            class="bg-surface border border-border-default text-text-primary hover:bg-surface-subtle font-body text-body py-2 px-4 rounded-lg shadow-sm flex items-center gap-2 transition-transform hover:-translate-y-0.5"
-          >
-            <span class="material-symbols-outlined text-sm">download</span>
-            Export PDF
-          </button>
-          <button
-            class="bg-[#1C1917] text-white hover:bg-stone-800 font-body text-body py-2 px-4 rounded-lg shadow-sm flex items-center gap-2 transition-transform hover:-translate-y-0.5"
-          >
-            <span class="material-symbols-outlined text-sm">filter_list</span>
-            Filter Dates
-          </button>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+          {{ kpi.label }}
+        </p>
+        <h2 class="text-2xl font-bold text-slate-900 mt-1">₹{{ kpi.value.toLocaleString() }}</h2>
+        <div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+          <div
+            class="h-full bg-indigo-500 rounded-full"
+            :style="{ width: kpi.progress + '%' }"
+          ></div>
         </div>
       </div>
-      <!-- KPI Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-stack">
-        <!-- KPI 1 -->
-        <div
-          class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.05)] hover:-translate-y-0.5 transition-transform cursor-pointer relative overflow-hidden group"
-        >
+    </div>
+
+    <!-- Charts & Pipeline -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Procurement Pipeline -->
+      <div class="lg:col-span-8">
+        <div class="premium-card !p-0 overflow-hidden h-full flex flex-col">
           <div
-            class="absolute inset-0 bg-metric-amber opacity-10 group-hover:opacity-20 transition-opacity"
-          ></div>
-          <div class="relative z-10">
-            <div class="flex items-center justify-between mb-4">
-              <span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider"
-                >Total Purchase Cost</span
-              >
-              <span class="material-symbols-outlined text-primary/60">account_balance_wallet</span>
-            </div>
-            <div class="font-kpi-number text-kpi-number text-text-primary mb-1">
-              <span class="font-mono-data text-xl align-top mr-1">₹</span>1,24,50,000
-            </div>
-            <div class="font-metadata text-metadata text-status-in-stock flex items-center gap-1">
-              <span class="material-symbols-outlined text-[14px]">trending_up</span>
-              +12.5% from last year
-            </div>
-          </div>
-        </div>
-        <!-- KPI 2 -->
-        <div
-          class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.05)] hover:-translate-y-0.5 transition-transform cursor-pointer relative overflow-hidden group"
-        >
-          <div
-            class="absolute inset-0 bg-metric-sage opacity-10 group-hover:opacity-20 transition-opacity"
-          ></div>
-          <div class="relative z-10">
-            <div class="flex items-center justify-between mb-4">
-              <span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider"
-                >Net Book Value</span
-              >
-              <span class="material-symbols-outlined text-status-in-stock/60"
-                >domain_verification</span
-              >
-            </div>
-            <div class="font-kpi-number text-kpi-number text-text-primary mb-1">
-              <span class="font-mono-data text-xl align-top mr-1">₹</span>82,30,000
-            </div>
-            <div class="font-metadata text-metadata text-text-secondary flex items-center gap-1">
-              Current active assets valuation
-            </div>
-          </div>
-        </div>
-        <!-- KPI 3 -->
-        <div
-          class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.05)] hover:-translate-y-0.5 transition-transform cursor-pointer relative overflow-hidden group"
-        >
-          <div
-            class="absolute inset-0 bg-metric-lavender opacity-10 group-hover:opacity-20 transition-opacity"
-          ></div>
-          <div class="relative z-10">
-            <div class="flex items-center justify-between mb-4">
-              <span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider"
-                >Accumulated Depreciation</span
-              >
-              <span class="material-symbols-outlined text-status-critical/60">trending_down</span>
-            </div>
-            <div class="font-kpi-number text-kpi-number text-text-primary mb-1">
-              <span class="font-mono-data text-xl align-top mr-1">₹</span>42,20,000
-            </div>
-            <div class="font-metadata text-metadata text-status-critical flex items-center gap-1">
-              <span class="material-symbols-outlined text-[14px]">warning</span>
-              Requires audit review
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Charts Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-stack">
-        <!-- Bar Chart: Depreciation by Category -->
-        <div
-          class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.05)] flex flex-col h-[360px]"
-        >
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="font-h2 text-h2 text-text-primary">Depreciation by Category</h2>
-            <button class="text-text-secondary hover:text-text-primary">
-              <span class="material-symbols-outlined">more_vert</span>
-            </button>
-          </div>
-          <div
-            class="flex-1 flex items-end justify-between gap-2 pt-8 pb-4 border-b border-border-default relative"
+            class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/30"
           >
-            <div
-              class="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-text-secondary font-mono-data pointer-events-none w-8 border-r border-border-default border-dashed"
-            >
-              <span>15L</span>
-              <span>10L</span>
-              <span>5L</span>
-              <span>0</span>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Procurement Pipeline</h3>
+              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">
+                Pending Approvals & Shipping
+              </p>
             </div>
-            <div class="pl-10 flex-1 flex items-end justify-around h-full">
-              <div class="w-12 bg-[#1C1917] rounded-t-sm h-[80%] relative group">
-                <div
-                  class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity font-mono-data whitespace-nowrap"
-                >
-                  ₹12.5L
-                </div>
-              </div>
-              <div class="w-12 bg-primary/80 rounded-t-sm h-[60%] relative group">
-                <div
-                  class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity font-mono-data whitespace-nowrap"
-                >
-                  ₹9.2L
-                </div>
-              </div>
-              <div class="w-12 bg-secondary/60 rounded-t-sm h-[40%] relative group">
-                <div
-                  class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity font-mono-data whitespace-nowrap"
-                >
-                  ₹6.0L
-                </div>
-              </div>
-              <div class="w-12 bg-outline-variant rounded-t-sm h-[25%] relative group">
-                <div
-                  class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity font-mono-data whitespace-nowrap"
-                >
-                  ₹3.8L
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="flex justify-around pl-10 pt-2 font-metadata text-metadata text-text-secondary"
-          >
-            <span class="w-12 text-center truncate">IT Eqpt</span>
-            <span class="w-12 text-center truncate">Furniture</span>
-            <span class="w-12 text-center truncate">Vehicles</span>
-            <span class="w-12 text-center truncate">Plant</span>
-          </div>
-        </div>
-        <!-- Line Chart: Monthly Spend Trend -->
-        <div
-          class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.05)] flex flex-col h-[360px]"
-        >
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="font-h2 text-h2 text-text-primary">Monthly Spend Trend</h2>
             <div class="flex gap-2">
-              <span class="flex items-center gap-1 font-metadata text-metadata text-text-secondary"
-                ><span class="w-2 h-2 rounded-full bg-[#1C1917]"></span> Actual</span
+              <button
+                class="text-[10px] font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-white shadow-sm transition-all"
               >
-              <span class="flex items-center gap-1 font-metadata text-metadata text-text-secondary"
-                ><span class="w-2 h-2 rounded-full bg-border-default"></span> Budget</span
+                By Dept
+              </button>
+              <button
+                class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-900 shadow-sm transition-all"
               >
+                By Priority
+              </button>
             </div>
           </div>
-          <div class="flex-1 relative border-b border-l border-border-default pb-4 pl-4">
-            <div
-              class="absolute -left-8 top-0 bottom-4 flex flex-col justify-between text-xs text-text-secondary font-mono-data items-end w-6"
-            >
-              <span>4L</span>
-              <span>2L</span>
-              <span>0</span>
-            </div>
-            <div
-              class="absolute inset-0 pl-4 pb-4 flex flex-col justify-between pointer-events-none"
-            >
-              <div class="w-full border-t border-border-default border-dashed opacity-50"></div>
-              <div class="w-full border-t border-border-default border-dashed opacity-50"></div>
-              <div class="w-full border-t border-border-default border-dashed opacity-50"></div>
-            </div>
-            <div class="absolute inset-0 pl-4 pb-4 overflow-hidden">
-              <div
-                class="absolute bottom-0 left-4 right-0 h-[60%] bg-surface-subtle border-t-2 border-border-default border-dashed"
-              ></div>
-              <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-                <path
-                  d="M0,80 Q20,70 40,50 T80,30 T100,20"
-                  fill="none"
-                  stroke="#1C1917"
-                  stroke-width="2"
-                  vector-effect="non-scaling-stroke"
-                ></path>
-                <circle cx="40" cy="50" fill="#1C1917" r="3"></circle>
-                <circle cx="80" cy="30" fill="#1C1917" r="3"></circle>
-              </svg>
-            </div>
-          </div>
-          <div
-            class="flex justify-between pl-4 pt-2 font-metadata text-metadata text-text-secondary px-2"
-          >
-            <span>Apr</span>
-            <span>Jun</span>
-            <span>Aug</span>
-            <span>Oct</span>
-            <span>Dec</span>
-            <span>Feb</span>
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-left">
+              <thead
+                class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+              >
+                <tr>
+                  <th class="px-6 py-4">Request Detail</th>
+                  <th class="px-6 py-4">Priority</th>
+                  <th class="px-6 py-4">Status</th>
+                  <th class="px-6 py-4">Estimated Value</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-50">
+                <tr
+                  v-for="req in procurements"
+                  :key="req.id"
+                  class="hover:bg-slate-50/50 transition-colors group"
+                >
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center font-bold text-[10px]"
+                      >
+                        {{ req.requestorInitials }}
+                      </div>
+                      <div>
+                        <p
+                          class="text-sm font-bold text-slate-900 leading-none group-hover:text-indigo-600 transition-colors"
+                        >
+                          {{ req.title }}
+                        </p>
+                        <p class="text-[10px] text-slate-400 mt-1.5 font-medium">
+                          {{ req.department }} • PO: {{ req.poNumber || 'N/A' }}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full"
+                      :class="getPriorityClass(req.priority)"
+                      >{{ req.priority }}</span
+                    >
+                  </td>
+                  <td class="px-6 py-4">
+                    <span class="text-[10px] font-bold text-slate-600 flex items-center gap-1.5">
+                      <span
+                        class="w-1.5 h-1.5 rounded-full bg-slate-400"
+                        :class="getStatusDotClass(req.status)"
+                      ></span>
+                      {{ req.status }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-sm font-bold text-slate-900">
+                    ₹{{ (req.estimatedValue || 0).toLocaleString() }}
+                  </td>
+                </tr>
+                <tr v-if="procurements.length === 0">
+                  <td colspan="4" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+                    No active procurement requests.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <!-- Financial Ledger Table -->
-      <div
-        class="bg-surface border border-border-default rounded-xl shadow-[0_4px_16px_-4px_rgba(0,0,0,0.05)] overflow-hidden"
-      >
-        <div
-          class="px-card-padding py-4 border-b border-border-default bg-surface-subtle flex items-center justify-between"
-        >
-          <h3 class="font-h3 text-h3 text-text-primary">Recent Ledger Entries</h3>
-          <div class="relative">
-            <span
-              class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-text-secondary text-[16px]"
-              >search</span
-            >
-            <input
-              class="bg-surface border border-border-default rounded py-1 pl-8 pr-3 font-body text-body text-text-primary focus:outline-none focus:border-primary text-sm w-48"
-              placeholder="Search entries..."
-              type="text"
-            />
-          </div>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse whitespace-nowrap">
-            <thead>
-              <tr>
-                <th
-                  class="font-table-header text-table-header text-text-secondary px-card-padding py-3 border-b border-border-default w-16"
-                >
-                  ID
-                </th>
-                <th
-                  class="font-table-header text-table-header text-text-secondary px-card-padding py-3 border-b border-border-default"
-                >
-                  Date
-                </th>
-                <th
-                  class="font-table-header text-table-header text-text-secondary px-card-padding py-3 border-b border-border-default"
-                >
-                  Category
-                </th>
-                <th
-                  class="font-table-header text-table-header text-text-secondary px-card-padding py-3 border-b border-border-default"
-                >
-                  Description
-                </th>
-                <th
-                  class="font-table-header text-table-header text-text-secondary px-card-padding py-3 border-b border-border-default text-right"
-                >
-                  Debit (₹)
-                </th>
-                <th
-                  class="font-table-header text-table-header text-text-secondary px-card-padding py-3 border-b border-border-default text-right"
-                >
-                  Credit (₹)
-                </th>
-                <th
-                  class="font-table-header text-table-header text-text-secondary px-card-padding py-3 border-b border-border-default text-right"
-                >
-                  Balance (₹)
-                </th>
-              </tr>
-            </thead>
-            <tbody class="font-body text-body text-text-primary divide-y divide-border-default">
-              <tr class="bg-surface hover:bg-accent-subtle/30 transition-colors group">
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-text-secondary">
-                  #LD-4092
-                </td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data">2023-10-24</td>
-                <td class="px-card-padding py-3">
-                  <span
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-secondary-container text-on-secondary-container"
-                    >IT Equipment</span
-                  >
-                </td>
-                <td class="px-card-padding py-3">Server Racks Procurement</td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-right">
-                  4,50,000
-                </td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right text-text-secondary"
-                >
-                  -
-                </td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right font-medium"
-                >
-                  82,30,000
-                </td>
-              </tr>
-              <tr class="bg-surface-subtle hover:bg-accent-subtle/30 transition-colors group">
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-text-secondary border-l-[3px] border-amber-500"
-                >
-                  #LD-4091
-                </td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data">2023-10-21</td>
-                <td class="px-card-padding py-3">
-                  <span
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-metric-sage text-status-in-stock"
-                    >Depreciation</span
-                  >
-                </td>
-                <td class="px-card-padding py-3">Monthly Accrual - Vehicles</td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right text-text-secondary"
-                >
-                  -
-                </td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-right">
-                  1,20,000
-                </td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right font-medium"
-                >
-                  77,80,000
-                </td>
-              </tr>
-              <tr class="bg-surface hover:bg-accent-subtle/30 transition-colors group">
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-text-secondary">
-                  #LD-4090
-                </td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data">2023-10-18</td>
-                <td class="px-card-padding py-3">
-                  <span
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-secondary-container text-on-secondary-container"
-                    >Furniture</span
-                  >
-                </td>
-                <td class="px-card-padding py-3">Ergonomic Chairs Batch B</td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-right">
-                  2,15,000
-                </td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right text-text-secondary"
-                >
-                  -
-                </td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right font-medium"
-                >
-                  79,00,000
-                </td>
-              </tr>
-              <tr class="bg-surface-subtle hover:bg-accent-subtle/30 transition-colors group">
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-text-secondary">
-                  #LD-4089
-                </td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data">2023-10-15</td>
-                <td class="px-card-padding py-3">
-                  <span
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-metric-amber text-primary-container"
-                    >Maintenance</span
-                  >
-                </td>
-                <td class="px-card-padding py-3">HVAC Quarterly Service</td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-right">
-                  85,000
-                </td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right text-text-secondary"
-                >
-                  -
-                </td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right font-medium"
-                >
-                  76,85,000
-                </td>
-              </tr>
-              <tr class="bg-surface hover:bg-accent-subtle/30 transition-colors group">
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-text-secondary">
-                  #LD-4088
-                </td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data">2023-10-01</td>
-                <td class="px-card-padding py-3">
-                  <span
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-metric-sage text-status-in-stock"
-                    >Disposal</span
-                  >
-                </td>
-                <td class="px-card-padding py-3">Old Desktops Salvage Value</td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right text-text-secondary"
-                >
-                  -
-                </td>
-                <td class="px-card-padding py-3 font-mono-data text-mono-data text-right">
-                  45,000
-                </td>
-                <td
-                  class="px-card-padding py-3 font-mono-data text-mono-data text-right font-medium"
-                >
-                  76,00,000
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div
-          class="px-card-padding py-3 border-t border-border-default flex items-center justify-between bg-surface"
-        >
-          <span class="font-metadata text-metadata text-text-secondary"
-            >Showing 1-5 of 142 entries</span
+
+      <!-- General Ledger Feed -->
+      <div class="lg:col-span-4">
+        <div class="premium-card !p-0 overflow-hidden h-full flex flex-col">
+          <div
+            class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/30"
           >
-          <div class="flex gap-1">
-            <button
-              class="px-3 py-1 border border-border-default rounded bg-surface hover:bg-surface-subtle font-body text-body text-text-secondary disabled:opacity-50"
+            <h3 class="text-sm font-bold text-slate-900">Recent Transactions</h3>
+            <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full"
+              >Ledger Feed</span
             >
-              Prev
-            </button>
-            <button
-              class="px-3 py-1 border border-primary rounded bg-primary/5 text-primary font-body text-body"
+          </div>
+          <div class="p-4 space-y-3 overflow-y-auto max-h-[500px] flex-1">
+            <div
+              v-for="entry in ledgers"
+              :key="entry.id"
+              class="p-4 bg-slate-50/50 border border-slate-100 rounded-xl hover:border-slate-200 transition-all group"
             >
-              1
-            </button>
-            <button
-              class="px-3 py-1 border border-border-default rounded bg-surface hover:bg-surface-subtle font-body text-body text-text-secondary"
+              <div class="flex justify-between items-start mb-2">
+                <span
+                  class="text-[9px] font-mono font-bold text-slate-300 uppercase tracking-widest"
+                  >{{ entry.transactionId }}</span
+                >
+                <span
+                  class="text-[10px] font-bold"
+                  :class="entry.type === 'Credit' ? 'text-emerald-500' : 'text-rose-500'"
+                >
+                  {{ entry.type === 'Credit' ? '+' : '-' }} ₹{{
+                    (entry.amount || 0).toLocaleString()
+                  }}
+                </span>
+              </div>
+              <h4 class="text-xs font-bold text-slate-900 truncate">{{ entry.description }}</h4>
+              <div class="flex justify-between items-center mt-3">
+                <span class="text-[10px] font-medium text-slate-400">{{
+                  formatDate(entry.date)
+                }}</span>
+                <span
+                  class="text-[9px] font-bold uppercase tracking-wider text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-100"
+                  >{{ entry.category }}</span
+                >
+              </div>
+            </div>
+            <div
+              v-if="ledgers.length === 0"
+              class="py-12 text-center text-slate-400 text-sm italic"
             >
-              2
-            </button>
+              No transactions recorded in ledger.
+            </div>
+          </div>
+          <div class="p-4 bg-slate-50/50 border-t border-slate-50">
             <button
-              class="px-3 py-1 border border-border-default rounded bg-surface hover:bg-surface-subtle font-body text-body text-text-secondary"
+              class="w-full py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:text-indigo-600 transition-colors shadow-sm"
             >
-              Next
+              View Full Audit Log
             </button>
           </div>
         </div>
@@ -451,5 +208,95 @@
 </template>
 
 <script setup lang="ts">
-// Financial Reports & Analytics Dashboard — KPI cards, bar/line charts, and ledger table
+import { ref, computed, onMounted } from 'vue';
+
+const ledgers = ref<any[]>([]);
+const procurements = ref<any[]>([]);
+const loading = ref(true);
+
+const fetchData = async () => {
+  loading.value = true;
+  try {
+    const [ledgerRes, procRes] = await Promise.all([
+      fetch('http://localhost:8080/api/ledgers'),
+      fetch('http://localhost:8080/api/procurements'),
+    ]);
+    if (ledgerRes.ok) ledgers.value = await ledgerRes.json();
+    if (procRes.ok) procurements.value = await procRes.json();
+  } catch (err) {
+    console.error('Failed to fetch financial data:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const financialKPIs = computed(() => {
+  const totalSpend = ledgers.value
+    .filter((l) => l.type === 'Debit')
+    .reduce((sum, l) => sum + (l.amount || 0), 0);
+  const totalBudget = 5000000; // Mock budget for progress
+  const pendingValue = procurements.value
+    .filter((p) => p.status !== 'Received')
+    .reduce((sum, p) => sum + (p.estimatedValue || 0), 0);
+
+  return [
+    {
+      label: 'Total Expenditure',
+      value: totalSpend,
+      icon: 'payments',
+      bgClass: 'bg-rose-50',
+      iconClass: 'text-rose-500',
+      progress: (totalSpend / totalBudget) * 100,
+    },
+    {
+      label: 'Pending Procurement',
+      value: pendingValue,
+      icon: 'shopping_cart_checkout',
+      bgClass: 'bg-indigo-50',
+      iconClass: 'text-indigo-500',
+      progress: 45,
+    },
+    {
+      label: 'Opex Savings',
+      value: 842000,
+      icon: 'savings',
+      bgClass: 'bg-emerald-50',
+      iconClass: 'text-emerald-500',
+      progress: 72,
+    },
+    {
+      label: 'Asset Valuation',
+      value: 12450000,
+      icon: 'account_balance_wallet',
+      bgClass: 'bg-slate-50',
+      iconClass: 'text-slate-500',
+      progress: 60,
+    },
+  ];
+});
+
+const formatDate = (date: string) => {
+  if (!date) return 'N/A';
+  return new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+};
+
+const getPriorityClass = (priority: string) => {
+  switch (priority) {
+    case 'High':
+      return 'bg-rose-100 text-rose-700';
+    case 'Medium':
+      return 'bg-amber-100 text-amber-700';
+    default:
+      return 'bg-slate-100 text-slate-700';
+  }
+};
+
+const getStatusDotClass = (status: string) => {
+  if (status.includes('Received')) return 'bg-emerald-500';
+  if (status.includes('Pending') || status.includes('PO')) return 'bg-amber-500';
+  if (status.includes('Shipping')) return 'bg-blue-500';
+  return 'bg-slate-400';
+};
+
+onMounted(fetchData);
 </script>

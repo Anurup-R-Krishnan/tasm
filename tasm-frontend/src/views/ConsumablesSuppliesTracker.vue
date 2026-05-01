@@ -1,165 +1,132 @@
 <template>
   <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap">
-    <div class="flex justify-between items-end">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
-        <h1 class="font-h1 text-h1 text-text-primary mb-1">Consumables Tracker</h1>
-        <p class="font-body text-body text-text-secondary">
-          Manage and track daily supplies and consumable inventory.
+        <h1 class="text-text-primary mb-1">Consumables Tracker</h1>
+        <p class="text-text-secondary">Manage and track daily supplies and consumable inventory.</p>
+      </div>
+      <div class="flex gap-3">
+        <button
+          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
+        >
+          <span class="material-symbols-outlined text-[18px]">download</span>
+          Receive Stock
+        </button>
+        <button class="btn-primary">
+          <span class="material-symbols-outlined">add_circle</span>
+          Issue Consumable
+        </button>
+      </div>
+    </div>
+
+    <!-- Metrics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div v-for="kpi in kpiMetrics" :key="kpi.label" class="premium-card">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+          {{ kpi.label }}
+        </p>
+        <div class="text-3xl font-bold" :class="kpi.colorClass">
+          {{ kpi.value }}
+        </div>
+        <p class="text-xs text-slate-500 mt-2 flex items-center gap-1">
+          <span v-if="kpi.icon" class="material-symbols-outlined text-sm">{{ kpi.icon }}</span>
+          {{ kpi.subtext }}
         </p>
       </div>
-      <div class="flex gap-inline">
-        <Button icon="pi pi-download" label="Receive Stock" outlined severity="secondary" />
-        <Button icon="pi pi-arrow-up-right" label="Issue Consumable" />
-      </div>
     </div>
 
-    <div class="grid grid-cols-4 gap-inline">
+    <div class="premium-card !p-0 overflow-hidden">
       <div
-        class="bg-metric-amber rounded-xl p-card-padding shadow-[0_4px_16px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform cursor-pointer border border-[#EEEBE4]"
+        class="p-4 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/30"
       >
-        <h3 class="font-metadata text-metadata text-on-surface-variant uppercase mb-2">
-          Total Items
-        </h3>
-        <div class="font-kpi-number text-kpi-number text-text-primary">
-          {{ metrics.totalItems }}
-        </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-1">
-          Across {{ metrics.totalCategories }} categories
-        </div>
-      </div>
-      <div
-        class="bg-surface-container-high rounded-xl p-card-padding shadow-[0_4px_16px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform cursor-pointer border border-[#EEEBE4]"
-      >
-        <h3 class="font-metadata text-metadata text-on-surface-variant uppercase mb-2">
-          Low Stock Items
-        </h3>
-        <div class="font-kpi-number text-kpi-number text-primary-container">
-          {{ metrics.lowStockItems }}
-        </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-1 flex items-center gap-1">
-          <span class="material-symbols-outlined text-[14px] text-primary-container">
-            warning
-          </span>
-          Requires attention
-        </div>
-      </div>
-      <div
-        class="bg-metric-lavender rounded-xl p-card-padding shadow-[0_4px_16px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform cursor-pointer border border-[#EEEBE4]"
-      >
-        <h3 class="font-metadata text-metadata text-on-surface-variant uppercase mb-2">
-          Active Locations
-        </h3>
-        <div class="font-kpi-number text-kpi-number text-tertiary">
-          {{ metrics.totalLocations }}
-        </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-1">
-          Locations stocking consumables
-        </div>
-      </div>
-      <div
-        class="bg-metric-sage rounded-xl p-card-padding shadow-[0_4px_16px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform cursor-pointer border border-[#EEEBE4]"
-      >
-        <h3 class="font-metadata text-metadata text-on-surface-variant uppercase mb-2">
-          Adequate Stock
-        </h3>
-        <div class="font-kpi-number text-kpi-number text-status-in-stock">
-          {{ metrics.healthyItems }}
-        </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-1">
-          Items above reorder level
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="bg-surface rounded-xl border border-border-default shadow-[0_4px_16px_rgba(0,0,0,0.02)] overflow-hidden"
-    >
-      <div
-        class="p-4 border-b border-border-default flex justify-between items-center bg-surface-subtle"
-      >
-        <div class="flex gap-inline">
-          <div class="relative w-64">
+        <div class="flex flex-1 gap-4 w-full md:w-auto">
+          <div class="relative flex-1 max-w-sm">
             <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-[18px]"
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]"
+              >search</span
             >
-              search
-            </span>
-            <InputText
+            <input
               v-model="searchQuery"
-              class="w-full !bg-surface !border-border-default !rounded-lg !py-1.5 !pl-9 !pr-3 !text-body !font-body"
-              placeholder="Filter by item name..."
+              class="w-full bg-white border border-slate-200 rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
+              placeholder="Search items..."
             />
           </div>
-          <Select
+          <select
             v-model="selectedCategory"
-            :options="categoryOptions"
-            class="min-w-56"
-            option-label="label"
-            option-value="value"
-            placeholder="All Categories"
-          />
-        </div>
-        <div class="flex gap-2">
-          <Button aria-label="Filter list" icon="pi pi-filter" rounded severity="secondary" text />
-          <Button
-            aria-label="Toggle columns"
-            icon="pi pi-table"
-            rounded
-            severity="secondary"
-            text
-          />
+            class="bg-white border border-slate-200 rounded-xl py-2 px-4 text-sm outline-none focus:ring-2 focus:ring-indigo-500/20"
+          >
+            <option :value="null">All Categories</option>
+            <option v-for="opt in categoryOptions" :key="opt.value" :value="opt.value">
+              {{ opt.label }}
+            </option>
+          </select>
         </div>
       </div>
 
-      <div class="bg-surface rounded-xl shadow-sm overflow-hidden border-t border-border-default">
-        <Message v-if="errorMessage" severity="error" class="m-4">
-          {{ errorMessage }}
-        </Message>
-        <DataTable
-          :value="filteredConsumables"
-          :loading="loading"
-          paginator
-          :rows="10"
-          tableStyle="min-width: 50rem"
-          class="w-full"
-          dataKey="id"
-        >
-          <template #empty> No consumables matched the current filters. </template>
-          <Column field="name" header="Item Name" sortable />
-          <Column field="category" header="Category" sortable />
-          <Column field="location" header="Location" sortable />
-          <Column field="currentStock" header="Current Stock" sortable>
-            <template #body="slotProps">
-              <span
-                :class="{
-                  'text-error-container font-bold': slotProps.data.currentStock === 0,
-                  'text-primary-container font-bold':
-                    slotProps.data.currentStock > 0 &&
-                    slotProps.data.currentStock <= slotProps.data.reorderLevel,
-                }"
-              >
-                {{ slotProps.data.currentStock }}
-              </span>
-            </template>
-          </Column>
-          <Column field="reorderLevel" header="Reorder Level" sortable />
-          <Column header="Status">
-            <template #body="slotProps">
-              <Tag :severity="stockSeverity(slotProps.data)" :value="stockLabel(slotProps.data)" />
-            </template>
-          </Column>
-          <Column header="Actions" alignFrozen="right">
-            <template #body="slotProps">
-              <button
-                @click="deleteConsumable(slotProps.data.id)"
-                class="p-1 text-text-secondary hover:text-status-critical rounded transition-colors"
-                title="Delete Item"
-              >
-                <span class="material-symbols-outlined text-[20px]">delete</span>
-              </button>
-            </template>
-          </Column>
-        </DataTable>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead
+            class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+          >
+            <tr>
+              <th class="px-6 py-4">Item Name</th>
+              <th class="px-6 py-4">Category</th>
+              <th class="px-6 py-4">Location</th>
+              <th class="px-6 py-4">Stock Level</th>
+              <th class="px-6 py-4">Status</th>
+              <th class="px-6 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            <tr
+              v-for="item in filteredConsumables"
+              :key="item.id"
+              class="hover:bg-slate-50/50 transition-colors"
+            >
+              <td class="px-6 py-4 font-bold text-slate-900 text-sm">{{ item.name }}</td>
+              <td class="px-6 py-4">
+                <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg">{{
+                  item.category
+                }}</span>
+              </td>
+              <td class="px-6 py-4 text-xs text-slate-600">{{ item.location }}</td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <span
+                    class="text-sm font-bold"
+                    :class="
+                      item.currentStock <= item.reorderLevel ? 'text-rose-600' : 'text-slate-900'
+                    "
+                  >
+                    {{ item.currentStock }}
+                  </span>
+                  <span class="text-[10px] text-slate-400">/ {{ item.reorderLevel }} min</span>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                  :class="stockSeverityClass(item)"
+                >
+                  {{ stockLabel(item) }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button
+                  @click="deleteConsumable(item.id)"
+                  class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
+                >
+                  <span class="material-symbols-outlined text-[20px]">delete</span>
+                </button>
+              </td>
+            </tr>
+            <tr v-if="filteredConsumables.length === 0">
+              <td colspan="6" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+                No items found matching filters.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
@@ -167,13 +134,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import Button from 'primevue/button';
-import Column from 'primevue/column';
-import DataTable from 'primevue/datatable';
-import InputText from 'primevue/inputtext';
-import Message from 'primevue/message';
-import Select from 'primevue/select';
-import Tag from 'primevue/tag';
 import { getConsumables, type Consumable } from '../api/consumables';
 
 const consumables = ref<Consumable[]>([]);
@@ -183,7 +143,6 @@ const searchQuery = ref('');
 const selectedCategory = ref<string | null>(null);
 
 const categoryOptions = computed(() => [
-  { label: 'All Categories', value: null },
   ...Array.from(new Set(consumables.value.map((item) => item.category)))
     .sort()
     .map((category) => ({
@@ -194,34 +153,53 @@ const categoryOptions = computed(() => [
 
 const filteredConsumables = computed(() => {
   const normalizedQuery = searchQuery.value.trim().toLowerCase();
-
   return consumables.value.filter((item) => {
     const matchesQuery =
       normalizedQuery.length === 0 ||
       item.name.toLowerCase().includes(normalizedQuery) ||
       item.location.toLowerCase().includes(normalizedQuery);
-
     const matchesCategory =
       selectedCategory.value === null || item.category === selectedCategory.value;
-
     return matchesQuery && matchesCategory;
   });
 });
 
-const metrics = computed(() => {
+const kpiMetrics = computed(() => {
   const lowStockItems = consumables.value.filter(
     (item) => item.currentStock <= item.reorderLevel,
   ).length;
   const totalLocations = new Set(consumables.value.map((item) => item.location)).size;
-  const totalCategories = new Set(consumables.value.map((item) => item.category)).size;
 
-  return {
-    totalItems: consumables.value.length,
-    lowStockItems,
-    totalLocations,
-    totalCategories,
-    healthyItems: Math.max(consumables.value.length - lowStockItems, 0),
-  };
+  return [
+    {
+      label: 'Total Inventory',
+      value: consumables.value.length,
+      colorClass: 'text-slate-900',
+      subtext: 'Active SKUs tracked',
+    },
+    {
+      label: 'Low Stock Alerts',
+      value: lowStockItems,
+      colorClass: 'text-rose-600',
+      icon: 'warning',
+      subtext: 'Requires restocking',
+    },
+    {
+      label: 'Storage Points',
+      value: totalLocations,
+      colorClass: 'text-indigo-600',
+      subtext: 'Across campus',
+    },
+    {
+      label: 'Stock Health',
+      value:
+        Math.round(
+          ((consumables.value.length - lowStockItems) / (consumables.value.length || 1)) * 100,
+        ) + '%',
+      colorClass: 'text-emerald-600',
+      subtext: 'Items above min level',
+    },
+  ];
 });
 
 async function fetchConsumables(): Promise<void> {
@@ -252,27 +230,15 @@ async function deleteConsumable(id: number): Promise<void> {
 }
 
 function stockLabel(consumable: Consumable): string {
-  if (consumable.currentStock === 0) {
-    return 'Out of Stock';
-  }
-
-  if (consumable.currentStock <= consumable.reorderLevel) {
-    return 'Low Stock';
-  }
-
-  return 'Adequate';
+  if (consumable.currentStock === 0) return 'Out of Stock';
+  if (consumable.currentStock <= consumable.reorderLevel) return 'Low Stock';
+  return 'In Stock';
 }
 
-function stockSeverity(consumable: Consumable): 'danger' | 'warn' | 'success' {
-  if (consumable.currentStock === 0) {
-    return 'danger';
-  }
-
-  if (consumable.currentStock <= consumable.reorderLevel) {
-    return 'warn';
-  }
-
-  return 'success';
+function stockSeverityClass(consumable: Consumable): string {
+  if (consumable.currentStock === 0) return 'bg-rose-100 text-rose-700';
+  if (consumable.currentStock <= consumable.reorderLevel) return 'bg-amber-100 text-amber-700';
+  return 'bg-emerald-100 text-emerald-700';
 }
 
 onMounted(() => {

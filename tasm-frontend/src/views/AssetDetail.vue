@@ -1,150 +1,184 @@
 <template>
-  <main class="min-h-screen">
-    <div v-if="loading" class="flex justify-center items-center py-20 text-stone-500">
-      <span class="material-symbols-outlined animate-spin mr-2">refresh</span> Loading Asset...
+  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap pb-24">
+    <div v-if="loading" class="flex flex-col items-center justify-center py-40 gap-4">
+      <span class="material-symbols-outlined animate-spin text-4xl text-indigo-500">sync</span>
+      <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">
+        Synchronizing Asset Data...
+      </p>
     </div>
-    <div v-else-if="asset" class="p-page-margin max-w-[1400px] mx-auto">
-      <!-- Breadcrumbs & Header -->
-      <div class="mb-section-gap">
-        <div
-          class="flex items-center gap-2 text-metadata text-text-secondary font-metadata mb-stack"
-        >
-          <router-link to="/asset-registry" class="hover:text-primary transition-colors">
-            Asset Inventory
-          </router-link>
-          <span class="material-symbols-outlined text-[14px]"> chevron_right </span>
-          <a class="hover:text-primary transition-colors" href="#">
-            {{ asset.category }}
-          </a>
-          <span class="material-symbols-outlined text-[14px]"> chevron_right </span>
-          <span class="text-text-primary font-medium">
-            {{ asset.tagId }}
-          </span>
-        </div>
-        <div class="flex justify-between items-start">
+
+    <div v-else-if="asset" class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <!-- Top Navigation & Actions -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div class="flex items-center gap-4">
+          <button
+            @click="router.back()"
+            class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:border-indigo-100 transition-all shadow-sm"
+          >
+            <span class="material-symbols-outlined">arrow_back</span>
+          </button>
           <div>
-            <div class="flex items-center gap-inline mb-2">
-              <h1 class="font-h1 text-h1 text-text-primary">
-                {{ asset.name }}
-              </h1>
+            <div class="flex items-center gap-3">
+              <h1 class="text-text-primary mb-0 leading-none">{{ asset.name }}</h1>
               <span
-                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border"
-                :class="{
-                  'bg-metric-sage text-status-in-stock border-[#BBF7D0]':
-                    asset.status === 'In Stock',
-                  'bg-tertiary-fixed text-status-checked-out border-tertiary-fixed-dim/50':
-                    asset.status === 'Checked Out',
-                  'bg-surface-variant text-text-secondary border-border-default':
-                    asset.status === 'Reserved',
-                }"
+                class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                :class="getStatusClass(asset.status)"
               >
-                <span class="sr-only">Status:</span>
                 {{ asset.status }}
               </span>
             </div>
-            <div class="flex items-center gap-4 text-metadata text-text-secondary font-metadata">
-              <div class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[14px]">tag</span>
-                <span
-                  class="font-mono-data text-mono-data text-text-primary bg-surface-subtle px-1.5 py-0.5 rounded border border-border-default"
-                >
-                  {{ asset.tagId }}
-                </span>
-              </div>
-              <div class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[14px]">location_on</span>
-                <span>{{ asset.location }}</span>
-              </div>
-            </div>
+            <p class="text-xs font-mono text-slate-400 mt-1.5 uppercase tracking-widest">
+              {{ asset.tagId }}
+            </p>
           </div>
-          <div class="flex gap-inline">
-            <button
-              class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-h3 text-h3 shadow-[0_2px_4px_rgba(0,0,0,0.02)] hover:-translate-y-[1px] transition-transform flex items-center gap-2"
-            >
-              <span class="material-symbols-outlined text-[18px]">edit</span>
-              Edit
-            </button>
-            <button
-              class="px-4 py-2 bg-[#1C1917] text-white rounded-lg font-h3 text-h3 shadow-sm hover:-translate-y-[1px] transition-transform flex items-center gap-2"
-            >
-              <span class="material-symbols-outlined text-[18px]">handyman</span>
-              Log Maintenance
-            </button>
-          </div>
+        </div>
+        <div class="flex gap-3 w-full md:w-auto">
+          <button
+            class="flex-1 md:flex-none bg-surface border border-border-default text-text-primary px-6 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-surface-subtle transition-all shadow-sm"
+          >
+            <span class="material-symbols-outlined text-[18px]">edit</span>
+            Edit Record
+          </button>
+          <button class="flex-1 md:flex-none btn-primary px-6 py-2.5 !text-sm">
+            <span class="material-symbols-outlined">sync_alt</span>
+            Checkout / Transfer
+          </button>
         </div>
       </div>
-      <!-- Top Section: Image + KPIs -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-inline mb-section-gap">
-        <!-- Image Gallery -->
-        <div
-          class="lg:col-span-5 bg-surface border border-border-default rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.03)] flex flex-col"
-        >
-          <div
-            class="relative h-64 w-full bg-stone-100 border-b border-border-default flex items-center justify-center"
-          >
-            <span class="material-symbols-outlined text-[80px] text-stone-300">devices</span>
+
+      <!-- Detail Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Left Column: Specs & History -->
+        <div class="lg:col-span-8 space-y-8">
+          <!-- Primary Info Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div v-for="info in primarySpecs" :key="info.label" class="premium-card">
+              <div
+                class="w-10 h-10 rounded-xl flex items-center justify-center mb-4 shadow-sm"
+                :class="info.bgClass"
+              >
+                <span class="material-symbols-outlined" :class="info.iconClass">{{
+                  info.icon
+                }}</span>
+              </div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                {{ info.label }}
+              </p>
+              <p class="text-sm font-bold text-slate-900 mt-1">{{ info.value }}</p>
+            </div>
           </div>
-          <div class="flex gap-2 p-4 bg-surface-subtle overflow-x-auto">
-            <div
-              class="h-16 w-16 flex-shrink-0 rounded-lg border border-border-default opacity-70 hover:opacity-100 transition-opacity flex items-center justify-center bg-stone-100 cursor-pointer"
+
+          <!-- Description / Technical Specs -->
+          <div class="premium-card">
+            <h3
+              class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-50 pb-4"
             >
-              <span class="material-symbols-outlined text-stone-400">add_photo_alternate</span>
+              Asset Profile & Technicals
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+              <div
+                v-for="(val, key) in technicalSpecs"
+                :key="key"
+                class="flex justify-between items-center py-2 border-b border-slate-50/50"
+              >
+                <span class="text-xs font-medium text-slate-400 capitalize">{{ key }}</span>
+                <span class="text-xs font-bold text-slate-900">{{ val }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity History (Mocked list but real style) -->
+          <div class="premium-card !p-0 overflow-hidden">
+            <div
+              class="p-6 border-b border-slate-50 bg-slate-50/30 flex justify-between items-center"
+            >
+              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                Lifecycle Log
+              </h3>
+              <button class="text-[10px] font-bold text-indigo-600 hover:underline">
+                Full Audit Trail
+              </button>
+            </div>
+            <div class="p-6 space-y-6 relative">
+              <div class="absolute left-[35px] top-8 bottom-8 w-px bg-slate-100"></div>
+              <div v-for="log in historyLogs" :key="log.date" class="flex gap-6 relative">
+                <div
+                  class="w-10 h-10 rounded-full bg-white border-4 border-slate-50 flex items-center justify-center z-10 shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-sm text-slate-400">{{
+                    log.icon
+                  }}</span>
+                </div>
+                <div class="flex-1 pb-6 border-b border-slate-50 last:border-none">
+                  <div class="flex justify-between items-start mb-1">
+                    <h4 class="text-sm font-bold text-slate-900">{{ log.event }}</h4>
+                    <span class="text-[10px] font-medium text-slate-400">{{ log.date }}</span>
+                  </div>
+                  <p class="text-xs text-slate-500 leading-relaxed">{{ log.description }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <!-- KPIs -->
-        <div class="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-inline">
+
+        <!-- Right Column: Sidebar Stats -->
+        <div class="lg:col-span-4 space-y-8">
+          <!-- Valuation Card -->
           <div
-            class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:-translate-y-[2px] transition-transform cursor-pointer group flex flex-col justify-between"
+            class="premium-card bg-gradient-to-br from-indigo-900 to-slate-900 text-white border-none shadow-xl shadow-indigo-100"
           >
-            <div class="flex justify-between items-start mb-4">
-              <div
-                class="w-10 h-10 rounded-lg bg-metric-amber flex items-center justify-center text-amber-700"
-              >
-                <span class="material-symbols-outlined">payments</span>
+            <p class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest mb-2">
+              Current Valuation
+            </p>
+            <h2 class="text-4xl font-bold">₹{{ (asset.value || 0).toLocaleString() }}</h2>
+            <div class="mt-6 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-[10px] font-medium text-indigo-200">Depreciation Method</span>
+                <span class="text-[10px] font-bold text-white uppercase tracking-wider"
+                  >Straight Line</span
+                >
               </div>
-            </div>
-            <div>
-              <div class="text-metadata text-text-secondary font-metadata mb-1">Book Value</div>
-              <div class="font-kpi-number text-kpi-number text-text-primary tracking-tight">
-                ₹{{ asset.value.toLocaleString() }}
+              <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                <div class="h-full bg-indigo-400" style="width: 65%"></div>
               </div>
             </div>
           </div>
-          <div
-            class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:-translate-y-[2px] transition-transform cursor-pointer group flex flex-col justify-between"
-          >
-            <div class="flex justify-between items-start mb-4">
+
+          <!-- Custodian & QR -->
+          <div class="premium-card space-y-6">
+            <h3
+              class="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50 pb-4"
+            >
+              Assigned Custodian
+            </h3>
+            <div class="flex items-center gap-4">
               <div
-                class="w-10 h-10 rounded-lg bg-metric-lavender flex items-center justify-center text-purple-700"
+                class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg uppercase shadow-sm"
               >
-                <span class="material-symbols-outlined">health_and_safety</span>
+                {{ asset.custodian?.charAt(0) || '?' }}
+              </div>
+              <div>
+                <p class="text-sm font-bold text-slate-900">
+                  {{ asset.custodian || 'Unassigned' }}
+                </p>
+                <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-1">
+                  {{ asset.status === 'In Stock' ? 'Ready for Checkout' : 'Currently Holding' }}
+                </p>
               </div>
             </div>
-            <div>
-              <div class="text-metadata text-text-secondary font-metadata mb-1">
-                Warranty Status
-              </div>
-              <div class="font-kpi-number text-kpi-number text-text-primary tracking-tight text-lg">
-                {{ asset.warrantyStatus }}
-              </div>
-            </div>
-          </div>
-          <div
-            class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:-translate-y-[2px] transition-transform cursor-pointer group flex flex-col justify-between col-span-2 md:col-span-1"
-          >
-            <div class="flex justify-between items-start mb-4">
+            <div
+              class="p-6 bg-slate-50 rounded-2xl flex flex-col items-center gap-4 border border-slate-100"
+            >
               <div
-                class="w-10 h-10 rounded-lg bg-stone-100 flex items-center justify-center text-stone-700"
+                class="w-32 h-32 bg-white rounded-xl flex items-center justify-center border border-slate-200 p-2"
               >
-                <span class="material-symbols-outlined">assignment_ind</span>
+                <span class="material-symbols-outlined text-6xl text-slate-200">qr_code_2</span>
               </div>
-            </div>
-            <div>
-              <div class="text-metadata text-text-secondary font-metadata mb-1">Custodian</div>
-              <div class="font-h2 text-h2 text-text-primary truncate">
-                {{ asset.custodian || 'Unassigned' }}
-              </div>
+              <button
+                class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest hover:underline"
+              >
+                Download Asset Tag
+              </button>
             </div>
           </div>
         </div>
@@ -154,33 +188,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
-
-interface Asset {
-  id: number;
-  tagId: string;
-  name: string;
-  category: string;
-  status: string;
-  custodian: string;
-  location: string;
-  purchaseDate: string;
-  warrantyStatus: string;
-  value: number;
-}
-
-const asset = ref<Asset | null>(null);
+const router = useRouter();
+const asset = ref<any>(null);
 const loading = ref(true);
 
 const fetchAsset = async () => {
   try {
     const res = await fetch(`http://localhost:8080/api/assets/${route.params['id']}`);
-    if (res.ok) {
-      asset.value = await res.json();
-    }
+    if (res.ok) asset.value = await res.json();
   } catch (error) {
     console.error('Failed to fetch asset:', error);
   } finally {
@@ -188,7 +207,88 @@ const fetchAsset = async () => {
   }
 };
 
-onMounted(() => {
-  fetchAsset();
+const primarySpecs = computed(() => {
+  if (!asset.value) return [];
+  return [
+    {
+      label: 'Category',
+      value: asset.value.category,
+      icon: 'category',
+      bgClass: 'bg-indigo-50',
+      iconClass: 'text-indigo-500',
+    },
+    {
+      label: 'Location',
+      value: asset.value.location,
+      icon: 'location_on',
+      bgClass: 'bg-emerald-50',
+      iconClass: 'text-emerald-500',
+    },
+    {
+      label: 'Warranty',
+      value: asset.value.warrantyStatus,
+      icon: 'verified',
+      bgClass: 'bg-blue-50',
+      iconClass: 'text-blue-500',
+    },
+  ];
 });
+
+const technicalSpecs = computed(() => {
+  if (!asset.value) return {};
+  return {
+    'Purchase Date': formatDate(asset.value.purchaseDate),
+    'Warranty Expiry': formatDate(asset.value.warrantyExpiry),
+    'Asset Model': 'Enterprise Edition v2',
+    Manufacturer: 'Dell Technopark Systems',
+    'Network Status': 'Connected',
+    'Last Audit': '12 Oct 2025',
+  };
+});
+
+const historyLogs = [
+  {
+    event: 'Maintenance Completed',
+    date: '24 Oct 2025',
+    description:
+      'Annual hardware calibration and component cleaning performed by onsite technician.',
+    icon: 'handyman',
+  },
+  {
+    event: 'Asset Checked Out',
+    date: '15 Aug 2025',
+    description: 'Assigned to Rajesh Kumar for Product Design project. Expected return: Feb 2026.',
+    icon: 'sync_alt',
+  },
+  {
+    event: 'Initial Procurement',
+    date: '12 Jan 2025',
+    description: 'Asset registered and tagged after PO-8821 verification.',
+    icon: 'inventory',
+  },
+];
+
+const getStatusClass = (status: string) => {
+  switch (status) {
+    case 'In Stock':
+      return 'bg-emerald-100 text-emerald-700';
+    case 'Checked Out':
+      return 'bg-blue-100 text-blue-700';
+    case 'Under Repair':
+      return 'bg-rose-100 text-rose-700';
+    default:
+      return 'bg-slate-100 text-slate-700';
+  }
+};
+
+const formatDate = (date: string) => {
+  if (!date) return 'N/A';
+  return new Date(date).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+};
+
+onMounted(fetchAsset);
 </script>

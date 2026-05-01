@@ -1,281 +1,196 @@
 <template>
-  <main class="flex-1 flex flex-col min-w-0">
-    <!-- Canvas Content -->
-    <div class="p-page-margin max-w-[1400px] mx-auto w-full">
-      <!-- Page Header -->
-      <div class="flex justify-between items-center mb-stack">
-        <h1 class="font-h1 text-h1 text-text-primary">Asset Registry</h1>
-        <div class="flex items-center gap-inline">
-          <button
-            class="px-4 py-2 bg-surface border border-border-default rounded-lg text-text-primary font-h3 text-h3 hover:bg-surface-subtle transition-colors flex items-center gap-2 shadow-sm"
-          >
-            <span class="material-symbols-outlined text-[18px]" data-icon="download">
-              download
-            </span>
-            Export
-          </button>
-          <button
-            class="px-4 py-2 bg-text-primary text-on-primary rounded-lg font-h3 text-h3 hover:bg-black transition-colors flex items-center gap-2 shadow-sm"
-          >
-            <span class="material-symbols-outlined text-[18px]" data-icon="add"> add </span>
-            Add New Asset
-          </button>
-        </div>
+  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap pb-24">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <h1 class="text-text-primary mb-1">Asset Registry</h1>
+        <p class="text-text-secondary">
+          Centralized database of all campus hardware and infrastructure.
+        </p>
       </div>
-      <!-- Status Summary Pills -->
-      <div class="flex gap-inline overflow-x-auto pb-2 mb-stack hide-scrollbar">
+      <div class="flex gap-3">
         <button
-          class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary font-body text-body whitespace-nowrap flex items-center gap-2 border border-primary-container"
+          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
         >
-          All
-          <span class="bg-white/20 px-2 py-0.5 rounded-full text-[12px]"> 1,248 </span>
+          <span class="material-symbols-outlined text-[18px]">file_download</span>
+          Export
         </button>
-        <button
-          class="px-4 py-1.5 rounded-full bg-surface border border-border-default text-text-secondary hover:border-text-secondary transition-colors font-body text-body whitespace-nowrap flex items-center gap-2"
-        >
-          In Stock
-          <span class="bg-surface-subtle px-2 py-0.5 rounded-full text-[12px] text-text-primary">
-            432
-          </span>
-        </button>
-        <button
-          class="px-4 py-1.5 rounded-full bg-surface border border-border-default text-text-secondary hover:border-text-secondary transition-colors font-body text-body whitespace-nowrap flex items-center gap-2"
-        >
-          Checked Out
-          <span class="bg-surface-subtle px-2 py-0.5 rounded-full text-[12px] text-text-primary">
-            782
-          </span>
-        </button>
-        <button
-          class="px-4 py-1.5 rounded-full bg-surface border border-border-default text-text-secondary hover:border-text-secondary transition-colors font-body text-body whitespace-nowrap flex items-center gap-2"
-        >
-          Reserved
-          <span class="bg-surface-subtle px-2 py-0.5 rounded-full text-[12px] text-text-primary">
-            12
-          </span>
-        </button>
-        <button
-          class="px-4 py-1.5 rounded-full bg-surface border border-border-default text-text-secondary hover:border-text-secondary transition-colors font-body text-body whitespace-nowrap flex items-center gap-2"
-        >
-          Under Repair
-          <span class="bg-surface-subtle px-2 py-0.5 rounded-full text-[12px] text-text-primary">
-            18
-          </span>
-        </button>
-        <button
-          class="px-4 py-1.5 rounded-full bg-surface border border-border-default text-text-secondary hover:border-text-secondary transition-colors font-body text-body whitespace-nowrap flex items-center gap-2"
-        >
-          Lost
-          <span class="bg-surface-subtle px-2 py-0.5 rounded-full text-[12px] text-text-primary">
-            4
-          </span>
+        <button class="btn-primary">
+          <span class="material-symbols-outlined">add_circle</span>
+          Add Asset
         </button>
       </div>
-      <!-- Filter Bar -->
-      <div
-        class="flex justify-between items-center bg-surface p-inline rounded-xl border border-border-default mb-stack shadow-sm"
+    </div>
+
+    <!-- Quick Filters -->
+    <div class="flex flex-wrap gap-3">
+      <button
+        v-for="stat in filterStats"
+        :key="stat.label"
+        class="bg-surface border border-border-default px-4 py-2 rounded-full flex items-center gap-3 text-sm font-medium transition-all shadow-sm hover:border-indigo-200"
+        :class="
+          selectedFilter === stat.label
+            ? 'border-indigo-600 ring-2 ring-indigo-500/10'
+            : 'text-slate-600'
+        "
+        @click="selectedFilter = stat.label"
       >
-        <div class="flex items-center gap-inline flex-1">
-          <div class="relative w-80">
-            <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[20px]"
-              data-icon="search"
-            >
-              search
-            </span>
-            <input
-              class="w-full pl-10 pr-4 py-2 bg-canvas border border-border-default rounded-lg text-sm focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all"
-              placeholder="Search by asset name, tag, or serial..."
-              type="text"
-            />
-          </div>
-          <div class="h-6 w-px bg-border-default mx-2"></div>
-          <button
-            class="px-3 py-1.5 bg-surface-subtle border border-border-default rounded-md text-text-primary font-body text-body hover:bg-border-default transition-colors flex items-center gap-2"
-          >
-            <span class="material-symbols-outlined text-[18px]" data-icon="filter_list">
-              filter_list
-            </span>
-            Filters
-          </button>
-          <!-- Active Chips -->
-          <div class="flex items-center gap-2">
-            <span
-              class="px-3 py-1 bg-surface-variant text-on-surface-variant rounded-md text-[13px] flex items-center gap-1 border border-outline-variant"
-            >
-              Category: IT
-              <span
-                class="material-symbols-outlined text-[14px] cursor-pointer hover:text-text-primary"
-                data-icon="close"
-              >
-                close
-              </span>
-            </span>
-            <span
-              class="px-3 py-1 bg-surface-variant text-on-surface-variant rounded-md text-[13px] flex items-center gap-1 border border-outline-variant"
-            >
-              Dept: HR
-              <span
-                class="material-symbols-outlined text-[14px] cursor-pointer hover:text-text-primary"
-                data-icon="close"
-              >
-                close
-              </span>
-            </span>
-          </div>
-        </div>
-        <!-- Bulk Actions (Hidden by default, shown for context) -->
-        <div class="flex items-center gap-2 hidden">
-          <span class="text-sm text-text-secondary mr-2"> 2 selected </span>
-          <button
-            class="px-3 py-1.5 bg-surface border border-border-default rounded-md text-text-primary hover:bg-surface-subtle transition-colors text-sm"
-          >
-            Update Status
-          </button>
-          <button
-            class="px-3 py-1.5 bg-surface border border-border-default rounded-md text-error hover:bg-error-container hover:border-error-container transition-colors text-sm"
-          >
-            Delete
-          </button>
+        <span class="w-2 h-2 rounded-full" :class="stat.dotClass"></span>
+        {{ stat.label }}
+        <span class="px-2 py-0.5 bg-slate-100 rounded-full text-[10px] text-slate-500 font-bold">{{
+          stat.count
+        }}</span>
+      </button>
+    </div>
+
+    <!-- Search & Active Filters -->
+    <div class="premium-card !p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="relative flex-1 w-full max-w-xl">
+        <span
+          class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+          >search</span
+        >
+        <input
+          v-model="searchQuery"
+          class="w-full bg-slate-50 border border-slate-100 rounded-xl py-2 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
+          placeholder="Search by name, tag, or custodian..."
+        />
+      </div>
+      <div class="flex items-center gap-4 w-full md:w-auto">
+        <button
+          class="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors"
+        >
+          <span class="material-symbols-outlined text-sm">filter_list</span>
+          Advanced Filters
+        </button>
+        <div class="h-6 w-px bg-slate-100 hidden md:block"></div>
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">
+          {{ filteredAssets.length }} results found
         </div>
       </div>
-      <!-- Main Table Container -->
-      <div
-        class="bg-surface rounded-xl border border-border-default overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.02)] p-4"
-      >
-        <DataTable
-          :value="assets"
-          :loading="loading"
-          paginator
-          :rows="10"
-          tableStyle="min-width: 50rem"
-          class="w-full text-left"
-        >
-          <Column header="">
-            <template #body>
-              <input
-                class="rounded border-outline-variant text-primary-container focus:ring-primary-container"
-                type="checkbox"
-              />
-            </template>
-          </Column>
-          <Column field="tagId" header="Tag ID" sortable>
-            <template #body="slotProps">
-              <router-link
-                :to="`/asset-detail/${slotProps.data.id}`"
-                class="font-mono-data text-mono-data text-primary-container hover:underline underline-offset-2 cursor-pointer"
-              >
-                {{ slotProps.data.tagId }}
-              </router-link>
-            </template>
-          </Column>
-          <Column field="name" header="Asset Name" sortable>
-            <template #body="slotProps">
-              <span class="font-medium">{{ slotProps.data.name }}</span>
-            </template>
-          </Column>
-          <Column field="category" header="Category" sortable>
-            <template #body="slotProps">
-              <span class="text-text-secondary">{{ slotProps.data.category }}</span>
-            </template>
-          </Column>
-          <Column field="status" header="Status" sortable>
-            <template #body="slotProps">
-              <span
-                class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border"
-                :class="{
-                  'bg-metric-sage text-status-in-stock border-metric-sage/50':
-                    slotProps.data.status === 'In Stock',
-                  'bg-tertiary-fixed text-status-checked-out border-tertiary-fixed-dim/50':
-                    slotProps.data.status === 'Checked Out',
-                  'bg-surface-variant text-text-secondary border-border-default':
-                    slotProps.data.status === 'Reserved',
-                }"
-              >
-                {{ slotProps.data.status }}
-              </span>
-            </template>
-          </Column>
-          <Column field="custodian" header="Custodian/Stockroom" sortable></Column>
-          <Column field="location" header="Location" sortable>
-            <template #body="slotProps">
-              <span class="text-text-secondary">{{ slotProps.data.location }}</span>
-            </template>
-          </Column>
-          <Column field="purchaseDate" header="Purchase Date" sortable>
-            <template #body="slotProps">
-              <span class="text-text-secondary">
-                {{ new Date(slotProps.data.purchaseDate).toLocaleDateString() }}
-              </span>
-            </template>
-          </Column>
-          <Column field="warrantyStatus" header="Warranty" sortable>
-            <template #body="slotProps">
-              <span
-                :class="
-                  slotProps.data.warrantyStatus === 'Active'
-                    ? 'text-status-in-stock font-medium'
-                    : 'text-status-critical font-medium'
-                "
-              >
-                {{ slotProps.data.warrantyStatus }}
-              </span>
-            </template>
-          </Column>
-          <Column header="Actions" bodyStyle="text-align: right">
-            <template #body="slotProps">
-              <div class="flex items-center justify-end space-x-1">
-                <button
-                  class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface-subtle rounded transition-colors"
+    </div>
+
+    <!-- Table Container -->
+    <div class="premium-card !p-0 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead
+            class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+          >
+            <tr>
+              <th class="px-6 py-4">Asset Detail</th>
+              <th class="px-6 py-4">Status</th>
+              <th class="px-6 py-4">Custodian</th>
+              <th class="px-6 py-4">Location</th>
+              <th class="px-6 py-4">Warranty</th>
+              <th class="px-6 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            <tr
+              v-for="asset in filteredAssets"
+              :key="asset.id"
+              class="hover:bg-slate-50/50 transition-colors group"
+            >
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-300"
+                  >
+                    <span class="material-symbols-outlined">{{ getIcon(asset.category) }}</span>
+                  </div>
+                  <div>
+                    <router-link
+                      :to="`/asset/${asset.id}`"
+                      class="text-sm font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors block"
+                    >
+                      {{ asset.name }}
+                    </router-link>
+                    <span
+                      class="text-[10px] font-mono text-slate-400 mt-1 block tracking-wider uppercase"
+                      >{{ asset.tagId }}</span
+                    >
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                  :class="getStatusClass(asset.status)"
                 >
-                  <span class="material-symbols-outlined text-[16px]">visibility</span>
-                </button>
-                <button
-                  class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface-subtle rounded transition-colors"
+                  {{ asset.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <div v-if="asset.custodian" class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[9px] font-bold text-indigo-600"
+                  >
+                    {{ asset.custodian.charAt(0) }}
+                  </div>
+                  <span class="text-xs text-slate-600 font-medium">{{ asset.custodian }}</span>
+                </div>
+                <span v-else class="text-xs text-slate-400 italic">Unassigned</span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-xs text-slate-600">{{ asset.location }}</span>
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="text-[10px] font-bold"
+                  :class="asset.warrantyStatus === 'Active' ? 'text-emerald-600' : 'text-rose-500'"
                 >
-                  <span class="material-symbols-outlined text-[16px]">edit</span>
-                </button>
-                <button
-                  @click="deleteAsset(slotProps.data.id)"
-                  class="p-1 text-text-secondary hover:text-status-critical hover:bg-surface-subtle rounded transition-colors"
+                  {{ asset.warrantyStatus }}
+                </span>
+                <p class="text-[9px] text-slate-400 mt-1">{{ formatDate(asset.warrantyExpiry) }}</p>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div
+                  class="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
-                  <span class="material-symbols-outlined text-[16px]">delete</span>
-                </button>
-              </div>
-            </template>
-          </Column>
-        </DataTable>
+                  <button
+                    class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-sm"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">visibility</span>
+                  </button>
+                  <button
+                    class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-sm"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                  </button>
+                  <button
+                    @click="deleteAsset(asset.id)"
+                    class="p-2 text-slate-400 hover:text-rose-600 hover:bg-white rounded-lg transition-all shadow-sm"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="filteredAssets.length === 0">
+              <td colspan="6" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+                No assets found matching your criteria.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+import { ref, computed, onMounted } from 'vue';
 
-interface Asset {
-  id: number;
-  tagId: string;
-  name: string;
-  category: string;
-  status: string;
-  custodian: string;
-  location: string;
-  purchaseDate: string;
-  warrantyStatus: string;
-}
-
-const assets = ref<Asset[]>([]);
+const assets = ref<any[]>([]);
 const loading = ref(true);
+const searchQuery = ref('');
+const selectedFilter = ref('All');
 
 const fetchAssets = async () => {
   try {
     const res = await fetch('http://localhost:8080/api/assets');
-    if (res.ok) {
-      assets.value = await res.json();
-    }
+    if (res.ok) assets.value = await res.json();
   } catch (error) {
     console.error('Failed to fetch assets:', error);
   } finally {
@@ -283,23 +198,82 @@ const fetchAssets = async () => {
   }
 };
 
+const filteredAssets = computed(() => {
+  let filtered = assets.value;
+
+  if (selectedFilter.value !== 'All') {
+    filtered = filtered.filter((a) => a.status === selectedFilter.value);
+  }
+
+  const query = searchQuery.value.toLowerCase();
+  if (query) {
+    filtered = filtered.filter(
+      (a) =>
+        a.name.toLowerCase().includes(query) ||
+        a.tagId.toLowerCase().includes(query) ||
+        (a.custodian && a.custodian.toLowerCase().includes(query)),
+    );
+  }
+
+  return filtered;
+});
+
+const filterStats = computed(() => [
+  { label: 'All', count: assets.value.length, dotClass: 'bg-slate-400' },
+  {
+    label: 'In Stock',
+    count: assets.value.filter((a) => a.status === 'In Stock').length,
+    dotClass: 'bg-emerald-500',
+  },
+  {
+    label: 'Checked Out',
+    count: assets.value.filter((a) => a.status === 'Checked Out').length,
+    dotClass: 'bg-blue-500',
+  },
+  {
+    label: 'Under Repair',
+    count: assets.value.filter((a) => a.status === 'Under Repair').length,
+    dotClass: 'bg-rose-500',
+  },
+]);
+
+const getStatusClass = (status: string) => {
+  switch (status) {
+    case 'In Stock':
+      return 'bg-emerald-100 text-emerald-700';
+    case 'Checked Out':
+      return 'bg-blue-100 text-blue-700';
+    case 'Under Repair':
+      return 'bg-rose-100 text-rose-700';
+    default:
+      return 'bg-slate-100 text-slate-700';
+  }
+};
+
+const getIcon = (cat: string) => {
+  if (cat.includes('IT')) return 'laptop_mac';
+  if (cat.includes('Furniture')) return 'chair';
+  return 'inventory_2';
+};
+
+const formatDate = (date: string) => {
+  if (!date) return 'N/A';
+  return new Date(date).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+};
+
 const deleteAsset = async (id: number) => {
   if (!confirm('Are you sure you want to delete this asset?')) return;
   try {
-    const res = await fetch(`http://localhost:8080/api/assets/${id}`, {
-      method: 'DELETE',
-    });
-    if (res.ok) {
-      assets.value = assets.value.filter((a) => a.id !== id);
-    } else {
-      alert('Failed to delete asset');
-    }
+    const res = await fetch(`http://localhost:8080/api/assets/${id}`, { method: 'DELETE' });
+    if (res.ok) assets.value = assets.value.filter((a) => a.id !== id);
   } catch (error) {
     console.error('Error deleting asset:', error);
   }
 };
 
-onMounted(() => {
-  fetchAssets();
-});
+onMounted(fetchAssets);
 </script>

@@ -1,187 +1,149 @@
 <template>
-  <main class="flex-1 flex flex-col md:ml-[248px] bg-canvas overflow-hidden">
-    <!-- Header & Financial Summary -->
-    <div
-      class="flex-none p-page-margin pb-6 border-b border-border-default bg-canvas z-10 shadow-sm"
-    >
-      <div class="flex items-end justify-between mb-section-gap">
-        <div>
-          <h1 class="font-h1 text-h1 text-text-primary mb-2">Procurement Pipeline</h1>
-          <p class="font-body text-body text-text-secondary">
-            Track and manage active procurement workflows.
-          </p>
-        </div>
-        <div class="flex gap-inline">
-          <button
-            class="px-4 py-2 bg-surface border border-outline-variant text-text-primary font-h3 text-h3 rounded-lg hover:bg-surface-subtle transition-colors shadow-sm"
-          >
-            Export Report
-          </button>
-          <button
-            class="px-4 py-2 bg-text-primary text-on-primary font-h3 text-h3 rounded-lg hover:bg-stone-800 transition-colors shadow-sm flex items-center gap-2"
-          >
-            <span class="material-symbols-outlined text-[18px]"> add </span>
-            New Request
-          </button>
-        </div>
+  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <h1 class="text-text-primary mb-1">Procurement Pipeline</h1>
+        <p class="text-text-secondary">
+          Track and manage active procurement workflows across all departments.
+        </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Metric Card 1 -->
-        <div
-          class="bg-surface rounded-xl p-card-padding border border-border-default shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform cursor-pointer group"
+      <div class="flex gap-3">
+        <button
+          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
         >
-          <div class="flex justify-between items-start mb-4">
-            <span class="font-table-header text-table-header text-text-secondary uppercase">
-              Total Pipeline Value
-            </span>
-            <div
-              class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-text-primary group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors"
-            >
-              <span class="material-symbols-outlined text-[18px]"> account_balance_wallet </span>
-            </div>
-          </div>
-          <div class="font-kpi-number text-kpi-number text-text-primary">
-            ₹ {{ totalPipelineValue.toLocaleString() }}
-          </div>
-          <div class="font-metadata text-metadata text-text-secondary mt-2 flex items-center gap-1">
-            <span class="text-status-in-stock flex items-center">
-              <span class="material-symbols-outlined text-[14px]"> trending_up </span>
-              12%
-            </span>
-            vs last month
-          </div>
-        </div>
-        <!-- Metric Card 2 -->
-        <div
-          class="bg-surface rounded-xl p-card-padding border border-border-default shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform cursor-pointer group"
-        >
-          <div class="flex justify-between items-start mb-4">
-            <span class="font-table-header text-table-header text-text-secondary uppercase">
-              Approved This Month
-            </span>
-            <div
-              class="w-8 h-8 rounded-full bg-metric-sage/50 flex items-center justify-center text-status-in-stock transition-colors"
-            >
-              <span class="material-symbols-outlined text-[18px]"> check_circle </span>
-            </div>
-          </div>
-          <div class="font-kpi-number text-kpi-number text-text-primary">
-            ₹ {{ approvedValue.toLocaleString() }}
-          </div>
-          <div class="font-metadata text-metadata text-text-secondary mt-2">
-            Across
-            {{
-              procurements.filter((p) => p.status !== 'Draft' && p.status !== 'Pending Approval')
-                .length
-            }}
-            purchase orders
-          </div>
-        </div>
-        <!-- Metric Card 3 (Placeholder for balance visually) -->
-        <div
-          class="bg-surface rounded-xl p-card-padding border border-border-default shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform cursor-pointer group"
-        >
-          <div class="flex justify-between items-start mb-4">
-            <span class="font-table-header text-table-header text-text-secondary uppercase">
-              Pending Approval Value
-            </span>
-            <div
-              class="w-8 h-8 rounded-full bg-metric-amber/50 flex items-center justify-center text-primary transition-colors"
-            >
-              <span class="material-symbols-outlined text-[18px]"> pending_actions </span>
-            </div>
-          </div>
-          <div class="font-kpi-number text-kpi-number text-text-primary">
-            ₹ {{ pendingApprovalValue.toLocaleString() }}
-          </div>
-          <div class="font-metadata text-metadata text-text-secondary mt-2 text-primary">
-            Requires management review
-          </div>
-        </div>
+          <span class="material-symbols-outlined text-[18px]">file_download</span>
+          Export Report
+        </button>
+        <button class="btn-primary">
+          <span class="material-symbols-outlined">add_shopping_cart</span>
+          New Request
+        </button>
       </div>
     </div>
-    <!-- Data Table Area -->
-    <div class="flex-1 overflow-auto p-page-margin">
-      <div class="bg-surface border border-border-default rounded-xl shadow-sm overflow-hidden">
-        <DataTable
-          :value="procurements"
-          :loading="loadingProcurements"
-          paginator
-          :rows="10"
-          tableStyle="min-width: 50rem"
-          class="w-full text-left"
-        >
-          <Column field="title" header="Request Title" sortable>
-            <template #body="slotProps">
-              <div>
-                <h3 class="font-h3 text-h3 text-text-primary mb-1">{{ slotProps.data.title }}</h3>
-                <span class="font-metadata text-metadata text-text-secondary">{{
-                  slotProps.data.poNumber ? slotProps.data.poNumber : 'No PO assigned'
-                }}</span>
-              </div>
-            </template>
-          </Column>
-          <Column field="status" header="Status" sortable>
-            <template #body="slotProps">
-              <span
-                class="inline-flex items-center px-2 py-1 rounded font-metadata text-metadata font-medium"
-                :class="{
-                  'bg-metric-amber/20 text-[#854d0e]': slotProps.data.status === 'Draft',
-                  'bg-surface-variant text-on-surface-variant':
-                    slotProps.data.status === 'Pending Approval',
-                  'bg-[#ddd6fe] text-[#8b5cf6]': slotProps.data.status === 'PO Raised',
-                  'bg-blue-100 text-blue-700': slotProps.data.status === 'Shipping',
-                  'bg-metric-sage text-status-in-stock': slotProps.data.status === 'Received',
-                }"
-              >
-                {{ slotProps.data.status }}
-              </span>
-            </template>
-          </Column>
-          <Column field="priority" header="Priority" sortable>
-            <template #body="slotProps">
-              <div
-                class="px-2 py-1 rounded text-[11px] font-semibold tracking-wider uppercase inline-block"
-                :class="{
-                  'bg-[#fef08a] text-[#854d0e]': slotProps.data.priority === 'Low',
-                  'bg-surface-variant text-on-surface-variant':
-                    slotProps.data.priority === 'Medium',
-                  'bg-error-container text-status-critical': slotProps.data.priority === 'High',
-                }"
-              >
-                {{ slotProps.data.priority }}
-              </div>
-            </template>
-          </Column>
-          <Column field="estimatedValue" header="Est. Value" sortable>
-            <template #body="slotProps">
-              <span class="font-mono-data text-mono-data text-text-primary">
-                ₹ {{ slotProps.data.estimatedValue?.toLocaleString() || '0' }}
-              </span>
-            </template>
-          </Column>
-          <Column field="department" header="Department" sortable>
-            <template #body="slotProps">
-              <div class="flex items-center gap-2">
-                <div
-                  class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-[10px] font-bold text-text-primary border border-border-default"
-                >
-                  {{ slotProps.data.requestorInitials }}
+
+    <!-- Financial Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div v-for="kpi in kpis" :key="kpi.label" class="premium-card">
+        <div class="flex justify-between items-start mb-4">
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            :class="kpi.bgClass"
+          >
+            <span class="material-symbols-outlined" :class="kpi.iconClass">{{ kpi.icon }}</span>
+          </div>
+          <div
+            class="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100"
+          >
+            <span class="material-symbols-outlined text-xs">trending_up</span>
+            12%
+          </div>
+        </div>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+          {{ kpi.label }}
+        </p>
+        <h2 class="text-2xl font-bold text-slate-900 mt-1">₹{{ kpi.value.toLocaleString() }}</h2>
+        <p class="text-xs text-slate-500 mt-4">{{ kpi.subtext }}</p>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="premium-card !p-0 overflow-hidden">
+      <div
+        class="p-4 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/30"
+      >
+        <div class="flex flex-1 gap-4 w-full md:w-auto">
+          <div class="relative flex-1 max-w-sm">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]"
+              >search</span
+            >
+            <input
+              v-model="searchQuery"
+              class="w-full bg-white border border-slate-200 rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
+              placeholder="Search requests..."
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead
+            class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+          >
+            <tr>
+              <th class="px-6 py-4">Request Detail</th>
+              <th class="px-6 py-4">Status</th>
+              <th class="px-6 py-4">Priority</th>
+              <th class="px-6 py-4">Estimated Value</th>
+              <th class="px-6 py-4">Department</th>
+              <th class="px-6 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            <tr
+              v-for="req in filteredProcurements"
+              :key="req.id"
+              class="hover:bg-slate-50/50 transition-colors group"
+            >
+              <td class="px-6 py-4">
+                <div class="flex flex-col">
+                  <span
+                    class="text-sm font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors"
+                    >{{ req.title }}</span
+                  >
+                  <span class="text-[10px] font-mono text-slate-400 mt-1 tracking-wider">{{
+                    req.poNumber || 'No PO Assigned'
+                  }}</span>
                 </div>
-                <span class="font-metadata text-metadata text-text-secondary">
-                  {{ slotProps.data.department }}
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                  :class="getStatusClass(req.status)"
+                >
+                  {{ req.status }}
                 </span>
-              </div>
-            </template>
-          </Column>
-          <Column header="Action" alignFrozen="right">
-            <template #body>
-              <button class="text-primary hover:text-amber-800 font-medium transition-colors">
-                Review
-              </button>
-            </template>
-          </Column>
-        </DataTable>
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                  :class="getPriorityClass(req.priority)"
+                >
+                  {{ req.priority }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-sm font-bold text-slate-900"
+                  >₹{{ (req.estimatedValue || 0).toLocaleString() }}</span
+                >
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-bold text-slate-500 uppercase border border-slate-200"
+                  >
+                    {{ req.requestorInitials }}
+                  </div>
+                  <span class="text-xs text-slate-600 font-medium">{{ req.department }}</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button
+                  class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-sm border border-transparent hover:border-slate-100"
+                >
+                  <span class="material-symbols-outlined text-[20px]">visibility</span>
+                </button>
+              </td>
+            </tr>
+            <tr v-if="filteredProcurements.length === 0">
+              <td colspan="6" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+                No procurement requests found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
@@ -189,8 +151,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
 
 interface ProcurementRequest {
   id: number;
@@ -207,23 +167,8 @@ interface ProcurementRequest {
 }
 
 const procurements = ref<ProcurementRequest[]>([]);
-const loadingProcurements = ref(true);
-
-const totalPipelineValue = computed(() => {
-  return procurements.value.reduce((sum, item) => sum + (item.estimatedValue || 0), 0);
-});
-
-const pendingApprovalValue = computed(() => {
-  return procurements.value
-    .filter((p) => p.status === 'Pending Approval')
-    .reduce((sum, item) => sum + (item.estimatedValue || 0), 0);
-});
-
-const approvedValue = computed(() => {
-  return procurements.value
-    .filter((p) => p.status !== 'Draft' && p.status !== 'Pending Approval')
-    .reduce((sum, item) => sum + (item.estimatedValue || 0), 0);
-});
+const loading = ref(true);
+const searchQuery = ref('');
 
 const fetchProcurements = async () => {
   try {
@@ -234,11 +179,76 @@ const fetchProcurements = async () => {
   } catch (error) {
     console.error('Failed to fetch procurements:', error);
   } finally {
-    loadingProcurements.value = false;
+    loading.value = false;
   }
 };
 
-onMounted(() => {
-  fetchProcurements();
+const filteredProcurements = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  return procurements.value.filter(
+    (p) =>
+      p.title.toLowerCase().includes(query) ||
+      p.department.toLowerCase().includes(query) ||
+      p.poNumber.toLowerCase().includes(query),
+  );
 });
+
+const kpis = computed(() => [
+  {
+    label: 'Total Pipeline Value',
+    value: procurements.value.reduce((s, p) => s + (p.estimatedValue || 0), 0),
+    icon: 'account_balance_wallet',
+    bgClass: 'bg-indigo-50',
+    iconClass: 'text-indigo-500',
+    subtext: 'Cumulative estimated value',
+  },
+  {
+    label: 'Approved This Month',
+    value: procurements.value
+      .filter((p) => p.status === 'Received')
+      .reduce((s, p) => s + (p.estimatedValue || 0), 0),
+    icon: 'verified',
+    bgClass: 'bg-emerald-50',
+    iconClass: 'text-emerald-500',
+    subtext: 'Finalized purchase orders',
+  },
+  {
+    label: 'Pending Approval',
+    value: procurements.value
+      .filter((p) => p.status === 'Pending Approval')
+      .reduce((s, p) => s + (p.estimatedValue || 0), 0),
+    icon: 'pending_actions',
+    bgClass: 'bg-amber-50',
+    iconClass: 'text-amber-500',
+    subtext: 'Requires management review',
+  },
+]);
+
+const getStatusClass = (status: string) => {
+  switch (status) {
+    case 'Received':
+      return 'bg-emerald-100 text-emerald-700';
+    case 'Shipping':
+      return 'bg-blue-100 text-blue-700';
+    case 'Pending Approval':
+      return 'bg-amber-100 text-amber-700';
+    case 'Draft':
+      return 'bg-slate-100 text-slate-700';
+    default:
+      return 'bg-indigo-100 text-indigo-700';
+  }
+};
+
+const getPriorityClass = (priority: string) => {
+  switch (priority) {
+    case 'High':
+      return 'bg-rose-100 text-rose-700';
+    case 'Medium':
+      return 'bg-amber-100 text-amber-700';
+    default:
+      return 'bg-slate-100 text-slate-700';
+  }
+};
+
+onMounted(fetchProcurements);
 </script>
