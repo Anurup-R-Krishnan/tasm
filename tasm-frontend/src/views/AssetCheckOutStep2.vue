@@ -2,7 +2,7 @@
   <main class="p-page-margin max-w-[1200px] mx-auto space-y-section-gap pb-24">
     <!-- Stepper Header -->
     <div class="flex items-center justify-center gap-4 mb-12">
-      <div class="flex items-center gap-2 text-slate-400">
+      <div class="flex items-center gap-2 text-text-secondary">
         <div
           class="w-8 h-8 rounded-full border-2 border-slate-200 flex items-center justify-center text-xs font-bold"
         >
@@ -11,7 +11,7 @@
         <span class="text-xs font-bold uppercase tracking-wider">Select Assets</span>
       </div>
       <div class="w-12 h-[2px] bg-slate-100"></div>
-      <div class="flex items-center gap-2 text-indigo-600">
+      <div class="flex items-center gap-2 text-primary">
         <div
           class="w-8 h-8 rounded-full border-2 border-indigo-600 flex items-center justify-center text-xs font-bold"
         >
@@ -33,17 +33,17 @@
 
         <div class="premium-card space-y-6">
           <div class="space-y-4">
-            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1"
+            <label class="text-[11px] font-bold text-text-secondary uppercase tracking-widest px-1"
               >Recipient Employee</label
             >
             <div class="relative group">
               <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500"
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-indigo-500"
                 >person_search</span
               >
               <select
                 v-model="selectedUserId"
-                class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none appearance-none cursor-pointer"
+                class="w-full bg-surface-subtle border border-border-default rounded-xl py-3 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none appearance-none cursor-pointer"
               >
                 <option value="" disabled>Search or select employee...</option>
                 <option v-for="user in users" :key="user.id" :value="user.id">
@@ -51,7 +51,7 @@
                 </option>
               </select>
               <span
-                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none"
                 >expand_more</span
               >
             </div>
@@ -59,35 +59,37 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-4">
-              <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1"
+              <label
+                class="text-[11px] font-bold text-text-secondary uppercase tracking-widest px-1"
                 >Checkout Date</label
               >
               <input
                 v-model="checkoutDate"
                 type="date"
-                class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none"
+                class="w-full bg-surface-subtle border border-border-default rounded-xl py-3 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none"
               />
             </div>
             <div class="space-y-4">
-              <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1"
+              <label
+                class="text-[11px] font-bold text-text-secondary uppercase tracking-widest px-1"
                 >Expected Return</label
               >
               <input
                 v-model="returnDate"
                 type="date"
-                class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none"
+                class="w-full bg-surface-subtle border border-border-default rounded-xl py-3 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none"
               />
             </div>
           </div>
 
           <div class="space-y-4">
-            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1"
+            <label class="text-[11px] font-bold text-text-secondary uppercase tracking-widest px-1"
               >Handover Notes</label
             >
             <textarea
               v-model="notes"
               rows="3"
-              class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none resize-none"
+              class="w-full bg-surface-subtle border border-border-default rounded-xl py-3 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none resize-none"
               placeholder="Enter any specific instructions or physical condition notes..."
             ></textarea>
           </div>
@@ -95,7 +97,7 @@
 
         <div class="flex items-center gap-4">
           <button
-            class="flex-1 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors shadow-sm"
+            class="flex-1 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-surface-subtle transition-colors shadow-sm"
             @click="router.back()"
           >
             Back to Selection
@@ -115,7 +117,7 @@
       <div class="lg:col-span-5">
         <div class="premium-card sticky top-24 space-y-6">
           <h3
-            class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1 border-b border-slate-50 pb-4"
+            class="text-xs font-bold text-text-secondary uppercase tracking-widest px-1 border-b border-border-default pb-4"
           >
             Checkout Summary
           </h3>
@@ -124,7 +126,7 @@
             <div
               v-for="i in 2"
               :key="i"
-              class="flex gap-4 p-3 bg-slate-50/50 rounded-xl border border-slate-50"
+              class="flex gap-4 p-3 bg-surface-subtle/50 rounded-xl border border-border-default"
             >
               <div
                 class="w-12 h-12 rounded-lg bg-white flex items-center justify-center text-slate-300"
@@ -132,24 +134,26 @@
                 <span class="material-symbols-outlined">laptop_mac</span>
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-bold text-slate-900 truncate">MacBook Pro 16" (M2 Max)</p>
-                <p class="text-[10px] font-mono text-slate-400 mt-1 tracking-wider">AST-IT-4092</p>
+                <p class="text-sm font-bold text-text-primary truncate">MacBook Pro 16" (M2 Max)</p>
+                <p class="text-[10px] font-mono text-text-secondary mt-1 tracking-wider">
+                  AST-IT-4092
+                </p>
               </div>
             </div>
           </div>
 
-          <div class="space-y-3 pt-6 border-t border-slate-50">
+          <div class="space-y-3 pt-6 border-t border-border-default">
             <div class="flex justify-between text-xs font-medium">
-              <span class="text-slate-400">Total Items</span>
-              <span class="text-slate-900">2 Units</span>
+              <span class="text-text-secondary">Total Items</span>
+              <span class="text-text-primary">2 Units</span>
             </div>
             <div class="flex justify-between text-xs font-medium">
-              <span class="text-slate-400">Recipient</span>
-              <span class="text-indigo-600">{{ selectedUserName || 'Not selected' }}</span>
+              <span class="text-text-secondary">Recipient</span>
+              <span class="text-primary">{{ selectedUserName || 'Not selected' }}</span>
             </div>
             <div class="flex justify-between text-xs font-medium">
-              <span class="text-slate-400">Estimated Duration</span>
-              <span class="text-slate-900">6 Months</span>
+              <span class="text-text-secondary">Estimated Duration</span>
+              <span class="text-text-primary">6 Months</span>
             </div>
           </div>
 

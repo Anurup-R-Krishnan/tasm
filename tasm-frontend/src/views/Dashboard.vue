@@ -10,17 +10,17 @@
       </div>
       <div class="flex gap-3 bg-surface p-1 rounded-xl border border-border-default shadow-sm">
         <button
-          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-lg shadow-indigo-200"
+          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-primary text-on-primary shadow-lg shadow-primary/10"
         >
           24 Hours
         </button>
         <button
-          class="px-4 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-indigo-600 transition-all"
+          class="px-4 py-1.5 rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-all"
         >
           7 Days
         </button>
         <button
-          class="px-4 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-indigo-600 transition-all"
+          class="px-4 py-1.5 rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-all"
         >
           30 Days
         </button>
@@ -32,7 +32,7 @@
       <div
         v-for="kpi in mainKPIs"
         :key="kpi.label"
-        class="premium-card group hover:border-indigo-200 transition-all"
+        class="premium-card group hover:border-primary/20 transition-all"
       >
         <div class="flex justify-between items-start mb-4">
           <div
@@ -49,19 +49,19 @@
             {{ kpi.trend }}
           </div>
         </div>
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
           {{ kpi.label }}
         </p>
-        <h2 class="text-3xl font-bold text-slate-900 mt-1">{{ kpi.value }}</h2>
+        <h2 class="text-3xl font-bold text-text-primary mt-1">{{ kpi.value }}</h2>
         <div class="mt-4 flex items-center gap-2">
-          <div class="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+          <div class="flex-1 h-1 bg-surface-variant rounded-full overflow-hidden">
             <div
               class="h-full rounded-full transition-all duration-1000"
               :class="kpi.barClass"
               :style="{ width: kpi.progress + '%' }"
             ></div>
           </div>
-          <span class="text-[10px] font-bold text-slate-400">{{ kpi.progress }}%</span>
+          <span class="text-[10px] font-bold text-text-secondary">{{ kpi.progress }}%</span>
         </div>
       </div>
     </div>
@@ -72,23 +72,21 @@
       <div class="lg:col-span-8 flex flex-col">
         <div class="premium-card !p-0 overflow-hidden flex-1">
           <div
-            class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/30"
+            class="p-6 border-b border-border-default flex justify-between items-center bg-surface-subtle/50"
           >
             <div>
-              <h3 class="text-sm font-bold text-slate-900">Critical Work Orders</h3>
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">
+              <h3 class="text-sm font-bold text-text-primary">Critical Work Orders</h3>
+              <p class="text-[10px] text-text-secondary font-medium uppercase tracking-widest mt-1">
                 Requiring immediate attention
               </p>
             </div>
-            <button class="text-xs font-bold text-indigo-600 hover:text-indigo-700">
-              View All
-            </button>
+            <button class="text-xs font-bold text-primary hover:text-primary/80">View All</button>
           </div>
           <div class="p-6 space-y-4">
             <div
               v-for="order in workOrders"
               :key="order.id"
-              class="flex items-center gap-6 p-4 rounded-2xl bg-white border border-slate-50 hover:border-indigo-100 hover:shadow-md transition-all group"
+              class="flex items-center gap-6 p-4 rounded-2xl bg-white border border-border-default hover:border-indigo-100 hover:shadow-md transition-all group"
             >
               <div
                 class="w-12 h-12 rounded-xl flex items-center justify-center text-rose-500 bg-rose-50 font-bold text-xs uppercase"
@@ -97,16 +95,16 @@
               </div>
               <div class="flex-1 min-w-0">
                 <h4
-                  class="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors"
+                  class="text-sm font-bold text-text-primary group-hover:text-primary transition-colors"
                 >
                   {{ order.title }}
                 </h4>
                 <div class="flex items-center gap-4 mt-1.5">
-                  <span class="text-[10px] font-medium text-slate-400 flex items-center gap-1">
+                  <span class="text-[10px] font-medium text-text-secondary flex items-center gap-1">
                     <span class="material-symbols-outlined text-xs">location_on</span>
                     {{ order.assetLocation }}
                   </span>
-                  <span class="text-[10px] font-medium text-slate-400 flex items-center gap-1">
+                  <span class="text-[10px] font-medium text-text-secondary flex items-center gap-1">
                     <span class="material-symbols-outlined text-xs">person</span>
                     {{ order.technician }}
                   </span>
@@ -117,14 +115,14 @@
                   class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg bg-amber-50 text-amber-600"
                   >{{ order.status }}</span
                 >
-                <p class="text-[10px] text-slate-400 mt-2 font-medium">
+                <p class="text-[10px] text-text-secondary mt-2 font-medium">
                   {{ formatDate(order.targetDate) }}
                 </p>
               </div>
             </div>
             <div
               v-if="workOrders.length === 0"
-              class="py-12 text-center text-slate-400 text-sm italic"
+              class="py-12 text-center text-text-secondary text-sm italic"
             >
               No critical work orders found.
             </div>
@@ -135,22 +133,22 @@
       <!-- Quick Actions & Alerts -->
       <div class="lg:col-span-4 space-y-8">
         <div class="premium-card">
-          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
+          <h3 class="text-xs font-bold text-text-secondary uppercase tracking-widest mb-6">
             Quick Operations
           </h3>
           <div class="grid grid-cols-2 gap-4">
             <button
-              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 hover:bg-indigo-600 hover:text-white transition-all group shadow-sm"
+              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-primary-container/20 border border-primary-container/30 hover:bg-primary hover:text-on-primary transition-all group shadow-sm"
             >
-              <span class="material-symbols-outlined text-indigo-600 group-hover:text-white"
+              <span class="material-symbols-outlined text-primary group-hover:text-on-primary"
                 >add_shopping_cart</span
               >
               <span class="text-[10px] font-bold uppercase tracking-wider">Procurement</span>
             </button>
             <button
-              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 hover:bg-emerald-600 hover:text-white transition-all group shadow-sm"
+              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 hover:bg-status-in-stock hover:text-white transition-all group shadow-sm"
             >
-              <span class="material-symbols-outlined text-emerald-600 group-hover:text-white"
+              <span class="material-symbols-outlined text-status-in-stock group-hover:text-white"
                 >handyman</span
               >
               <span class="text-[10px] font-bold uppercase tracking-wider">Service Log</span>
@@ -177,7 +175,7 @@
         <!-- Recent Alerts -->
         <div class="premium-card">
           <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+            <h3 class="text-xs font-bold text-text-secondary uppercase tracking-widest">
               Recent Alerts
             </h3>
             <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
@@ -190,14 +188,17 @@
               ></div>
               <div class="flex-1 min-w-0">
                 <h4
-                  class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors"
+                  class="text-xs font-bold text-text-primary group-hover:text-primary transition-colors"
                 >
                   {{ alert.title }}
                 </h4>
-                <p class="text-[10px] text-slate-400 mt-1 line-clamp-1">{{ alert.message }}</p>
+                <p class="text-[10px] text-text-secondary mt-1 line-clamp-1">{{ alert.message }}</p>
               </div>
             </div>
-            <div v-if="alerts.length === 0" class="py-4 text-center text-slate-400 text-xs italic">
+            <div
+              v-if="alerts.length === 0"
+              class="py-4 text-center text-text-secondary text-xs italic"
+            >
               No active system alerts.
             </div>
           </div>
@@ -241,13 +242,13 @@ const mainKPIs = computed(() => [
     label: 'Total Campus Assets',
     value: assets.value.length,
     icon: 'inventory_2',
-    bgClass: 'bg-indigo-50',
-    iconClass: 'text-indigo-500',
+    bgClass: 'bg-primary-container/20',
+    iconClass: 'text-primary',
     trend: '4.2%',
     trendIcon: 'arrow_upward',
-    trendClass: 'text-emerald-600 bg-emerald-50 border-emerald-100',
+    trendClass: 'text-status-in-stock bg-metric-sage border-status-in-stock/10',
     progress: 78,
-    barClass: 'bg-indigo-500',
+    barClass: 'bg-primary',
   },
   {
     label: 'Operational Health',
@@ -257,37 +258,37 @@ const mainKPIs = computed(() => [
           100,
       ) + '%',
     icon: 'verified_user',
-    bgClass: 'bg-emerald-50',
-    iconClass: 'text-emerald-500',
+    bgClass: 'bg-metric-sage',
+    iconClass: 'text-status-in-stock',
     trend: '99.9%',
     trendIcon: 'check_circle',
-    trendClass: 'text-indigo-600 bg-indigo-50 border-indigo-100',
+    trendClass: 'text-primary bg-primary-container/20 border-primary/10',
     progress: 92,
-    barClass: 'bg-emerald-500',
+    barClass: 'bg-status-in-stock',
   },
   {
     label: 'Maintenance Queue',
     value: workOrders.value.length,
     icon: 'handyman',
-    bgClass: 'bg-rose-50',
-    iconClass: 'text-rose-500',
+    bgClass: 'bg-error-container/20',
+    iconClass: 'text-status-critical',
     trend: '12%',
     trendIcon: 'arrow_downward',
-    trendClass: 'text-rose-600 bg-rose-50 border-rose-100',
+    trendClass: 'text-status-critical bg-error-container border-status-critical/10',
     progress: 45,
-    barClass: 'bg-rose-500',
+    barClass: 'bg-status-critical',
   },
   {
     label: 'Est. Valuation',
     value: '₹' + (assets.value.reduce((s, a) => s + (a.value || 0), 0) / 1000000).toFixed(1) + 'M',
     icon: 'account_balance_wallet',
-    bgClass: 'bg-slate-100',
-    iconClass: 'text-slate-600',
+    bgClass: 'bg-secondary-container',
+    iconClass: 'text-secondary',
     trend: '2.5%',
     trendIcon: 'arrow_upward',
-    trendClass: 'text-slate-600 bg-slate-50 border-slate-100',
+    trendClass: 'text-secondary bg-secondary-container/50 border-secondary/10',
     progress: 60,
-    barClass: 'bg-slate-400',
+    barClass: 'bg-secondary',
   },
 ]);
 

@@ -1,8 +1,8 @@
 <template>
   <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap pb-24">
     <div v-if="loading" class="flex flex-col items-center justify-center py-40 gap-4">
-      <span class="material-symbols-outlined animate-spin text-4xl text-indigo-500">sync</span>
-      <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">
+      <span class="material-symbols-outlined animate-spin text-4xl text-primary">sync</span>
+      <p class="text-sm font-bold text-text-secondary uppercase tracking-widest">
         Synchronizing Asset Data...
       </p>
     </div>
@@ -13,7 +13,7 @@
         <div class="flex items-center gap-4">
           <button
             @click="router.back()"
-            class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:border-indigo-100 transition-all shadow-sm"
+            class="w-10 h-10 rounded-xl bg-white border border-border-default flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary/20 transition-all shadow-sm"
           >
             <span class="material-symbols-outlined">arrow_back</span>
           </button>
@@ -27,7 +27,7 @@
                 {{ asset.status }}
               </span>
             </div>
-            <p class="text-xs font-mono text-slate-400 mt-1.5 uppercase tracking-widest">
+            <p class="text-xs font-mono text-text-secondary mt-1.5 uppercase tracking-widest">
               {{ asset.tagId }}
             </p>
           </div>
@@ -61,17 +61,17 @@
                   info.icon
                 }}</span>
               </div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+              <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
                 {{ info.label }}
               </p>
-              <p class="text-sm font-bold text-slate-900 mt-1">{{ info.value }}</p>
+              <p class="text-sm font-bold text-text-primary mt-1">{{ info.value }}</p>
             </div>
           </div>
 
           <!-- Description / Technical Specs -->
           <div class="premium-card">
             <h3
-              class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-50 pb-4"
+              class="text-xs font-bold text-text-secondary uppercase tracking-widest mb-6 border-b border-border-default pb-4"
             >
               Asset Profile & Technicals
             </h3>
@@ -79,10 +79,10 @@
               <div
                 v-for="(val, key) in technicalSpecs"
                 :key="key"
-                class="flex justify-between items-center py-2 border-b border-slate-50/50"
+                class="flex justify-between items-center py-2 border-b border-border-default/50"
               >
-                <span class="text-xs font-medium text-slate-400 capitalize">{{ key }}</span>
-                <span class="text-xs font-bold text-slate-900">{{ val }}</span>
+                <span class="text-xs font-medium text-text-secondary capitalize">{{ key }}</span>
+                <span class="text-xs font-bold text-text-primary">{{ val }}</span>
               </div>
             </div>
           </div>
@@ -90,12 +90,12 @@
           <!-- Activity History (Mocked list but real style) -->
           <div class="premium-card !p-0 overflow-hidden">
             <div
-              class="p-6 border-b border-slate-50 bg-slate-50/30 flex justify-between items-center"
+              class="p-6 border-b border-border-default bg-surface-subtle/30 flex justify-between items-center"
             >
-              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              <h3 class="text-xs font-bold text-text-secondary uppercase tracking-widest">
                 Lifecycle Log
               </h3>
-              <button class="text-[10px] font-bold text-indigo-600 hover:underline">
+              <button class="text-[10px] font-bold text-primary hover:underline">
                 Full Audit Trail
               </button>
             </div>
@@ -103,18 +103,18 @@
               <div class="absolute left-[35px] top-8 bottom-8 w-px bg-slate-100"></div>
               <div v-for="log in historyLogs" :key="log.date" class="flex gap-6 relative">
                 <div
-                  class="w-10 h-10 rounded-full bg-white border-4 border-slate-50 flex items-center justify-center z-10 shadow-sm"
+                  class="w-10 h-10 rounded-full bg-white border-4 border-border-default flex items-center justify-center z-10 shadow-sm"
                 >
-                  <span class="material-symbols-outlined text-sm text-slate-400">{{
+                  <span class="material-symbols-outlined text-sm text-text-secondary">{{
                     log.icon
                   }}</span>
                 </div>
-                <div class="flex-1 pb-6 border-b border-slate-50 last:border-none">
+                <div class="flex-1 pb-6 border-b border-border-default last:border-none">
                   <div class="flex justify-between items-start mb-1">
-                    <h4 class="text-sm font-bold text-slate-900">{{ log.event }}</h4>
-                    <span class="text-[10px] font-medium text-slate-400">{{ log.date }}</span>
+                    <h4 class="text-sm font-bold text-text-primary">{{ log.event }}</h4>
+                    <span class="text-[10px] font-medium text-text-secondary">{{ log.date }}</span>
                   </div>
-                  <p class="text-xs text-slate-500 leading-relaxed">{{ log.description }}</p>
+                  <p class="text-xs text-text-secondary leading-relaxed">{{ log.description }}</p>
                 </div>
               </div>
             </div>
@@ -125,21 +125,23 @@
         <div class="lg:col-span-4 space-y-8">
           <!-- Valuation Card -->
           <div
-            class="premium-card bg-gradient-to-br from-indigo-900 to-slate-900 text-white border-none shadow-xl shadow-indigo-100"
+            class="premium-card bg-gradient-to-br from-primary to-surface-secondary text-white border-none shadow-xl shadow-primary/10"
           >
-            <p class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest mb-2">
+            <p class="text-[10px] font-bold text-primary-container uppercase tracking-widest mb-2">
               Current Valuation
             </p>
             <h2 class="text-4xl font-bold">₹{{ (asset.value || 0).toLocaleString() }}</h2>
             <div class="mt-6 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
               <div class="flex justify-between items-center mb-2">
-                <span class="text-[10px] font-medium text-indigo-200">Depreciation Method</span>
+                <span class="text-[10px] font-medium text-primary-container"
+                  >Depreciation Method</span
+                >
                 <span class="text-[10px] font-bold text-white uppercase tracking-wider"
                   >Straight Line</span
                 >
               </div>
               <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                <div class="h-full bg-indigo-400" style="width: 65%"></div>
+                <div class="h-full bg-primary-container" style="width: 65%"></div>
               </div>
             </div>
           </div>
@@ -147,35 +149,37 @@
           <!-- Custodian & QR -->
           <div class="premium-card space-y-6">
             <h3
-              class="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50 pb-4"
+              class="text-xs font-bold text-text-secondary uppercase tracking-widest border-b border-border-default pb-4"
             >
               Assigned Custodian
             </h3>
             <div class="flex items-center gap-4">
               <div
-                class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg uppercase shadow-sm"
+                class="w-12 h-12 rounded-2xl bg-primary-container/10 border border-primary-container/20 flex items-center justify-center text-primary font-bold text-lg uppercase shadow-sm"
               >
                 {{ asset.custodian?.charAt(0) || '?' }}
               </div>
               <div>
-                <p class="text-sm font-bold text-slate-900">
+                <p class="text-sm font-bold text-text-primary">
                   {{ asset.custodian || 'Unassigned' }}
                 </p>
-                <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-1">
+                <p
+                  class="text-[10px] text-text-secondary font-medium uppercase tracking-wider mt-1"
+                >
                   {{ asset.status === 'In Stock' ? 'Ready for Checkout' : 'Currently Holding' }}
                 </p>
               </div>
             </div>
             <div
-              class="p-6 bg-slate-50 rounded-2xl flex flex-col items-center gap-4 border border-slate-100"
+              class="p-6 bg-surface-subtle rounded-2xl flex flex-col items-center gap-4 border border-border-default"
             >
               <div
-                class="w-32 h-32 bg-white rounded-xl flex items-center justify-center border border-slate-200 p-2"
+                class="w-32 h-32 bg-white rounded-xl flex items-center justify-center border border-border-default p-2"
               >
-                <span class="material-symbols-outlined text-6xl text-slate-200">qr_code_2</span>
+                <span class="material-symbols-outlined text-6xl text-text-disabled">qr_code_2</span>
               </div>
               <button
-                class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest hover:underline"
+                class="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline"
               >
                 Download Asset Tag
               </button>
@@ -214,22 +218,22 @@ const primarySpecs = computed(() => {
       label: 'Category',
       value: asset.value.category,
       icon: 'category',
-      bgClass: 'bg-indigo-50',
-      iconClass: 'text-indigo-500',
+      bgClass: 'bg-primary-container/20',
+      iconClass: 'text-primary',
     },
     {
       label: 'Location',
       value: asset.value.location,
       icon: 'location_on',
-      bgClass: 'bg-emerald-50',
-      iconClass: 'text-emerald-500',
+      bgClass: 'bg-metric-sage',
+      iconClass: 'text-status-in-stock',
     },
     {
       label: 'Warranty',
       value: asset.value.warrantyStatus,
       icon: 'verified',
-      bgClass: 'bg-blue-50',
-      iconClass: 'text-blue-500',
+      bgClass: 'bg-primary-container/10',
+      iconClass: 'text-accent',
     },
   ];
 });

@@ -25,22 +25,22 @@
     <!-- Bento Grid Summary -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
       <div class="md:col-span-4 premium-card flex flex-col justify-center">
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
           Active Contracts
         </p>
-        <h2 class="text-4xl font-bold text-slate-900 mt-2">{{ contracts.length }}</h2>
+        <h2 class="text-4xl font-bold text-text-primary mt-2">{{ contracts.length }}</h2>
         <div
-          class="flex items-center gap-2 mt-4 text-emerald-600 text-xs font-bold bg-emerald-50 w-fit px-3 py-1 rounded-full"
+          class="flex items-center gap-2 mt-4 text-status-in-stock text-xs font-bold bg-emerald-50 w-fit px-3 py-1 rounded-full"
         >
           <span class="material-symbols-outlined text-sm">verified</span>
           All Compliance Verified
         </div>
       </div>
       <div class="md:col-span-4 premium-card flex flex-col justify-center">
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
           Pending Work Orders
         </p>
-        <h2 class="text-4xl font-bold text-slate-900 mt-2">{{ openWorkOrders.length }}</h2>
+        <h2 class="text-4xl font-bold text-text-primary mt-2">{{ openWorkOrders.length }}</h2>
         <div
           class="flex items-center gap-2 mt-4 text-amber-600 text-xs font-bold bg-amber-50 w-fit px-3 py-1 rounded-full"
         >
@@ -66,16 +66,16 @@
       <div class="lg:col-span-7">
         <div class="premium-card !p-0 overflow-hidden h-full flex flex-col">
           <div
-            class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/30"
+            class="p-6 border-b border-border-default flex justify-between items-center bg-surface-subtle/30"
           >
             <div>
-              <h3 class="text-sm font-bold text-slate-900">Service Agreements</h3>
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">
+              <h3 class="text-sm font-bold text-text-primary">Service Agreements</h3>
+              <p class="text-[10px] text-text-secondary font-medium uppercase tracking-widest mt-1">
                 Vendor Contracts
               </p>
             </div>
             <button
-              class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-indigo-600 transition-all shadow-sm"
+              class="p-2 hover:bg-white rounded-lg text-text-secondary hover:text-primary transition-all shadow-sm"
             >
               <span class="material-symbols-outlined">filter_list</span>
             </button>
@@ -83,7 +83,7 @@
           <div class="overflow-x-auto flex-1">
             <table class="w-full text-left">
               <thead
-                class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+                class="bg-surface-subtle/50 text-[10px] font-bold text-text-secondary uppercase tracking-widest border-b border-border-default"
               >
                 <tr>
                   <th class="px-6 py-4">Vendor</th>
@@ -96,9 +96,9 @@
                 <tr
                   v-for="contract in contracts"
                   :key="contract.id"
-                  class="hover:bg-slate-50/50 transition-colors"
+                  class="hover:bg-surface-subtle/50 transition-colors"
                 >
-                  <td class="px-6 py-4 font-bold text-slate-900 text-sm">
+                  <td class="px-6 py-4 font-bold text-text-primary text-sm">
                     {{ contract.vendorName }}
                   </td>
                   <td class="px-6 py-4">
@@ -107,7 +107,7 @@
                     }}</span>
                   </td>
                   <td class="px-6 py-4">
-                    <p class="text-[11px] font-bold text-slate-500">
+                    <p class="text-[11px] font-bold text-text-secondary">
                       {{ formatDate(contract.startDate) }} - {{ formatDate(contract.endDate) }}
                     </p>
                   </td>
@@ -121,7 +121,7 @@
                   </td>
                 </tr>
                 <tr v-if="contracts.length === 0">
-                  <td colspan="4" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+                  <td colspan="4" class="px-6 py-12 text-center text-text-secondary text-sm italic">
                     No active contracts found.
                   </td>
                 </tr>
@@ -135,11 +135,11 @@
       <div class="lg:col-span-5">
         <div class="premium-card !p-0 overflow-hidden h-full flex flex-col">
           <div
-            class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/30"
+            class="p-6 border-b border-border-default flex justify-between items-center bg-surface-subtle/30"
           >
             <div>
-              <h3 class="text-sm font-bold text-slate-900">Active Work Orders</h3>
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">
+              <h3 class="text-sm font-bold text-text-primary">Active Work Orders</h3>
+              <p class="text-[10px] text-text-secondary font-medium uppercase tracking-widest mt-1">
                 Operations Queue
               </p>
             </div>
@@ -152,10 +152,10 @@
             <div
               v-for="order in openWorkOrders"
               :key="order.id"
-              class="p-4 bg-slate-50/50 border border-slate-100 rounded-xl hover:border-indigo-200 transition-colors cursor-pointer group"
+              class="p-4 bg-surface-subtle/50 border border-border-default rounded-xl hover:border-indigo-200 transition-colors cursor-pointer group"
             >
               <div class="flex justify-between items-start mb-2">
-                <span class="text-[10px] font-mono text-slate-400 font-bold tracking-widest">{{
+                <span class="text-[10px] font-mono text-text-secondary font-bold tracking-widest">{{
                   order.workOrderId
                 }}</span>
                 <span
@@ -165,28 +165,28 @@
                 >
               </div>
               <h4
-                class="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors"
+                class="text-sm font-bold text-text-primary group-hover:text-primary transition-colors"
               >
                 {{ order.title }}
               </h4>
-              <p class="text-[11px] text-slate-500 mt-1 line-clamp-1">{{ order.issue }}</p>
+              <p class="text-[11px] text-text-secondary mt-1 line-clamp-1">{{ order.issue }}</p>
               <div class="flex justify-between items-center mt-4">
                 <div class="flex items-center gap-1.5">
                   <div
-                    class="w-6 h-6 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-indigo-600 uppercase"
+                    class="w-6 h-6 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-primary uppercase"
                   >
                     {{ order.technician?.charAt(0) }}
                   </div>
                   <span class="text-[10px] font-bold text-slate-600">{{ order.technician }}</span>
                 </div>
-                <span class="text-[10px] font-bold text-slate-400">{{
+                <span class="text-[10px] font-bold text-text-secondary">{{
                   formatDate(order.targetDate)
                 }}</span>
               </div>
             </div>
             <div
               v-if="openWorkOrders.length === 0"
-              class="py-12 text-center text-slate-400 text-sm italic"
+              class="py-12 text-center text-text-secondary text-sm italic"
             >
               No pending work orders.
             </div>

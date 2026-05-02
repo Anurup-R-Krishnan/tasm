@@ -1,43 +1,43 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Premium Palette: Slate, Indigo, Emerald */
-  --color-canvas: #f8fafc;
+  /* Restored Earth/Brown Palette */
+  --color-canvas: #faf7f2;
   --color-surface: #ffffff;
-  --color-surface-subtle: #f1f5f9;
-  --color-surface-variant: #e2e8f0;
+  --color-surface-subtle: #fafaf8;
+  --color-surface-variant: #f1dfd8;
 
-  --color-primary: #4f46e5; /* Indigo 600 */
+  --color-primary: #712c00; /* Original Brown */
   --color-on-primary: #ffffff;
-  --color-primary-container: #e0e7ff;
-  --color-on-primary-container: #3730a3;
+  --color-primary-container: #ffdbcb;
+  --color-on-primary-container: #341000;
 
-  --color-secondary: #64748b; /* Slate 500 */
+  --color-secondary: #625d5b;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #f1f5f9;
+  --color-secondary-container: #e9e1dd;
   --color-on-secondary-container: #1e293b;
 
-  --color-accent: #10b981; /* Emerald 500 */
+  --color-accent: #00446d; /* Original Tertiary as Accent */
   --color-on-accent: #ffffff;
 
-  --color-error: #ef4444;
+  --color-error: #ba1a1a;
   --color-on-error: #ffffff;
-  --color-error-container: #fee2e2;
-  --color-on-error-container: #991b1b;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
 
-  --color-text-primary: #0f172a; /* Slate 900 */
-  --color-text-secondary: #475569; /* Slate 600 */
-  --color-border-default: #e2e8f0;
+  --color-text-primary: #1c1917;
+  --color-text-secondary: #78716c;
+  --color-border-default: #eeebe4;
 
   /* Semantic Status */
-  --color-status-in-stock: #059669;
-  --color-status-checked-out: #2563eb;
-  --color-status-critical: #dc2626;
+  --color-status-in-stock: #166534;
+  --color-status-checked-out: #1e40af;
+  --color-status-critical: #991b1b;
 
   /* Metric Backgrounds */
   --color-metric-sage: #dcfce7;
   --color-metric-amber: #fef3c7;
-  --color-metric-lavender: #f5f3ff;
+  --color-metric-lavender: #ede9fe;
 
   /* Fonts */
   --font-body: 'Inter', system-ui, sans-serif;
@@ -102,7 +102,7 @@
   }
 
   .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-on-primary px-4 py-2 rounded-lg font-semibold shadow-sm transition-all active:scale-95 flex items-center justify-center gap-2;
+    @apply bg-primary hover:opacity-90 text-on-primary px-4 py-2 rounded-lg font-semibold shadow-sm transition-all active:scale-95 flex items-center justify-center gap-2;
   }
 }
 
@@ -117,5 +117,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+  @apply bg-border-default rounded-full hover:bg-secondary-container transition-colors;
 }

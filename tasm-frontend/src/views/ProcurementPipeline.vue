@@ -33,29 +33,29 @@
             <span class="material-symbols-outlined" :class="kpi.iconClass">{{ kpi.icon }}</span>
           </div>
           <div
-            class="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100"
+            class="flex items-center gap-1 text-[10px] font-bold text-status-in-stock bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100"
           >
             <span class="material-symbols-outlined text-xs">trending_up</span>
             12%
           </div>
         </div>
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
           {{ kpi.label }}
         </p>
-        <h2 class="text-2xl font-bold text-slate-900 mt-1">₹{{ kpi.value.toLocaleString() }}</h2>
-        <p class="text-xs text-slate-500 mt-4">{{ kpi.subtext }}</p>
+        <h2 class="text-2xl font-bold text-text-primary mt-1">₹{{ kpi.value.toLocaleString() }}</h2>
+        <p class="text-xs text-text-secondary mt-4">{{ kpi.subtext }}</p>
       </div>
     </div>
 
     <!-- Data Table -->
     <div class="premium-card !p-0 overflow-hidden">
       <div
-        class="p-4 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/30"
+        class="p-4 border-b border-border-default flex flex-col md:flex-row justify-between items-center gap-4 bg-surface-subtle/30"
       >
         <div class="flex flex-1 gap-4 w-full md:w-auto">
           <div class="relative flex-1 max-w-sm">
             <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]"
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[18px]"
               >search</span
             >
             <input
@@ -70,7 +70,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead
-            class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+            class="bg-surface-subtle/50 text-[10px] font-bold text-text-secondary uppercase tracking-widest border-b border-border-default"
           >
             <tr>
               <th class="px-6 py-4">Request Detail</th>
@@ -85,15 +85,15 @@
             <tr
               v-for="req in filteredProcurements"
               :key="req.id"
-              class="hover:bg-slate-50/50 transition-colors group"
+              class="hover:bg-surface-subtle/50 transition-colors group"
             >
               <td class="px-6 py-4">
                 <div class="flex flex-col">
                   <span
-                    class="text-sm font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors"
+                    class="text-sm font-bold text-text-primary leading-tight group-hover:text-primary transition-colors"
                     >{{ req.title }}</span
                   >
-                  <span class="text-[10px] font-mono text-slate-400 mt-1 tracking-wider">{{
+                  <span class="text-[10px] font-mono text-text-secondary mt-1 tracking-wider">{{
                     req.poNumber || 'No PO Assigned'
                   }}</span>
                 </div>
@@ -115,14 +115,14 @@
                 </span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm font-bold text-slate-900"
+                <span class="text-sm font-bold text-text-primary"
                   >₹{{ (req.estimatedValue || 0).toLocaleString() }}</span
                 >
               </td>
               <td class="px-6 py-4">
                 <div class="flex items-center gap-2">
                   <div
-                    class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-bold text-slate-500 uppercase border border-slate-200"
+                    class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-bold text-text-secondary uppercase border border-slate-200"
                   >
                     {{ req.requestorInitials }}
                   </div>
@@ -131,14 +131,14 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <button
-                  class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-sm border border-transparent hover:border-slate-100"
+                  class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm border border-transparent hover:border-border-default"
                 >
                   <span class="material-symbols-outlined text-[20px]">visibility</span>
                 </button>
               </td>
             </tr>
             <tr v-if="filteredProcurements.length === 0">
-              <td colspan="6" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+              <td colspan="6" class="px-6 py-12 text-center text-text-secondary text-sm italic">
                 No procurement requests found.
               </td>
             </tr>

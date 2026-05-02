@@ -22,13 +22,13 @@
     <!-- Metrics Grid -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <div v-for="kpi in kpiMetrics" :key="kpi.label" class="premium-card">
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+        <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest mb-2">
           {{ kpi.label }}
         </p>
         <div class="text-3xl font-bold" :class="kpi.colorClass">
           {{ kpi.value }}
         </div>
-        <p class="text-xs text-slate-500 mt-2 flex items-center gap-1">
+        <p class="text-xs text-text-secondary mt-2 flex items-center gap-1">
           <span v-if="kpi.icon" class="material-symbols-outlined text-sm">{{ kpi.icon }}</span>
           {{ kpi.subtext }}
         </p>
@@ -37,12 +37,12 @@
 
     <div class="premium-card !p-0 overflow-hidden">
       <div
-        class="p-4 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/30"
+        class="p-4 border-b border-border-default flex flex-col md:flex-row justify-between items-center gap-4 bg-surface-subtle/30"
       >
         <div class="flex flex-1 gap-4 w-full md:w-auto">
           <div class="relative flex-1 max-w-sm">
             <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]"
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[18px]"
               >search</span
             >
             <input
@@ -66,7 +66,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead
-            class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+            class="bg-surface-subtle/50 text-[10px] font-bold text-text-secondary uppercase tracking-widest border-b border-border-default"
           >
             <tr>
               <th class="px-6 py-4">Item Name</th>
@@ -81,11 +81,11 @@
             <tr
               v-for="item in filteredConsumables"
               :key="item.id"
-              class="hover:bg-slate-50/50 transition-colors"
+              class="hover:bg-surface-subtle/50 transition-colors"
             >
-              <td class="px-6 py-4 font-bold text-slate-900 text-sm">{{ item.name }}</td>
+              <td class="px-6 py-4 font-bold text-text-primary text-sm">{{ item.name }}</td>
               <td class="px-6 py-4">
-                <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg">{{
+                <span class="text-xs text-text-secondary bg-slate-100 px-2 py-0.5 rounded-lg">{{
                   item.category
                 }}</span>
               </td>
@@ -95,12 +95,12 @@
                   <span
                     class="text-sm font-bold"
                     :class="
-                      item.currentStock <= item.reorderLevel ? 'text-rose-600' : 'text-slate-900'
+                      item.currentStock <= item.reorderLevel ? 'text-rose-600' : 'text-text-primary'
                     "
                   >
                     {{ item.currentStock }}
                   </span>
-                  <span class="text-[10px] text-slate-400">/ {{ item.reorderLevel }} min</span>
+                  <span class="text-[10px] text-text-secondary">/ {{ item.reorderLevel }} min</span>
                 </div>
               </td>
               <td class="px-6 py-4">
@@ -114,14 +114,14 @@
               <td class="px-6 py-4 text-right">
                 <button
                   @click="deleteConsumable(item.id)"
-                  class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
+                  class="p-2 text-text-secondary hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
                 >
                   <span class="material-symbols-outlined text-[20px]">delete</span>
                 </button>
               </td>
             </tr>
             <tr v-if="filteredConsumables.length === 0">
-              <td colspan="6" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+              <td colspan="6" class="px-6 py-12 text-center text-text-secondary text-sm italic">
                 No items found matching filters.
               </td>
             </tr>
@@ -174,7 +174,7 @@ const kpiMetrics = computed(() => {
     {
       label: 'Total Inventory',
       value: consumables.value.length,
-      colorClass: 'text-slate-900',
+      colorClass: 'text-text-primary',
       subtext: 'Active SKUs tracked',
     },
     {
@@ -187,7 +187,7 @@ const kpiMetrics = computed(() => {
     {
       label: 'Storage Points',
       value: totalLocations,
-      colorClass: 'text-indigo-600',
+      colorClass: 'text-primary',
       subtext: 'Across campus',
     },
     {
@@ -196,7 +196,7 @@ const kpiMetrics = computed(() => {
         Math.round(
           ((consumables.value.length - lowStockItems) / (consumables.value.length || 1)) * 100,
         ) + '%',
-      colorClass: 'text-emerald-600',
+      colorClass: 'text-status-in-stock',
       subtext: 'Items above min level',
     },
   ];

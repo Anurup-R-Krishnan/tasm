@@ -27,19 +27,20 @@
       <button
         v-for="stat in filterStats"
         :key="stat.label"
-        class="bg-surface border border-border-default px-4 py-2 rounded-full flex items-center gap-3 text-sm font-medium transition-all shadow-sm hover:border-indigo-200"
+        class="bg-surface border border-border-default px-4 py-2 rounded-full flex items-center gap-3 text-sm font-medium transition-all shadow-sm hover:border-primary/20"
         :class="
           selectedFilter === stat.label
-            ? 'border-indigo-600 ring-2 ring-indigo-500/10'
-            : 'text-slate-600'
+            ? 'border-primary ring-2 ring-primary/10'
+            : 'text-text-secondary'
         "
         @click="selectedFilter = stat.label"
       >
         <span class="w-2 h-2 rounded-full" :class="stat.dotClass"></span>
         {{ stat.label }}
-        <span class="px-2 py-0.5 bg-slate-100 rounded-full text-[10px] text-slate-500 font-bold">{{
-          stat.count
-        }}</span>
+        <span
+          class="px-2 py-0.5 bg-slate-100 rounded-full text-[10px] text-text-secondary font-bold"
+          >{{ stat.count }}</span
+        >
       </button>
     </div>
 
@@ -47,24 +48,26 @@
     <div class="premium-card !p-4 flex flex-col md:flex-row justify-between items-center gap-4">
       <div class="relative flex-1 w-full max-w-xl">
         <span
-          class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+          class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
           >search</span
         >
         <input
           v-model="searchQuery"
-          class="w-full bg-slate-50 border border-slate-100 rounded-xl py-2 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
+          class="w-full bg-surface-subtle border border-border-default rounded-xl py-2 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder="Search by name, tag, or custodian..."
         />
       </div>
       <div class="flex items-center gap-4 w-full md:w-auto">
         <button
-          class="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors"
+          class="flex items-center gap-2 px-4 py-2 text-xs font-bold text-text-secondary hover:text-primary transition-colors"
         >
           <span class="material-symbols-outlined text-sm">filter_list</span>
           Advanced Filters
         </button>
-        <div class="h-6 w-px bg-slate-100 hidden md:block"></div>
-        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">
+        <div class="h-6 w-px bg-border-default hidden md:block"></div>
+        <div
+          class="text-[10px] font-bold text-text-secondary uppercase tracking-widest hidden md:block"
+        >
           {{ filteredAssets.length }} results found
         </div>
       </div>
@@ -75,7 +78,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead
-            class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+            class="bg-surface-subtle/50 text-[10px] font-bold text-text-secondary uppercase tracking-widest border-b border-border-default"
           >
             <tr>
               <th class="px-6 py-4">Asset Detail</th>
@@ -86,28 +89,28 @@
               <th class="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-50">
+          <tbody class="divide-y divide-border-default">
             <tr
               v-for="asset in filteredAssets"
               :key="asset.id"
-              class="hover:bg-slate-50/50 transition-colors group"
+              class="hover:bg-surface-subtle/50 transition-colors group"
             >
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div
-                    class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-300"
+                    class="w-10 h-10 rounded-xl bg-surface-subtle flex items-center justify-center text-text-disabled"
                   >
                     <span class="material-symbols-outlined">{{ getIcon(asset.category) }}</span>
                   </div>
                   <div>
                     <router-link
                       :to="`/asset/${asset.id}`"
-                      class="text-sm font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors block"
+                      class="text-sm font-bold text-text-primary leading-tight group-hover:text-primary transition-colors block"
                     >
                       {{ asset.name }}
                     </router-link>
                     <span
-                      class="text-[10px] font-mono text-slate-400 mt-1 block tracking-wider uppercase"
+                      class="text-[10px] font-mono text-text-secondary mt-1 block tracking-wider uppercase"
                       >{{ asset.tagId }}</span
                     >
                   </div>
@@ -124,43 +127,47 @@
               <td class="px-6 py-4">
                 <div v-if="asset.custodian" class="flex items-center gap-2">
                   <div
-                    class="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[9px] font-bold text-indigo-600"
+                    class="w-6 h-6 rounded-full bg-primary-container/20 border border-primary-container/30 flex items-center justify-center text-[9px] font-bold text-primary"
                   >
                     {{ asset.custodian.charAt(0) }}
                   </div>
-                  <span class="text-xs text-slate-600 font-medium">{{ asset.custodian }}</span>
+                  <span class="text-xs text-text-secondary font-medium">{{ asset.custodian }}</span>
                 </div>
-                <span v-else class="text-xs text-slate-400 italic">Unassigned</span>
+                <span v-else class="text-xs text-text-secondary italic">Unassigned</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-xs text-slate-600">{{ asset.location }}</span>
+                <span class="text-xs text-text-secondary">{{ asset.location }}</span>
               </td>
               <td class="px-6 py-4">
                 <span
                   class="text-[10px] font-bold"
-                  :class="asset.warrantyStatus === 'Active' ? 'text-emerald-600' : 'text-rose-500'"
+                  :class="
+                    asset.warrantyStatus === 'Active' ? 'text-status-in-stock' : 'text-rose-500'
+                  "
                 >
                   {{ asset.warrantyStatus }}
                 </span>
-                <p class="text-[9px] text-slate-400 mt-1">{{ formatDate(asset.warrantyExpiry) }}</p>
+                <p class="text-[9px] text-text-secondary mt-1">
+                  {{ formatDate(asset.warrantyExpiry) }}
+                </p>
               </td>
               <td class="px-6 py-4 text-right">
                 <div
                   class="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <button
-                    class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-sm"
+                    class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm"
                   >
                     <span class="material-symbols-outlined text-[18px]">visibility</span>
                   </button>
                   <button
-                    class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-sm"
+                    class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm"
                   >
                     <span class="material-symbols-outlined text-[18px]">edit</span>
                   </button>
                   <button
                     @click="deleteAsset(asset.id)"
-                    class="p-2 text-slate-400 hover:text-rose-600 hover:bg-white rounded-lg transition-all shadow-sm"
+                    class="p-2 text-text-secondary hover:text-rose-600 hover:bg-white rounded-lg transition-all shadow-sm"
                   >
                     <span class="material-symbols-outlined text-[18px]">delete</span>
                   </button>
@@ -168,7 +175,7 @@
               </td>
             </tr>
             <tr v-if="filteredAssets.length === 0">
-              <td colspan="6" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+              <td colspan="6" class="px-6 py-12 text-center text-text-secondary text-sm italic">
                 No assets found matching your criteria.
               </td>
             </tr>
@@ -219,21 +226,21 @@ const filteredAssets = computed(() => {
 });
 
 const filterStats = computed(() => [
-  { label: 'All', count: assets.value.length, dotClass: 'bg-slate-400' },
+  { label: 'All', count: assets.value.length, dotClass: 'bg-text-secondary' },
   {
     label: 'In Stock',
     count: assets.value.filter((a) => a.status === 'In Stock').length,
-    dotClass: 'bg-emerald-500',
+    dotClass: 'bg-status-in-stock',
   },
   {
     label: 'Checked Out',
     count: assets.value.filter((a) => a.status === 'Checked Out').length,
-    dotClass: 'bg-blue-500',
+    dotClass: 'bg-primary',
   },
   {
     label: 'Under Repair',
     count: assets.value.filter((a) => a.status === 'Under Repair').length,
-    dotClass: 'bg-rose-500',
+    dotClass: 'bg-status-critical',
   },
 ]);
 

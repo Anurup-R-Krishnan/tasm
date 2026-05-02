@@ -33,10 +33,10 @@
           <span class="material-symbols-outlined" :class="stat.iconClass">{{ stat.icon }}</span>
         </div>
         <div>
-          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+          <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
             {{ stat.label }}
           </p>
-          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">{{ stat.value }}</h2>
+          <h2 class="text-2xl font-bold text-text-primary mt-0.5">{{ stat.value }}</h2>
         </div>
       </div>
     </div>
@@ -47,13 +47,13 @@
       <div class="lg:col-span-4 space-y-6">
         <div class="premium-card !p-0 overflow-hidden">
           <div
-            class="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/50"
+            class="p-4 border-b border-border-default flex justify-between items-center bg-surface-subtle/50"
           >
-            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            <h3 class="text-xs font-bold text-text-secondary uppercase tracking-wider">
               Campus Facilities
             </h3>
             <span
-              class="text-[10px] font-bold bg-white px-2 py-0.5 rounded-full border border-slate-200 text-slate-400"
+              class="text-[10px] font-bold bg-white px-2 py-0.5 rounded-full border border-slate-200 text-text-secondary"
               >{{ locations.length }} Total</span
             >
           </div>
@@ -61,7 +61,7 @@
             <button
               v-for="loc in locations"
               :key="loc.id"
-              class="w-full p-4 text-left hover:bg-slate-50 transition-colors flex items-center gap-4 group"
+              class="w-full p-4 text-left hover:bg-surface-subtle transition-colors flex items-center gap-4 group"
               :class="
                 selectedLocation?.id === loc.id
                   ? 'bg-indigo-50/50 border-r-4 border-indigo-500'
@@ -70,16 +70,16 @@
               @click="selectedLocation = loc"
             >
               <div
-                class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm"
+                class="w-10 h-10 rounded-xl bg-white border border-border-default flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm"
               >
                 <span
-                  class="material-symbols-outlined text-slate-400 group-hover:text-indigo-500"
+                  class="material-symbols-outlined text-text-secondary group-hover:text-indigo-500"
                   >{{ getLocIcon(loc.type) }}</span
                 >
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-bold text-slate-900 truncate">{{ loc.name }}</p>
-                <p class="text-[11px] text-slate-500 truncate mt-0.5">{{ loc.address }}</p>
+                <p class="text-sm font-bold text-text-primary truncate">{{ loc.name }}</p>
+                <p class="text-[11px] text-text-secondary truncate mt-0.5">{{ loc.address }}</p>
               </div>
               <span
                 class="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform"
@@ -131,16 +131,16 @@
           <!-- Assets in this location Table -->
           <div class="premium-card !p-0 overflow-hidden">
             <div
-              class="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/50"
+              class="p-4 border-b border-border-default flex justify-between items-center bg-surface-subtle/50"
             >
-              <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <h3 class="text-xs font-bold text-text-secondary uppercase tracking-wider">
                 Inventory Breakdown
               </h3>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left">
                 <thead
-                  class="bg-slate-50/30 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+                  class="bg-surface-subtle/30 text-[10px] font-bold text-text-secondary uppercase tracking-widest border-b border-border-default"
                 >
                   <tr>
                     <th class="px-6 py-4">Asset Detail</th>
@@ -154,22 +154,24 @@
                   <tr
                     v-for="asset in locationAssets"
                     :key="asset.id"
-                    class="hover:bg-slate-50/50 transition-colors group"
+                    class="hover:bg-surface-subtle/50 transition-colors group"
                   >
                     <td class="px-6 py-4">
                       <div class="flex items-center gap-3">
                         <div
-                          class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400"
+                          class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-text-secondary"
                         >
                           <span class="material-symbols-outlined text-lg">{{
                             getAssetIcon(asset.category)
                           }}</span>
                         </div>
                         <div>
-                          <p class="text-sm font-bold text-slate-900 leading-none">
+                          <p class="text-sm font-bold text-text-primary leading-none">
                             {{ asset.name }}
                           </p>
-                          <p class="text-[10px] font-mono text-slate-400 mt-1.5 tracking-wider">
+                          <p
+                            class="text-[10px] font-mono text-text-secondary mt-1.5 tracking-wider"
+                          >
                             {{ asset.tagId }}
                           </p>
                         </div>
@@ -186,19 +188,22 @@
                         {{ asset.status }}
                       </span>
                     </td>
-                    <td class="px-6 py-4 text-sm font-bold text-slate-900">
+                    <td class="px-6 py-4 text-sm font-bold text-text-primary">
                       ₹{{ (asset.value || 0).toLocaleString() }}
                     </td>
                     <td class="px-6 py-4 text-right">
                       <button
-                        class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-indigo-600 transition-all shadow-sm"
+                        class="p-2 hover:bg-white rounded-lg text-text-secondary hover:text-primary transition-all shadow-sm"
                       >
                         <span class="material-symbols-outlined">arrow_forward</span>
                       </button>
                     </td>
                   </tr>
                   <tr v-if="locationAssets.length === 0">
-                    <td colspan="5" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+                    <td
+                      colspan="5"
+                      class="px-6 py-12 text-center text-text-secondary text-sm italic"
+                    >
                       No assets registered at this location.
                     </td>
                   </tr>
@@ -214,7 +219,9 @@
           <span class="material-symbols-outlined text-7xl text-slate-100 mb-4 animate-pulse"
             >location_away</span
           >
-          <h3 class="text-slate-400 font-medium">Select a facility to view inventory details</h3>
+          <h3 class="text-text-secondary font-medium">
+            Select a facility to view inventory details
+          </h3>
         </div>
       </div>
     </div>

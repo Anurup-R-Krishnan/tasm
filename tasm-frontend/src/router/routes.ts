@@ -61,25 +61,33 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'financial-analytics-dashboard',
     name: 'FinancialAnalyticsDashboard',
-    title: 'Financial Analytics Dashboard',
+    title: 'Financials',
+    icon: 'payments',
+    showInSidebar: true,
     component: () => import('../views/FinancialAnalyticsDashboard.vue'),
   },
   {
     path: 'asset-depreciation-ledger',
     name: 'AssetDepreciationLedger',
-    title: 'Asset Depreciation Ledger',
+    title: 'Depreciation',
+    icon: 'trending_down',
+    showInSidebar: true,
     component: () => import('../views/AssetDepreciationLedger.vue'),
   },
   {
     path: 'software-license-registry',
     name: 'SoftwareLicenseRegistry',
-    title: 'Software License Registry',
+    title: 'Licenses',
+    icon: 'verified_user',
+    showInSidebar: true,
     component: () => import('../views/SoftwareLicenseRegistry.vue'),
   },
   {
     path: 'reservations-bookings',
     name: 'ReservationsBookings',
-    title: 'Reservations Bookings',
+    title: 'Reservations',
+    icon: 'event_available',
+    showInSidebar: true,
     component: () => import('../views/ReservationsBookings.vue'),
   },
   {
@@ -97,13 +105,17 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'user-access-role-control',
     name: 'UserAccessRoleControl',
-    title: 'User Access Role Control',
+    title: 'User Roles',
+    icon: 'admin_panel_settings',
+    showInSidebar: true,
     component: () => import('../views/UserAccessRoleControl.vue'),
   },
   {
     path: 'scheduled-maintenance-tracker',
     name: 'ScheduledMaintenanceTracker',
-    title: 'Scheduled Maintenance Tracker',
+    title: 'Maintenance',
+    icon: 'build_circle',
+    showInSidebar: true,
     component: () => import('../views/ScheduledMaintenanceTracker.vue'),
   },
   {
@@ -115,13 +127,17 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'audit-discrepancy-resolution',
     name: 'AuditDiscrepancyResolution',
-    title: 'Audit Discrepancy Resolution',
+    title: 'Audit Cleanup',
+    icon: 'rule_folder',
+    showInSidebar: true,
     component: () => import('../views/AuditDiscrepancyResolution.vue'),
   },
   {
     path: 'custom-report-builder',
     name: 'CustomReportBuilder',
-    title: 'Custom Report Builder',
+    title: 'Report Builder',
+    icon: 'edit_note',
+    showInSidebar: true,
     component: () => import('../views/CustomReportBuilder.vue'),
   },
   {
@@ -151,7 +167,9 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'procurement-pipeline',
     name: 'ProcurementPipeline',
-    title: 'Procurement Pipeline',
+    title: 'Procurement',
+    icon: 'shopping_cart',
+    showInSidebar: true,
     component: () => import('../views/ProcurementPipeline.vue'),
   },
   {
@@ -169,50 +187,76 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'employee-self-service-portal',
     name: 'EmployeeSelfServicePortal',
-    title: 'Employee Self Service Portal',
+    title: 'Self Service',
+    icon: 'person_pin',
+    showInSidebar: true,
     component: () => import('../views/EmployeeSelfServicePortal.vue'),
-  },
-  {
-    path: 'alerts-notifications-center',
-    name: 'AlertsNotificationsCenter',
-    title: 'Alerts Notifications Center',
-    component: () => import('../views/AlertsNotificationsCenter.vue'),
-  },
-  {
-    path: 'setup-wizard-locations-configuration',
-    name: 'SetupWizardLocationsConfiguration',
-    title: 'Setup Wizard Locations Configuration',
-    component: () => import('../views/SetupWizardLocationsConfiguration.vue'),
-  },
-  {
-    path: 'asset-check-out-step-2',
-    name: 'AssetCheckOutStep2',
-    title: 'Check-Out Wizard: Recipient',
-    component: () => import('../views/AssetCheckOutStep2.vue'),
-  },
-  {
-    path: 'inventory-card-view',
-    name: 'InventoryCardView',
-    title: 'Inventory Card View',
-    component: () => import('../views/InventoryCardView.vue'),
-  },
-  {
-    path: 'stockroom-inventory',
-    name: 'StockroomInventory',
-    title: 'Stockroom Inventory',
-    component: () => import('../views/StockroomInventory.vue'),
-  },
-  {
-    path: 'maintenance-schedule-contracts',
-    name: 'MaintenanceScheduleContracts',
-    title: 'Maintenance Schedule & Contracts',
-    component: () => import('../views/MaintenanceScheduleContracts.vue'),
   },
   {
     path: 'reports-analytics-dashboard',
     name: 'ReportsAnalyticsDashboard',
-    title: 'Reports & Analytics Dashboard',
+    title: 'Reports',
+    icon: 'analytics',
+    showInSidebar: true,
     component: () => import('../views/ReportsAnalyticsDashboard.vue'),
+  },
+  {
+    path: 'stockroom-inventory',
+    name: 'StockroomInventory',
+    title: 'Stockrooms',
+    icon: 'warehouse',
+    showInSidebar: true,
+    component: () => import('../views/StockroomInventory.vue'),
+  },
+  {
+    path: 'inventory-card-view',
+    name: 'InventoryCardView',
+    title: 'Asset Cards',
+    icon: 'grid_view',
+    showInSidebar: true,
+    component: () => import('../views/InventoryCardView.vue'),
+  },
+  {
+    path: 'alerts-notifications-center',
+    name: 'AlertsNotificationsCenter',
+    title: 'Alerts',
+    icon: 'notifications',
+    showInSidebar: true,
+    component: () => import('../views/AlertsNotificationsCenter.vue'),
+  },
+];
+
+export const sidebarGroups = [
+  {
+    name: 'Inventory',
+    items: [
+      'AssetRegistry',
+      'StockroomInventory',
+      'ConsumablesSuppliesTracker',
+      'SoftwareLicenseRegistry',
+      'InventoryCardView',
+    ],
+  },
+  {
+    name: 'Operations',
+    items: [
+      'WorkOrderDetail',
+      'ScheduledMaintenanceTracker',
+      'AuditSessions',
+      'ReservationsBookings',
+    ],
+  },
+  {
+    name: 'Financials',
+    items: ['ProcurementPipeline', 'FinancialAnalyticsDashboard', 'AssetDepreciationLedger'],
+  },
+  {
+    name: 'Compliance',
+    items: ['AuditDiscrepancyResolution', 'CustomReportBuilder'],
+  },
+  {
+    name: 'System',
+    items: ['AlertsNotificationsCenter', 'EmployeeSelfServicePortal', 'UserAccessRoleControl'],
   },
 ];
 

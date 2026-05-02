@@ -33,14 +33,14 @@
             <span class="material-symbols-outlined" :class="kpi.iconClass">{{ kpi.icon }}</span>
           </div>
           <span
-            class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-100"
+            class="text-[10px] font-bold text-text-secondary bg-surface-subtle px-2 py-0.5 rounded-full border border-border-default"
             >Live</span
           >
         </div>
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
           {{ kpi.label }}
         </p>
-        <h2 class="text-2xl font-bold text-slate-900 mt-1">₹{{ kpi.value.toLocaleString() }}</h2>
+        <h2 class="text-2xl font-bold text-text-primary mt-1">₹{{ kpi.value.toLocaleString() }}</h2>
         <div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
           <div
             class="h-full bg-indigo-500 rounded-full"
@@ -56,11 +56,11 @@
       <div class="lg:col-span-8">
         <div class="premium-card !p-0 overflow-hidden h-full flex flex-col">
           <div
-            class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/30"
+            class="p-6 border-b border-border-default flex justify-between items-center bg-surface-subtle/30"
           >
             <div>
-              <h3 class="text-sm font-bold text-slate-900">Procurement Pipeline</h3>
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">
+              <h3 class="text-sm font-bold text-text-primary">Procurement Pipeline</h3>
+              <p class="text-[10px] text-text-secondary font-medium uppercase tracking-widest mt-1">
                 Pending Approvals & Shipping
               </p>
             </div>
@@ -71,7 +71,7 @@
                 By Dept
               </button>
               <button
-                class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-900 shadow-sm transition-all"
+                class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-text-primary shadow-sm transition-all"
               >
                 By Priority
               </button>
@@ -80,7 +80,7 @@
           <div class="overflow-x-auto flex-1">
             <table class="w-full text-left">
               <thead
-                class="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50"
+                class="bg-surface-subtle/50 text-[10px] font-bold text-text-secondary uppercase tracking-widest border-b border-border-default"
               >
                 <tr>
                   <th class="px-6 py-4">Request Detail</th>
@@ -93,7 +93,7 @@
                 <tr
                   v-for="req in procurements"
                   :key="req.id"
-                  class="hover:bg-slate-50/50 transition-colors group"
+                  class="hover:bg-surface-subtle/50 transition-colors group"
                 >
                   <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
@@ -104,11 +104,11 @@
                       </div>
                       <div>
                         <p
-                          class="text-sm font-bold text-slate-900 leading-none group-hover:text-indigo-600 transition-colors"
+                          class="text-sm font-bold text-text-primary leading-none group-hover:text-primary transition-colors"
                         >
                           {{ req.title }}
                         </p>
-                        <p class="text-[10px] text-slate-400 mt-1.5 font-medium">
+                        <p class="text-[10px] text-text-secondary mt-1.5 font-medium">
                           {{ req.department }} • PO: {{ req.poNumber || 'N/A' }}
                         </p>
                       </div>
@@ -130,12 +130,12 @@
                       {{ req.status }}
                     </span>
                   </td>
-                  <td class="px-6 py-4 text-sm font-bold text-slate-900">
+                  <td class="px-6 py-4 text-sm font-bold text-text-primary">
                     ₹{{ (req.estimatedValue || 0).toLocaleString() }}
                   </td>
                 </tr>
                 <tr v-if="procurements.length === 0">
-                  <td colspan="4" class="px-6 py-12 text-center text-slate-400 text-sm italic">
+                  <td colspan="4" class="px-6 py-12 text-center text-text-secondary text-sm italic">
                     No active procurement requests.
                   </td>
                 </tr>
@@ -149,10 +149,11 @@
       <div class="lg:col-span-4">
         <div class="premium-card !p-0 overflow-hidden h-full flex flex-col">
           <div
-            class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/30"
+            class="p-6 border-b border-border-default flex justify-between items-center bg-surface-subtle/30"
           >
-            <h3 class="text-sm font-bold text-slate-900">Recent Transactions</h3>
-            <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full"
+            <h3 class="text-sm font-bold text-text-primary">Recent Transactions</h3>
+            <span
+              class="text-[10px] font-bold bg-slate-100 text-text-secondary px-2 py-0.5 rounded-full"
               >Ledger Feed</span
             >
           </div>
@@ -160,7 +161,7 @@
             <div
               v-for="entry in ledgers"
               :key="entry.id"
-              class="p-4 bg-slate-50/50 border border-slate-100 rounded-xl hover:border-slate-200 transition-all group"
+              class="p-4 bg-surface-subtle/50 border border-border-default rounded-xl hover:border-slate-200 transition-all group"
             >
               <div class="flex justify-between items-start mb-2">
                 <span
@@ -176,27 +177,27 @@
                   }}
                 </span>
               </div>
-              <h4 class="text-xs font-bold text-slate-900 truncate">{{ entry.description }}</h4>
+              <h4 class="text-xs font-bold text-text-primary truncate">{{ entry.description }}</h4>
               <div class="flex justify-between items-center mt-3">
-                <span class="text-[10px] font-medium text-slate-400">{{
+                <span class="text-[10px] font-medium text-text-secondary">{{
                   formatDate(entry.date)
                 }}</span>
                 <span
-                  class="text-[9px] font-bold uppercase tracking-wider text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-100"
+                  class="text-[9px] font-bold uppercase tracking-wider text-text-secondary bg-white px-2 py-0.5 rounded border border-border-default"
                   >{{ entry.category }}</span
                 >
               </div>
             </div>
             <div
               v-if="ledgers.length === 0"
-              class="py-12 text-center text-slate-400 text-sm italic"
+              class="py-12 text-center text-text-secondary text-sm italic"
             >
               No transactions recorded in ledger.
             </div>
           </div>
-          <div class="p-4 bg-slate-50/50 border-t border-slate-50">
+          <div class="p-4 bg-surface-subtle/50 border-t border-border-default">
             <button
-              class="w-full py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:text-indigo-600 transition-colors shadow-sm"
+              class="w-full py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:text-primary transition-colors shadow-sm"
             >
               View Full Audit Log
             </button>
@@ -268,8 +269,8 @@ const financialKPIs = computed(() => {
       label: 'Asset Valuation',
       value: 12450000,
       icon: 'account_balance_wallet',
-      bgClass: 'bg-slate-50',
-      iconClass: 'text-slate-500',
+      bgClass: 'bg-surface-subtle',
+      iconClass: 'text-text-secondary',
       progress: 60,
     },
   ];

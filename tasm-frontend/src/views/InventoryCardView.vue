@@ -40,7 +40,7 @@
       <!-- Category Sidebar -->
       <aside class="w-full lg:w-[260px] shrink-0 space-y-6">
         <div class="premium-card !p-4">
-          <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-2">
+          <h3 class="text-sm font-bold text-text-secondary uppercase tracking-wider mb-4 px-2">
             Categories
           </h3>
           <ul class="space-y-1">
@@ -49,34 +49,35 @@
                 class="w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex justify-between items-center transition-colors"
                 :class="
                   selectedCategory === category
-                    ? 'bg-indigo-50 text-indigo-600'
-                    : 'text-slate-600 hover:bg-slate-50'
+                    ? 'bg-indigo-50 text-primary'
+                    : 'text-slate-600 hover:bg-surface-subtle'
                 "
                 @click="selectedCategory = category"
               >
                 <span>{{ category }}</span>
-                <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full text-slate-500">{{
-                  count
-                }}</span>
+                <span
+                  class="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full text-text-secondary"
+                  >{{ count }}</span
+                >
               </button>
             </li>
           </ul>
         </div>
 
         <div class="premium-card !p-4">
-          <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-2">
+          <h3 class="text-sm font-bold text-text-secondary uppercase tracking-wider mb-4 px-2">
             Locations
           </h3>
           <ul class="space-y-1">
             <li v-for="loc in locations" :key="loc.id">
               <label
-                class="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-slate-50 rounded-xl transition-colors"
+                class="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-surface-subtle rounded-xl transition-colors"
               >
                 <input
                   v-model="selectedLocations"
                   :value="loc.name"
                   type="checkbox"
-                  class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500/20"
+                  class="rounded border-slate-300 text-primary focus:ring-indigo-500/20"
                 />
                 <span class="text-sm text-slate-600">{{ loc.name }}</span>
               </label>
@@ -88,15 +89,19 @@
       <!-- Asset Grid -->
       <div class="flex-1">
         <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          <div v-for="i in 6" :key="i" class="premium-card h-64 animate-pulse bg-slate-50"></div>
+          <div
+            v-for="i in 6"
+            :key="i"
+            class="premium-card h-64 animate-pulse bg-surface-subtle"
+          ></div>
         </div>
         <div
           v-else-if="filteredAssets.length === 0"
           class="premium-card flex flex-col items-center justify-center py-20 text-center"
         >
           <span class="material-symbols-outlined text-6xl text-slate-200 mb-4">inventory_2</span>
-          <h3 class="text-slate-900">No assets found</h3>
-          <p class="text-slate-500">Try adjusting your filters or search query.</p>
+          <h3 class="text-text-primary">No assets found</h3>
+          <p class="text-text-secondary">Try adjusting your filters or search query.</p>
         </div>
         <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <div
@@ -125,21 +130,23 @@
             <div class="p-5 flex flex-col">
               <div class="mb-3">
                 <h3
-                  class="text-slate-900 font-bold leading-tight group-hover:text-indigo-600 transition-colors line-clamp-1"
+                  class="text-text-primary font-bold leading-tight group-hover:text-primary transition-colors line-clamp-1"
                 >
                   {{ asset.name }}
                 </h3>
-                <span class="text-[11px] font-mono text-slate-400 mt-1 block tracking-wider">{{
+                <span class="text-[11px] font-mono text-text-secondary mt-1 block tracking-wider">{{
                   asset.tagId
                 }}</span>
               </div>
 
-              <div class="mt-auto pt-4 border-t border-slate-50 flex justify-between items-center">
-                <div class="flex items-center gap-1.5 text-slate-500 text-xs">
+              <div
+                class="mt-auto pt-4 border-t border-border-default flex justify-between items-center"
+              >
+                <div class="flex items-center gap-1.5 text-text-secondary text-xs">
                   <span class="material-symbols-outlined text-sm">location_on</span>
                   {{ asset.location }}
                 </div>
-                <div class="text-sm font-bold text-slate-900">
+                <div class="text-sm font-bold text-text-primary">
                   ₹ {{ (asset.value || 0).toLocaleString() }}
                 </div>
               </div>
@@ -152,22 +159,22 @@
           v-if="!loading && filteredAssets.length > 0"
           class="mt-8 flex items-center justify-between border-t border-border-default pt-6"
         >
-          <span class="text-xs font-medium text-slate-500"
+          <span class="text-xs font-medium text-text-secondary"
             >Showing {{ filteredAssets.length }} assets</span
           >
           <div class="flex gap-2">
             <button
-              class="px-4 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-400 cursor-not-allowed"
+              class="px-4 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-text-secondary cursor-not-allowed"
             >
               Previous
             </button>
             <button
-              class="px-4 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold shadow-lg shadow-indigo-600/20"
+              class="px-4 py-1.5 rounded-lg bg-primary text-white text-xs font-bold shadow-lg shadow-indigo-600/20"
             >
               1
             </button>
             <button
-              class="px-4 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50"
+              class="px-4 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-surface-subtle"
             >
               Next
             </button>

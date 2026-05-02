@@ -1,52 +1,39 @@
 <template>
   <header
-    class="fixed top-0 left-0 w-full h-[60px] z-50 glass border-b border-border-default flex justify-between items-center px-8 font-body"
+    class="fixed top-0 left-0 w-full h-[60px] z-50 bg-surface border-b border-border-default shadow-sm flex justify-between items-center px-8 font-body antialiased tracking-tight"
   >
-    <!-- Left Section: Title -->
-    <div class="flex items-center gap-4">
-      <div class="md:hidden">
-        <span class="material-symbols-outlined text-slate-600">menu</span>
-      </div>
-      <div class="flex items-baseline gap-2">
-        <span class="text-sm font-semibold text-slate-400 uppercase tracking-widest">TASM</span>
-        <span class="text-lg font-bold text-slate-900 tracking-tight">
-          {{ currentTitle }}
-        </span>
-      </div>
+    <div class="flex items-center gap-inline">
+      <span class="text-lg font-black tracking-tighter text-text-primary"> Technopark AMS </span>
+      <span class="text-sm text-text-secondary">
+        {{ currentTitle }}
+      </span>
     </div>
 
-    <!-- Center Section: Command Palette / Search -->
-    <div class="hidden md:flex flex-1 justify-center max-w-2xl px-12">
-      <div class="relative w-full group">
+    <div class="flex-1 flex justify-start pl-12">
+      <div class="relative w-96">
         <span
-          class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors"
+          class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
         >
           search
         </span>
         <input
           v-model="query"
-          class="w-full bg-slate-100 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none placeholder:text-slate-400"
-          placeholder="Quick search (Ctrl + K)"
+          class="w-full bg-surface-subtle border border-border-default rounded-full py-1.5 pl-10 pr-4 text-sm focus:outline-none focus:border-primary/30 transition-all"
+          placeholder="Search routes..."
           type="text"
         />
-        <!-- Results Dropdown -->
         <div
           v-if="filteredRoutes.length > 0"
-          class="absolute left-0 right-0 top-[calc(100%+8px)] rounded-2xl border border-border-default bg-white shadow-2xl shadow-slate-200/50 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+          class="absolute left-0 right-0 top-[calc(100%+8px)] rounded-xl border border-border-default bg-surface shadow-lg overflow-hidden"
         >
-          <div
-            class="p-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-4 py-1.5"
-          >
-            Suggested Pages
-          </div>
           <RouterLink
             v-for="item in filteredRoutes"
             :key="item.name"
             :to="item.to"
-            class="flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+            class="flex items-center gap-3 px-4 py-3 text-sm text-text-primary hover:bg-primary-container/10"
             @click="query = ''"
           >
-            <span class="material-symbols-outlined text-slate-400 group-hover:text-indigo-500">
+            <span class="material-symbols-outlined text-text-secondary">
               {{ item.icon ?? 'arrow_outward' }}
             </span>
             {{ item.title }}
@@ -55,31 +42,27 @@
       </div>
     </div>
 
-    <!-- Right Section: Actions & Profile -->
-    <div class="flex items-center gap-4">
-      <button class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors relative">
+    <div class="flex items-center gap-inline">
+      <button class="p-2 text-text-secondary hover:text-primary transition-colors">
         <span class="material-symbols-outlined">notifications</span>
-        <span
-          class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"
-        ></span>
       </button>
-
-      <div class="h-6 w-[1px] bg-slate-200 mx-1"></div>
-
-      <div class="flex items-center gap-3 pl-2">
-        <div class="text-right hidden sm:block">
-          <p class="text-xs font-bold text-slate-900 leading-none">Admin User</p>
-          <p class="text-[10px] text-slate-500 font-medium mt-1">Super Administrator</p>
-        </div>
-        <div
-          class="w-9 h-9 rounded-xl bg-indigo-100 border-2 border-white shadow-sm overflow-hidden flex-shrink-0 cursor-pointer hover:ring-2 hover:ring-indigo-500/20 transition-all"
-        >
-          <img
-            alt="Administrator Profile"
-            class="w-full h-full object-cover"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9rRpw9OWuaXJPeM8Xw6P4_pomgGYRQv2jHKtU4Ud3IrkSp4sa0Ph7JeIspRcJyGzQx8HAQYT_SmVvkcpSA72UDLp3XKXYaO4PECDU9PaqjKKz7O67QAgyvvQqbBSbQ_5hLGJsm9A7ybL3YvHziG_Z1mV0azn1_UV4WRwW285q5pyuFjfTOLZSaI2-Uq-3-mYSJ8UoUD2KXfH8G9_BDGEC9iehsCjyzfk9PB7dviNbRC_E2mf4cHNZvuttFsskTpue0zk_hsvv6sbN"
-          />
-        </div>
+      <button class="p-2 text-text-secondary hover:text-primary transition-colors">
+        <span class="material-symbols-outlined">help</span>
+      </button>
+      <RouterLink
+        to="/user-management-settings"
+        class="p-2 text-text-secondary hover:text-primary transition-colors"
+      >
+        <span class="material-symbols-outlined">settings</span>
+      </RouterLink>
+      <div
+        class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden ml-2 border border-border-default"
+      >
+        <img
+          alt="Administrator Profile"
+          class="w-full h-full object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9rRpw9OWuaXJPeM8Xw6P4_pomgGYRQv2jHKtU4Ud3IrkSp4sa0Ph7JeIspRcJyGzQx8HAQYT_SmVvkcpSA72UDLp3XKXYaO4PECDU9PaqjKKz7O67QAgyvvQqbBSbQ_5hLGJsm9A7ybL3YvHziG_Z1mV0azn1_UV4WRwW285q5pyuFjfTOLZSaI2-Uq-3-mYSJ8UoUD2KXfH8G9_BDGEC9iehsCjyzfk9PB7dviNbRC_E2mf4cHNZvuttFsskTpue0zk_hsvv6sbN"
+        />
       </div>
     </div>
   </header>
