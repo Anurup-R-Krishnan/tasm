@@ -4,24 +4,31 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>
         <div class="flex items-center gap-2 text-text-secondary font-metadata text-metadata mb-2">
-          <a class="hover:text-primary transition-colors" href="#"> Work Orders </a>
+          <button
+            @click="router.push('/work-order-detail')"
+            class="hover:text-primary transition-colors flex items-center"
+          >
+            Work Orders
+          </button>
           <span class="material-symbols-outlined text-[14px]"> chevron_right </span>
-          <span class="font-mono-data text-mono-data text-text-primary"> WO-2023-8942 </span>
+          <span v-if="order" class="font-mono-data text-mono-data text-text-primary">
+            {{ order.id }}
+          </span>
         </div>
         <div class="flex items-center gap-4">
-          <h1 class="font-h1 text-h1 text-text-primary">HVAC Compressor Failure - Wing B</h1>
-          <div class="flex items-center gap-2">
+          <h1 v-if="order" class="font-h1 text-h1 text-text-primary">{{ order.title }}</h1>
+          <div v-if="order" class="flex items-center gap-2">
             <span
-              class="bg-error-container/20 text-status-critical px-2.5 py-1 rounded-full font-metadata text-metadata flex items-center gap-1 border border-error-container"
+              class="bg-status-critical/20 text-status-critical px-2.5 py-1 rounded-full font-metadata text-metadata flex items-center gap-1 border border-status-critical/30"
             >
               <span class="material-symbols-outlined text-[12px] icon-fill"> error </span>
-              Critical
+              {{ order.severity }}
             </span>
             <span
-              class="bg-primary-container/20 text-primary px-2.5 py-1 rounded-full font-metadata text-metadata flex items-center gap-1 border border-primary-container"
+              class="bg-status-checked-out/20 text-status-checked-out px-2.5 py-1 rounded-full font-metadata text-metadata flex items-center gap-1 border border-status-checked-out/30"
             >
               <span class="material-symbols-outlined text-[12px]"> cycle </span>
-              In Progress
+              {{ order.status }}
             </span>
           </div>
         </div>
@@ -66,29 +73,35 @@
                 Target Asset
               </h3>
               <div class="flex items-center gap-2 mb-2">
-                <h2 class="font-h2 text-h2 text-text-primary">Trane Voyager Rooftop Unit</h2>
+                <h2 v-if="order" class="font-h2 text-h2 text-text-primary">
+                  {{ order.assetName }}
+                </h2>
                 <span
+                  v-if="order"
                   class="font-mono-data text-mono-data bg-surface-subtle px-2 py-0.5 rounded border border-border-default text-text-secondary"
                 >
-                  AST-HV-042
+                  {{ order.assetTag }}
                 </span>
               </div>
-              <p class="font-body text-body text-text-secondary max-w-2xl">
-                Main cooling unit for Wing B server cluster. Reported loud grinding noise followed
-                by complete shutdown. Initial diagnostics indicate compressor bearing failure.
+              <p v-if="order" class="font-body text-body text-text-secondary max-w-2xl">
+                {{ order.description }}
               </p>
               <div class="mt-4 flex gap-6 border-t border-border-default pt-4">
                 <div>
                   <p class="font-metadata text-metadata text-text-secondary">Location</p>
-                  <p class="font-body text-body font-medium">Roof Deck, Zone 3</p>
+                  <p v-if="order" class="font-body text-body font-medium">
+                    {{ order.assetLocation }}
+                  </p>
                 </div>
                 <div>
                   <p class="font-metadata text-metadata text-text-secondary">Reported By</p>
-                  <p class="font-body text-body font-medium">Sarah Jenkins (IT Ops)</p>
+                  <p v-if="order" class="font-body text-body font-medium">{{ order.reportedBy }}</p>
                 </div>
                 <div>
                   <p class="font-metadata text-metadata text-text-secondary">Date Created</p>
-                  <p class="font-body text-body font-medium">Oct 12, 2023</p>
+                  <p v-if="order" class="font-body text-body font-medium">
+                    {{ formatDate(order.createdAt) }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -198,7 +211,7 @@
                 <span class="material-symbols-outlined text-[20px]"> attach_file </span>
               </button>
               <button
-                class="px-3 py-1.5 bg-primary-container text-on-primary rounded font-body text-body text-sm hover:bg-primary transition-colors"
+                class="px-3 py-1.5 bg-primary text-on-primary rounded font-body text-body text-sm hover:bg-primary/90 transition-colors"
               >
                 Post
               </button>
@@ -223,8 +236,8 @@
                 MR
               </div>
               <div>
-                <p class="font-h3 text-h3 text-text-primary">Michael Reed</p>
-                <p class="font-metadata text-metadata text-text-secondary">Lead HVAC Technician</p>
+                <p v-if="order" class="font-h3 text-h3 text-text-primary">{{ order.technician }}</p>
+                <p class="font-metadata text-metadata text-text-secondary">Assigned Specialist</p>
               </div>
             </div>
             <div class="bg-surface-subtle p-3 rounded-lg border border-border-default">
@@ -266,15 +279,18 @@
             </div>
           </div>
           <div
-            class="bg-metric-amber p-4 rounded-lg border border-border-default flex flex-col items-center justify-center text-center"
+            class="bg-metric-amber/20 p-4 rounded-lg border border-metric-amber/40 flex flex-col items-center justify-center text-center"
           >
             <span
-              class="font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+              class="font-metadata text-metadata text-surface-tint uppercase tracking-wider mb-1"
             >
               Estimated Total Cost
             </span>
-            <span class="font-kpi-number text-kpi-number text-text-primary tracking-tight">
-              ₹2,77,900
+            <span
+              v-if="order"
+              class="font-kpi-number text-kpi-number text-text-primary tracking-tight"
+            >
+              ₹{{ (order.estimatedCost || 0).toLocaleString() }}
             </span>
           </div>
         </div>
@@ -291,14 +307,14 @@
               Put on Hold
             </button>
             <button
-              class="w-full py-2.5 bg-metric-sage border border-[#bbf7d0] rounded-lg font-h3 text-h3 text-status-in-stock hover:bg-[#bbf7d0] transition-colors flex items-center justify-center gap-2"
+              class="w-full py-2.5 bg-status-in-stock/20 border border-status-in-stock/40 rounded-lg font-h3 text-h3 text-status-in-stock hover:bg-status-in-stock/30 transition-colors flex items-center justify-center gap-2"
             >
               <span class="material-symbols-outlined text-[18px]"> check_circle </span>
               Mark as Resolved
             </button>
             <div class="pt-2">
               <button
-                class="w-full py-2.5 bg-text-disabled text-white rounded-lg font-h3 text-h3 hover:bg-text-secondary transition-colors flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
+                class="w-full py-2.5 bg-surface-variant text-text-disabled rounded-lg font-h3 text-h3 transition-colors flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
                 disabled
               >
                 <span class="material-symbols-outlined text-[18px]"> lock </span>
@@ -316,5 +332,36 @@
 </template>
 
 <script setup lang="ts">
-// Autogenerated from work_order_detail
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
+
+const order = ref<any>(null);
+const loading = ref(true);
+
+const fetchOrder = async () => {
+  try {
+    const res = await fetch(`http://localhost:8080/api/work-orders/${route.params['id']}`);
+    if (res.ok) {
+      order.value = await res.json();
+    }
+  } catch (error) {
+    console.error('Error fetching work order:', error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const formatDate = (dateString: string) => {
+  if (!dateString) return 'N/A';
+  return new Date(dateString).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+};
+
+onMounted(fetchOrder);
 </script>

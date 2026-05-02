@@ -156,6 +156,7 @@
                   class="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <button
+                    @click="router.push(`/asset/${asset.id}`)"
                     class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm"
                   >
                     <span class="material-symbols-outlined text-[18px]">visibility</span>
@@ -188,6 +189,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const assets = ref<any[]>([]);
 const loading = ref(true);
@@ -247,13 +251,13 @@ const filterStats = computed(() => [
 const getStatusClass = (status: string) => {
   switch (status) {
     case 'In Stock':
-      return 'bg-emerald-100 text-emerald-700';
+      return 'bg-status-in-stock/20 text-status-in-stock border border-status-in-stock/30';
     case 'Checked Out':
-      return 'bg-blue-100 text-blue-700';
+      return 'bg-status-checked-out/20 text-status-checked-out border border-status-checked-out/30';
     case 'Under Repair':
-      return 'bg-rose-100 text-rose-700';
+      return 'bg-status-critical/10 text-status-critical border border-status-critical/30';
     default:
-      return 'bg-slate-100 text-slate-700';
+      return 'bg-surface-variant text-text-secondary';
   }
 };
 

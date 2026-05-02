@@ -86,7 +86,8 @@
             <div
               v-for="order in workOrders"
               :key="order.id"
-              class="flex items-center gap-6 p-4 rounded-2xl bg-white border border-border-default hover:border-indigo-100 hover:shadow-md transition-all group"
+              @click="router.push(`/work-order/${order.id}`)"
+              class="flex items-center gap-6 p-4 rounded-2xl bg-white border border-border-default hover:border-primary/30 hover:shadow-md transition-all group cursor-pointer"
             >
               <div
                 class="w-12 h-12 rounded-xl flex items-center justify-center text-status-critical bg-error-container/20 font-bold text-xs uppercase"
@@ -210,6 +211,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const assets = ref<any[]>([]);
 const workOrders = ref<any[]>([]);
