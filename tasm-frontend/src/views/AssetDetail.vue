@@ -100,7 +100,7 @@
               </button>
             </div>
             <div class="p-6 space-y-6 relative">
-              <div class="absolute left-[35px] top-8 bottom-8 w-px bg-slate-100"></div>
+              <div class="absolute left-[35px] top-8 bottom-8 w-px bg-border-default"></div>
               <div v-for="log in historyLogs" :key="log.date" class="flex gap-6 relative">
                 <div
                   class="w-10 h-10 rounded-full bg-white border-4 border-border-default flex items-center justify-center z-10 shadow-sm"
@@ -281,7 +281,7 @@ const getStatusClass = (status: string) => {
     case 'Under Repair':
       return 'bg-rose-100 text-rose-700';
     default:
-      return 'bg-slate-100 text-slate-700';
+      return 'bg-surface-variant text-text-secondary';
   }
 };
 

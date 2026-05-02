@@ -152,7 +152,7 @@
             <div
               v-for="order in openWorkOrders"
               :key="order.id"
-              class="p-4 bg-surface-subtle/50 border border-border-default rounded-xl hover:border-indigo-200 transition-colors cursor-pointer group"
+              class="p-4 bg-surface-subtle/50 border border-border-default rounded-xl hover:border-primary/20 transition-colors cursor-pointer group"
             >
               <div class="flex justify-between items-start mb-2">
                 <span class="text-[10px] font-mono text-text-secondary font-bold tracking-widest">{{

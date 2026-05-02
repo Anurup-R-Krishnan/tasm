@@ -47,13 +47,13 @@
             >
             <input
               v-model="searchQuery"
-              class="w-full bg-white border border-slate-200 rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
+              class="w-full bg-white border border-border-default rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               placeholder="Search items..."
             />
           </div>
           <select
             v-model="selectedCategory"
-            class="bg-white border border-slate-200 rounded-xl py-2 px-4 text-sm outline-none focus:ring-2 focus:ring-indigo-500/20"
+            class="bg-white border border-border-default rounded-xl py-2 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/20"
           >
             <option :value="null">All Categories</option>
             <option v-for="opt in categoryOptions" :key="opt.value" :value="opt.value">
@@ -89,7 +89,7 @@
                   item.category
                 }}</span>
               </td>
-              <td class="px-6 py-4 text-xs text-slate-600">{{ item.location }}</td>
+              <td class="px-6 py-4 text-xs text-text-secondary">{{ item.location }}</td>
               <td class="px-6 py-4">
                 <div class="flex items-center gap-2">
                   <span

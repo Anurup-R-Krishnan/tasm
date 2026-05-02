@@ -60,7 +60,7 @@
             >
             <input
               v-model="searchQuery"
-              class="w-full bg-white border border-slate-200 rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
+              class="w-full bg-white border border-border-default rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               placeholder="Search requests..."
             />
           </div>
@@ -122,11 +122,11 @@
               <td class="px-6 py-4">
                 <div class="flex items-center gap-2">
                   <div
-                    class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-bold text-text-secondary uppercase border border-slate-200"
+                    class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-[9px] font-bold text-text-secondary uppercase border border-border-default"
                   >
                     {{ req.requestorInitials }}
                   </div>
-                  <span class="text-xs text-slate-600 font-medium">{{ req.department }}</span>
+                  <span class="text-xs text-text-secondary font-medium">{{ req.department }}</span>
                 </div>
               </td>
               <td class="px-6 py-4 text-right">
@@ -198,8 +198,8 @@ const kpis = computed(() => [
     label: 'Total Pipeline Value',
     value: procurements.value.reduce((s, p) => s + (p.estimatedValue || 0), 0),
     icon: 'account_balance_wallet',
-    bgClass: 'bg-indigo-50',
-    iconClass: 'text-indigo-500',
+    bgClass: 'bg-primary-container/10',
+    iconClass: 'text-primary',
     subtext: 'Cumulative estimated value',
   },
   {
@@ -233,9 +233,9 @@ const getStatusClass = (status: string) => {
     case 'Pending Approval':
       return 'bg-amber-100 text-amber-700';
     case 'Draft':
-      return 'bg-slate-100 text-slate-700';
+      return 'bg-surface-variant text-text-secondary';
     default:
-      return 'bg-indigo-100 text-indigo-700';
+      return 'bg-primary-container/20 text-primary';
   }
 };
 
@@ -244,9 +244,9 @@ const getPriorityClass = (priority: string) => {
     case 'High':
       return 'bg-rose-100 text-rose-700';
     case 'Medium':
-      return 'bg-amber-100 text-amber-700';
+      return 'bg-metric-amber/20 text-surface-tint border border-metric-amber/30';
     default:
-      return 'bg-slate-100 text-slate-700';
+      return 'bg-surface-variant text-text-secondary';
   }
 };
 

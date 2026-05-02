@@ -2,10 +2,10 @@
   <main class="flex-1 overflow-y-auto custom-scrollbar bg-canvas p-page-margin pb-32">
     <div class="max-w-[1000px] mx-auto">
       <div class="mb-8">
-        <div class="flex items-center gap-2 text-stone-500 font-body text-body mb-2">
-          <a class="hover:text-stone-800" href="#"> Asset Inventory </a>
+        <div class="flex items-center gap-2 text-text-disabled font-body text-body mb-2">
+          <a class="hover:text-text-primary" href="#"> Asset Inventory </a>
           <span class="material-symbols-outlined text-[16px]"> chevron_right </span>
-          <span class="text-stone-800"> Add New Asset </span>
+          <span class="text-text-primary"> Add New Asset </span>
         </div>
         <h2 class="font-h1 text-h1 text-text-primary">Add New Asset</h2>
         <p class="font-body text-body text-text-secondary mt-1">
@@ -21,7 +21,7 @@
             <h3
               class="font-h3 text-h3 text-text-primary border-b border-border-default pb-2 mb-6 flex items-center gap-2"
             >
-              <span class="material-symbols-outlined text-amber-600 text-[20px]"> badge </span>
+              <span class="material-symbols-outlined text-primary text-[20px]"> badge </span>
               Identity
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
@@ -33,7 +33,7 @@
                 <input
                   v-model="form.name"
                   required
-                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                   placeholder="e.g. Dell Latitude 5420 Laptop"
                   type="text"
                 />
@@ -45,7 +45,7 @@
                   <span>Tag ID</span>
                   <span
                     @click="generateTagId"
-                    class="font-metadata text-metadata text-amber-600 cursor-pointer hover:underline"
+                    class="font-metadata text-metadata text-primary cursor-pointer hover:underline"
                   >
                     Auto-generate
                   </span>
@@ -53,7 +53,7 @@
                 <input
                   v-model="form.tagId"
                   required
-                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-mono-data text-mono-data bg-stone-50 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-mono-data text-mono-data bg-surface-subtle focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                   placeholder="AST-2024-0001"
                   type="text"
                 />
@@ -66,7 +66,7 @@
                   <select
                     v-model="form.category"
                     required
-                    class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white pr-8"
+                    class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white pr-8"
                   >
                     <option disabled value="">Select Category</option>
                     <option>IT Equipment</option>
@@ -75,7 +75,7 @@
                     <option>Machinery</option>
                   </select>
                   <span
-                    class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400"
+                    class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-text-disabled"
                   >
                     expand_more
                   </span>
@@ -88,7 +88,7 @@
                 <div class="relative">
                   <select
                     v-model="form.condition"
-                    class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white pr-8"
+                    class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white pr-8"
                   >
                     <option>New</option>
                     <option>Good</option>
@@ -96,7 +96,7 @@
                     <option>Poor</option>
                   </select>
                   <span
-                    class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400"
+                    class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-text-disabled"
                   >
                     expand_more
                   </span>
@@ -109,7 +109,7 @@
             <h3
               class="font-h3 text-h3 text-text-primary border-b border-border-default pb-2 mb-6 flex items-center gap-2"
             >
-              <span class="material-symbols-outlined text-amber-600 text-[20px]"> payments </span>
+              <span class="material-symbols-outlined text-primary text-[20px]"> payments </span>
               Purchase &amp; Finance
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
@@ -121,7 +121,7 @@
                   <input
                     v-model="form.purchaseDate"
                     type="date"
-                    class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                    class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -138,7 +138,7 @@
                     v-model.number="form.value"
                     type="number"
                     step="0.01"
-                    class="w-full border border-border-default rounded-[6px] pl-7 pr-3 py-2 font-mono-data text-mono-data focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                    class="w-full border border-border-default rounded-[6px] pl-7 pr-3 py-2 font-mono-data text-mono-data focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                     placeholder="0.00"
                   />
                 </div>
@@ -150,7 +150,7 @@
                 <div class="relative">
                   <input
                     v-model="form.location"
-                    class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                    class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                     placeholder="e.g. Stockroom A"
                     type="text"
                   />

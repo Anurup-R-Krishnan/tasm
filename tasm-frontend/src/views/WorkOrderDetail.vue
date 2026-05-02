@@ -15,13 +15,13 @@
             <h1 class="font-h1 text-h1 text-text-primary">HVAC Compressor Failure - Wing B</h1>
             <div class="flex items-center gap-2">
               <span
-                class="bg-error-container text-on-error-container px-2.5 py-1 rounded-full font-metadata text-metadata flex items-center gap-1 border border-[#ffb4ab]"
+                class="bg-error-container/20 text-status-critical px-2.5 py-1 rounded-full font-metadata text-metadata flex items-center gap-1 border border-error-container"
               >
                 <span class="material-symbols-outlined text-[12px] icon-fill"> error </span>
                 Critical
               </span>
               <span
-                class="bg-tertiary-container text-on-tertiary px-2.5 py-1 rounded-full font-metadata text-metadata flex items-center gap-1 border border-[#004a77]"
+                class="bg-primary-container/20 text-primary px-2.5 py-1 rounded-full font-metadata text-metadata flex items-center gap-1 border border-primary-container"
               >
                 <span class="material-symbols-outlined text-[12px]"> cycle </span>
                 In Progress
@@ -37,7 +37,7 @@
             Print
           </button>
           <button
-            class="px-4 py-2 bg-[#1C1917] text-white rounded-lg font-body text-body hover:bg-stone-800 transition-colors shadow-sm flex items-center gap-2 hover:-translate-y-[1px] duration-200"
+            class="px-4 py-2 bg-primary text-on-primary rounded-lg font-body text-body hover:bg-primary-hover transition-colors shadow-sm flex items-center gap-2 hover:-translate-y-[1px] duration-200"
           >
             <span class="material-symbols-outlined text-[18px]"> edit </span>
             Edit Order
@@ -275,14 +275,14 @@
               </div>
             </div>
             <div
-              class="bg-metric-amber/30 p-4 rounded-lg border border-[#fde68a] flex flex-col items-center justify-center text-center"
+              class="bg-metric-amber p-4 rounded-lg border border-border-default flex flex-col items-center justify-center text-center"
             >
               <span
                 class="font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
               >
                 Estimated Total Cost
               </span>
-              <span class="font-kpi-number text-kpi-number text-primary-container tracking-tight">
+              <span class="font-kpi-number text-kpi-number text-text-primary tracking-tight">
                 ₹2,77,900
               </span>
             </div>
@@ -307,7 +307,7 @@
               </button>
               <div class="pt-2">
                 <button
-                  class="w-full py-2.5 bg-[#1C1917] text-white rounded-lg font-h3 text-h3 hover:bg-stone-800 transition-colors flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
+                  class="w-full py-2.5 bg-text-disabled text-white rounded-lg font-h3 text-h3 hover:bg-text-secondary transition-colors flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
                   disabled
                 >
                   <span class="material-symbols-outlined text-[18px]"> lock </span>

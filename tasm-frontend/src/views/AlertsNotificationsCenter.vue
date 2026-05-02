@@ -12,12 +12,12 @@
       </div>
       <div class="flex items-center gap-3">
         <button
-          class="bg-surface border border-[#D6D3CE] text-text-primary px-4 py-2 rounded-lg font-h3 text-h3 hover:bg-surface-subtle hover:-translate-y-[2px] transition-all duration-200 shadow-[0_4px_4px_rgba(0,0,0,0.02)]"
+          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg font-h3 text-h3 hover:bg-surface-subtle hover:-translate-y-[2px] transition-all duration-200 shadow-[0_4px_4px_rgba(0,0,0,0.02)]"
         >
           Mark All Read
         </button>
         <button
-          class="bg-[#1C1917] text-white px-4 py-2 rounded-lg font-h3 text-h3 hover:bg-stone-800 hover:-translate-y-[2px] transition-all duration-200 flex items-center gap-2 shadow-[0_4px_4px_rgba(0,0,0,0.02)]"
+          class="bg-primary text-on-primary px-4 py-2 rounded-lg font-h3 text-h3 hover:bg-primary-hover hover:-translate-y-[2px] transition-all duration-200 flex items-center gap-2 shadow-[0_4px_4px_rgba(0,0,0,0.02)]"
         >
           <span class="material-symbols-outlined text-[18px]"> settings </span>
           Alert Rules
@@ -107,10 +107,10 @@
             class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
             :class="
               alert.type === 'Critical'
-                ? 'bg-error-container text-status-critical'
+                ? 'bg-error-container/20 text-status-critical border border-error-container/30'
                 : alert.type === 'Warning'
-                  ? 'bg-metric-amber text-primary-container'
-                  : 'bg-tertiary-fixed text-status-checked-out'
+                  ? 'bg-metric-amber/20 text-surface-tint border border-metric-amber/30'
+                  : 'bg-primary-container/10 text-primary border border-primary-container/20'
             "
           >
             <span
@@ -146,7 +146,7 @@
           </div>
           <div class="flex-shrink-0 sm:ml-4 mt-4 sm:mt-0 flex gap-2">
             <button
-              class="bg-surface border border-[#D6D3CE] text-text-primary px-3 py-1.5 rounded-lg font-h3 text-[13px] hover:bg-surface-subtle transition-colors"
+              class="bg-surface border border-border-default text-text-primary px-3 py-1.5 rounded-lg font-h3 text-[13px] hover:bg-surface-subtle transition-colors"
             >
               Dismiss
             </button>

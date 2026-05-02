@@ -114,7 +114,9 @@
           class="p-4 border-b border-border-default flex justify-between items-center bg-surface"
         >
           <div class="flex gap-2">
-            <button class="px-3 py-1.5 rounded-md bg-stone-100 text-sm font-medium text-stone-800">
+            <button
+              class="px-3 py-1.5 rounded-md bg-surface-variant text-sm font-medium text-text-primary"
+            >
               All Licenses
             </button>
             <button
@@ -147,7 +149,7 @@
               <template #body="slotProps">
                 <div class="flex items-center gap-3">
                   <div
-                    class="w-8 h-8 rounded bg-blue-50 flex items-center justify-center text-blue-600"
+                    class="w-8 h-8 rounded bg-primary-container/10 flex items-center justify-center text-primary"
                   >
                     <span class="material-symbols-outlined text-[18px]">cloud</span>
                   </div>
@@ -167,9 +169,9 @@
                   :class="{
                     'bg-status-in-stock/10 text-status-in-stock':
                       slotProps.data.status === 'Active',
-                    'bg-amber-100 text-amber-800 border border-amber-200':
+                    'bg-metric-amber/20 text-surface-tint border border-metric-amber':
                       slotProps.data.status === 'Expiring Soon',
-                    'bg-stone-100 text-stone-600': slotProps.data.status === 'Expired',
+                    'bg-surface-variant text-text-secondary': slotProps.data.status === 'Expired',
                   }"
                 >
                   {{ slotProps.data.status }}
@@ -179,12 +181,12 @@
             <Column field="usedSeats" header="Seat Utilization" sortable>
               <template #body="slotProps">
                 <div class="flex items-center gap-2">
-                  <div class="flex-1 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                  <div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
                     <div
                       class="h-full rounded-full"
                       :class="
                         slotProps.data.usedSeats / slotProps.data.totalSeats > 0.9
-                          ? 'bg-amber-500'
+                          ? 'bg-primary'
                           : 'bg-status-in-stock'
                       "
                       :style="{
@@ -203,7 +205,7 @@
                 <div
                   class="font-mono-data text-mono-data"
                   :class="{
-                    'text-amber-700 font-medium': slotProps.data.status === 'Expiring Soon',
+                    'text-surface-tint font-medium': slotProps.data.status === 'Expiring Soon',
                   }"
                 >
                   {{ new Date(slotProps.data.renewalDate).toLocaleDateString() }}
@@ -230,7 +232,7 @@
       <div class="p-6 border-b border-border-default flex justify-between items-start">
         <div class="flex gap-4">
           <div
-            class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center text-red-600 shadow-sm border border-red-100"
+            class="w-12 h-12 rounded-lg bg-error-container/10 flex items-center justify-center text-error shadow-sm border border-error-container/20"
           >
             <span class="material-symbols-outlined text-[24px]"> brush </span>
           </div>
@@ -264,7 +266,7 @@
       </div>
       <!-- Drawer Tabs -->
       <div class="px-6 flex gap-6 border-b border-border-default">
-        <button class="py-3 text-sm font-medium border-b-2 border-amber-600 text-amber-900">
+        <button class="py-3 text-sm font-medium border-b-2 border-primary text-primary">
           Overview
         </button>
         <button
@@ -288,13 +290,13 @@
               search
             </span>
             <input
-              class="w-full bg-stone-50 border border-border-default rounded-md pl-9 pr-3 py-1.5 text-sm focus:outline-none focus:border-amber-600"
+              class="w-full bg-surface-subtle border border-border-default rounded-md pl-9 pr-3 py-1.5 text-sm focus:outline-none focus:border-primary"
               placeholder="Search users..."
               type="text"
             />
           </div>
           <button
-            class="text-amber-700 hover:text-amber-800 text-sm font-medium flex items-center gap-1"
+            class="text-primary hover:text-primary-hover text-sm font-medium flex items-center gap-1"
           >
             <span class="material-symbols-outlined text-[18px]"> person_add </span>
             Assign User
@@ -358,7 +360,7 @@
       <!-- Drawer Footer Action -->
       <div class="p-6 border-t border-border-default bg-surface-subtle rounded-bl-2xl">
         <button
-          class="w-full py-2.5 bg-[#1C1917] text-white rounded-lg font-medium hover:bg-stone-800 transition-colors"
+          class="w-full py-2.5 bg-primary text-on-primary rounded-lg font-medium hover:bg-primary-hover transition-colors"
         >
           Manage Subscription
         </button>

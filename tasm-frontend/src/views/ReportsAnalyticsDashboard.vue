@@ -41,11 +41,8 @@
           {{ kpi.label }}
         </p>
         <h2 class="text-2xl font-bold text-text-primary mt-1">₹{{ kpi.value.toLocaleString() }}</h2>
-        <div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-          <div
-            class="h-full bg-indigo-500 rounded-full"
-            :style="{ width: kpi.progress + '%' }"
-          ></div>
+        <div class="mt-4 h-1 w-full bg-surface-variant rounded-full overflow-hidden">
+          <div class="h-full bg-primary rounded-full" :style="{ width: kpi.progress + '%' }"></div>
         </div>
       </div>
     </div>
@@ -66,12 +63,12 @@
             </div>
             <div class="flex gap-2">
               <button
-                class="text-[10px] font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-white shadow-sm transition-all"
+                class="text-[10px] font-bold px-3 py-1.5 rounded-lg border border-border-default text-text-secondary hover:bg-white shadow-sm transition-all"
               >
                 By Dept
               </button>
               <button
-                class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-text-primary shadow-sm transition-all"
+                class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-white border border-border-default text-text-primary shadow-sm transition-all"
               >
                 By Priority
               </button>
@@ -98,7 +95,7 @@
                   <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
                       <div
-                        class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center font-bold text-[10px]"
+                        class="w-8 h-8 rounded-lg bg-primary-container/20 text-primary flex items-center justify-center font-bold text-[10px]"
                       >
                         {{ req.requestorInitials }}
                       </div>
@@ -122,9 +119,11 @@
                     >
                   </td>
                   <td class="px-6 py-4">
-                    <span class="text-[10px] font-bold text-slate-600 flex items-center gap-1.5">
+                    <span
+                      class="text-[10px] font-bold text-text-secondary flex items-center gap-1.5"
+                    >
                       <span
-                        class="w-1.5 h-1.5 rounded-full bg-slate-400"
+                        class="w-1.5 h-1.5 rounded-full bg-text-disabled"
                         :class="getStatusDotClass(req.status)"
                       ></span>
                       {{ req.status }}
@@ -153,7 +152,7 @@
           >
             <h3 class="text-sm font-bold text-text-primary">Recent Transactions</h3>
             <span
-              class="text-[10px] font-bold bg-slate-100 text-text-secondary px-2 py-0.5 rounded-full"
+              class="text-[10px] font-bold bg-surface-variant text-text-secondary px-2 py-0.5 rounded-full"
               >Ledger Feed</span
             >
           </div>
@@ -165,7 +164,7 @@
             >
               <div class="flex justify-between items-start mb-2">
                 <span
-                  class="text-[9px] font-mono font-bold text-slate-300 uppercase tracking-widest"
+                  class="text-[9px] font-mono font-bold text-text-disabled uppercase tracking-widest"
                   >{{ entry.transactionId }}</span
                 >
                 <span
@@ -197,7 +196,7 @@
           </div>
           <div class="p-4 bg-surface-subtle/50 border-t border-border-default">
             <button
-              class="w-full py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:text-primary transition-colors shadow-sm"
+              class="w-full py-2 bg-white border border-border-default rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-colors shadow-sm"
             >
               View Full Audit Log
             </button>
@@ -253,8 +252,8 @@ const financialKPIs = computed(() => {
       label: 'Pending Procurement',
       value: pendingValue,
       icon: 'shopping_cart_checkout',
-      bgClass: 'bg-indigo-50',
-      iconClass: 'text-indigo-500',
+      bgClass: 'bg-primary-container/10',
+      iconClass: 'text-primary',
       progress: 45,
     },
     {

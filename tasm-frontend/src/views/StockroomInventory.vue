@@ -53,7 +53,7 @@
               Campus Facilities
             </h3>
             <span
-              class="text-[10px] font-bold bg-white px-2 py-0.5 rounded-full border border-slate-200 text-text-secondary"
+              class="text-[10px] font-bold bg-white px-2 py-0.5 rounded-full border border-border-default text-text-secondary"
               >{{ locations.length }} Total</span
             >
           </div>
@@ -64,7 +64,7 @@
               class="w-full p-4 text-left hover:bg-surface-subtle transition-colors flex items-center gap-4 group"
               :class="
                 selectedLocation?.id === loc.id
-                  ? 'bg-indigo-50/50 border-r-4 border-indigo-500'
+                  ? 'bg-primary-container/10 border-r-4 border-primary'
                   : ''
               "
               @click="selectedLocation = loc"
@@ -73,7 +73,7 @@
                 class="w-10 h-10 rounded-xl bg-white border border-border-default flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm"
               >
                 <span
-                  class="material-symbols-outlined text-text-secondary group-hover:text-indigo-500"
+                  class="material-symbols-outlined text-text-secondary group-hover:text-primary"
                   >{{ getLocIcon(loc.type) }}</span
                 >
               </div>
@@ -94,12 +94,12 @@
       <div class="lg:col-span-8">
         <div v-if="selectedLocation" class="space-y-6">
           <div
-            class="premium-card !p-6 bg-gradient-to-br from-indigo-600 to-violet-700 text-white border-none shadow-xl shadow-indigo-200"
+            class="premium-card !p-6 bg-gradient-to-br from-primary to-surface-secondary text-white border-none shadow-xl shadow-primary/10"
           >
             <div class="flex justify-between items-start">
               <div>
                 <span
-                  class="text-[10px] font-bold uppercase tracking-widest text-indigo-200 opacity-80"
+                  class="text-[10px] font-bold uppercase tracking-widest text-primary-container opacity-80"
                   >{{ selectedLocation.type }} Profile</span
                 >
                 <h2 class="text-3xl font-bold mt-1">{{ selectedLocation.name }}</h2>
@@ -216,7 +216,7 @@
           v-else
           class="h-[500px] premium-card flex flex-col items-center justify-center text-center"
         >
-          <span class="material-symbols-outlined text-7xl text-slate-100 mb-4 animate-pulse"
+          <span class="material-symbols-outlined text-7xl text-surface-variant mb-4 animate-pulse"
             >location_away</span
           >
           <h3 class="text-text-secondary font-medium">
@@ -265,8 +265,8 @@ const summaryStats = computed(() => [
     label: 'Total Facilities',
     value: locations.value.length,
     icon: 'corporate_fare',
-    bgClass: 'bg-indigo-50',
-    iconClass: 'text-indigo-500',
+    bgClass: 'bg-primary-container/10',
+    iconClass: 'text-primary',
   },
   {
     label: 'Asset Capacity',

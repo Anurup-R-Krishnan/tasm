@@ -19,9 +19,9 @@
             class="bg-surface-subtle border border-amber-200 rounded-lg p-4 flex items-start gap-4 inline-flex w-fit z-10 shadow-sm"
           >
             <div
-              class="w-8 h-8 rounded-full bg-metric-amber flex items-center justify-center shrink-0 mt-0.5"
+              class="w-8 h-8 rounded-full bg-metric-amber/40 flex items-center justify-center shrink-0 mt-0.5"
             >
-              <span class="material-symbols-outlined text-amber-800 text-[18px]"> warning </span>
+              <span class="material-symbols-outlined text-surface-tint text-[18px]"> warning </span>
             </div>
             <div>
               <h3 class="font-h3 text-h3 text-text-primary mb-1">Action Required</h3>
@@ -50,7 +50,7 @@
             </p>
           </div>
           <button
-            class="w-full bg-metric-amber text-amber-900 rounded-lg py-3 font-semibold hover:bg-amber-200 transition-colors z-10 flex items-center justify-center gap-2"
+            class="w-full bg-metric-amber text-surface-tint rounded-lg py-3 font-semibold hover:opacity-90 transition-all z-10 flex items-center justify-center gap-2 border border-surface-tint/20"
           >
             Request New Asset
             <span class="material-symbols-outlined text-[18px]"> arrow_forward </span>
@@ -107,8 +107,8 @@
                   class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
                   :class="
                     slotProps.data.status === 'Active'
-                      ? 'bg-metric-sage text-green-900'
-                      : 'bg-status-checked-out text-white'
+                      ? 'bg-status-in-stock/20 text-status-in-stock'
+                      : 'bg-primary-container/20 text-primary'
                   "
                 >
                   {{ slotProps.data.status }}
@@ -226,7 +226,7 @@
                 </div>
               </div>
               <span
-                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary-container/20 text-primary"
               >
                 In Progress
               </span>
@@ -253,7 +253,7 @@
                 </div>
               </div>
               <span
-                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-metric-amber text-amber-900"
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-metric-amber/20 text-surface-tint"
               >
                 Manager Approval
               </span>

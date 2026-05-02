@@ -29,9 +29,10 @@
       >
         <span class="w-2 h-2 rounded-full" :class="stat.dotClass"></span>
         {{ stat.label }}
-        <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded-full text-xs text-slate-600">{{
-          stat.count
-        }}</span>
+        <span
+          class="ml-1 px-1.5 py-0.5 bg-surface-variant rounded-full text-xs text-text-secondary"
+          >{{ stat.count }}</span
+        >
       </button>
     </div>
 
@@ -49,14 +50,14 @@
                 class="w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex justify-between items-center transition-colors"
                 :class="
                   selectedCategory === category
-                    ? 'bg-indigo-50 text-primary'
-                    : 'text-slate-600 hover:bg-surface-subtle'
+                    ? 'bg-primary-container/10 text-primary'
+                    : 'text-text-secondary hover:bg-surface-subtle'
                 "
                 @click="selectedCategory = category"
               >
                 <span>{{ category }}</span>
                 <span
-                  class="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full text-text-secondary"
+                  class="text-[10px] bg-surface-variant px-2 py-0.5 rounded-full text-text-secondary"
                   >{{ count }}</span
                 >
               </button>
@@ -77,9 +78,9 @@
                   v-model="selectedLocations"
                   :value="loc.name"
                   type="checkbox"
-                  class="rounded border-slate-300 text-primary focus:ring-indigo-500/20"
+                  class="rounded border-border-default text-primary focus:ring-primary/20"
                 />
-                <span class="text-sm text-slate-600">{{ loc.name }}</span>
+                <span class="text-sm text-text-secondary">{{ loc.name }}</span>
               </label>
             </li>
           </ul>
@@ -99,7 +100,9 @@
           v-else-if="filteredAssets.length === 0"
           class="premium-card flex flex-col items-center justify-center py-20 text-center"
         >
-          <span class="material-symbols-outlined text-6xl text-slate-200 mb-4">inventory_2</span>
+          <span class="material-symbols-outlined text-6xl text-surface-variant mb-4"
+            >inventory_2</span
+          >
           <h3 class="text-text-primary">No assets found</h3>
           <p class="text-text-secondary">Try adjusting your filters or search query.</p>
         </div>
@@ -111,10 +114,10 @@
             @click="router.push(`/asset/${asset.id}`)"
           >
             <div
-              class="h-44 bg-slate-100 relative overflow-hidden flex items-center justify-center"
+              class="h-44 bg-surface-variant relative overflow-hidden flex items-center justify-center"
             >
               <span
-                class="material-symbols-outlined text-slate-300 text-6xl group-hover:scale-110 transition-transform duration-500"
+                class="material-symbols-outlined text-text-disabled text-6xl group-hover:scale-110 transition-transform duration-500"
               >
                 {{ getIcon(asset.category) }}
               </span>
@@ -164,17 +167,17 @@
           >
           <div class="flex gap-2">
             <button
-              class="px-4 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-text-secondary cursor-not-allowed"
+              class="px-4 py-1.5 rounded-lg border border-border-default text-xs font-bold text-text-disabled cursor-not-allowed"
             >
               Previous
             </button>
             <button
-              class="px-4 py-1.5 rounded-lg bg-primary text-white text-xs font-bold shadow-lg shadow-indigo-600/20"
+              class="px-4 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-bold shadow-lg shadow-primary/20"
             >
               1
             </button>
             <button
-              class="px-4 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-surface-subtle"
+              class="px-4 py-1.5 rounded-lg border border-border-default text-xs font-bold text-text-secondary hover:bg-surface-subtle"
             >
               Next
             </button>
@@ -221,7 +224,7 @@ const categories = computed(() => {
 });
 
 const statusStats = computed(() => [
-  { label: 'All Assets', count: assets.value.length, dotClass: 'bg-indigo-500' },
+  { label: 'All Assets', count: assets.value.length, dotClass: 'bg-primary' },
   {
     label: 'In Stock',
     count: assets.value.filter((a) => a.status === 'In Stock').length,
@@ -257,7 +260,7 @@ const getStatusClass = (status: string) => {
     case 'Under Repair':
       return 'bg-rose-100 text-rose-700';
     default:
-      return 'bg-slate-100 text-slate-700';
+      return 'bg-surface-variant text-text-secondary';
   }
 };
 

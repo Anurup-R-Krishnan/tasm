@@ -9,7 +9,7 @@
         </p>
       </div>
       <button
-        class="bg-[#1C1917] hover:bg-stone-800 text-white rounded font-body text-body py-2 px-5 transition-colors shadow-sm flex items-center gap-2"
+        class="bg-primary hover:bg-primary-hover text-on-primary rounded font-body text-body py-2 px-5 transition-colors shadow-sm flex items-center gap-2"
       >
         <span class="material-symbols-outlined" style="font-size: 18px"> qr_code_scanner </span>
         Start New Audit Session
@@ -42,7 +42,7 @@
                 class="font-mono-data text-mono-data text-text-primary border-l-[3px]"
                 :class="
                   slotProps.data.status === 'In Progress'
-                    ? 'border-amber-600 pl-2'
+                    ? 'border-primary pl-2'
                     : 'border-transparent pl-2'
                 "
               >
@@ -75,7 +75,7 @@
                   <div
                     class="h-full rounded-full"
                     :class="
-                      slotProps.data.verifiedPercent === 100 ? 'bg-status-in-stock' : 'bg-amber-500'
+                      slotProps.data.verifiedPercent === 100 ? 'bg-status-in-stock' : 'bg-primary'
                     "
                     :style="'width: ' + slotProps.data.verifiedPercent + '%'"
                   ></div>
@@ -113,7 +113,7 @@
             <template #body="slotProps">
               <span
                 v-if="slotProps.data.status === 'In Progress'"
-                class="inline-flex items-center px-2 py-1 rounded bg-metric-lavender text-tertiary-container font-metadata text-metadata font-medium"
+                class="inline-flex items-center px-2 py-1 rounded bg-primary-container/20 text-primary font-metadata text-metadata font-medium"
               >
                 In Progress
               </span>
@@ -127,7 +127,7 @@
           </Column>
           <Column header="Action" alignFrozen="right">
             <template #body>
-              <button class="text-primary hover:text-amber-800 font-medium transition-colors">
+              <button class="text-primary hover:text-primary-hover font-medium transition-colors">
                 View Report
               </button>
             </template>
@@ -164,7 +164,7 @@
             </span>
           </div>
           <span
-            class="text-status-critical font-metadata text-metadata font-bold bg-error-container px-2 py-1 rounded"
+            class="text-status-critical font-metadata text-metadata font-bold bg-error-container/20 px-2 py-1 rounded border border-error-container/30"
           >
             4 Days
           </span>
