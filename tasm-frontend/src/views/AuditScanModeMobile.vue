@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 flex flex-col p-stack pb-[100px] gap-stack overflow-y-auto">
+  <main class="space-y-section-gap pb-24">
     <!-- Hero: Massive Scan Button -->
     <section class="flex flex-col items-center justify-center py-section-gap">
       <button

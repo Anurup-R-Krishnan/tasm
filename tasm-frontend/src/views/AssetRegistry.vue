@@ -1,5 +1,5 @@
 <template>
-  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap pb-24">
+  <main class="space-y-section-gap pb-24">
     <!-- Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>

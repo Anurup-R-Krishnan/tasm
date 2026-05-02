@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 p-page-margin w-full max-w-[1400px] mx-auto flex flex-col gap-section-gap">
+  <main class="space-y-section-gap pb-24">
     <!-- Page Title -->
     <div class="flex flex-col gap-1">
       <h1 class="font-h1 text-h1 text-text-primary">Operations Overview</h1>

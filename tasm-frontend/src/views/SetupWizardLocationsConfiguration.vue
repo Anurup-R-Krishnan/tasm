@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 p-page-margin max-w-[1400px] w-full mx-auto flex flex-col gap-section-gap">
+  <main class="space-y-section-gap pb-24">
     <!-- Header Section -->
     <div class="flex flex-col gap-base">
       <h1 class="font-h1 text-h1 text-text-primary">System Setup Wizard</h1>

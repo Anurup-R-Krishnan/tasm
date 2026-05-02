@@ -3,10 +3,10 @@
     <AppHeader />
     <AppSidebar />
     <!-- Single source of layout truth -->
-    <div class="md:pl-[248px] pt-[60px]">
-      <main class="p-page-margin max-w-[1400px] mx-auto w-full min-h-[calc(100vh-60px)]">
+    <div class="md:pl-[248px] pt-[60px] min-h-[calc(100vh-60px)]">
+      <div class="p-page-margin max-w-[1600px] w-full">
         <router-view />
-      </main>
+      </div>
     </div>
   </div>
 </template>

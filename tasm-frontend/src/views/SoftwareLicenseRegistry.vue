@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 mt-[60px] p-page-margin overflow-y-auto relative z-0 flex gap-6">
+  <main class="space-y-section-gap pb-24">
     <!-- Left Column: KPIs and Table -->
     <div class="flex-1 flex flex-col gap-6">
       <!-- Header -->

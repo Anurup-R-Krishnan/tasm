@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 md:ml-[248px] p-page-margin max-w-[1400px] w-full mx-auto">
+  <main class="space-y-section-gap pb-24">
     <div class="mb-section-gap flex justify-between items-end">
       <div>
         <h1 class="font-h1 text-h1 text-text-primary mb-1">Maintenance History</h1>

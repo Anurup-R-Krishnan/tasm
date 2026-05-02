@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 mt-[60px] p-page-margin max-w-[1400px] mx-auto w-full">
+  <main class="space-y-section-gap pb-24">
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-section-gap">
       <div>
@@ -14,7 +14,7 @@
             Lease Agreement: LS-4055 - Tata Elxsi
           </h1>
           <span
-            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-metric-sage text-status-in-stock font-metadata text-metadata border border-[#86efac]/50"
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-in-stock/20 text-status-in-stock font-metadata text-metadata border border-status-in-stock/30"
           >
             <span class="w-1.5 h-1.5 rounded-full bg-status-in-stock"> </span>
             Active
@@ -40,29 +40,29 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-stack mb-section-gap">
       <!-- Metric 1 -->
       <div
-        class="bg-metric-amber rounded-[16px] p-card-padding border border-[#fde68a] shadow-sm hover:-translate-y-0.5 transition-transform cursor-pointer"
+        class="bg-metric-amber/20 rounded-[16px] p-card-padding border border-metric-amber/40 shadow-sm hover:-translate-y-0.5 transition-transform cursor-pointer"
       >
         <div class="flex justify-between items-start mb-2">
-          <span class="font-metadata text-metadata text-amber-900 uppercase tracking-wider">
+          <span class="font-metadata text-metadata text-surface-tint uppercase tracking-wider">
             Monthly Value
           </span>
-          <span class="material-symbols-outlined text-amber-700"> payments </span>
+          <span class="material-symbols-outlined text-surface-tint"> payments </span>
         </div>
-        <div class="font-kpi-number text-kpi-number text-amber-950 mb-1">₹4,50,000</div>
-        <div class="font-metadata text-metadata text-amber-800">Due 5th of every month</div>
+        <div class="font-kpi-number text-kpi-number text-text-primary mb-1">₹4,50,000</div>
+        <div class="font-metadata text-metadata text-text-secondary">Due 5th of every month</div>
       </div>
       <!-- Metric 2 -->
       <div
-        class="bg-metric-lavender rounded-[16px] p-card-padding border border-[#e9d5ff] shadow-sm hover:-translate-y-0.5 transition-transform cursor-pointer"
+        class="bg-metric-lavender/30 rounded-[16px] p-card-padding border border-metric-lavender/40 shadow-sm hover:-translate-y-0.5 transition-transform cursor-pointer"
       >
         <div class="flex justify-between items-start mb-2">
-          <span class="font-metadata text-metadata text-violet-900 uppercase tracking-wider">
+          <span class="font-metadata text-metadata text-primary uppercase tracking-wider">
             Lease Duration
           </span>
-          <span class="material-symbols-outlined text-violet-700"> hourglass_empty </span>
+          <span class="material-symbols-outlined text-primary"> hourglass_empty </span>
         </div>
-        <div class="font-kpi-number text-kpi-number text-violet-950 mb-1">36 Months</div>
-        <div class="font-metadata text-metadata text-violet-800">Commenced: 01-Jan-2023</div>
+        <div class="font-kpi-number text-kpi-number text-text-primary mb-1">36 Months</div>
+        <div class="font-metadata text-metadata text-text-secondary">Commenced: 01-Jan-2023</div>
       </div>
       <!-- Metric 3 -->
       <div
@@ -130,7 +130,7 @@
                 class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-metadata text-metadata"
                 :class="
                   slotProps.data.status === 'Active'
-                    ? 'bg-metric-sage text-status-in-stock border border-[#86efac]/50'
+                    ? 'bg-status-in-stock/20 text-status-in-stock border border-status-in-stock/30'
                     : 'bg-surface-variant text-text-secondary'
                 "
               >

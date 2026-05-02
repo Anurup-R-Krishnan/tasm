@@ -1,5 +1,5 @@
 <template>
-  <main class="p-page-margin max-w-[1200px] mx-auto space-y-section-gap pb-24">
+  <main class="space-y-section-gap pb-24 max-w-[1200px]">
     <!-- Stepper Header -->
     <div class="flex items-center justify-center gap-4 mb-12">
       <div class="flex items-center gap-2 text-text-secondary">

@@ -102,7 +102,7 @@ const groupedNavigation = computed(() => {
     name: group.name,
     items: group.items
       .map((name) => navigationItems.find((item) => item.name === name))
-      .filter(Boolean),
+      .filter((item): item is typeof item & {} => Boolean(item)),
   }));
 });
 

@@ -1,5 +1,5 @@
 <template>
-  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap">
+  <main class="space-y-section-gap pb-24">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
         <h1 class="text-text-primary mb-1">Consumables Tracker</h1>
@@ -77,7 +77,7 @@
               <th class="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-50">
+          <tbody class="divide-y divide-border-default/20">
             <tr
               v-for="item in filteredConsumables"
               :key="item.id"
@@ -85,9 +85,10 @@
             >
               <td class="px-6 py-4 font-bold text-text-primary text-sm">{{ item.name }}</td>
               <td class="px-6 py-4">
-                <span class="text-xs text-text-secondary bg-slate-100 px-2 py-0.5 rounded-lg">{{
-                  item.category
-                }}</span>
+                <span
+                  class="text-xs text-text-secondary bg-surface-variant px-2 py-0.5 rounded-lg"
+                  >{{ item.category }}</span
+                >
               </td>
               <td class="px-6 py-4 text-xs text-text-secondary">{{ item.location }}</td>
               <td class="px-6 py-4">
@@ -95,7 +96,9 @@
                   <span
                     class="text-sm font-bold"
                     :class="
-                      item.currentStock <= item.reorderLevel ? 'text-rose-600' : 'text-text-primary'
+                      item.currentStock <= item.reorderLevel
+                        ? 'text-status-critical'
+                        : 'text-text-primary'
                     "
                   >
                     {{ item.currentStock }}
@@ -114,7 +117,7 @@
               <td class="px-6 py-4 text-right">
                 <button
                   @click="deleteConsumable(item.id)"
-                  class="p-2 text-text-secondary hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
+                  class="p-2 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-lg transition-all"
                 >
                   <span class="material-symbols-outlined text-[20px]">delete</span>
                 </button>
@@ -180,7 +183,7 @@ const kpiMetrics = computed(() => {
     {
       label: 'Low Stock Alerts',
       value: lowStockItems,
-      colorClass: 'text-rose-600',
+      colorClass: 'text-status-critical',
       icon: 'warning',
       subtext: 'Requires restocking',
     },
@@ -236,9 +239,10 @@ function stockLabel(consumable: Consumable): string {
 }
 
 function stockSeverityClass(consumable: Consumable): string {
-  if (consumable.currentStock === 0) return 'bg-rose-100 text-rose-700';
-  if (consumable.currentStock <= consumable.reorderLevel) return 'bg-amber-100 text-amber-700';
-  return 'bg-emerald-100 text-emerald-700';
+  if (consumable.currentStock === 0) return 'bg-status-critical/20 text-status-critical';
+  if (consumable.currentStock <= consumable.reorderLevel)
+    return 'bg-metric-amber/20 text-surface-tint';
+  return 'bg-status-in-stock/20 text-status-in-stock';
 }
 
 onMounted(() => {

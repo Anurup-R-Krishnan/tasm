@@ -1,5 +1,5 @@
 <template>
-  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap pb-24">
+  <main class="space-y-section-gap pb-24">
     <!-- Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
@@ -89,7 +89,7 @@
               class="flex items-center gap-6 p-4 rounded-2xl bg-white border border-border-default hover:border-indigo-100 hover:shadow-md transition-all group"
             >
               <div
-                class="w-12 h-12 rounded-xl flex items-center justify-center text-rose-500 bg-rose-50 font-bold text-xs uppercase"
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-status-critical bg-error-container/20 font-bold text-xs uppercase"
               >
                 {{ order.severity.charAt(0) }}
               </div>
@@ -112,7 +112,7 @@
               </div>
               <div class="text-right">
                 <span
-                  class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg bg-amber-50 text-amber-600"
+                  class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg bg-metric-amber/20 text-surface-tint"
                   >{{ order.status }}</span
                 >
                 <p class="text-[10px] text-text-secondary mt-2 font-medium">
@@ -146,7 +146,7 @@
               <span class="text-[10px] font-bold uppercase tracking-wider">Procurement</span>
             </button>
             <button
-              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 hover:bg-status-in-stock hover:text-white transition-all group shadow-sm"
+              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-status-in-stock/10 border border-status-in-stock/20 hover:bg-status-in-stock hover:text-white transition-all group shadow-sm"
             >
               <span class="material-symbols-outlined text-status-in-stock group-hover:text-white"
                 >handyman</span
@@ -154,17 +154,17 @@
               <span class="text-[10px] font-bold uppercase tracking-wider">Service Log</span>
             </button>
             <button
-              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-rose-50/50 border border-rose-100 hover:bg-rose-600 hover:text-white transition-all group shadow-sm"
+              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-error-container/20 border border-status-critical/20 hover:bg-status-critical hover:text-white transition-all group shadow-sm"
             >
-              <span class="material-symbols-outlined text-rose-600 group-hover:text-white"
+              <span class="material-symbols-outlined text-status-critical group-hover:text-white"
                 >qr_code_scanner</span
               >
               <span class="text-[10px] font-bold uppercase tracking-wider">Audit Scan</span>
             </button>
             <button
-              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-amber-50/50 border border-amber-100 hover:bg-amber-600 hover:text-white transition-all group shadow-sm"
+              class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-metric-amber/10 border border-metric-amber/30 hover:bg-surface-tint hover:text-white transition-all group shadow-sm"
             >
-              <span class="material-symbols-outlined text-amber-600 group-hover:text-white"
+              <span class="material-symbols-outlined text-surface-tint group-hover:text-white"
                 >sync_alt</span
               >
               <span class="text-[10px] font-bold uppercase tracking-wider">Transfer</span>
@@ -178,13 +178,13 @@
             <h3 class="text-xs font-bold text-text-secondary uppercase tracking-widest">
               Recent Alerts
             </h3>
-            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+            <span class="w-2 h-2 rounded-full bg-status-critical animate-ping"></span>
           </div>
           <div class="space-y-6">
             <div v-for="alert in alerts" :key="alert.id" class="flex gap-4 group cursor-pointer">
               <div
                 class="w-1 h-8 rounded-full transition-all group-hover:h-12"
-                :class="alert.type === 'Critical' ? 'bg-rose-500' : 'bg-amber-500'"
+                :class="alert.type === 'Critical' ? 'bg-status-critical' : 'bg-surface-tint'"
               ></div>
               <div class="flex-1 min-w-0">
                 <h4

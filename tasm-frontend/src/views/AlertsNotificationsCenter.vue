@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 md:ml-[248px] p-page-margin w-full max-w-[1400px] mx-auto">
+  <main class="space-y-section-gap pb-24">
     <!-- Page Header -->
     <div
       class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-section-gap"

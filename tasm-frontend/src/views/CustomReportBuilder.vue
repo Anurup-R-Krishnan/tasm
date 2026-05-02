@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 md:ml-[248px] p-page-margin overflow-y-auto bg-canvas">
+  <main class="space-y-section-gap pb-24">
     <!-- Page Header -->
     <div class="mb-section-gap flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>
@@ -29,7 +29,7 @@
             class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
           >
             <div
-              class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary bg-accent-subtle text-primary shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10"
+              class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary bg-primary-container/20 text-primary shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10"
             >
               <span class="font-mono-data text-mono-data font-bold"> 1 </span>
             </div>
@@ -106,7 +106,7 @@
                 <div class="relative">
                   <select
                     v-model="selectedEntity"
-                    class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform"
+                    class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform"
                   >
                     <option value="assets">Fixed Assets</option>
                     <option value="wo">Work Orders</option>
@@ -127,7 +127,7 @@
                 <label class="font-h3 text-h3 text-text-primary block"> Report Timeframe </label>
                 <div class="relative">
                   <select
-                    class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform"
+                    class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform"
                   >
                     <option value="mtd">Month to Date (MTD)</option>
                     <option value="qtd">Quarter to Date (QTD)</option>
@@ -160,7 +160,7 @@
                 <div class="relative flex items-center justify-center w-5 h-5">
                   <input
                     checked
-                    class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                     type="checkbox"
                   />
                   <span
@@ -179,7 +179,7 @@
                 <div class="relative flex items-center justify-center w-5 h-5">
                   <input
                     checked
-                    class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                     type="checkbox"
                   />
                   <span
@@ -198,7 +198,7 @@
                 <div class="relative flex items-center justify-center w-5 h-5">
                   <input
                     checked
-                    class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                     type="checkbox"
                   />
                   <span
@@ -217,7 +217,7 @@
                 <div class="relative flex items-center justify-center w-5 h-5">
                   <input
                     checked
-                    class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                     type="checkbox"
                   />
                   <span
@@ -254,7 +254,7 @@
                 <div class="relative flex items-center justify-center w-5 h-5">
                   <input
                     checked
-                    class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                     type="checkbox"
                   />
                   <span
@@ -298,18 +298,18 @@
             <div class="flex flex-wrap gap-2 mb-4">
               <!-- Filter Chip -->
               <div
-                class="inline-flex items-center gap-2 px-3 py-1.5 bg-accent-subtle border border-primary/20 rounded-full text-primary font-metadata text-metadata"
+                class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-container/20 border border-primary/20 rounded-full text-primary font-metadata text-metadata shadow-sm"
               >
                 <span> Category: IT Equipment </span>
-                <button class="hover:text-stone-900 focus:outline-none flex items-center">
+                <button class="hover:text-text-primary focus:outline-none flex items-center">
                   <span class="material-symbols-outlined text-[14px]"> close </span>
                 </button>
               </div>
               <div
-                class="inline-flex items-center gap-2 px-3 py-1.5 bg-accent-subtle border border-primary/20 rounded-full text-primary font-metadata text-metadata"
+                class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-container/20 border border-primary/20 rounded-full text-primary font-metadata text-metadata shadow-sm"
               >
                 <span> Status: Active </span>
-                <button class="hover:text-stone-900 focus:outline-none flex items-center">
+                <button class="hover:text-text-primary focus:outline-none flex items-center">
                   <span class="material-symbols-outlined text-[14px]"> close </span>
                 </button>
               </div>
@@ -359,10 +359,10 @@
                       class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium"
                       :class="
                         slotProps.data.status === 'Active'
-                          ? 'bg-metric-sage text-status-in-stock'
+                          ? 'bg-status-in-stock/20 text-status-in-stock'
                           : slotProps.data.status === 'Assigned'
-                            ? 'bg-metric-lavender text-status-checked-out'
-                            : 'bg-error-container text-status-critical'
+                            ? 'bg-status-checked-out/20 text-status-checked-out'
+                            : 'bg-error-container/20 text-status-critical'
                       "
                     >
                       {{ slotProps.data.status }}
@@ -391,7 +391,7 @@
               </button>
             </div>
             <button
-              class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-text-primary text-white rounded-lg font-h3 text-h3 hover:bg-black hover:-translate-y-0.5 transition-all shadow-sm"
+              class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-text-primary text-white rounded-lg font-h3 text-h3 hover:bg-text-primary/90 hover:-translate-y-0.5 transition-all shadow-md"
             >
               <span class="material-symbols-outlined text-[18px]"> save </span>
               Save Report

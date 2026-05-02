@@ -1,5 +1,5 @@
 <template>
-  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap">
+  <main class="space-y-section-gap pb-24">
     <!-- Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
@@ -33,7 +33,7 @@
             <span class="material-symbols-outlined" :class="kpi.iconClass">{{ kpi.icon }}</span>
           </div>
           <div
-            class="flex items-center gap-1 text-[10px] font-bold text-status-in-stock bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100"
+            class="flex items-center gap-1 text-[10px] font-bold text-status-in-stock bg-status-in-stock/10 px-2 py-0.5 rounded-full border border-status-in-stock/20"
           >
             <span class="material-symbols-outlined text-xs">trending_up</span>
             12%
@@ -131,6 +131,7 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <button
+                  @click="router.push(`/procurement/${req.id}`)"
                   class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm border border-transparent hover:border-border-default"
                 >
                   <span class="material-symbols-outlined text-[20px]">visibility</span>
@@ -151,6 +152,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 interface ProcurementRequest {
   id: number;
@@ -208,8 +212,8 @@ const kpis = computed(() => [
       .filter((p) => p.status === 'Received')
       .reduce((s, p) => s + (p.estimatedValue || 0), 0),
     icon: 'verified',
-    bgClass: 'bg-emerald-50',
-    iconClass: 'text-emerald-500',
+    bgClass: 'bg-status-in-stock/10',
+    iconClass: 'text-status-in-stock',
     subtext: 'Finalized purchase orders',
   },
   {
@@ -218,8 +222,8 @@ const kpis = computed(() => [
       .filter((p) => p.status === 'Pending Approval')
       .reduce((s, p) => s + (p.estimatedValue || 0), 0),
     icon: 'pending_actions',
-    bgClass: 'bg-amber-50',
-    iconClass: 'text-amber-500',
+    bgClass: 'bg-metric-amber/20',
+    iconClass: 'text-surface-tint',
     subtext: 'Requires management review',
   },
 ]);
@@ -227,11 +231,11 @@ const kpis = computed(() => [
 const getStatusClass = (status: string) => {
   switch (status) {
     case 'Received':
-      return 'bg-emerald-100 text-emerald-700';
+      return 'bg-status-in-stock/20 text-status-in-stock';
     case 'Shipping':
-      return 'bg-blue-100 text-blue-700';
+      return 'bg-status-checked-out/20 text-status-checked-out';
     case 'Pending Approval':
-      return 'bg-amber-100 text-amber-700';
+      return 'bg-metric-amber/20 text-surface-tint';
     case 'Draft':
       return 'bg-surface-variant text-text-secondary';
     default:
@@ -242,7 +246,7 @@ const getStatusClass = (status: string) => {
 const getPriorityClass = (priority: string) => {
   switch (priority) {
     case 'High':
-      return 'bg-rose-100 text-rose-700';
+      return 'bg-status-critical/20 text-status-critical';
     case 'Medium':
       return 'bg-metric-amber/20 text-surface-tint border border-metric-amber/30';
     default:

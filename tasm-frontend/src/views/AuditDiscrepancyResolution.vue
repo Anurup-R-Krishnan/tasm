@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 p-page-margin max-w-[1400px] w-full mx-auto pb-32">
+  <main class="space-y-section-gap pb-24">
     <div class="mb-section-gap flex items-end justify-between">
       <div>
         <h2 class="font-h1 text-h1 text-text-primary mb-2">Audit Discrepancy Resolution</h2>

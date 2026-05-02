@@ -1,5 +1,5 @@
 <template>
-  <main class="p-page-margin max-w-[1400px] mx-auto space-y-section-gap pb-24">
+  <main class="space-y-section-gap pb-24">
     <div v-if="loading" class="flex flex-col items-center justify-center py-40 gap-4">
       <span class="material-symbols-outlined animate-spin text-4xl text-primary">sync</span>
       <p class="text-sm font-bold text-text-secondary uppercase tracking-widest">

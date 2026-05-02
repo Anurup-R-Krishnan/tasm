@@ -35,11 +35,9 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/ConsumablesSuppliesTracker.vue'),
   },
   {
-    path: 'work-order-detail',
+    path: 'work-order/:id',
     name: 'WorkOrderDetail',
-    title: 'Work Orders',
-    icon: 'assignment',
-    showInSidebar: true,
+    title: 'Work Order Detail',
     component: () => import('../views/WorkOrderDetail.vue'),
   },
   {
@@ -153,13 +151,13 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/AssetCheckOutFlow.vue'),
   },
   {
-    path: 'lease-agreement-detail',
+    path: 'lease/:id',
     name: 'LeaseAgreementDetail',
     title: 'Lease Agreement Detail',
     component: () => import('../views/LeaseAgreementDetail.vue'),
   },
   {
-    path: 'procurement-request-detail',
+    path: 'procurement/:id',
     name: 'ProcurementRequestDetail',
     title: 'Procurement Request Detail',
     component: () => import('../views/ProcurementRequestDetail.vue'),

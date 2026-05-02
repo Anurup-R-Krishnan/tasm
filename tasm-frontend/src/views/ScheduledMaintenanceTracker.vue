@@ -1,5 +1,5 @@
 <template>
-  <main class="md:ml-[248px] min-h-screen p-page-margin max-w-[1400px]">
+  <main class="space-y-section-gap pb-24">
     <!-- Page Header -->
     <div class="flex justify-between items-center mb-section-gap">
       <div>

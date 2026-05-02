@@ -1,5 +1,5 @@
 <template>
-  <main class="mt-[60px] p-page-margin max-w-[1400px]">
+  <main class="space-y-section-gap pb-24">
     <!-- Page Header -->
     <div class="flex items-center justify-between mb-section-gap">
       <div>
@@ -9,7 +9,7 @@
         </p>
       </div>
       <button
-        class="bg-primary-container text-on-primary px-4 py-2.5 rounded-lg flex items-center gap-2 font-h3 text-h3 hover:bg-surface-tint transition-colors shadow-sm active:scale-95 duration-150"
+        class="bg-primary text-on-primary px-4 py-2.5 rounded-lg flex items-center gap-2 font-h3 text-h3 hover:bg-primary/90 transition-colors shadow-sm active:scale-95 duration-150"
       >
         <span class="material-symbols-outlined" style="font-size: 18px"> person_add </span>
         Add New User
@@ -188,8 +188,8 @@
               class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-metadata text-metadata font-medium"
               :class="
                 slotProps.data.status === 'Active'
-                  ? 'bg-metric-sage text-status-in-stock border border-status-in-stock/20'
-                  : 'bg-error-container text-status-critical border border-status-critical/20'
+                  ? 'bg-status-in-stock/20 text-status-in-stock border border-status-in-stock/30'
+                  : 'bg-status-critical/10 text-status-critical border border-status-critical/30'
               "
             >
               <span
