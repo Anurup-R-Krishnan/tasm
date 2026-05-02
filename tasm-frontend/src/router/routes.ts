@@ -111,12 +111,12 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/UserAccessRoleControl.vue'),
   },
   {
-    path: 'scheduled-maintenance-tracker',
-    name: 'ScheduledMaintenanceTracker',
+    path: 'maintenance-schedule-contracts',
+    name: 'MaintenanceScheduleContracts',
     title: 'Maintenance',
     icon: 'build_circle',
     showInSidebar: true,
-    component: () => import('../views/ScheduledMaintenanceTracker.vue'),
+    component: () => import('../views/MaintenanceScheduleContracts.vue'),
   },
   {
     path: 'maintenance-service-history-log',
@@ -241,7 +241,7 @@ export const sidebarGroups = [
     name: 'Operations',
     items: [
       'WorkOrderDetail',
-      'ScheduledMaintenanceTracker',
+      'MaintenanceScheduleContracts',
       'AuditSessions',
       'ReservationsBookings',
     ],

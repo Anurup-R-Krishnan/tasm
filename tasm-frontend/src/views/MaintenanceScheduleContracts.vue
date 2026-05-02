@@ -49,13 +49,13 @@
         </div>
       </div>
       <div
-        class="md:col-span-4 premium-card flex flex-col justify-center bg-indigo-900 text-white border-none"
+        class="md:col-span-4 premium-card flex flex-col justify-center bg-gradient-to-br from-primary to-surface-secondary text-white border-none shadow-lg shadow-primary/10"
       >
-        <p class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">
+        <p class="text-[10px] font-bold text-primary-container uppercase tracking-widest">
           Monthly Maint. Cost
         </p>
         <h2 class="text-4xl font-bold mt-2">₹{{ totalMaintenanceCost.toLocaleString() }}</h2>
-        <p class="text-indigo-400 text-[10px] mt-4 font-medium uppercase tracking-wider">
+        <p class="text-primary-container text-[10px] mt-4 font-medium uppercase tracking-wider">
           Across 12 Vendors
         </p>
       </div>
@@ -144,7 +144,7 @@
               </p>
             </div>
             <span
-              class="text-[10px] font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full"
+              class="text-[10px] font-bold bg-primary-container/20 text-primary px-2 py-0.5 rounded-full"
               >{{ openWorkOrders.length }} Open</span
             >
           </div>
@@ -173,11 +173,13 @@
               <div class="flex justify-between items-center mt-4">
                 <div class="flex items-center gap-1.5">
                   <div
-                    class="w-6 h-6 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-primary uppercase"
+                    class="w-6 h-6 rounded-full bg-primary-container/20 border-2 border-white flex items-center justify-center text-[10px] font-bold text-primary uppercase"
                   >
                     {{ order.technician?.charAt(0) }}
                   </div>
-                  <span class="text-[10px] font-bold text-slate-600">{{ order.technician }}</span>
+                  <span class="text-[10px] font-bold text-text-secondary">{{
+                    order.technician
+                  }}</span>
                 </div>
                 <span class="text-[10px] font-bold text-text-secondary">{{
                   formatDate(order.targetDate)
