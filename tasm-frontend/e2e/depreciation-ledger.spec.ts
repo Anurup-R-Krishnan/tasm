@@ -30,7 +30,7 @@ test.describe('Asset Depreciation Ledger', () => {
 
   test.describe('With Mocked Data', () => {
     test.beforeEach(async ({ page }) => {
-      await page.route('**/api/depreciation**', (route) => {
+      await page.route('**/api/depreciations**', (route) => {
         route.fulfill({
           json: [
             { asset: 'Laptop', initialValue: 100000, currentValue: 60000, depreciation: 40000 },
@@ -85,7 +85,7 @@ test.describe('Asset Depreciation Ledger', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/depreciation**', (route) => route.abort());
+      await page.route('**/api/depreciations**', (route) => route.abort());
       await page.reload();
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();

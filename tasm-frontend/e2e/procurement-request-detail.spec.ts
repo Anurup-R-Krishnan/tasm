@@ -38,7 +38,7 @@ test.describe('Procurement Request Detail', () => {
 
   test.describe('With Mocked Data', () => {
     test.beforeEach(async ({ page }) => {
-      await page.route('**/api/procurement/1', (route) => {
+      await page.route('**/api/procurements/1', (route) => {
         route.fulfill({
           json: {
             id: 1,
@@ -66,7 +66,7 @@ test.describe('Procurement Request Detail', () => {
 
   test.describe('Actions', () => {
     test('should click Approve button', async ({ page }) => {
-      await page.route('**/api/procurement/1**', (route) => {
+      await page.route('**/api/procurements/1**', (route) => {
         route.fulfill({ json: { success: true } });
       });
 
@@ -129,7 +129,7 @@ test.describe('Procurement Request Detail', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/procurement/1', (route) => route.abort());
+      await page.route('**/api/procurements/1', (route) => route.abort());
       await page.goto('/procurement/1');
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();

@@ -66,12 +66,14 @@ test.describe('Reports & Analytics', () => {
 
   test.describe('With Mocked Data', () => {
     test('should display reports list', async ({ page }) => {
-      await page.route('**/api/reports**', (route) => {
+      await page.route('**/api/ledgers**', (route) => {
         route.fulfill({
-          json: [
-            { id: 1, name: 'Asset Summary', type: 'Assets' },
-            { id: 2, name: 'Financial Q1', type: 'Financial' },
-          ],
+          json: [{ id: 1, name: 'Asset Summary', type: 'Assets' }],
+        });
+      });
+      await page.route('**/api/procurements**', (route) => {
+        route.fulfill({
+          json: [{ id: 2, name: 'Financial Q1', type: 'Financial' }],
         });
       });
 
@@ -104,7 +106,7 @@ test.describe('Reports & Analytics', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/reports**', (route) => route.abort());
+      await page.route('**/api/ledgers**', (route) => route.abort());
       await page.goto('/reports-analytics-dashboard');
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();

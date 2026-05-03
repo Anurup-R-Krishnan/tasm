@@ -29,7 +29,7 @@ test.describe('Stockroom Inventory', () => {
 
   test.describe('With Mocked Data', () => {
     test.beforeEach(async ({ page }) => {
-      await page.route('**/api/stockrooms**', (route) => {
+      await page.route('**/api/locations**', (route) => {
         route.fulfill({
           json: [
             { id: 1, name: 'Central Stockroom', address: 'Building A', capacity: 1000 },
@@ -108,7 +108,7 @@ test.describe('Stockroom Inventory', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/stockrooms**', (route) => route.abort());
+      await page.route('**/api/locations**', (route) => route.abort());
       await page.reload();
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();

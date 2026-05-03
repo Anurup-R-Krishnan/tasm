@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AppLayout from '../components/AppLayout.vue';
 import { appRoutes } from './routes';
 
+import { useAuth } from '../composables/useAuth';
+
 const childRoutes = appRoutes.map((route) => ({
   path: route.path,
   name: route.name,
@@ -29,16 +31,25 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach(async (to) => {
+  const { currentUser, initAuth, isInitializing } = useAuth();
+
+  // If initializing, wait for it (though initAuth should be called once at app level)
+  // For safety, we can ensure it's called or check state.
+  if (isInitializing.value) {
+    await initAuth();
+  }
+
   const token = localStorage.getItem('tasm_auth_token');
   const requiresAuth = to.matched.some((record) => record.meta['requiresAuth']);
+  const isAuthenticated = !!currentUser.value || !!token;
 
-  if (requiresAuth && !token) {
-    next({ name: 'Login' });
-  } else if (to.name === 'Login' && token) {
-    next({ name: 'Dashboard' }); // Or wherever you want logged-in users to go
-  } else {
-    next();
+  if (requiresAuth && !isAuthenticated) {
+    return { name: 'Login' };
+  }
+
+  if (to.name === 'Login' && isAuthenticated) {
+    return { name: 'Dashboard' };
   }
 });
 

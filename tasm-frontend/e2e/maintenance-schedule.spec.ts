@@ -31,13 +31,16 @@ test.describe('Maintenance Schedule & Contracts', () => {
 
   test.describe('With Mocked Data', () => {
     test.beforeEach(async ({ page }) => {
-      await page.route('**/api/maintenance**', (route) => {
+      await page.route('**/api/contracts**', (route) => {
         route.fulfill({
           json: [
             { id: 1, title: 'HVAC Service', date: '2026-05-15', status: 'Scheduled' },
             { id: 2, title: 'Elevator Inspection', date: '2026-05-20', status: 'Pending' },
           ],
         });
+      });
+      await page.route('**/api/work-orders**', (route) => {
+        route.fulfill({ json: [] });
       });
       await page.goto('/maintenance-schedule-contracts');
       await page.waitForTimeout(500);
@@ -148,7 +151,7 @@ test.describe('Maintenance Schedule & Contracts', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/maintenance**', (route) => route.abort());
+      await page.route('**/api/contracts**', (route) => route.abort());
       await page.reload();
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();

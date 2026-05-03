@@ -24,7 +24,7 @@ test.describe('Audit Module Tests', () => {
     });
 
     test('should find audit session rows', async ({ page }) => {
-      await page.route('**/api/audit-sessions**', (route) => {
+      await page.route('**/api/audits**', (route) => {
         route.fulfill({
           json: [{ id: 1, name: 'Q1 Audit', status: 'In Progress', date: '2026-05-03' }],
         });
@@ -39,7 +39,7 @@ test.describe('Audit Module Tests', () => {
     });
 
     test('should click on session row', async ({ page }) => {
-      await page.route('**/api/audit-sessions**', (route) => {
+      await page.route('**/api/audits**', (route) => {
         route.fulfill({
           json: [{ id: 1, name: 'Test Session' }],
         });
@@ -78,7 +78,7 @@ test.describe('Audit Module Tests', () => {
     });
 
     test('should find discrepancy items', async ({ page }) => {
-      await page.route('**/api/audit-discrepancies**', (route) => {
+      await page.route('**/api/discrepancies**', (route) => {
         route.fulfill({
           json: [{ id: 1, assetTag: 'AST-001', issue: 'Missing', location: 'Building A' }],
         });
@@ -180,7 +180,7 @@ test.describe('Audit Module Tests', () => {
 
   test.describe('Audit API Mocking', () => {
     test('should handle empty audit sessions', async ({ page }) => {
-      await page.route('**/api/audit-sessions**', (route) => {
+      await page.route('**/api/audits**', (route) => {
         route.fulfill({ json: [] });
       });
 
@@ -191,7 +191,7 @@ test.describe('Audit Module Tests', () => {
     });
 
     test('should handle audit API error', async ({ page }) => {
-      await page.route('**/api/audit-sessions**', (route) => {
+      await page.route('**/api/audits**', (route) => {
         route.abort();
       });
 

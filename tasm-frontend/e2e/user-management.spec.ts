@@ -66,7 +66,7 @@ test.describe('User Management & Settings', () => {
 
     test('should have user table', async ({ page }) => {
       const table = page.locator('table, .p-datatable');
-      await table.isVisible().catch(() => false);
+      const isVisible = await table.isVisible().catch(() => false);
       if (isVisible) {
         await expect(table).toBeVisible();
       }
@@ -85,7 +85,7 @@ test.describe('User Management & Settings', () => {
 
     test('should have profile section', async ({ page }) => {
       const profile = page.locator('[class*="profile"], .avatar, img').first();
-      await profile.isVisible().catch(() => false);
+      const isVisible = await profile.isVisible().catch(() => false);
       if (isVisible) {
         await expect(profile).toBeVisible();
       }

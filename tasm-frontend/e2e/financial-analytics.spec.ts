@@ -34,13 +34,14 @@ test.describe('Financial Analytics Dashboard', () => {
 
   test.describe('With Mocked Data', () => {
     test.beforeEach(async ({ page }) => {
-      await page.route('**/api/financials**', (route) => {
+      await page.route('**/api/depreciations**', (route) => {
         route.fulfill({
-          json: {
-            totalValue: 5000000,
-            depreciation: 500000,
-            expenses: 200000,
-          },
+          json: [{ id: 1, purchaseValue: 1000000, currentValue: 800000 }],
+        });
+      });
+      await page.route('**/api/work-orders**', (route) => {
+        route.fulfill({
+          json: [{ id: 1, status: 'Closed', cost: 50000 }],
         });
       });
       await page.goto('/financial-analytics-dashboard');
@@ -109,7 +110,7 @@ test.describe('Financial Analytics Dashboard', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/financials**', (route) => route.abort());
+      await page.route('**/api/depreciations**', (route) => route.abort());
       await page.reload();
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();

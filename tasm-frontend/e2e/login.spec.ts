@@ -84,7 +84,7 @@ test.describe('Login Page', () => {
     });
 
     test('should click Login button', async ({ page }) => {
-      await page.route('**/api/login', (route) => {
+      await page.route('**/api/auth/login', (route) => {
         route.fulfill({
           json: { token: 'fake-jwt-token', user: { name: 'Admin' } },
         });
@@ -121,7 +121,7 @@ test.describe('Login Page', () => {
     });
 
     test('should show error on invalid credentials', async ({ page }) => {
-      await page.route('**/api/login', (route) => {
+      await page.route('**/api/auth/login', (route) => {
         route.fulfill({
           status: 401,
           json: { error: 'Invalid credentials' },
@@ -183,7 +183,7 @@ test.describe('Login Page', () => {
 
   test.describe('Navigation', () => {
     test('should redirect to dashboard on successful login', async ({ page }) => {
-      await page.route('**/api/login', (route) => {
+      await page.route('**/api/auth/login', (route) => {
         route.fulfill({
           json: { token: 'fake-token' },
         });

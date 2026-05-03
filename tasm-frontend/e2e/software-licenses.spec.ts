@@ -29,7 +29,7 @@ test.describe('Software License Registry', () => {
 
   test.describe('With Mocked Data', () => {
     test.beforeEach(async ({ page }) => {
-      await page.route('**/api/licenses**', (route) => {
+      await page.route('**/api/software-licenses**', (route) => {
         route.fulfill({
           json: [
             { id: 1, name: 'Windows 11 Pro', seats: 100, used: 75 },
@@ -102,7 +102,7 @@ test.describe('Software License Registry', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/licenses**', (route) => route.abort());
+      await page.route('**/api/software-licenses**', (route) => route.abort());
       await page.reload();
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();

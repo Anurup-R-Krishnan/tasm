@@ -34,7 +34,7 @@ test.describe('Procurement Pipeline', () => {
 
   test.describe('With Mocked Data', () => {
     test.beforeEach(async ({ page }) => {
-      await page.route('**/api/procurement**', (route) => {
+      await page.route('**/api/procurements**', (route) => {
         route.fulfill({
           json: [
             { id: 1, item: 'Laptop', status: 'Pending', quantity: 10 },
@@ -152,7 +152,7 @@ test.describe('Procurement Pipeline', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/procurement**', (route) => route.abort());
+      await page.route('**/api/procurements**', (route) => route.abort());
       await page.reload();
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();

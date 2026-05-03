@@ -31,7 +31,7 @@ test.describe('Financial Ledger Detail', () => {
 
   test.describe('With Mocked Data', () => {
     test.beforeEach(async ({ page }) => {
-      await page.route('**/api/financial-ledger**', (route) => {
+      await page.route('**/api/ledgers**', (route) => {
         route.fulfill({
           json: {
             asset: 'Dell Laptop',
@@ -115,7 +115,7 @@ test.describe('Financial Ledger Detail', () => {
 
   test.describe('Error Handling', () => {
     test('should handle API error', async ({ page }) => {
-      await page.route('**/api/financial-ledger**', (route) => route.abort());
+      await page.route('**/api/ledgers**', (route) => route.abort());
       await page.goto('/financial-ledger-detail');
       await page.waitForTimeout(500);
       await expect(page.locator('body')).toBeVisible();
