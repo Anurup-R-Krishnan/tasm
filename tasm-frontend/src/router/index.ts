@@ -51,6 +51,8 @@ router.beforeEach(async (to) => {
   if (to.name === 'Login' && isAuthenticated) {
     return { name: 'Dashboard' };
   }
+
+  return true;
 });
 
 export default router;
