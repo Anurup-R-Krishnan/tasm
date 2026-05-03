@@ -335,11 +335,12 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getWorkOrderById } from '../api/workOrders';
+import type { WorkOrder } from '../types/models';
 
 const route = useRoute();
 const router = useRouter();
 
-const order = ref<any>(null);
+const order = ref<WorkOrder | null>(null);
 const loading = ref(true);
 
 const fetchWorkOrder = async () => {

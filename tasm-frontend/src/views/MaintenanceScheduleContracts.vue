@@ -203,17 +203,18 @@
 import { ref, computed, onMounted } from 'vue';
 import { getContracts } from '../api/financial';
 import { getWorkOrders } from '../api/workOrders';
+import type { MaintenanceContract, WorkOrder } from '../types/models';
 
-const contracts = ref<any[]>([]);
-const workOrders = ref<any[]>([]);
+const contracts = ref<MaintenanceContract[]>([]);
+const workOrders = ref<WorkOrder[]>([]);
 const loading = ref(true);
 
 const fetchData = async () => {
   loading.value = true;
   try {
     const [contractData, orderData] = await Promise.all([getContracts(), getWorkOrders()]);
-    contracts.value = contractData as any[];
-    workOrders.value = orderData as any[];
+    contracts.value = contractData;
+    workOrders.value = orderData;
   } catch (err) {
     console.error('Failed to fetch maintenance data:', err);
   } finally {

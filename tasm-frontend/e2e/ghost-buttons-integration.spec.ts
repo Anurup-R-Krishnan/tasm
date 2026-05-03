@@ -74,7 +74,7 @@ test.describe('Integration Tests for Ghost Buttons', () => {
 
       await page.waitForTimeout(300);
       const modal = page.locator('[role="dialog"], .modal, .popup');
-      const isVisible = await modal.isVisible().catch(() => false);
+      await modal.isVisible().catch(() => false);
       expect(isVisible).toBeFalsy();
     });
 

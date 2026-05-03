@@ -287,13 +287,14 @@ import { ref, onMounted } from 'vue';
 import { getAssets } from '../api/assets';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import type { Asset } from '../types/models';
 
-const myAssets = ref<any[]>([]);
+const myAssets = ref<Asset[]>([]);
 const loading = ref(true);
 
 const fetchMyAssets = async () => {
   try {
-    const allAssets = (await getAssets()) as any[];
+    const allAssets = await getAssets();
     myAssets.value = allAssets.slice(0, 3);
   } catch (error) {
     console.error('Failed to fetch assets:', error);

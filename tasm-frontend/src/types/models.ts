@@ -59,12 +59,17 @@ export interface WorkOrder extends BaseEntity {
   workOrderId: string;
   title: string;
   assetLocation: string;
+  assetName?: string;
+  assetTag?: string;
+  description?: string;
   issue: string;
   severity: string;
+  reportedBy?: string;
   targetDate: string;
   status: string;
   technician: string;
   cost: number;
+  estimatedCost?: number;
 }
 
 export interface ProcurementRequest extends BaseEntity {

@@ -176,17 +176,18 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUsers } from '../api/users';
+import type { SystemUser } from '../types/models';
 
 const router = useRouter();
-const users = ref<any[]>([]);
-const selectedUserId = ref('');
+const users = ref<SystemUser[]>([]);
+const selectedUserId = ref<number | string>('');
 const checkoutDate = ref(new Date().toISOString().split('T')[0]);
 const returnDate = ref('');
 const notes = ref('');
 
 const fetchData = async () => {
   try {
-    users.value = (await getUsers()) as any[];
+    users.value = await getUsers();
   } catch (err) {
     console.error('Failed to fetch users:', err);
   }

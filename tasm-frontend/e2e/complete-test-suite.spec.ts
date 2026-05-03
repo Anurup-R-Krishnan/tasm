@@ -119,7 +119,7 @@ test.describe('Complete Test Suite - Master Flow', () => {
       const count = await buttons.count();
 
       for (let i = 0; i < Math.min(count, 3); i++) {
-        const isVisible = await buttons.nth(i).isVisible();
+        await buttons.nth(i).isVisible();
         if (isVisible) {
           await buttons
             .nth(i)

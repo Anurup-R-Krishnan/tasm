@@ -14,7 +14,7 @@ export default defineConfig({
     storageState: './e2e/auth.storage-state.json',
   },
   webServer: {
-    command: 'npm run preview:e2e',
+    command: 'VITE_E2E=true vite --host 127.0.0.1 --port 4173',
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: !isCI,
     timeout: 120_000,

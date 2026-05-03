@@ -229,11 +229,12 @@ import { ref, onMounted } from 'vue';
 import { getLocations, createLocation } from '../api/locations';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import type { Location } from '../types/models';
 
-const locations = ref<any[]>([]);
+const locations = ref<Location[]>([]);
 const loading = ref(true);
 
-const newLocation = ref({
+const newLocation = ref<Partial<Location>>({
   name: '',
   type: '',
   address: '',
@@ -243,7 +244,7 @@ const newLocation = ref({
 
 const fetchLocations = async () => {
   try {
-    locations.value = (await getLocations()) as any[];
+    locations.value = await getLocations();
   } catch (error) {
     console.error('Failed to fetch locations:', error);
   } finally {

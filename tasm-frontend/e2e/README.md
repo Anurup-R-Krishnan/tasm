@@ -1,11 +1,13 @@
 # Playwright Test Suite - TASM
 
 ## Overview
+
 Comprehensive Playwright test suite for TASM (Technopark Asset Management System) covering ghost buttons, click behavior, and all major features.
 
 ## Test Files (28 files, ~9,000 lines)
 
 ### Ghost Button Tests (10 files)
+
 - `ghost-buttons.spec.ts` - Core click/hover behavior
 - `ghost-buttons-advanced.spec.ts` - State management, timing
 - `ghost-buttons-comprehensive.spec.ts` - Edge cases
@@ -18,6 +20,7 @@ Comprehensive Playwright test suite for TASM (Technopark Asset Management System
 - `ghost-buttons-integration.spec.ts` - Component integration
 
 ### Feature Tests (16 files)
+
 - `quick-actions.spec.ts` - Dashboard quick actions
 - `asset-registry-interactions.spec.ts` - Asset registry
 - `sidebar-navigation.spec.ts` - All 19 sidebar routes
@@ -38,10 +41,12 @@ Comprehensive Playwright test suite for TASM (Technopark Asset Management System
 - `reports-analytics.spec.ts` - Reports
 
 ### E2E & Master Tests
+
 - `e2e-user-flows.spec.ts` - Cross-page workflows
 - `complete-test-suite.spec.ts` - Master integration test
 
 ### Utilities
+
 - `utils/ghost-button-helpers.ts` - Reusable helpers
 
 ## Running Tests
@@ -77,30 +82,31 @@ npx playwright show-report
 
 ## Test Coverage
 
-| Feature | Status | Tests |
-|---------|--------|-------|
-| Ghost Buttons | ✅ Complete | 150+ |
-| Click Behaviors | ✅ Complete | 50+ |
-| Keyboard Navigation | ✅ Complete | 30+ |
-| Mobile/Touch | ✅ Complete | 20+ |
-| Accessibility | ✅ Complete | 25+ |
-| Performance | ✅ Complete | 15+ |
-| Error Handling | ✅ Complete | 40+ |
-| Visual Regression | ✅ Complete | 20+ |
-| Sidebar Navigation | ✅ Complete | 19 routes |
-| Asset Registry | ✅ Complete | 30+ |
-| Consumables | ✅ Complete | 25+ |
-| Audit Module | ✅ Complete | 30+ |
-| Work Orders | ✅ Complete | 20+ |
-| Procurement | ✅ Complete | 20+ |
-| Maintenance | ✅ Complete | 20+ |
-| Financials | ✅ Complete | 20+ |
-| User Management | ✅ Complete | 25+ |
-| Reports | ✅ Complete | 20+ |
+| Feature             | Status      | Tests     |
+| ------------------- | ----------- | --------- |
+| Ghost Buttons       | ✅ Complete | 150+      |
+| Click Behaviors     | ✅ Complete | 50+       |
+| Keyboard Navigation | ✅ Complete | 30+       |
+| Mobile/Touch        | ✅ Complete | 20+       |
+| Accessibility       | ✅ Complete | 25+       |
+| Performance         | ✅ Complete | 15+       |
+| Error Handling      | ✅ Complete | 40+       |
+| Visual Regression   | ✅ Complete | 20+       |
+| Sidebar Navigation  | ✅ Complete | 19 routes |
+| Asset Registry      | ✅ Complete | 30+       |
+| Consumables         | ✅ Complete | 25+       |
+| Audit Module        | ✅ Complete | 30+       |
+| Work Orders         | ✅ Complete | 20+       |
+| Procurement         | ✅ Complete | 20+       |
+| Maintenance         | ✅ Complete | 20+       |
+| Financials          | ✅ Complete | 20+       |
+| User Management     | ✅ Complete | 25+       |
+| Reports             | ✅ Complete | 20+       |
 
 ## Configuration
 
 The `playwright.config.ts` has been updated to include:
+
 - Chromium (default)
 - Firefox
 - Mobile Chrome (Pixel 5)
@@ -129,6 +135,7 @@ The `playwright.config.ts` has been updated to include:
 ## CI/CD Integration
 
 Add to GitHub Actions:
+
 ```yaml
 - name: Run Playwright tests
   run: |

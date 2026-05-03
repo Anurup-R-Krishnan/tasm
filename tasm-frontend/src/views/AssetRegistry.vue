@@ -191,10 +191,11 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getAssets, deleteAsset as apiDeleteAsset } from '../api/assets';
+import type { Asset } from '../types/models';
 
 const router = useRouter();
 
-const assets = ref<any[]>([]);
+const assets = ref<Asset[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const selectedFilter = ref('All');

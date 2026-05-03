@@ -195,10 +195,11 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getAssetById } from '../api/assets';
+import type { Asset } from '../types/models';
 
 const route = useRoute();
 const router = useRouter();
-const asset = ref<any>(null);
+const asset = ref<Asset | null>(null);
 const loading = ref(true);
 
 const fetchAssetDetails = async () => {

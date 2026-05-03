@@ -230,7 +230,7 @@ test.describe('Comprehensive Ghost Button Tests - Edge Cases and Complex Scenari
       await page.waitForTimeout(300);
 
       const contextMenu = page.locator('[role="menu"]');
-      const isVisible = await contextMenu.isVisible().catch(() => false);
+      await contextMenu.isVisible().catch(() => false);
       expect(isVisible).toBeFalsy();
     });
   });

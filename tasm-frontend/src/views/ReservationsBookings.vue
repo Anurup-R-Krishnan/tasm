@@ -434,13 +434,14 @@ import { ref, onMounted } from 'vue';
 import { getReservations } from '../api/reservations';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import type { Reservation } from '../types/models';
 
-const reservations = ref<any[]>([]);
+const reservations = ref<Reservation[]>([]);
 const loading = ref(true);
 
 const fetchReservations = async () => {
   try {
-    reservations.value = (await getReservations()) as any[];
+    reservations.value = await getReservations();
   } catch (error) {
     console.error('Failed to fetch reservations:', error);
   } finally {

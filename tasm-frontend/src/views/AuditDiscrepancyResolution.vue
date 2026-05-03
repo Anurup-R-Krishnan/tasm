@@ -179,13 +179,14 @@ import { ref, onMounted } from 'vue';
 import { getDiscrepancies } from '../api/audits';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import type { AuditDiscrepancy } from '../types/models';
 
-const discrepancies = ref<any[]>([]);
+const discrepancies = ref<AuditDiscrepancy[]>([]);
 const loading = ref(true);
 
 const fetchDiscrepancies = async () => {
   try {
-    discrepancies.value = (await getDiscrepancies()) as any[];
+    discrepancies.value = await getDiscrepancies();
   } catch (error) {
     console.error('Failed to fetch discrepancies:', error);
   } finally {

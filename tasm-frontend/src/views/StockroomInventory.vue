@@ -232,19 +232,20 @@
 import { ref, computed, onMounted } from 'vue';
 import { getLocations } from '../api/locations';
 import { getAssets } from '../api/assets';
+import type { Asset, Location } from '../types/models';
 
-const locations = ref<any[]>([]);
-const assets = ref<any[]>([]);
-const selectedLocation = ref<any>(null);
+const locations = ref<Location[]>([]);
+const assets = ref<Asset[]>([]);
+const selectedLocation = ref<Location | null>(null);
 const loading = ref(true);
 
 const fetchData = async () => {
   loading.value = true;
   try {
     const [locData, assetData] = await Promise.all([getLocations(), getAssets()]);
-    locations.value = locData as any[];
-    if (locations.value.length > 0) selectedLocation.value = locations.value[0];
-    assets.value = assetData as any[];
+    locations.value = locData;
+    if (locations.value.length > 0) selectedLocation.value = locations.value[0] || null;
+    assets.value = assetData;
   } catch (err) {
     console.error('Failed to fetch stockroom data:', err);
   } finally {
@@ -254,7 +255,7 @@ const fetchData = async () => {
 
 const locationAssets = computed(() => {
   if (!selectedLocation.value) return [];
-  return assets.value.filter((a) => a.location === selectedLocation.value.name);
+  return assets.value.filter((a) => a.location === selectedLocation.value?.name);
 });
 
 const summaryStats = computed(() => [

@@ -211,17 +211,18 @@
 import { ref, computed, onMounted } from 'vue';
 import { getLedgers } from '../api/financial';
 import { getProcurements } from '../api/procurements';
+import type { LedgerEntry, ProcurementRequest } from '../types/models';
 
-const ledgers = ref<any[]>([]);
-const procurements = ref<any[]>([]);
+const ledgers = ref<LedgerEntry[]>([]);
+const procurements = ref<ProcurementRequest[]>([]);
 const loading = ref(true);
 
 const fetchData = async () => {
   loading.value = true;
   try {
     const [ledgerData, procData] = await Promise.all([getLedgers(), getProcurements()]);
-    ledgers.value = ledgerData as any[];
-    procurements.value = procData as any[];
+    ledgers.value = ledgerData;
+    procurements.value = procData;
   } catch (err) {
     console.error('Failed to fetch financial data:', err);
   } finally {

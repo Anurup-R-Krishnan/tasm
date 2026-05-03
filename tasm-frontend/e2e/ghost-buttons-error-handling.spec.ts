@@ -192,7 +192,7 @@ test.describe('Error Handling for Ghost Buttons', () => {
       });
 
       const button = page.locator('button').first();
-      const isVisible = await button.isVisible();
+      await button.isVisible();
       expect(typeof isVisible).toBe('boolean');
     });
 
