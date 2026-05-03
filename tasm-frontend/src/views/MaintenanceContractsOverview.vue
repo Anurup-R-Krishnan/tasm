@@ -237,6 +237,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getWorkOrders } from '../api/workOrders';
+import { getContracts } from '../api/financial';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -245,7 +247,7 @@ interface WorkOrder {
   workOrderId: string;
   title: string;
   assetLocation: string;
-  issue: string;
+  status: string;
   severity: string;
   createdAt: string;
 }
@@ -264,12 +266,9 @@ const loadingContracts = ref(true);
 
 const fetchWorkOrders = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/work-orders');
-    if (res.ok) {
-      workOrders.value = await res.json();
-    }
-  } catch (error) {
-    console.error('Failed to fetch work orders:', error);
+    workOrders.value = (await getWorkOrders()) as any[];
+  } catch (err) {
+    console.error('Failed to fetch work orders:', err);
   } finally {
     loadingWorkOrders.value = false;
   }
@@ -278,14 +277,9 @@ const fetchWorkOrders = async () => {
 const deleteWorkOrder = async (id: number) => {
   if (!confirm('Are you sure you want to delete this work order?')) return;
   try {
-    const res = await fetch(`http://localhost:8080/api/work-orders/${id}`, {
-      method: 'DELETE',
-    });
-    if (res.ok) {
-      workOrders.value = workOrders.value.filter((w) => w.id !== id);
-    } else {
-      alert('Failed to delete work order');
-    }
+    const { deleteWorkOrder: apiDeleteWorkOrder } = await import('../api/workOrders');
+    await apiDeleteWorkOrder(id);
+    workOrders.value = workOrders.value.filter((w) => w.id !== id);
   } catch (error) {
     console.error('Error deleting work order:', error);
   }
@@ -293,12 +287,9 @@ const deleteWorkOrder = async (id: number) => {
 
 const fetchContracts = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/contracts');
-    if (res.ok) {
-      contracts.value = await res.json();
-    }
-  } catch (error) {
-    console.error('Failed to fetch contracts:', error);
+    contracts.value = await getContracts();
+  } catch (err) {
+    console.error('Failed to fetch contracts:', err);
   } finally {
     loadingContracts.value = false;
   }

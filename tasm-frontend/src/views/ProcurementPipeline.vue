@@ -153,6 +153,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { getProcurements } from '../api/procurements';
 
 const router = useRouter();
 
@@ -170,16 +171,13 @@ interface ProcurementRequest {
   createdAt: string;
 }
 
-const procurements = ref<ProcurementRequest[]>([]);
+const requests = ref<ProcurementRequest[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 
-const fetchProcurements = async () => {
+const fetchRequests = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/procurements');
-    if (res.ok) {
-      procurements.value = await res.json();
-    }
+    requests.value = (await getProcurements()) as any[];
   } catch (error) {
     console.error('Failed to fetch procurements:', error);
   } finally {
@@ -189,8 +187,8 @@ const fetchProcurements = async () => {
 
 const filteredProcurements = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  return procurements.value.filter(
-    (p) =>
+  return requests.value.filter(
+    (p: any) =>
       p.title.toLowerCase().includes(query) ||
       p.department.toLowerCase().includes(query) ||
       p.poNumber.toLowerCase().includes(query),
@@ -200,7 +198,7 @@ const filteredProcurements = computed(() => {
 const kpis = computed(() => [
   {
     label: 'Total Pipeline Value',
-    value: procurements.value.reduce((s, p) => s + (p.estimatedValue || 0), 0),
+    value: requests.value.reduce((s: number, p: ProcurementRequest) => s + (p.estimatedValue || 0), 0),
     icon: 'account_balance_wallet',
     bgClass: 'bg-primary-container/10',
     iconClass: 'text-primary',
@@ -208,9 +206,9 @@ const kpis = computed(() => [
   },
   {
     label: 'Approved This Month',
-    value: procurements.value
-      .filter((p) => p.status === 'Received')
-      .reduce((s, p) => s + (p.estimatedValue || 0), 0),
+    value: requests.value
+      .filter((p: ProcurementRequest) => p.status === 'Received')
+      .reduce((s: number, p: ProcurementRequest) => s + (p.estimatedValue || 0), 0),
     icon: 'verified',
     bgClass: 'bg-status-in-stock/10',
     iconClass: 'text-status-in-stock',
@@ -218,9 +216,9 @@ const kpis = computed(() => [
   },
   {
     label: 'Pending Approval',
-    value: procurements.value
-      .filter((p) => p.status === 'Pending Approval')
-      .reduce((s, p) => s + (p.estimatedValue || 0), 0),
+    value: requests.value
+      .filter((p: ProcurementRequest) => p.status === 'Pending Approval')
+      .reduce((s: number, p: ProcurementRequest) => s + (p.estimatedValue || 0), 0),
     icon: 'pending_actions',
     bgClass: 'bg-metric-amber/20',
     iconClass: 'text-surface-tint',
@@ -254,5 +252,5 @@ const getPriorityClass = (priority: string) => {
   }
 };
 
-onMounted(fetchProcurements);
+onMounted(fetchRequests);
 </script>

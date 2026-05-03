@@ -212,6 +212,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { getAssets } from '../api/assets';
+import { getWorkOrders } from '../api/workOrders';
+import { getAlerts } from '../api/alerts';
 
 const router = useRouter();
 
@@ -224,16 +227,15 @@ const fetchData = async () => {
   loading.value = true;
   try {
     const [assetRes, orderRes, alertRes] = await Promise.all([
-      fetch('http://localhost:8080/api/assets'),
-      fetch('http://localhost:8080/api/work-orders'),
-      fetch('http://localhost:8080/api/alerts'),
+      getAssets(),
+      getWorkOrders(),
+      getAlerts(),
     ]);
-    if (assetRes.ok) assets.value = await assetRes.json();
-    if (orderRes.ok)
-      workOrders.value = (await orderRes.json())
+    assets.value = assetRes;
+    workOrders.value = orderRes
         .filter((o: any) => o.severity === 'Critical' || o.severity === 'High')
         .slice(0, 4);
-    if (alertRes.ok) alerts.value = (await alertRes.json()).slice(0, 5);
+    alerts.value = alertRes.slice(0, 5);
   } catch (err) {
     console.error('Failed to fetch dashboard data:', err);
   } finally {

@@ -194,18 +194,21 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { getAssetById } from '../api/assets';
 
 const route = useRoute();
 const router = useRouter();
 const asset = ref<any>(null);
 const loading = ref(true);
 
-const fetchAsset = async () => {
+const fetchAssetDetails = async () => {
   try {
-    const res = await fetch(`http://localhost:8080/api/assets/${route.params['id']}`);
-    if (res.ok) asset.value = await res.json();
+    const id = route.params['id'] as string;
+    if (!id) return;
+    
+    asset.value = await getAssetById(id);
   } catch (error) {
-    console.error('Failed to fetch asset:', error);
+    console.error('Failed to fetch asset details:', error);
   } finally {
     loading.value = false;
   }
@@ -294,5 +297,5 @@ const formatDate = (date: string) => {
   });
 };
 
-onMounted(fetchAsset);
+onMounted(fetchAssetDetails);
 </script>

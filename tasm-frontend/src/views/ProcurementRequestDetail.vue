@@ -419,8 +419,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { getProcurementById } from '../api/procurements';
 
+const route = useRoute();
 const router = useRouter();
 
 interface ProcurementRequest {
@@ -440,22 +442,20 @@ interface ProcurementRequest {
 const request = ref<ProcurementRequest | null>(null);
 const loading = ref(true);
 
-const fetchRequest = async () => {
+const fetchRequestDetails = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/procurements');
-    if (res.ok) {
-      const allRequests: ProcurementRequest[] = await res.json();
-      // Fallback to first if no ID route param provided in this demo
-      request.value = (allRequests.length > 0 ? allRequests[0] : null) ?? null;
-    }
+    const id = route.params['id'] as string;
+    if (!id) return;
+    
+    request.value = (await getProcurementById(id)) as any;
   } catch (error) {
-    console.error('Failed to fetch procurements:', error);
+    console.error('Failed to fetch procurement details:', error);
   } finally {
     loading.value = false;
   }
 };
 
 onMounted(() => {
-  fetchRequest();
+  fetchRequestDetails();
 });
 </script>

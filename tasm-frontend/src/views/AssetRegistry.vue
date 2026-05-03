@@ -190,6 +190,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { getAssets, deleteAsset as apiDeleteAsset } from '../api/assets';
 
 const router = useRouter();
 
@@ -200,8 +201,7 @@ const selectedFilter = ref('All');
 
 const fetchAssets = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/assets');
-    if (res.ok) assets.value = await res.json();
+    assets.value = await getAssets();
   } catch (error) {
     console.error('Failed to fetch assets:', error);
   } finally {
@@ -279,8 +279,8 @@ const formatDate = (date: string) => {
 const deleteAsset = async (id: number) => {
   if (!confirm('Are you sure you want to delete this asset?')) return;
   try {
-    const res = await fetch(`http://localhost:8080/api/assets/${id}`, { method: 'DELETE' });
-    if (res.ok) assets.value = assets.value.filter((a) => a.id !== id);
+    await apiDeleteAsset(id);
+    assets.value = assets.value.filter((a) => a.id !== id);
   } catch (error) {
     console.error('Error deleting asset:', error);
   }

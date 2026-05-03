@@ -334,6 +334,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { getWorkOrderById } from '../api/workOrders';
 
 const route = useRoute();
 const router = useRouter();
@@ -341,14 +342,14 @@ const router = useRouter();
 const order = ref<any>(null);
 const loading = ref(true);
 
-const fetchOrder = async () => {
+const fetchWorkOrder = async () => {
   try {
-    const res = await fetch(`http://localhost:8080/api/work-orders/${route.params['id']}`);
-    if (res.ok) {
-      order.value = await res.json();
-    }
-  } catch (error) {
-    console.error('Error fetching work order:', error);
+    const id = route.params['id'] as string;
+    if (!id) return;
+    
+    order.value = await getWorkOrderById(id);
+  } catch (err) {
+    console.error('Failed to fetch work order:', err);
   } finally {
     loading.value = false;
   }
@@ -363,5 +364,7 @@ const formatDate = (dateString: string) => {
   });
 };
 
-onMounted(fetchOrder);
+onMounted(() => {
+  fetchWorkOrder();
+});
 </script>
