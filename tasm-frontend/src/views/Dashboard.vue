@@ -233,8 +233,8 @@ const fetchData = async () => {
     ]);
     assets.value = assetRes;
     workOrders.value = orderRes
-        .filter((o: any) => o.severity === 'Critical' || o.severity === 'High')
-        .slice(0, 4);
+      .filter((o: any) => o.severity === 'Critical' || o.severity === 'High')
+      .slice(0, 4);
     alerts.value = alertRes.slice(0, 5);
   } catch (err) {
     console.error('Failed to fetch dashboard data:', err);

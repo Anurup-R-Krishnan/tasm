@@ -205,7 +205,7 @@ const fetchAssetDetails = async () => {
   try {
     const id = route.params['id'] as string;
     if (!id) return;
-    
+
     asset.value = await getAssetById(id);
   } catch (error) {
     console.error('Failed to fetch asset details:', error);

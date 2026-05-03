@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func SeedDatabase(c *gin.Context) {
@@ -49,33 +50,37 @@ func SeedDatabase(c *gin.Context) {
 	}
 	database.DB.Find(&discs)
 	// From user_handler.go
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
 	users := []models.SystemUser{
 		{
-			EmployeeID: "EMP-001",
-			Name:       "Rahul Menon",
-			Email:      "rahul.m@technopark.org",
-			Department: "IT Operations",
-			Role:       "System Admin",
-			Status:     "Active",
-			LastLogin:  time.Now(),
+			EmployeeID:   "EMP-001",
+			Name:         "Rahul Menon",
+			Email:        "rahul.m@technopark.org",
+			PasswordHash: string(hashedPassword),
+			Department:   "IT Operations",
+			Role:         "System Admin",
+			Status:       "Active",
+			LastLogin:    time.Now(),
 		},
 		{
-			EmployeeID: "EMP-042",
-			Name:       "Priya Suresh",
-			Email:      "priya.s@technopark.org",
-			Department: "Finance",
-			Role:       "Finance Manager",
-			Status:     "Active",
-			LastLogin:  time.Now().Add(-2 * time.Hour),
+			EmployeeID:   "EMP-042",
+			Name:         "Priya Suresh",
+			Email:        "priya.s@technopark.org",
+			PasswordHash: string(hashedPassword),
+			Department:   "Finance",
+			Role:         "Finance Manager",
+			Status:       "Active",
+			LastLogin:    time.Now().Add(-2 * time.Hour),
 		},
 		{
-			EmployeeID: "EMP-088",
-			Name:       "Anil Kumar",
-			Email:      "anil.k@technopark.org",
-			Department: "Facilities",
-			Role:       "Facilities Head",
-			Status:     "Inactive",
-			LastLogin:  time.Now().Add(-48 * time.Hour),
+			EmployeeID:   "EMP-088",
+			Name:         "Anil Kumar",
+			Email:        "anil.k@technopark.org",
+			PasswordHash: string(hashedPassword),
+			Department:   "Facilities",
+			Role:         "Facilities Head",
+			Status:       "Inactive",
+			LastLogin:    time.Now().Add(-48 * time.Hour),
 		},
 	}
 	for _, u := range users {

@@ -346,7 +346,7 @@ const fetchWorkOrder = async () => {
   try {
     const id = route.params['id'] as string;
     if (!id) return;
-    
+
     order.value = await getWorkOrderById(id);
   } catch (err) {
     console.error('Failed to fetch work order:', err);

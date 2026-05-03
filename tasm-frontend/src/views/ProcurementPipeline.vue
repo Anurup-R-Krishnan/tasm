@@ -198,7 +198,10 @@ const filteredProcurements = computed(() => {
 const kpis = computed(() => [
   {
     label: 'Total Pipeline Value',
-    value: requests.value.reduce((s: number, p: ProcurementRequest) => s + (p.estimatedValue || 0), 0),
+    value: requests.value.reduce(
+      (s: number, p: ProcurementRequest) => s + (p.estimatedValue || 0),
+      0,
+    ),
     icon: 'account_balance_wallet',
     bgClass: 'bg-primary-container/10',
     iconClass: 'text-primary',

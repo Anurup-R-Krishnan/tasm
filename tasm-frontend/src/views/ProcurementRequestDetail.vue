@@ -446,7 +446,7 @@ const fetchRequestDetails = async () => {
   try {
     const id = route.params['id'] as string;
     if (!id) return;
-    
+
     request.value = (await getProcurementById(id)) as any;
   } catch (error) {
     console.error('Failed to fetch procurement details:', error);

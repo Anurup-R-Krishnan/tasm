@@ -25,7 +25,10 @@ export function createConsumable(data: Partial<Consumable>): Promise<Consumable>
   });
 }
 
-export function updateConsumable(id: string | number, data: Partial<Consumable>): Promise<Consumable> {
+export function updateConsumable(
+  id: string | number,
+  data: Partial<Consumable>,
+): Promise<Consumable> {
   return apiRequest<Consumable>(`/consumables/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),

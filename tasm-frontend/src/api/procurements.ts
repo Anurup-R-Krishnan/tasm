@@ -23,7 +23,10 @@ export function createProcurement(data: Partial<Procurement>): Promise<Procureme
   });
 }
 
-export function updateProcurement(id: string | number, data: Partial<Procurement>): Promise<Procurement> {
+export function updateProcurement(
+  id: string | number,
+  data: Partial<Procurement>,
+): Promise<Procurement> {
   return apiRequest<Procurement>(`/procurements/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),

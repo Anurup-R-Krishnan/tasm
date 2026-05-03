@@ -131,17 +131,18 @@ type SoftwareLicense struct {
 
 // User Management Models
 type SystemUser struct {
-	ID         uint           `gorm:"primarykey" json:"id"`
-	CreatedAt  time.Time      `json:"createdAt"`
-	UpdatedAt  time.Time      `json:"updatedAt"`
-	DeletedAt  gorm.DeletedAt `gorm:"index" json:"-"`
-	EmployeeID string         `json:"employeeId"`
-	Name       string         `json:"name"`
-	Email      string         `json:"email"`
-	Department string         `json:"department"`
-	Role       string         `json:"role"`
-	Status     string         `json:"status"` // Active, Inactive
-	LastLogin  time.Time      `json:"lastLogin"`
+	ID           uint           `gorm:"primarykey" json:"id"`
+	CreatedAt    time.Time      `json:"createdAt"`
+	UpdatedAt    time.Time      `json:"updatedAt"`
+	DeletedAt    gorm.DeletedAt `gorm:"index" json:"-"`
+	EmployeeID   string         `json:"employeeId"`
+	Name         string         `json:"name"`
+	Email        string         `json:"email"`
+	PasswordHash string         `json:"-"`
+	Department   string         `json:"department"`
+	Role         string         `json:"role"`
+	Status       string         `json:"status"` // Active, Inactive
+	LastLogin    time.Time      `json:"lastLogin"`
 }
 
 type AuditDiscrepancy struct {
