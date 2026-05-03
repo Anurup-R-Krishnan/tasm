@@ -1,18 +1,5 @@
 import { apiRequest } from './client';
-
-export interface Asset {
-  id: number;
-  name: string;
-  tagId: string;
-  category: string;
-  status: string;
-  custodian: string;
-  location: string;
-  warrantyStatus: string;
-  warrantyExpiry: string;
-  value?: number;
-  [key: string]: any;
-}
+import type { Asset } from '../types/models';
 
 export function getAssets(): Promise<Asset[]> {
   return apiRequest<Asset[]>('/assets');

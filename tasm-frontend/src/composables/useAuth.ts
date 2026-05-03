@@ -1,11 +1,13 @@
 import { ref, computed } from 'vue';
 import { login as apiLogin, getMe, type LoginCredentials } from '../api/auth';
 import { useRouter } from 'vue-router';
+import type { SystemUser } from '../types/models';
 
 const TOKEN_KEY = 'tasm_auth_token';
+const isE2E = import.meta.env['VITE_E2E'] === 'true';
 
 // Global shared state
-const currentUser = ref<any>(null);
+const currentUser = ref<SystemUser | null>(null);
 const token = ref<string | null>(localStorage.getItem(TOKEN_KEY));
 const isInitializing = ref(true);
 
@@ -44,6 +46,10 @@ export function useAuth() {
   const initAuth = async () => {
     isInitializing.value = true;
     if (token.value) {
+      if (isE2E) {
+        isInitializing.value = false;
+        return;
+      }
       try {
         const user = await getMe();
         currentUser.value = user;

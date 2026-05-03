@@ -1,15 +1,5 @@
 import { apiRequest } from './client';
-
-export interface WorkOrder {
-  id: number;
-  title: string;
-  severity: string;
-  assetLocation: string;
-  technician: string;
-  status: string;
-  targetDate: string;
-  [key: string]: any;
-}
+import type { WorkOrder } from '../types/models';
 
 export function getWorkOrders(): Promise<WorkOrder[]> {
   return apiRequest<WorkOrder[]>('/work-orders');

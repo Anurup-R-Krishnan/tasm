@@ -1,11 +1,12 @@
 import { apiRequest } from './client';
+import type { SystemUser } from '../types/models';
 
-export function getUsers(): Promise<any[]> {
-  return apiRequest<any[]>('/users');
+export function getUsers(): Promise<SystemUser[]> {
+  return apiRequest<SystemUser[]>('/users');
 }
 
-export function getUserById(id: string | number): Promise<any> {
-  return apiRequest<any>(`/users/${id}`);
+export function getUserById(id: string | number): Promise<SystemUser> {
+  return apiRequest<SystemUser>(`/users/${id}`);
 }
 
 export function deleteUser(id: string | number): Promise<void> {

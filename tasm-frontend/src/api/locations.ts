@@ -1,12 +1,14 @@
 import { apiRequest } from './client';
+import type { Location } from '../types/models';
 
-export function getLocations(): Promise<any[]> {
-  return apiRequest<any[]>('/locations');
+export function getLocations(): Promise<Location[]> {
+  return apiRequest<Location[]>('/locations');
 }
 
-export function createLocation(payload: any): Promise<any> {
-  return apiRequest<any>('/locations', {
+export function createLocation(payload: Partial<Location>): Promise<Location> {
+  return apiRequest<Location>('/locations', {
     method: 'POST',
     body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json' },
   });
 }

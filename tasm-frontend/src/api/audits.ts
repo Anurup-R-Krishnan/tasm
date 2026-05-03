@@ -1,9 +1,10 @@
 import { apiRequest } from './client';
+import type { AuditSession, AuditDiscrepancy } from '../types/models';
 
-export function getAudits(): Promise<any[]> {
-  return apiRequest<any[]>('/audits');
+export function getAudits(): Promise<AuditSession[]> {
+  return apiRequest<AuditSession[]>('/audits');
 }
 
-export function getDiscrepancies(): Promise<any[]> {
-  return apiRequest<any[]>('/discrepancies');
+export function getDiscrepancies(): Promise<AuditDiscrepancy[]> {
+  return apiRequest<AuditDiscrepancy[]>('/discrepancies');
 }

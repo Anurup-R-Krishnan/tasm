@@ -215,12 +215,13 @@ import { useRouter } from 'vue-router';
 import { getAssets } from '../api/assets';
 import { getWorkOrders } from '../api/workOrders';
 import { getAlerts } from '../api/alerts';
+import type { Asset, WorkOrder, SystemAlert } from '../types/models';
 
 const router = useRouter();
 
-const assets = ref<any[]>([]);
-const workOrders = ref<any[]>([]);
-const alerts = ref<any[]>([]);
+const assets = ref<Asset[]>([]);
+const workOrders = ref<WorkOrder[]>([]);
+const alerts = ref<SystemAlert[]>([]);
 const loading = ref(true);
 
 const fetchData = async () => {
@@ -233,7 +234,7 @@ const fetchData = async () => {
     ]);
     assets.value = assetRes;
     workOrders.value = orderRes
-      .filter((o: any) => o.severity === 'Critical' || o.severity === 'High')
+      .filter((o: WorkOrder) => o.severity === 'Critical' || o.severity === 'High')
       .slice(0, 4);
     alerts.value = alertRes.slice(0, 5);
   } catch (err) {

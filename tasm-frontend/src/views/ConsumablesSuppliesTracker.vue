@@ -137,11 +137,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import {
-  getConsumables,
-  deleteConsumable as apiDeleteConsumable,
-  type Consumable,
-} from '../api/consumables';
+import { getConsumables, deleteConsumable as apiDeleteConsumable } from '../api/consumables';
+import type { Consumable } from '../types/models';
 
 const consumables = ref<Consumable[]>([]);
 const loading = ref(true);

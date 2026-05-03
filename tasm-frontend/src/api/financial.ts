@@ -1,21 +1,28 @@
 import { apiRequest } from './client';
+import type {
+  LedgerEntry,
+  LeaseAgreement,
+  DepreciationSchedule,
+  SoftwareLicense,
+  MaintenanceContract,
+} from '../types/models';
 
-export function getLedgers(): Promise<any[]> {
-  return apiRequest<any[]>('/ledgers');
+export function getLedgers(): Promise<LedgerEntry[]> {
+  return apiRequest<LedgerEntry[]>('/ledgers');
 }
 
-export function getLeases(): Promise<any[]> {
-  return apiRequest<any[]>('/leases');
+export function getLeases(): Promise<LeaseAgreement[]> {
+  return apiRequest<LeaseAgreement[]>('/leases');
 }
 
-export function getDepreciations(): Promise<any[]> {
-  return apiRequest<any[]>('/depreciations');
+export function getDepreciations(): Promise<DepreciationSchedule[]> {
+  return apiRequest<DepreciationSchedule[]>('/depreciations');
 }
 
-export function getSoftwareLicenses(): Promise<any[]> {
-  return apiRequest<any[]>('/software-licenses');
+export function getSoftwareLicenses(): Promise<SoftwareLicense[]> {
+  return apiRequest<SoftwareLicense[]>('/software-licenses');
 }
 
-export function getContracts(): Promise<any[]> {
-  return apiRequest<any[]>('/contracts');
+export function getContracts(): Promise<MaintenanceContract[]> {
+  return apiRequest<MaintenanceContract[]>('/contracts');
 }

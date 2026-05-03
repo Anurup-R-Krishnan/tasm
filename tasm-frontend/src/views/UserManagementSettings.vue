@@ -169,24 +169,14 @@ import { ref, onMounted } from 'vue';
 import { getUsers, deleteUser as deleteUserApi } from '../api/users';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-
-interface SystemUser {
-  id: number;
-  employeeId: string;
-  name: string;
-  email: string;
-  department: string;
-  role: string;
-  status: string;
-  lastLogin: string;
-}
+import type { SystemUser } from '../types/models';
 
 const users = ref<SystemUser[]>([]);
 const loading = ref(true);
 
 const fetchUsers = async () => {
   try {
-    users.value = (await getUsers()) as any[];
+    users.value = await getUsers();
   } catch (error) {
     console.error('Failed to fetch users:', error);
   } finally {

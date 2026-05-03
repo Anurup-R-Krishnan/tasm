@@ -1,4 +1,5 @@
 import { apiRequest } from './client';
+import type { SystemUser } from '../types/models';
 
 export interface LoginCredentials {
   email: string;
@@ -7,7 +8,7 @@ export interface LoginCredentials {
 
 export interface AuthResponse {
   token: string;
-  user: any;
+  user: SystemUser;
 }
 
 export function login(credentials: LoginCredentials): Promise<AuthResponse> {
@@ -18,6 +19,6 @@ export function login(credentials: LoginCredentials): Promise<AuthResponse> {
   });
 }
 
-export function getMe(): Promise<any> {
-  return apiRequest<any>('/auth/me');
+export function getMe(): Promise<SystemUser> {
+  return apiRequest<SystemUser>('/auth/me');
 }
