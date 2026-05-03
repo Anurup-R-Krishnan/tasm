@@ -78,6 +78,13 @@
         <span class="material-symbols-outlined group-hover:text-primary"> contact_support </span>
         Support
       </a>
+      <button
+        class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:text-red-500 hover:bg-red-50 transition-colors duration-200 group"
+        @click="handleLogout"
+      >
+        <span class="material-symbols-outlined group-hover:text-red-500">logout</span>
+        Sign Out
+      </button>
     </div>
   </nav>
 </template>
@@ -86,9 +93,15 @@
 import { computed } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import { appRoutes, sidebarGroups } from '../router/routes';
+import { useAuth } from '../composables/useAuth';
 
 const route = useRoute();
 const activeIconStyle = "font-variation-settings: 'FILL' 1;";
+const { logout } = useAuth();
+
+const handleLogout = () => {
+  logout();
+};
 
 const navigationItems = appRoutes.map((item) => ({
   ...item,

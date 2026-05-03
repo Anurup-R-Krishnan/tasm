@@ -11,9 +11,9 @@ export interface AuthResponse {
 }
 
 export function login(credentials: LoginCredentials): Promise<AuthResponse> {
-  // Simulating a POST to /auth/login for now
   return apiRequest<AuthResponse>('/auth/login', {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
 }

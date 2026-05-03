@@ -36,6 +36,7 @@ func ConnectDB() error {
 	if err := DB.AutoMigrate(
 		&models.Asset{},
 		&models.AuditSession{},
+		&models.AuditDiscrepancy{},
 		&models.Consumable{},
 		&models.MaintenanceContract{},
 		&models.WorkOrder{},
@@ -43,8 +44,12 @@ func ConnectDB() error {
 		&models.LedgerEntry{},
 		&models.LeaseAgreement{},
 		&models.DepreciationSchedule{},
+		&models.SoftwareLicense{},
 		&models.SystemUser{},
 		&models.UserRole{},
+		&models.Reservation{},
+		&models.Location{},
+		&models.SystemAlert{},
 	); err != nil {
 		log.Fatalf("Failed to auto-migrate extra models: %v", err)
 	}

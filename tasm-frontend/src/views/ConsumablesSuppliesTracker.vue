@@ -137,7 +137,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { getConsumables, type Consumable } from '../api/consumables';
+import {
+  getConsumables,
+  deleteConsumable as apiDeleteConsumable,
+  type Consumable,
+} from '../api/consumables';
 
 const consumables = ref<Consumable[]>([]);
 const loading = ref(true);
@@ -219,16 +223,11 @@ async function fetchConsumables(): Promise<void> {
 async function deleteConsumable(id: number): Promise<void> {
   if (!confirm('Are you sure you want to delete this item?')) return;
   try {
-    const res = await fetch(`http://localhost:8080/api/consumables/${id}`, {
-      method: 'DELETE',
-    });
-    if (res.ok) {
-      consumables.value = consumables.value.filter((c) => c.id !== id);
-    } else {
-      alert('Failed to delete item');
-    }
+    await apiDeleteConsumable(id);
+    consumables.value = consumables.value.filter((c) => c.id !== id);
   } catch (error) {
     console.error('Error deleting item:', error);
+    alert('Failed to delete item');
   }
 }
 

@@ -55,14 +55,18 @@
       >
         <span class="material-symbols-outlined">settings</span>
       </RouterLink>
-      <div
-        class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden ml-2 border border-border-default"
-      >
-        <img
-          alt="Administrator Profile"
-          class="w-full h-full object-cover"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9rRpw9OWuaXJPeM8Xw6P4_pomgGYRQv2jHKtU4Ud3IrkSp4sa0Ph7JeIspRcJyGzQx8HAQYT_SmVvkcpSA72UDLp3XKXYaO4PECDU9PaqjKKz7O67QAgyvvQqbBSbQ_5hLGJsm9A7ybL3YvHziG_Z1mV0azn1_UV4WRwW285q5pyuFjfTOLZSaI2-Uq-3-mYSJ8UoUD2KXfH8G9_BDGEC9iehsCjyzfk9PB7dviNbRC_E2mf4cHNZvuttFsskTpue0zk_hsvv6sbN"
-        />
+      <div class="flex items-center gap-2 ml-2 pl-3 border-l border-border-default">
+        <div
+          class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-primary font-bold text-sm"
+        >
+          {{ userInitials }}
+        </div>
+        <div v-if="currentUser" class="hidden lg:block">
+          <p class="text-xs font-semibold text-text-primary leading-tight">
+            {{ currentUser.name }}
+          </p>
+          <p class="text-[10px] text-text-secondary leading-tight">{{ currentUser.role }}</p>
+        </div>
       </div>
     </div>
   </header>
@@ -72,15 +76,27 @@
 import { computed, ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import { appRoutes } from '../router/routes';
+import { useAuth } from '../composables/useAuth';
 
 const route = useRoute();
 const query = ref('');
+const { currentUser } = useAuth();
 
 const currentTitle = computed(() => route.meta['title']?.toString() ?? 'Dashboard');
 const routeIndex = appRoutes.map((item) => ({
   ...item,
   to: item.path === '' ? '/' : `/${item.path}`,
 }));
+
+const userInitials = computed(() => {
+  if (!currentUser.value?.name) return '?';
+  return currentUser.value.name
+    .split(' ')
+    .map((n: string) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+});
 
 const filteredRoutes = computed(() => {
   const normalizedQuery = query.value.trim().toLowerCase();
