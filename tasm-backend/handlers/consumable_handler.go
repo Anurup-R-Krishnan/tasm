@@ -24,6 +24,22 @@ func GetConsumables(c *gin.Context) {
 	c.JSON(http.StatusOK, consumables)
 }
 
+func GetConsumableByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var consumable models.Consumable
+	if err := db.First(&consumable, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Consumable not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, consumable)
+}
+
 func CreateConsumable(c *gin.Context) {
 	var consumable models.Consumable
 	if err := c.ShouldBindJSON(&consumable); err != nil {

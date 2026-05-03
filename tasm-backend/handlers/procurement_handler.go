@@ -20,6 +20,22 @@ func GetProcurements(c *gin.Context) {
 	c.JSON(http.StatusOK, requests)
 }
 
+func GetProcurementByID(c *gin.Context) {
+	id := c.Param("id")
+	if database.DB == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+		return
+	}
+
+	var request models.ProcurementRequest
+	if err := database.DB.First(&request, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Procurement request not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, request)
+}
+
 func CreateProcurement(c *gin.Context) {
 	var request models.ProcurementRequest
 	if err := c.ShouldBindJSON(&request); err != nil {

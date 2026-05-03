@@ -23,6 +23,22 @@ func GetContracts(c *gin.Context) {
 	c.JSON(http.StatusOK, contracts)
 }
 
+func GetContractByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var contract models.MaintenanceContract
+	if err := db.First(&contract, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Contract not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, contract)
+}
+
 func CreateContract(c *gin.Context) {
 	var contract models.MaintenanceContract
 	if err := c.ShouldBindJSON(&contract); err != nil {
@@ -56,6 +72,22 @@ func GetWorkOrders(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, workOrders)
+}
+
+func GetWorkOrderByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var workOrder models.WorkOrder
+	if err := db.First(&workOrder, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Work order not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, workOrder)
 }
 
 func CreateWorkOrder(c *gin.Context) {
@@ -126,7 +158,7 @@ func UpdateWorkOrder(c *gin.Context) {
 		return
 	}
 
-	var item models.MaintenanceContract
+	var item models.WorkOrder
 	if err := db.First(&item, "id = ?", id).Error; err != nil {
 		c.JSON(404, gin.H{"error": "Item not found"})
 		return
@@ -152,7 +184,7 @@ func DeleteWorkOrder(c *gin.Context) {
 		return
 	}
 
-	if err := db.Delete(&models.MaintenanceContract{}, "id = ?", id).Error; err != nil {
+	if err := db.Delete(&models.WorkOrder{}, "id = ?", id).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Failed to delete"})
 		return
 	}

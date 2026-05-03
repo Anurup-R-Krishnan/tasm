@@ -20,6 +20,22 @@ func GetLocations(c *gin.Context) {
 	c.JSON(http.StatusOK, locations)
 }
 
+func GetLocationByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var location models.Location
+	if err := db.First(&location, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Location not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, location)
+}
+
 func CreateLocation(c *gin.Context) {
 	var loc models.Location
 	if err := c.ShouldBindJSON(&loc); err != nil {

@@ -21,6 +21,22 @@ func GetReservations(c *gin.Context) {
 	c.JSON(http.StatusOK, reservations)
 }
 
+func GetReservationByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var reservation models.Reservation
+	if err := db.First(&reservation, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Reservation not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, reservation)
+}
+
 func UpdateReservation(c *gin.Context) {
 	id := c.Param("id")
 	db, ok := requireDB(c)

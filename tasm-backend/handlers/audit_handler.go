@@ -20,6 +20,22 @@ func GetAudits(c *gin.Context) {
 	c.JSON(http.StatusOK, audits)
 }
 
+func GetAuditByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var audit models.AuditSession
+	if err := db.First(&audit, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Audit session not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, audit)
+}
+
 func CreateAudit(c *gin.Context) {
 	var audit models.AuditSession
 	if err := c.ShouldBindJSON(&audit); err != nil {
@@ -46,6 +62,22 @@ func GetDiscrepancies(c *gin.Context) {
 	database.DB.Find(&discs)
 
 	c.JSON(http.StatusOK, discs)
+}
+
+func GetDiscrepancyByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var discrepancy models.AuditDiscrepancy
+	if err := db.First(&discrepancy, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Discrepancy not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, discrepancy)
 }
 
 func UpdateAudit(c *gin.Context) {

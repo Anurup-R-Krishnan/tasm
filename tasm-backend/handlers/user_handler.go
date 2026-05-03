@@ -22,6 +22,22 @@ func GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+func GetUserByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var user models.SystemUser
+	if err := db.First(&user, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}
+
 // GetRoles returns a list of user roles
 func GetRoles(c *gin.Context) {
 	var roles []models.UserRole
@@ -33,6 +49,22 @@ func GetRoles(c *gin.Context) {
 	// Seed data if empty
 
 	c.JSON(http.StatusOK, roles)
+}
+
+func GetRoleByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var role models.UserRole
+	if err := db.First(&role, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Role not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, role)
 }
 
 func UpdateUser(c *gin.Context) {

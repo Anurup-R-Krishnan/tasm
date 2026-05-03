@@ -20,6 +20,22 @@ func GetLedgers(c *gin.Context) {
 	c.JSON(http.StatusOK, ledgers)
 }
 
+func GetLedgerByID(c *gin.Context) {
+	id := c.Param("id")
+	if database.DB == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+		return
+	}
+
+	var ledger models.LedgerEntry
+	if err := database.DB.First(&ledger, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Ledger entry not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, ledger)
+}
+
 func GetLeases(c *gin.Context) {
 	var leases []models.LeaseAgreement
 	if database.DB == nil {
@@ -32,6 +48,22 @@ func GetLeases(c *gin.Context) {
 	c.JSON(http.StatusOK, leases)
 }
 
+func GetLeaseByID(c *gin.Context) {
+	id := c.Param("id")
+	if database.DB == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+		return
+	}
+
+	var lease models.LeaseAgreement
+	if err := database.DB.First(&lease, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Lease agreement not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, lease)
+}
+
 func GetDepreciations(c *gin.Context) {
 	var schedules []models.DepreciationSchedule
 	if database.DB == nil {
@@ -42,6 +74,38 @@ func GetDepreciations(c *gin.Context) {
 	database.DB.Order("id desc").Find(&schedules)
 
 	c.JSON(http.StatusOK, schedules)
+}
+
+func GetDepreciationByID(c *gin.Context) {
+	id := c.Param("id")
+	if database.DB == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+		return
+	}
+
+	var schedule models.DepreciationSchedule
+	if err := database.DB.First(&schedule, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Depreciation schedule not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, schedule)
+}
+
+func GetSoftwareLicenseByID(c *gin.Context) {
+	id := c.Param("id")
+	if database.DB == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database not connected"})
+		return
+	}
+
+	var license models.SoftwareLicense
+	if err := database.DB.First(&license, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Software license not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, license)
 }
 
 func UpdateLedger(c *gin.Context) {
@@ -92,7 +156,7 @@ func UpdateLease(c *gin.Context) {
 		return
 	}
 
-	var item models.LedgerEntry
+	var item models.LeaseAgreement
 	if err := db.First(&item, "id = ?", id).Error; err != nil {
 		c.JSON(404, gin.H{"error": "Item not found"})
 		return
@@ -118,7 +182,7 @@ func DeleteLease(c *gin.Context) {
 		return
 	}
 
-	if err := db.Delete(&models.LedgerEntry{}, "id = ?", id).Error; err != nil {
+	if err := db.Delete(&models.LeaseAgreement{}, "id = ?", id).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Failed to delete"})
 		return
 	}
@@ -133,7 +197,7 @@ func UpdateDepreciation(c *gin.Context) {
 		return
 	}
 
-	var item models.LedgerEntry
+	var item models.DepreciationSchedule
 	if err := db.First(&item, "id = ?", id).Error; err != nil {
 		c.JSON(404, gin.H{"error": "Item not found"})
 		return
@@ -159,7 +223,7 @@ func DeleteDepreciation(c *gin.Context) {
 		return
 	}
 
-	if err := db.Delete(&models.LedgerEntry{}, "id = ?", id).Error; err != nil {
+	if err := db.Delete(&models.DepreciationSchedule{}, "id = ?", id).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Failed to delete"})
 		return
 	}

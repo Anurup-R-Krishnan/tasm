@@ -20,6 +20,22 @@ func GetAlerts(c *gin.Context) {
 	c.JSON(http.StatusOK, alerts)
 }
 
+func GetAlertByID(c *gin.Context) {
+	id := c.Param("id")
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var alert models.SystemAlert
+	if err := db.First(&alert, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Alert not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, alert)
+}
+
 func UpdateAlert(c *gin.Context) {
 	id := c.Param("id")
 	db, ok := requireDB(c)
