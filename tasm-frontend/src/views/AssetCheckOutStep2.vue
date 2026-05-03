@@ -175,6 +175,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { getUsers } from '../api/users';
 
 const router = useRouter();
 const users = ref<any[]>([]);
@@ -185,8 +186,7 @@ const notes = ref('');
 
 const fetchData = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/users');
-    if (res.ok) users.value = await res.json();
+    users.value = (await getUsers()) as any[];
   } catch (err) {
     console.error('Failed to fetch users:', err);
   }

@@ -371,6 +371,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { getSoftwareLicenses } from '../api/software-licenses';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -403,10 +404,7 @@ const annualSpend = computed(() => {
 
 const fetchLicenses = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/software-licenses');
-    if (res.ok) {
-      licenses.value = await res.json();
-    }
+    licenses.value = (await getSoftwareLicenses()) as any[];
   } catch (error) {
     console.error('Failed to fetch licenses:', error);
   } finally {

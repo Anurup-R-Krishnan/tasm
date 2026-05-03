@@ -476,6 +476,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getDepreciations } from '../api/financial';
+import { getWorkOrders } from '../api/workOrders';
 
 const netAssetValue = ref(0);
 const totalDepreciation = ref(0);
@@ -483,26 +485,20 @@ const maintenanceSpend = ref(0);
 
 const fetchMetrics = async () => {
   try {
-    const depRes = await fetch('http://localhost:8080/api/depreciations');
-    if (depRes.ok) {
-      const depreciations = await depRes.json();
-      netAssetValue.value = depreciations.reduce(
-        (sum: number, item: any) => sum + (item.currentValue || 0),
-        0,
-      );
-      totalDepreciation.value = depreciations.reduce(
-        (sum: number, item: any) => sum + ((item.purchaseValue || 0) - (item.currentValue || 0)),
-        0,
-      );
-    }
+    const depreciations = (await getDepreciations()) as any[];
+    netAssetValue.value = depreciations.reduce(
+      (sum: number, item: any) => sum + (item.currentValue || 0),
+      0,
+    );
+    totalDepreciation.value = depreciations.reduce(
+      (sum: number, item: any) => sum + ((item.purchaseValue || 0) - (item.currentValue || 0)),
+      0,
+    );
 
-    const woRes = await fetch('http://localhost:8080/api/work-orders');
-    if (woRes.ok) {
-      const workOrders = await woRes.json();
-      maintenanceSpend.value = workOrders
-        .filter((wo: any) => wo.status === 'Closed')
-        .reduce((sum: number, wo: any) => sum + (wo.cost || 0), 0);
-    }
+    const workOrders = (await getWorkOrders()) as any[];
+    maintenanceSpend.value = workOrders
+      .filter((wo: any) => wo.status === 'Closed')
+      .reduce((sum: number, wo: any) => sum + (wo.cost || 0), 0);
   } catch (error) {
     console.error('Failed to fetch analytics metrics:', error);
   }

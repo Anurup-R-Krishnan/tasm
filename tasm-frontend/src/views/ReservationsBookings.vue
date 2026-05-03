@@ -431,6 +431,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getReservations } from '../api/reservations';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -439,10 +440,7 @@ const loading = ref(true);
 
 const fetchReservations = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/reservations');
-    if (res.ok) {
-      reservations.value = await res.json();
-    }
+    reservations.value = (await getReservations()) as any[];
   } catch (error) {
     console.error('Failed to fetch reservations:', error);
   } finally {

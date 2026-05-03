@@ -176,6 +176,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getDiscrepancies } from '../api/audits';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -184,10 +185,7 @@ const loading = ref(true);
 
 const fetchDiscrepancies = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/discrepancies');
-    if (res.ok) {
-      discrepancies.value = await res.json();
-    }
+    discrepancies.value = (await getDiscrepancies()) as any[];
   } catch (error) {
     console.error('Failed to fetch discrepancies:', error);
   } finally {

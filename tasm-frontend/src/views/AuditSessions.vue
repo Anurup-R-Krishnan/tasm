@@ -291,6 +291,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getAudits } from '../api/audits';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -312,10 +313,7 @@ const loadingAudits = ref(true);
 
 const fetchAudits = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/audits');
-    if (res.ok) {
-      audits.value = await res.json();
-    }
+    audits.value = (await getAudits()) as any[];
   } catch (error) {
     console.error('Failed to fetch audits:', error);
   } finally {

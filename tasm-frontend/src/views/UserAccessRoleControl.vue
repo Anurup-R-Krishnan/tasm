@@ -225,6 +225,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getUsers } from '../api/users';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -244,10 +245,7 @@ const loading = ref(true);
 
 const fetchUsers = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/users');
-    if (res.ok) {
-      users.value = await res.json();
-    }
+    users.value = (await getUsers()) as any[];
   } catch (error) {
     console.error('Failed to fetch users:', error);
   } finally {

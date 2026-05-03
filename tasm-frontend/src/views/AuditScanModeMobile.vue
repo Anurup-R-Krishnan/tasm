@@ -113,16 +113,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getDiscrepancies } from '../api/audits';
 
 const unresolvedExpanded = ref(true);
 const discrepancies = ref<any[]>([]);
 
 const fetchDiscrepancies = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/discrepancies');
-    if (res.ok) {
-      discrepancies.value = await res.json();
-    }
+    discrepancies.value = (await getDiscrepancies()) as any[];
   } catch (err) {
     console.error(err);
   }

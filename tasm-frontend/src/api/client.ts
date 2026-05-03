@@ -13,15 +13,27 @@ class ApiError extends Error {
 }
 
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = localStorage.getItem('tasm_auth_token');
+  const headers: Record<string, string> = {
+    Accept: 'application/json',
+    ...((init?.headers as Record<string, string>) ?? {}),
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
-    headers: {
-      Accept: 'application/json',
-      ...(init?.headers ?? {}),
-    },
+    headers,
   });
 
   if (!response.ok) {
+    if (response.status === 401) {
+      localStorage.removeItem('tasm_auth_token');
+      window.location.href = '/login';
+    }
+
     let message = `Request failed with status ${response.status}`;
 
     try {

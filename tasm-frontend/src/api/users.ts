@@ -7,3 +7,7 @@ export function getUsers(): Promise<any[]> {
 export function getUserById(id: string | number): Promise<any> {
   return apiRequest<any>(`/users/${id}`);
 }
+
+export function deleteUser(id: string | number): Promise<void> {
+  return apiRequest<void>(`/users/${id}`, { method: 'DELETE' });
+}

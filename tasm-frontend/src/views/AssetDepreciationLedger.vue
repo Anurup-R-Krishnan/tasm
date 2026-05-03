@@ -170,6 +170,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getDepreciations } from '../api/financial';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -187,10 +188,7 @@ const loading = ref(true);
 
 const fetchSchedules = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/depreciations');
-    if (res.ok) {
-      schedules.value = await res.json();
-    }
+    schedules.value = (await getDepreciations()) as any[];
   } catch (error) {
     console.error('Failed to fetch depreciation schedules:', error);
   } finally {

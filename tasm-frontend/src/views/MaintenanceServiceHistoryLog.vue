@@ -262,6 +262,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { getWorkOrders, createWorkOrder } from '../api/workOrders';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -303,12 +304,9 @@ const totalSpend = computed(() => {
 
 const fetchLogs = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/work-orders');
-    if (res.ok) {
-      const data: WorkOrder[] = await res.json();
-      // Only show closed work orders in the history log
-      logs.value = data.filter((wo) => wo.status === 'Closed');
-    }
+    const data = (await getWorkOrders()) as any[];
+    // Only show closed work orders in the history log
+    logs.value = data.filter((wo: any) => wo.status === 'Closed');
   } catch (error) {
     console.error('Failed to load logs', error);
   } finally {
@@ -331,16 +329,9 @@ const submitLog = async () => {
   };
 
   try {
-    const res = await fetch('http://localhost:8080/api/work-orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
-      resetForm();
-      await fetchLogs();
-    }
+    await createWorkOrder(payload as any);
+    resetForm();
+    await fetchLogs();
   } catch (err) {
     console.error('Failed to submit log', err);
   } finally {

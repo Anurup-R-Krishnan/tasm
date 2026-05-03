@@ -201,6 +201,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { getContracts } from '../api/financial';
+import { getWorkOrders } from '../api/workOrders';
 
 const contracts = ref<any[]>([]);
 const workOrders = ref<any[]>([]);
@@ -209,12 +211,9 @@ const loading = ref(true);
 const fetchData = async () => {
   loading.value = true;
   try {
-    const [contractRes, orderRes] = await Promise.all([
-      fetch('http://localhost:8080/api/maintenance-contracts'),
-      fetch('http://localhost:8080/api/work-orders'),
-    ]);
-    if (contractRes.ok) contracts.value = await contractRes.json();
-    if (orderRes.ok) workOrders.value = await orderRes.json();
+    const [contractData, orderData] = await Promise.all([getContracts(), getWorkOrders()]);
+    contracts.value = contractData as any[];
+    workOrders.value = orderData as any[];
   } catch (err) {
     console.error('Failed to fetch maintenance data:', err);
   } finally {

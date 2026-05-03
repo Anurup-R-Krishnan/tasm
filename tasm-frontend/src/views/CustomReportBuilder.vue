@@ -405,6 +405,7 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
+import { apiRequest } from '../api/client';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -416,19 +417,15 @@ const fetchReportData = async () => {
   loading.value = true;
   try {
     let endpoint = '';
-    if (selectedEntity.value === 'assets') endpoint = 'http://localhost:8080/api/assets';
-    else if (selectedEntity.value === 'wo') endpoint = 'http://localhost:8080/api/work-orders';
-    else if (selectedEntity.value === 'depreciation')
-      endpoint = 'http://localhost:8080/api/depreciations';
-    else endpoint = 'http://localhost:8080/api/assets';
+    if (selectedEntity.value === 'assets') endpoint = '/assets';
+    else if (selectedEntity.value === 'wo') endpoint = '/work-orders';
+    else if (selectedEntity.value === 'depreciation') endpoint = '/depreciations';
+    else endpoint = '/assets';
 
-    const res = await fetch(endpoint);
-    if (res.ok) {
-      const data = await res.json();
-      reportData.value = data;
-    }
+    const data = await apiRequest<any[]>(endpoint);
+    reportData.value = data;
   } catch (err) {
-    console.error(err);
+    console.error('Failed to load report data:', err);
   } finally {
     loading.value = false;
   }

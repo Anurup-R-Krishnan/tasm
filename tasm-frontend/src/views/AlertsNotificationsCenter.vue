@@ -185,6 +185,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { getAlerts } from '../api/alerts';
 
 interface SystemAlert {
   id: number;
@@ -216,10 +217,7 @@ const counts = computed(() => {
 
 const fetchAlerts = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/alerts');
-    if (res.ok) {
-      alerts.value = await res.json();
-    }
+    alerts.value = (await getAlerts()) as any[];
   } catch (error) {
     console.error('Failed to fetch alerts:', error);
   } finally {

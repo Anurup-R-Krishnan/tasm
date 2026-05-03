@@ -184,6 +184,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { createAsset } from '../api/assets';
 
 const form = ref({
   name: '',
@@ -210,26 +211,15 @@ const generateTagId = () => {
 const submitForm = async () => {
   isSubmitting.value = true;
   try {
-    const res = await fetch('http://localhost:8080/api/assets', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...form.value,
-        purchaseDate: form.value.purchaseDate
-          ? new Date(form.value.purchaseDate).toISOString()
-          : new Date().toISOString(),
-      }),
-    });
-
-    if (res.ok) {
-      alert('Asset created successfully!');
-      // Reset form or navigate away
-    } else {
-      const error = await res.json();
-      alert('Failed to create asset: ' + error.error);
-    }
+    const payload = {
+      ...form.value,
+      purchaseDate: form.value.purchaseDate
+        ? new Date(form.value.purchaseDate).toISOString()
+        : new Date().toISOString(),
+    };
+    await createAsset(payload as any);
+    alert('Asset created successfully!');
+    // Reset form or navigate away
   } catch (error) {
     console.error(error);
     alert('Network error');

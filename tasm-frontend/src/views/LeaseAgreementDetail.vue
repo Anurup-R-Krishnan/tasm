@@ -146,6 +146,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getLeases } from '../api/financial';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -164,10 +165,7 @@ const loading = ref(true);
 
 const fetchLeases = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/leases');
-    if (res.ok) {
-      leases.value = await res.json();
-    }
+    leases.value = (await getLeases()) as any[];
   } catch (error) {
     console.error('Failed to fetch leases:', error);
   } finally {

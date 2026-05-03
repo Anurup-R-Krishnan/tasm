@@ -226,6 +226,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getLocations, createLocation } from '../api/locations';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -242,10 +243,7 @@ const newLocation = ref({
 
 const fetchLocations = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/locations');
-    if (res.ok) {
-      locations.value = await res.json();
-    }
+    locations.value = (await getLocations()) as any[];
   } catch (error) {
     console.error('Failed to fetch locations:', error);
   } finally {
@@ -257,17 +255,9 @@ const addLocation = async () => {
   if (!newLocation.value.name || !newLocation.value.type) return;
 
   try {
-    const res = await fetch('http://localhost:8080/api/locations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newLocation.value),
-    });
-
-    if (res.ok) {
-      const added = await res.json();
-      locations.value.push(added);
-      newLocation.value = { name: '', type: '', address: '', capacity: 0, status: 'Active' };
-    }
+    const added = await createLocation(newLocation.value);
+    locations.value.push(added);
+    newLocation.value = { name: '', type: '', address: '', capacity: 0, status: 'Active' };
   } catch (error) {
     console.error('Failed to create location:', error);
   }

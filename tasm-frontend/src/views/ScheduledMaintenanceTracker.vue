@@ -150,6 +150,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { getWorkOrders } from '../api/workOrders';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -184,10 +185,7 @@ const filteredWorkOrders = computed(() => {
 
 const fetchWorkOrders = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/work-orders');
-    if (res.ok) {
-      workOrders.value = await res.json();
-    }
+    workOrders.value = (await getWorkOrders()) as any[];
   } catch (error) {
     console.error('Failed to load work orders', error);
   } finally {

@@ -286,6 +286,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getLedgers } from '../api/financial';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -304,10 +305,7 @@ const loading = ref(true);
 
 const fetchLedgers = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/ledgers');
-    if (res.ok) {
-      ledgers.value = await res.json();
-    }
+    ledgers.value = (await getLedgers()) as any[];
   } catch (error) {
     console.error('Failed to fetch ledgers:', error);
   } finally {

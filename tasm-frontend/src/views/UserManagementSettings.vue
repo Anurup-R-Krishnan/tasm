@@ -166,6 +166,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getUsers, deleteUser as deleteUserApi } from '../api/users';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -185,10 +186,7 @@ const loading = ref(true);
 
 const fetchUsers = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/users');
-    if (res.ok) {
-      users.value = await res.json();
-    }
+    users.value = (await getUsers()) as any[];
   } catch (error) {
     console.error('Failed to fetch users:', error);
   } finally {
@@ -199,16 +197,11 @@ const fetchUsers = async () => {
 const deleteUser = async (id: number) => {
   if (!confirm('Are you sure you want to delete this user?')) return;
   try {
-    const res = await fetch(`http://localhost:8080/api/users/${id}`, {
-      method: 'DELETE',
-    });
-    if (res.ok) {
-      users.value = users.value.filter((u) => u.id !== id);
-    } else {
-      alert('Failed to delete user');
-    }
+    await deleteUserApi(id);
+    users.value = users.value.filter((u) => u.id !== id);
   } catch (error) {
     console.error('Error deleting user:', error);
+    alert('Failed to delete user');
   }
 };
 

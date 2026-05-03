@@ -191,6 +191,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { getAssets } from '../api/assets';
+import { getLocations } from '../api/locations';
 
 const router = useRouter();
 const assets = ref<any[]>([]);
@@ -202,12 +204,9 @@ const selectedLocations = ref<string[]>([]);
 const fetchInventoryData = async () => {
   loading.value = true;
   try {
-    const [assetsRes, locationsRes] = await Promise.all([
-      fetch('http://localhost:8080/api/assets'),
-      fetch('http://localhost:8080/api/locations'),
-    ]);
-    if (assetsRes.ok) assets.value = await assetsRes.json();
-    if (locationsRes.ok) locations.value = await locationsRes.json();
+    const [assetsData, locationsData] = await Promise.all([getAssets(), getLocations()]);
+    assets.value = assetsData as any[];
+    locations.value = locationsData as any[];
   } catch (err) {
     console.error('Failed to fetch inventory:', err);
   } finally {

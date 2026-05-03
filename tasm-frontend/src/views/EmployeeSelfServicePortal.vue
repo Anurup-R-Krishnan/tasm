@@ -284,6 +284,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getAssets } from '../api/assets';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -292,12 +293,8 @@ const loading = ref(true);
 
 const fetchMyAssets = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/assets');
-    if (res.ok) {
-      // In a real app we would filter by logged in user, mock for now
-      const allAssets = await res.json();
-      myAssets.value = allAssets.slice(0, 3);
-    }
+    const allAssets = (await getAssets()) as any[];
+    myAssets.value = allAssets.slice(0, 3);
   } catch (error) {
     console.error('Failed to fetch assets:', error);
   } finally {

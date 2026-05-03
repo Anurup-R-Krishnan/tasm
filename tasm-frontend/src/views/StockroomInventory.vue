@@ -230,6 +230,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { getLocations } from '../api/locations';
+import { getAssets } from '../api/assets';
 
 const locations = ref<any[]>([]);
 const assets = ref<any[]>([]);
@@ -239,15 +241,10 @@ const loading = ref(true);
 const fetchData = async () => {
   loading.value = true;
   try {
-    const [locRes, assetRes] = await Promise.all([
-      fetch('http://localhost:8080/api/locations'),
-      fetch('http://localhost:8080/api/assets'),
-    ]);
-    if (locRes.ok) {
-      locations.value = await locRes.json();
-      if (locations.value.length > 0) selectedLocation.value = locations.value[0];
-    }
-    if (assetRes.ok) assets.value = await assetRes.json();
+    const [locData, assetData] = await Promise.all([getLocations(), getAssets()]);
+    locations.value = locData as any[];
+    if (locations.value.length > 0) selectedLocation.value = locations.value[0];
+    assets.value = assetData as any[];
   } catch (err) {
     console.error('Failed to fetch stockroom data:', err);
   } finally {

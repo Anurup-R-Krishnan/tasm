@@ -190,6 +190,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { getAssets } from '../api/assets';
 
 interface Asset {
   id: number;
@@ -224,10 +225,7 @@ const selectAsset = (asset: Asset) => {
 
 const fetchAssets = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/assets');
-    if (res.ok) {
-      assets.value = await res.json();
-    }
+    assets.value = (await getAssets()) as any[];
   } catch (error) {
     console.error(error);
   } finally {
