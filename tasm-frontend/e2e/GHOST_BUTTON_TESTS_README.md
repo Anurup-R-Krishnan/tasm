@@ -3,7 +3,9 @@
 ## Test Files Created
 
 ### 1. `ghost-buttons.spec.ts` - Core Tests
+
 Basic ghost button identification and click behavior:
+
 - Ghost button identification by styling
 - Basic click, double-click, keyboard clicks
 - Hover behavior and cursor styles
@@ -13,7 +15,9 @@ Basic ghost button identification and click behavior:
 - Edge cases (out of viewport, modifiers)
 
 ### 2. `ghost-buttons-advanced.spec.ts` - Advanced Scenarios
+
 Complex interaction patterns:
+
 - Button state management and toggling
 - Click timing, delays, race conditions
 - Network/API interaction interception
@@ -27,7 +31,9 @@ Complex interaction patterns:
 - CSS/styling verification
 
 ### 3. `ghost-buttons-comprehensive.spec.ts` - Edge Cases
+
 Thorough edge case coverage:
+
 - Disabled/loading states
 - Buttons with icons and mixed content
 - Route changes on click
@@ -54,7 +60,9 @@ Thorough edge case coverage:
 - Snapshot testing
 
 ### 4. `ghost-buttons-mcp.spec.ts` - MCP Integration
+
 Model Context Protocol specific tests:
+
 - MCP click command execution
 - Locator strategies
 - Screenshot and visual tests
@@ -75,7 +83,9 @@ Model Context Protocol specific tests:
 - Service worker and cache
 
 ### 5. `ghost-buttons-mobile.spec.ts` - Mobile Specific
+
 Mobile and touch interactions:
+
 - Tap on ghost buttons
 - Long press
 - Swipe gestures
@@ -84,7 +94,9 @@ Mobile and touch interactions:
 - Mobile gesture events
 
 ### 6. `ghost-buttons-performance.spec.ts` - Performance
+
 Performance benchmarking:
+
 - Click response time
 - Memory and resource usage
 - Network performance
@@ -92,7 +104,9 @@ Performance benchmarking:
 - Layout thrashing
 
 ### 7. `ghost-buttons-accessibility.spec.ts` - A11y
+
 WCAG compliance and accessibility:
+
 - Color contrast verification
 - Keyboard accessibility
 - Screen reader support
@@ -100,7 +114,9 @@ WCAG compliance and accessibility:
 - ARIA attributes
 
 ### 8. `ghost-buttons-error-handling.spec.ts` - Error Cases
+
 Robust error handling:
+
 - JavaScript errors
 - Network errors (API failures, timeouts)
 - DOM mutations
@@ -110,7 +126,9 @@ Robust error handling:
 - Edge cases (zero dimensions, outside viewport)
 
 ### 9. `ghost-buttons-visual.spec.ts` - Visual Regression
+
 Visual testing:
+
 - Screenshot comparisons
 - CSS property verification
 - Layout verification
@@ -119,7 +137,9 @@ Visual testing:
 - Color contrast verification
 
 ### 10. `ghost-buttons-integration.spec.ts` - Integration
+
 Integration with other components:
+
 - Sidebar navigation
 - Search inputs
 - Dropdowns
@@ -171,14 +191,14 @@ npx playwright test --project=chromium ghost-buttons.spec.ts
 
 ```typescript
 // Primary selectors
-page.getByText('7 Days')
-page.getByText('30 Days')
-page.locator('button.text-text-secondary')
-page.locator('button[class*="hover:text-primary"]')
-page.locator('.rounded-xl.border button')
+page.getByText('7 Days');
+page.getByText('30 Days');
+page.locator('button.text-text-secondary');
+page.locator('button[class*="hover:text-primary"]');
+page.locator('.rounded-xl.border button');
 
 // MCP-specific
-page.getByRole('button', { name: /7 Days|30 Days/ })
+page.getByRole('button', { name: /7 Days|30 Days/ });
 ```
 
 ## Notes
