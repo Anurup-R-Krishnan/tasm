@@ -27,12 +27,14 @@
       </div>
       <div class="flex items-center gap-3">
         <button
+          @click="handlePrint"
           class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-h3 text-h3 hover:bg-surface-subtle transition-colors flex items-center gap-2 shadow-sm -translate-y-0 hover:-translate-y-[1px]"
         >
           <span class="material-symbols-outlined text-[18px]"> print </span>
           Print
         </button>
         <button
+          @click="handleExport"
           class="px-4 py-2 bg-[#1C1917] text-white rounded-lg font-h3 text-h3 hover:bg-stone-800 transition-colors flex items-center gap-2 shadow-sm -translate-y-0 hover:-translate-y-[1px]"
         >
           <span class="material-symbols-outlined text-[18px]"> download </span>
@@ -56,7 +58,9 @@
             payments
           </span>
         </div>
-        <div class="font-kpi-number text-kpi-number text-text-primary">₹1,20,000</div>
+        <div class="font-kpi-number text-kpi-number text-text-primary">
+          ₹{{ totalPurchaseValue.toLocaleString() }}
+        </div>
         <div class="font-metadata text-metadata text-text-secondary mt-1">
           Initial acquisition value
         </div>
@@ -75,7 +79,9 @@
             trending_down
           </span>
         </div>
-        <div class="font-kpi-number text-kpi-number text-error">₹45,000</div>
+        <div class="font-kpi-number text-kpi-number text-error">
+          ₹{{ totalAccumulatedDepreciation.toLocaleString() }}
+        </div>
         <div class="font-metadata text-metadata text-text-secondary mt-1">
           Total written off to date
         </div>
@@ -103,7 +109,7 @@
           </span>
         </div>
         <div class="font-kpi-number text-kpi-number text-status-in-stock relative z-10">
-          ₹75,000
+          ₹{{ totalNetBookValue.toLocaleString() }}
         </div>
         <div class="font-metadata text-metadata text-status-in-stock/80 mt-1 relative z-10">
           Current carrying value
@@ -169,7 +175,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { getDepreciations } from '../api/financial';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -186,14 +192,53 @@ interface DepreciationSchedule {
 const schedules = ref<DepreciationSchedule[]>([]);
 const loading = ref(true);
 
+const totalPurchaseValue = computed(() =>
+  schedules.value.reduce((sum, item) => sum + (item.purchaseValue || 0), 0),
+);
+
+const totalAccumulatedDepreciation = computed(() =>
+  schedules.value.reduce(
+    (sum, item) => sum + ((item.purchaseValue || 0) - (item.currentValue || 0)),
+    0,
+  ),
+);
+
+const totalNetBookValue = computed(() =>
+  schedules.value.reduce((sum, item) => sum + (item.currentValue || 0), 0),
+);
+
 const fetchSchedules = async () => {
+  loading.value = true;
   try {
-    schedules.value = (await getDepreciations()) as any[];
+    const data = await getDepreciations();
+    schedules.value = data as DepreciationSchedule[];
   } catch (error) {
     console.error('Failed to fetch depreciation schedules:', error);
   } finally {
     loading.value = false;
   }
+};
+
+const handleExport = () => {
+  const headers = ['Asset ID', 'Asset Name', 'Purchase Value', 'Current Value', 'Method'];
+  const rows = schedules.value.map((s) => [
+    s.assetId,
+    s.assetName,
+    s.purchaseValue,
+    s.currentValue,
+    s.method,
+  ]);
+
+  const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `depreciation_ledger_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+};
+
+const handlePrint = () => {
+  window.print();
 };
 
 onMounted(() => {

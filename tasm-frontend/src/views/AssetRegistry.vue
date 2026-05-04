@@ -10,12 +10,13 @@
       </div>
       <div class="flex gap-3">
         <button
+          @click="exportToCSV"
           class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
         >
           <span class="material-symbols-outlined text-[18px]">file_download</span>
           Export
         </button>
-        <button class="btn-primary">
+        <button @click="router.push('/add-new-asset-form')" class="btn-primary">
           <span class="material-symbols-outlined">add_circle</span>
           Add Asset
         </button>
@@ -45,32 +46,89 @@
     </div>
 
     <!-- Search & Active Filters -->
-    <div class="premium-card !p-4 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="relative flex-1 w-full max-w-xl">
-        <span
-          class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
-          >search</span
-        >
-        <input
-          v-model="searchQuery"
-          class="w-full bg-surface-subtle border border-border-default rounded-xl py-2 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-          placeholder="Search by name, tag, or custodian..."
-        />
-      </div>
-      <div class="flex items-center gap-4 w-full md:w-auto">
-        <button
-          class="flex items-center gap-2 px-4 py-2 text-xs font-bold text-text-secondary hover:text-primary transition-colors"
-        >
-          <span class="material-symbols-outlined text-sm">filter_list</span>
-          Advanced Filters
-        </button>
-        <div class="h-6 w-px bg-border-default hidden md:block"></div>
-        <div
-          class="text-[10px] font-bold text-text-secondary uppercase tracking-widest hidden md:block"
-        >
-          {{ filteredAssets.length }} results found
+    <div class="space-y-4">
+      <div class="premium-card !p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="relative flex-1 w-full max-w-xl">
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
+            >search</span
+          >
+          <input
+            v-model="searchQuery"
+            class="w-full bg-surface-subtle border border-border-default rounded-xl py-2 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+            placeholder="Search by name, tag, location, or custodian..."
+          />
+        </div>
+        <div class="flex items-center gap-4 w-full md:w-auto">
+          <button
+            @click="toggleAdvancedFilters"
+            class="flex items-center gap-2 px-4 py-2 text-xs font-bold transition-colors"
+            :class="showAdvancedFilters ? 'text-primary' : 'text-text-secondary hover:text-primary'"
+          >
+            <span class="material-symbols-outlined text-sm">filter_list</span>
+            Advanced Filters
+          </button>
+          <div class="h-6 w-px bg-border-default hidden md:block"></div>
+          <div
+            class="text-[10px] font-bold text-text-secondary uppercase tracking-widest hidden md:block"
+          >
+            {{ filteredAssets.length }} assets matching
+          </div>
         </div>
       </div>
+
+      <!-- Advanced Filter Panel -->
+      <transition
+        enter-active-class="transition duration-200 ease-out"
+        enter-from-class="transform -translate-y-2 opacity-0"
+        enter-to-class="transform translate-y-0 opacity-100"
+        leave-active-class="transition duration-150 ease-in"
+        leave-from-class="transform translate-y-0 opacity-100"
+        leave-to-class="transform -translate-y-2 opacity-0"
+      >
+        <div
+          v-if="showAdvancedFilters"
+          class="premium-card !p-6 bg-surface-variant/30 border-primary/10"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold text-text-secondary uppercase tracking-wider"
+                >Category</label
+              >
+              <select
+                class="w-full bg-surface border border-border-default rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+              >
+                <option value="">All Categories</option>
+                <option value="it">IT Equipment</option>
+                <option value="furniture">Furniture</option>
+                <option value="infrastructure">Infrastructure</option>
+              </select>
+            </div>
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold text-text-secondary uppercase tracking-wider"
+                >Location</label
+              >
+              <select
+                class="w-full bg-surface border border-border-default rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+              >
+                <option value="">All Locations</option>
+                <option value="nila">Nila</option>
+                <option value="pampa">Pampa</option>
+                <option value="tejaswini">Tejaswini</option>
+              </select>
+            </div>
+            <div class="md:col-span-2 flex items-end justify-end gap-2">
+              <button
+                @click="showAdvancedFilters = false"
+                class="px-4 py-1.5 text-xs font-bold text-text-secondary hover:bg-surface-variant rounded-lg transition-colors"
+              >
+                Clear Filters
+              </button>
+              <button class="btn-primary !px-6 !py-1.5 !text-xs">Apply Filters</button>
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
 
     <!-- Table Container -->
@@ -162,6 +220,7 @@
                     <span class="material-symbols-outlined text-[18px]">visibility</span>
                   </button>
                   <button
+                    @click="router.push(`/add-new-asset-form?edit=${asset.id}`)"
                     class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm"
                   >
                     <span class="material-symbols-outlined text-[18px]">edit</span>
@@ -199,8 +258,10 @@ const assets = ref<Asset[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const selectedFilter = ref('All');
+const showAdvancedFilters = ref(false);
 
 const fetchAssets = async () => {
+  loading.value = true;
   try {
     assets.value = await getAssets();
   } catch (error) {
@@ -223,7 +284,8 @@ const filteredAssets = computed(() => {
       (a) =>
         a.name.toLowerCase().includes(query) ||
         a.tagId.toLowerCase().includes(query) ||
-        (a.custodian && a.custodian.toLowerCase().includes(query)),
+        (a.custodian && a.custodian.toLowerCase().includes(query)) ||
+        a.location.toLowerCase().includes(query),
     );
   }
 
@@ -278,13 +340,60 @@ const formatDate = (date: string) => {
 };
 
 const deleteAsset = async (id: number) => {
-  if (!confirm('Are you sure you want to delete this asset?')) return;
+  if (!confirm('Are you sure you want to delete this asset? This action is permanent.')) return;
   try {
     await apiDeleteAsset(id);
     assets.value = assets.value.filter((a) => a.id !== id);
+    alert('Asset deleted successfully.');
   } catch (error) {
     console.error('Error deleting asset:', error);
+    alert('Failed to delete asset. Please check permissions.');
   }
+};
+
+const toggleAdvancedFilters = () => {
+  showAdvancedFilters.value = !showAdvancedFilters.value;
+};
+
+const exportToCSV = () => {
+  const headers = [
+    'Name',
+    'Tag ID',
+    'Category',
+    'Status',
+    'Custodian',
+    'Location',
+    'Value',
+    'Warranty',
+  ];
+  const rows = filteredAssets.value.map((a) => [
+    a.name,
+    a.tagId,
+    a.category,
+    a.status,
+    a.custodian || 'Unassigned',
+    a.location,
+    a.value,
+    a.warrantyStatus,
+  ]);
+
+  const csvContent = [
+    headers.join(','),
+    ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
+  ].join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute(
+    'download',
+    `tasm_asset_registry_${new Date().toISOString().split('T')[0]}.csv`,
+  );
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 onMounted(fetchAssets);

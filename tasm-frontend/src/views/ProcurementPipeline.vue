@@ -10,12 +10,13 @@
       </div>
       <div class="flex gap-3">
         <button
+          @click="exportToCSV"
           class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
         >
           <span class="material-symbols-outlined text-[18px]">file_download</span>
           Export Report
         </button>
-        <button class="btn-primary">
+        <button @click="router.push('/add-new-asset-form')" class="btn-primary">
           <span class="material-symbols-outlined">add_shopping_cart</span>
           New Request
         </button>

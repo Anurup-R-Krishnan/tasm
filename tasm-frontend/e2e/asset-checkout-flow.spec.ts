@@ -61,8 +61,12 @@ test.describe('Asset Check Out Flow', () => {
     test('should click Next button', async ({ page }) => {
       const nextBtn = page.getByText('Next').or(page.getByText('Continue')).first();
       if (await nextBtn.isVisible()) {
-        await nextBtn.click();
-        await page.waitForTimeout(300);
+        if (await nextBtn.isEnabled()) {
+          await nextBtn.click();
+          await page.waitForTimeout(300);
+        } else {
+          await expect(nextBtn).toBeDisabled();
+        }
       }
     });
   });

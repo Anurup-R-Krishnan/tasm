@@ -16,6 +16,7 @@
             search
           </span>
           <input
+            v-model="searchQuery"
             class="w-full bg-surface border border-border-default rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             placeholder="Search users..."
             type="text"
@@ -39,34 +40,38 @@
       </div>
       <div class="flex gap-2">
         <select
+          v-model="selectedRole"
           class="bg-surface-subtle border border-border-default rounded-lg px-3 py-1.5 text-sm font-metadata text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         >
           <option value="">All Roles</option>
-          <option value="admin">Admin</option>
-          <option value="asset_manager">Asset Manager</option>
-          <option value="dept_head">Dept Head</option>
-          <option value="finance">Finance</option>
-          <option value="auditor">Auditor</option>
+          <option value="Admin">Admin</option>
+          <option value="Asset Manager">Asset Manager</option>
+          <option value="Dept Head">Dept Head</option>
+          <option value="Finance">Finance</option>
+          <option value="Auditor">Auditor</option>
         </select>
         <select
+          v-model="selectedDepartment"
           class="bg-surface-subtle border border-border-default rounded-lg px-3 py-1.5 text-sm font-metadata text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         >
           <option value="">All Departments</option>
-          <option value="it">IT Services</option>
-          <option value="facilities">Facilities</option>
-          <option value="finance">Finance Dept</option>
-          <option value="hr">Human Resources</option>
+          <option value="IT Services">IT Services</option>
+          <option value="Facilities">Facilities</option>
+          <option value="Finance Dept">Finance Dept</option>
+          <option value="Human Resources">Human Resources</option>
         </select>
         <select
+          v-model="selectedStatus"
           class="bg-surface-subtle border border-border-default rounded-lg px-3 py-1.5 text-sm font-metadata text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         >
           <option value="">Status: All</option>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
         </select>
       </div>
       <div class="ml-auto flex items-center gap-2">
         <button
+          @click="handleExport"
           class="text-text-secondary hover:text-text-primary p-1.5 rounded-md hover:bg-surface-subtle transition-colors"
           title="Export List"
         >
@@ -85,7 +90,7 @@
       class="bg-surface border border-border-default rounded-xl shadow-[0_4px_4px_-4px_rgba(0,0,0,0.05)] overflow-hidden p-4"
     >
       <DataTable
-        :value="users"
+        :value="filteredUsers"
         :loading="loading"
         paginator
         :rows="10"
@@ -165,7 +170,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { getUsers, deleteUser as deleteUserApi } from '../api/users';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -173,8 +178,28 @@ import type { SystemUser } from '../types/models';
 
 const users = ref<SystemUser[]>([]);
 const loading = ref(true);
+const searchQuery = ref('');
+const selectedRole = ref('');
+const selectedDepartment = ref('');
+const selectedStatus = ref('');
+
+const filteredUsers = computed(() => {
+  return users.value.filter((user) => {
+    const matchesSearch =
+      user.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      user.employeeId.toLowerCase().includes(searchQuery.value.toLowerCase());
+
+    const matchesRole = !selectedRole.value || user.role === selectedRole.value;
+    const matchesDept = !selectedDepartment.value || user.department === selectedDepartment.value;
+    const matchesStatus = !selectedStatus.value || user.status === selectedStatus.value;
+
+    return matchesSearch && matchesRole && matchesDept && matchesStatus;
+  });
+});
 
 const fetchUsers = async () => {
+  loading.value = true;
   try {
     users.value = await getUsers();
   } catch (error) {
@@ -193,6 +218,26 @@ const deleteUser = async (id: number) => {
     console.error('Error deleting user:', error);
     alert('Failed to delete user');
   }
+};
+
+const handleExport = () => {
+  const headers = ['Employee ID', 'Name', 'Email', 'Role', 'Department', 'Status', 'Last Login'];
+  const rows = filteredUsers.value.map((u) => [
+    u.employeeId,
+    u.name,
+    u.email,
+    u.role,
+    u.department,
+    u.status,
+    u.lastLogin,
+  ]);
+
+  const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `users_export_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
 };
 
 onMounted(() => {

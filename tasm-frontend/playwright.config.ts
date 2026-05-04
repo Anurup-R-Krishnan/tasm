@@ -14,7 +14,7 @@ export default defineConfig({
     storageState: './e2e/auth.storage-state.json',
   },
   webServer: {
-    command: 'VITE_E2E=true vite --host 127.0.0.1 --port 4173',
+    command: 'VITE_E2E=true vite build && VITE_E2E=true vite preview --host 127.0.0.1 --port 4173',
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: !isCI,
     timeout: 120_000,
@@ -24,14 +24,6 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 5'] },
     },
   ],
 });

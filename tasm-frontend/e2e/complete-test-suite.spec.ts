@@ -43,7 +43,7 @@ test.describe('Complete Test Suite - Master Flow', () => {
 
     // 7. Navigate to Consumables
     await page.getByRole('link', { name: /Consumables/i }).click();
-    await expect(page).toHaveURL(/\/consumables/);
+    await expect(page).toHaveURL(/\/consumables-supplies-tracker$/);
     await page.waitForTimeout(300);
 
     // 8. Navigate to Audit Sessions
@@ -53,31 +53,23 @@ test.describe('Complete Test Suite - Master Flow', () => {
 
     // 9. Navigate to Maintenance
     await page.getByRole('link', { name: /Maintenance/i }).click();
-    await expect(page).toHaveURL(/\/maintenance/);
+    await expect(page).toHaveURL(/\/maintenance-schedule-contracts$/);
     await page.waitForTimeout(300);
 
-    // 10. Navigate to Procurement
-    await page.getByRole('link', { name: /Procurement/i }).click();
-    await expect(page).toHaveURL(/\/procurement/);
+    // 10. Navigate to Financials
+    await page.locator('a[href="/financial-analytics-dashboard"]').click();
+    await expect(page).toHaveURL(/\/financial-analytics-dashboard$/);
     await page.waitForTimeout(300);
 
-    // 11. Navigate to Financials
-    await page.getByRole('link', { name: /Financials/i }).click();
-    await expect(page).toHaveURL(/\/financial/);
-    await page.waitForTimeout(300);
+    // 11. Navigate to Settings
+    const settingsLink = page.locator('a[href="/user-management-settings"]');
+    await settingsLink.scrollIntoViewIfNeeded();
+    await settingsLink.first().click();
+    await expect(page).toHaveURL(/\/user-management-settings$/);
+    await page.waitForTimeout(500);
 
-    // 12. Navigate to Reports
-    await page.getByRole('link', { name: /Reports/i }).click();
-    await expect(page).toHaveURL(/\/reports/);
-    await page.waitForTimeout(300);
-
-    // 13. Navigate to Alerts
-    await page.getByRole('link', { name: /Alerts/i }).click();
-    await expect(page).toHaveURL(/\/alerts/);
-    await page.waitForTimeout(300);
-
-    // 14. Go back to Dashboard
-    await page.getByRole('link', { name: /Dashboard/i }).click();
+    // 12. Go back to Dashboard
+    await page.locator('a[href="/"]').first().click();
     await expect(page).toHaveURL(/\/$/);
     await page.waitForTimeout(300);
 
@@ -104,16 +96,29 @@ test.describe('Complete Test Suite - Master Flow', () => {
     const pages = [
       '/',
       '/asset-registry',
+      '/stockroom-inventory',
       '/consumables-supplies-tracker',
-      '/audit-sessions',
+      '/software-license-registry',
+      '/inventory-card-view',
       '/maintenance-schedule-contracts',
+      '/audit-sessions',
+      '/reservations-bookings',
       '/procurement-pipeline',
-      '/reports-analytics-dashboard',
+      '/financial-analytics-dashboard',
+      '/asset-depreciation-ledger',
+      '/audit-discrepancy-resolution',
+      '/custom-report-builder',
+      '/alerts-notifications-center',
+      '/employee-self-service-portal',
+      '/user-access-role-control',
+      '/user-management-settings',
     ];
 
     for (const url of pages) {
-      await page.goto(url);
-      await page.waitForTimeout(300);
+      console.log(`🚀 Navigating to: ${url}`);
+      await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
+      console.log(`✅ Arrived at: ${url}`);
+      await page.waitForTimeout(500);
 
       const buttons = page.locator('button');
       const count = await buttons.count();

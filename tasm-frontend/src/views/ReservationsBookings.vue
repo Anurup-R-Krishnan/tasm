@@ -12,17 +12,35 @@
         class="flex bg-surface-subtle p-1 rounded-lg border border-border-default self-start w-full md:w-auto overflow-x-auto"
       >
         <button
-          class="px-4 py-1.5 rounded-md bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-border-default font-h3 text-h3 text-text-primary whitespace-nowrap"
+          @click="currentTab = 'Upcoming'"
+          class="px-4 py-1.5 rounded-md font-h3 text-h3 transition-all whitespace-nowrap"
+          :class="
+            currentTab === 'Upcoming'
+              ? 'bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-border-default text-text-primary'
+              : 'text-text-secondary hover:text-text-primary hover:bg-surface/50'
+          "
         >
           Upcoming
         </button>
         <button
-          class="px-4 py-1.5 rounded-md font-body text-body text-text-secondary hover:text-text-primary hover:bg-surface/50 transition-colors whitespace-nowrap"
+          @click="currentTab = 'Past'"
+          class="px-4 py-1.5 rounded-md font-body text-body transition-all whitespace-nowrap"
+          :class="
+            currentTab === 'Past'
+              ? 'bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-border-default text-text-primary'
+              : 'text-text-secondary hover:text-text-primary hover:bg-surface/50'
+          "
         >
           Past
         </button>
         <button
-          class="px-4 py-1.5 rounded-md font-body text-body text-text-secondary hover:text-text-primary hover:bg-surface/50 transition-colors whitespace-nowrap"
+          @click="currentTab = 'My Bookings'"
+          class="px-4 py-1.5 rounded-md font-body text-body transition-all whitespace-nowrap"
+          :class="
+            currentTab === 'My Bookings'
+              ? 'bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-border-default text-text-primary'
+              : 'text-text-secondary hover:text-text-primary hover:bg-surface/50'
+          "
         >
           My Bookings
         </button>
@@ -40,14 +58,16 @@
             class="p-card-padding border-b border-border-default flex items-center justify-between bg-surface-subtle/50"
           >
             <div class="flex items-center gap-4">
-              <h3 class="font-h2 text-h2 text-text-primary">October 12 - 18, 2023</h3>
+              <h3 class="font-h2 text-h2 text-text-primary">{{ calendarRangeText }}</h3>
               <div class="flex gap-1">
                 <button
+                  @click="navigateCalendar('prev')"
                   class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded-md border border-transparent hover:border-border-default transition-all"
                 >
                   <span class="material-symbols-outlined text-[18px]"> chevron_left </span>
                 </button>
                 <button
+                  @click="navigateCalendar('next')"
                   class="p-1 text-text-secondary hover:text-text-primary hover:bg-surface rounded-md border border-transparent hover:border-border-default transition-all"
                 >
                   <span class="material-symbols-outlined text-[18px]"> chevron_right </span>
@@ -73,37 +93,23 @@
             <div class="min-w-[700px]">
               <!-- Calendar Header -->
               <div class="grid grid-cols-7 gap-2 mb-4">
-                <div class="text-center">
-                  <p class="font-metadata text-metadata text-text-secondary uppercase">Mon</p>
-                  <p class="font-h3 text-h3 text-text-primary mt-0.5">12</p>
-                </div>
-                <div class="text-center">
-                  <p class="font-metadata text-metadata text-text-secondary uppercase">Tue</p>
-                  <p class="font-h3 text-h3 text-text-primary mt-0.5">13</p>
-                </div>
-                <div class="text-center">
-                  <p class="font-metadata text-metadata text-primary uppercase">Wed</p>
+                <div v-for="day in calendarDays" :key="day.date" class="text-center">
                   <p
-                    class="font-h3 text-h3 bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center mx-auto mt-0.5"
+                    class="font-metadata text-metadata uppercase"
+                    :class="day.isToday ? 'text-primary' : 'text-text-secondary'"
                   >
-                    14
+                    {{ day.weekday }}
                   </p>
-                </div>
-                <div class="text-center">
-                  <p class="font-metadata text-metadata text-text-secondary uppercase">Thu</p>
-                  <p class="font-h3 text-h3 text-text-primary mt-0.5">15</p>
-                </div>
-                <div class="text-center">
-                  <p class="font-metadata text-metadata text-text-secondary uppercase">Fri</p>
-                  <p class="font-h3 text-h3 text-text-primary mt-0.5">16</p>
-                </div>
-                <div class="text-center">
-                  <p class="font-metadata text-metadata text-text-secondary uppercase">Sat</p>
-                  <p class="font-h3 text-h3 text-text-secondary mt-0.5">17</p>
-                </div>
-                <div class="text-center">
-                  <p class="font-metadata text-metadata text-text-secondary uppercase">Sun</p>
-                  <p class="font-h3 text-h3 text-text-secondary mt-0.5">18</p>
+                  <p
+                    class="font-h3 text-h3 mt-0.5"
+                    :class="
+                      day.isToday
+                        ? 'bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center mx-auto'
+                        : 'text-text-primary'
+                    "
+                  >
+                    {{ day.dayNumber }}
+                  </p>
                 </div>
               </div>
               <!-- Calendar Grid Data -->
@@ -203,7 +209,7 @@
           </div>
           <div class="overflow-x-auto p-4">
             <DataTable
-              :value="reservations"
+              :value="filteredReservations"
               :loading="loading"
               paginator
               :rows="5"
@@ -272,21 +278,25 @@
                   <span
                     class="inline-flex items-center px-2 py-1 rounded-md font-metadata text-metadata border"
                     :class="
-                      slotProps.data.status === 'Active'
+                      slotProps.data.status === 'Confirmed' || slotProps.data.status === 'Active'
                         ? 'bg-metric-sage/50 text-status-in-stock border-metric-sage'
-                        : 'bg-metric-amber/50 text-surface-tint border-metric-amber'
+                        : slotProps.data.status === 'Pending'
+                          ? 'bg-metric-amber/50 text-surface-tint border-metric-amber'
+                          : 'bg-error-container/20 text-status-critical border-error-container/30'
                     "
                   >
-                    {{ slotProps.data.status === 'Active' ? 'Confirmed' : 'Pending Approval' }}
+                    {{ slotProps.data.status }}
                   </span>
                 </template>
               </Column>
               <Column header="Action" alignFrozen="right">
-                <template #body>
+                <template #body="slotProps">
                   <button
-                    class="p-1.5 text-text-secondary hover:text-text-primary rounded-md hover:bg-surface-subtle transition-colors text-right"
+                    @click="handleCancelBooking(slotProps.data.id)"
+                    class="p-1.5 text-error hover:bg-error/10 rounded-md transition-colors"
+                    title="Cancel Booking"
                   >
-                    <span class="material-symbols-outlined text-[20px]"> more_vert </span>
+                    <span class="material-symbols-outlined text-[20px]"> delete </span>
                   </button>
                 </template>
               </Column>
@@ -310,31 +320,33 @@
               <p class="font-metadata text-metadata text-text-secondary">Reserve instantly</p>
             </div>
           </div>
-          <form class="space-y-5" @submit.prevent>
+          <form class="space-y-5" @submit.prevent="handleConfirmBooking">
             <!-- Asset Type -->
             <div class="space-y-2">
               <label class="font-h3 text-h3 text-text-primary block"> Asset Category </label>
               <div class="grid grid-cols-3 gap-2">
                 <button
-                  class="border border-surface-tint bg-surface-container-low text-surface-tint py-2 rounded-lg font-metadata text-metadata flex flex-col items-center gap-1"
+                  v-for="cat in ['Meeting Room', 'Vehicle', 'Equipment']"
+                  :key="cat"
+                  @click="currentCategory = cat"
+                  class="border py-2 rounded-lg font-metadata text-metadata flex flex-col items-center gap-1 transition-all"
+                  :class="
+                    currentCategory === cat
+                      ? 'border-surface-tint bg-surface-container-low text-surface-tint'
+                      : 'border-border-default text-text-secondary hover:border-surface-tint hover:text-surface-tint bg-surface'
+                  "
                   type="button"
                 >
-                  <span class="material-symbols-outlined text-[20px]"> meeting_room </span>
-                  Rooms
-                </button>
-                <button
-                  class="border border-border-default text-text-secondary hover:border-surface-tint hover:text-surface-tint py-2 rounded-lg font-metadata text-metadata flex flex-col items-center gap-1 transition-colors bg-surface"
-                  type="button"
-                >
-                  <span class="material-symbols-outlined text-[20px]"> directions_car </span>
-                  Vehicles
-                </button>
-                <button
-                  class="border border-border-default text-text-secondary hover:border-surface-tint hover:text-surface-tint py-2 rounded-lg font-metadata text-metadata flex flex-col items-center gap-1 transition-colors bg-surface"
-                  type="button"
-                >
-                  <span class="material-symbols-outlined text-[20px]"> print </span>
-                  Equip
+                  <span class="material-symbols-outlined text-[20px]">
+                    {{
+                      cat === 'Meeting Room'
+                        ? 'meeting_room'
+                        : cat === 'Vehicle'
+                          ? 'directions_car'
+                          : 'print'
+                    }}
+                  </span>
+                  {{ cat === 'Meeting Room' ? 'Rooms' : cat === 'Vehicle' ? 'Vehicles' : 'Equip' }}
                 </button>
               </div>
             </div>
@@ -348,8 +360,9 @@
                   search
                 </span>
                 <input
+                  v-model="bookingForm.resourceId"
                   class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface"
-                  placeholder="Search rooms..."
+                  :placeholder="`Search ${currentCategory.toLowerCase()}s...`"
                   type="text"
                 />
               </div>
@@ -364,9 +377,9 @@
                   calendar_today
                 </span>
                 <input
+                  v-model="bookingForm.date"
                   class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
                   type="date"
-                  value="2023-10-14"
                 />
               </div>
             </div>
@@ -381,9 +394,9 @@
                     schedule
                   </span>
                   <input
+                    v-model="bookingForm.startTime"
                     class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
                     type="time"
-                    value="09:00"
                   />
                 </div>
               </div>
@@ -396,9 +409,9 @@
                     schedule
                   </span>
                   <input
+                    v-model="bookingForm.endTime"
                     class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
                     type="time"
-                    value="11:00"
                   />
                 </div>
               </div>
@@ -410,6 +423,7 @@
                 <span class="text-text-secondary font-normal"> (Optional) </span>
               </label>
               <textarea
+                v-model="bookingForm.notes"
                 class="w-full p-3 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface resize-none"
                 placeholder="Brief description..."
                 rows="2"
@@ -417,7 +431,7 @@
             </div>
             <button
               class="w-full bg-[#1C1917] hover:bg-stone-800 text-white font-h3 text-h3 py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-4"
-              type="button"
+              type="submit"
             >
               Confirm Booking
               <span class="material-symbols-outlined text-[18px]"> arrow_forward </span>
@@ -430,23 +444,128 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { getReservations } from '../api/reservations';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type { Reservation } from '../types/models';
+import { useAuth } from '../composables/useAuth';
 
+const { currentUser } = useAuth();
 const reservations = ref<Reservation[]>([]);
 const loading = ref(true);
+const currentTab = ref('Upcoming');
+const currentCategory = ref('Meeting Room');
+
+// Form state for Quick Book
+const bookingForm = ref({
+  resourceId: '',
+  date: new Date().toISOString().split('T')[0],
+  startTime: '09:00',
+  endTime: '11:00',
+  notes: '',
+});
+
+const calendarBaseDate = ref(new Date());
+
+const calendarRangeText = computed(() => {
+  const start = new Date(calendarBaseDate.value);
+  start.setDate(start.getDate() - start.getDay() + 1); // Monday
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6); // Sunday
+
+  const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+  return `${start.toLocaleDateString(undefined, { month: 'long', day: 'numeric' })} - ${end.toLocaleDateString(undefined, options)}`;
+});
+
+const calendarDays = computed(() => {
+  const start = new Date(calendarBaseDate.value);
+  start.setDate(start.getDate() - start.getDay() + 1);
+  const days = [];
+  const today = new Date().toDateString();
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    days.push({
+      date: d.toISOString().split('T')[0],
+      dayNumber: d.getDate(),
+      weekday: d.toLocaleDateString(undefined, { weekday: 'short' }),
+      isToday: d.toDateString() === today,
+    });
+  }
+  return days;
+});
+
+const filteredReservations = computed(() => {
+  const now = new Date();
+  let base = reservations.value;
+
+  if (currentTab.value === 'Upcoming') {
+    return base.filter((r) => new Date(r.startTime) >= now);
+  } else if (currentTab.value === 'Past') {
+    return base.filter((r) => new Date(r.startTime) < now);
+  } else if (currentTab.value === 'My Bookings') {
+    return base.filter(
+      (r) => r.userId === currentUser.value?.id || r.bookedBy === currentUser.value?.name,
+    );
+  }
+  return base;
+});
 
 const fetchReservations = async () => {
+  loading.value = true;
   try {
-    reservations.value = await getReservations();
+    const data = await getReservations();
+    reservations.value = data;
   } catch (error) {
     console.error('Failed to fetch reservations:', error);
   } finally {
     loading.value = false;
   }
+};
+
+const handleConfirmBooking = () => {
+  if (!bookingForm.value.date || !bookingForm.value.resourceId) {
+    alert('Please provide resource name and date.');
+    return;
+  }
+
+  const newBooking = {
+    id: Date.now(),
+    title: bookingForm.value.resourceId,
+    type: currentCategory.value,
+    bookedBy: currentUser.value?.name || 'Current User',
+    startTime: `${bookingForm.value.date}T${bookingForm.value.startTime}:00`,
+    endTime: `${bookingForm.value.date}T${bookingForm.value.endTime}:00`,
+    status: 'Confirmed',
+    location: 'Main Campus',
+  };
+
+  // Simulate API call
+  reservations.value = [newBooking as any, ...reservations.value];
+  alert(`Booking confirmed for ${newBooking.title} on ${bookingForm.value.date}`);
+
+  // Reset form
+  bookingForm.value.resourceId = '';
+  bookingForm.value.notes = '';
+};
+
+const handleCancelBooking = (id: number) => {
+  if (confirm('Are you sure you want to cancel this reservation?')) {
+    reservations.value = reservations.value.filter((r) => r.id !== id);
+    alert('Reservation cancelled successfully.');
+  }
+};
+
+const navigateCalendar = (direction: 'prev' | 'next') => {
+  const newDate = new Date(calendarBaseDate.value);
+  if (direction === 'prev') {
+    newDate.setDate(newDate.getDate() - 7);
+  } else {
+    newDate.setDate(newDate.getDate() + 7);
+  }
+  calendarBaseDate.value = newDate;
 };
 
 onMounted(() => {

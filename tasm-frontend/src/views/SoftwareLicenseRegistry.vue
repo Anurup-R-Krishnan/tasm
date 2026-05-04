@@ -12,6 +12,7 @@
         </div>
         <div class="flex gap-3">
           <button
+            @click="handleExport"
             class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-medium text-sm hover:bg-surface-subtle transition-colors flex items-center gap-2 shadow-sm"
           >
             <span class="material-symbols-outlined text-[18px]"> download </span>
@@ -24,6 +25,7 @@
         <!-- Expiring Licenses -->
         <div
           class="bg-surface border border-border-default rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform cursor-pointer relative overflow-hidden group"
+          @click="currentFilter = 'Expiring Soon'"
         >
           <div
             class="absolute inset-0 bg-gradient-to-br from-[#FFE4E6]/40 to-transparent z-0"
@@ -113,22 +115,55 @@
         <div
           class="p-4 border-b border-border-default flex justify-between items-center bg-surface"
         >
-          <div class="flex gap-2">
-            <button
-              class="px-3 py-1.5 rounded-md bg-surface-variant text-sm font-medium text-text-primary"
-            >
-              All Licenses
-            </button>
-            <button
-              class="px-3 py-1.5 rounded-md hover:bg-stone-50 text-sm font-medium text-stone-600"
-            >
-              Active
-            </button>
-            <button
-              class="px-3 py-1.5 rounded-md hover:bg-stone-50 text-sm font-medium text-stone-600"
-            >
-              Expiring Soon
-            </button>
+          <div class="flex gap-4 items-center">
+            <div class="flex gap-2">
+              <button
+                @click="currentFilter = 'All'"
+                class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors"
+                :class="
+                  currentFilter === 'All'
+                    ? 'bg-surface-variant text-text-primary'
+                    : 'text-text-secondary hover:bg-stone-50'
+                "
+              >
+                All Licenses
+              </button>
+              <button
+                @click="currentFilter = 'Active'"
+                class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors"
+                :class="
+                  currentFilter === 'Active'
+                    ? 'bg-surface-variant text-text-primary'
+                    : 'text-text-secondary hover:bg-stone-50'
+                "
+              >
+                Active
+              </button>
+              <button
+                @click="currentFilter = 'Expiring Soon'"
+                class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors"
+                :class="
+                  currentFilter === 'Expiring Soon'
+                    ? 'bg-surface-variant text-text-primary'
+                    : 'text-text-secondary hover:bg-stone-50'
+                "
+              >
+                Expiring Soon
+              </button>
+            </div>
+            <div class="h-6 w-[1px] bg-border-default mx-2"></div>
+            <div class="relative w-64">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[18px]"
+                >search</span
+              >
+              <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Search licenses..."
+                class="w-full bg-surface-subtle border border-border-default rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-primary transition-all"
+              />
+            </div>
           </div>
           <button class="text-text-secondary hover:text-text-primary">
             <span class="material-symbols-outlined"> filter_list </span>
@@ -136,7 +171,7 @@
         </div>
         <div class="overflow-x-auto flex-1 p-4">
           <DataTable
-            :value="licenses"
+            :value="filteredLicenses"
             :loading="loading"
             paginator
             :rows="10"
@@ -226,15 +261,15 @@
     <!-- Right Drawer (Level 2 Elevation) -->
     <div
       v-if="selectedLicense"
-      class="w-[480px] bg-surface border-l border-border-default shadow-[0_0_24px_rgba(0,0,0,0.05)] rounded-l-2xl h-[calc(100vh-60px-64px)] sticky top-[32px] flex flex-col z-20"
+      class="w-[480px] bg-surface border-l border-border-default shadow-[0_0_24px_rgba(0,0,0,0.05)] rounded-l-2xl h-[calc(100vh-60px-64px)] sticky top-[32px] flex flex-col z-20 animate-fade-in"
     >
       <!-- Drawer Header -->
       <div class="p-6 border-b border-border-default flex justify-between items-start">
         <div class="flex gap-4">
           <div
-            class="w-12 h-12 rounded-lg bg-error-container/10 flex items-center justify-center text-error shadow-sm border border-error-container/20"
+            class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary shadow-sm border border-primary/20"
           >
-            <span class="material-symbols-outlined text-[24px]"> brush </span>
+            <span class="material-symbols-outlined text-[24px]"> cloud </span>
           </div>
           <div>
             <h2 class="font-h2 text-h2 text-text-primary">
@@ -266,100 +301,147 @@
       </div>
       <!-- Drawer Tabs -->
       <div class="px-6 flex gap-6 border-b border-border-default">
-        <button class="py-3 text-sm font-medium border-b-2 border-primary text-primary">
+        <button
+          @click="drawerActiveTab = 'overview'"
+          class="py-3 text-sm font-medium border-b-2 transition-colors"
+          :class="
+            drawerActiveTab === 'overview'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-text-secondary hover:text-text-primary'
+          "
+        >
           Overview
         </button>
         <button
-          class="py-3 text-sm font-medium border-b-2 border-transparent text-text-secondary hover:text-text-primary"
+          @click="drawerActiveTab = 'users'"
+          class="py-3 text-sm font-medium border-b-2 transition-colors"
+          :class="
+            drawerActiveTab === 'users'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-text-secondary hover:text-text-primary'
+          "
         >
-          Assigned Users ({{ selectedLicense.usedSeats }})
+          Assigned Users ({{ assignedUsers.length }})
         </button>
         <button
-          class="py-3 text-sm font-medium border-b-2 border-transparent text-text-secondary hover:text-text-primary"
+          @click="drawerActiveTab = 'invoices'"
+          class="py-3 text-sm font-medium border-b-2 transition-colors"
+          :class="
+            drawerActiveTab === 'invoices'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-text-secondary hover:text-text-primary'
+          "
         >
           Invoices
         </button>
       </div>
-      <!-- Drawer Content (Assigned Users Tab Selected Visually for Demo) -->
+      <!-- Drawer Content -->
       <div class="p-6 flex-1 overflow-y-auto">
-        <div class="flex justify-between items-center mb-4">
-          <div class="relative w-64">
-            <span
-              class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-stone-400 text-[18px]"
+        <div v-if="drawerActiveTab === 'overview'" class="space-y-6 animate-fade-in">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-3 bg-surface-subtle rounded-lg border border-border-default">
+              <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+                Type
+              </p>
+              <p class="text-sm font-medium text-text-primary mt-1">SaaS Subscription</p>
+            </div>
+            <div class="p-3 bg-surface-subtle rounded-lg border border-border-default">
+              <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+                Billing
+              </p>
+              <p class="text-sm font-medium text-text-primary mt-1">Annual Auto-renew</p>
+            </div>
+          </div>
+          <div class="p-4 bg-primary/5 rounded-lg border border-primary/10">
+            <h4 class="text-xs font-bold text-primary uppercase tracking-wider mb-2">
+              Usage Summary
+            </h4>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-text-secondary">Seats Assigned</span>
+              <span class="font-bold text-text-primary"
+                >{{ assignedUsers.length }} / {{ selectedLicense.totalSeats }}</span
+              >
+            </div>
+            <div
+              class="w-full h-2 bg-white rounded-full mt-2 overflow-hidden border border-primary/10"
             >
-              search
-            </span>
-            <input
-              class="w-full bg-surface-subtle border border-border-default rounded-md pl-9 pr-3 py-1.5 text-sm focus:outline-none focus:border-primary"
-              placeholder="Search users..."
-              type="text"
-            />
+              <div
+                class="h-full bg-primary"
+                :style="{ width: (assignedUsers.length / selectedLicense.totalSeats) * 100 + '%' }"
+              ></div>
+            </div>
           </div>
-          <button
-            class="text-primary hover:text-primary-hover text-sm font-medium flex items-center gap-1"
-          >
-            <span class="material-symbols-outlined text-[18px]"> person_add </span>
-            Assign User
-          </button>
         </div>
-        <div class="space-y-3">
-          <!-- User Item -->
-          <div
-            class="flex items-center justify-between p-3 rounded-lg border border-border-default hover:bg-surface-subtle transition-colors"
-          >
-            <div class="flex items-center gap-3">
-              <img
-                alt="Profile"
-                class="w-8 h-8 rounded-full bg-stone-200"
-                data-alt="Corporate headshot of a young professional woman smiling lightly, clean white background"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmhKDZK--iT2dE9l_2_UoPavDyYhL3qieLmskVM9BN4Cgge0yzhYlqs_mUSf4jg4IXsUz0jeNqvpYd-HKgL06JCNEXHo-OPIOku6d3U2KFBDaGxJFhxlNX7cvhqr5htoOA9__vMm783ZLsDncyZqSdl4aj-nokEs-u3Gdy7mKb9UNXYvoeRgH4ScXzC-zQyHoKE4T-gEldE7imFCeN1jEHhE11RM1mEkWV-5XxgI-e3_XDf1wPKhiLdJQhLNPv_G8vfcJEENeaP0ux"
+
+        <div v-if="drawerActiveTab === 'users'" class="space-y-4 animate-fade-in">
+          <div class="flex justify-between items-center mb-4">
+            <div class="relative w-64">
+              <span
+                class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-stone-400 text-[18px]"
+              >
+                search
+              </span>
+              <input
+                v-model="userSearchQuery"
+                class="w-full bg-surface-subtle border border-border-default rounded-md pl-9 pr-3 py-1.5 text-sm focus:outline-none focus:border-primary"
+                placeholder="Search users..."
+                type="text"
               />
-              <div>
-                <div class="text-sm font-medium text-text-primary">Sarah Jenkins</div>
-                <div class="text-xs text-text-secondary">UI/UX Designer • Marketing Team</div>
-              </div>
             </div>
-            <div class="flex items-center gap-3">
-              <span class="text-xs text-stone-500 font-mono-data"> Last Active: 2h ago </span>
+            <button
+              @click="handleAssignUser"
+              class="text-primary hover:text-primary-hover text-sm font-medium flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-[18px]"> person_add </span>
+              Assign User
+            </button>
+          </div>
+          <div class="space-y-3">
+            <div
+              v-for="user in filteredAssignedUsers"
+              :key="user.email"
+              class="flex items-center justify-between p-3 rounded-lg border border-border-default hover:bg-surface-subtle transition-colors group"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center font-bold text-primary text-[10px]"
+                >
+                  {{ user.initials }}
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-text-primary">{{ user.name }}</div>
+                  <div class="text-xs text-text-secondary">
+                    {{ user.dept }} • {{ user.location }}
+                  </div>
+                </div>
+              </div>
               <button
+                @click="handleRevokeUser(user.email)"
                 class="text-stone-400 hover:text-error transition-colors"
-                title="Revoke License"
               >
                 <span class="material-symbols-outlined text-[18px]"> person_remove </span>
               </button>
             </div>
+            <div
+              v-if="filteredAssignedUsers.length === 0"
+              class="text-center py-8 text-text-secondary italic text-sm"
+            >
+              No users found.
+            </div>
           </div>
-          <!-- User Item -->
-          <div
-            class="flex items-center justify-between p-3 rounded-lg border border-border-default hover:bg-surface-subtle transition-colors"
+        </div>
+
+        <div v-if="drawerActiveTab === 'invoices'" class="text-center py-12 animate-fade-in">
+          <span class="material-symbols-outlined text-4xl text-text-secondary/30"
+            >receipt_long</span
           >
-            <div class="flex items-center gap-3">
-              <img
-                alt="Profile"
-                class="w-8 h-8 rounded-full bg-stone-200"
-                data-alt="Corporate headshot of a middle aged man with glasses, professional lighting"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqqaiXZQ-aYrBIl1F2NwbwmZxRS0YiGTmfIboAO-icsvTX5TcNy6Ao7vc5wn3BAPLp15rZ1CRSmQYPF4WOX91knqqzRqhsX-JTGN-nX9B0KPkLIUbuW6Q8p0vdoHwB4dkB4Op3oE5NMA42d3DDNhlBFKUqYoUDG6U2lPWLzaezWPu8A29PlM7l7Mq7hoPDN5-dgJTvgvzxfUZdfx7LJx3z4bjPczjUGAP_Z-tOuVwjfHoYJzjCETMnkTQwmeIJ0B_k3QLNvUumdxKN"
-              />
-              <div>
-                <div class="text-sm font-medium text-text-primary">David Chen</div>
-                <div class="text-xs text-text-secondary">Creative Director • Design Studio</div>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="text-xs text-stone-500 font-mono-data"> Last Active: 1d ago </span>
-              <button
-                class="text-stone-400 hover:text-error transition-colors"
-                title="Revoke License"
-              >
-                <span class="material-symbols-outlined text-[18px]"> person_remove </span>
-              </button>
-            </div>
-          </div>
+          <p class="text-text-secondary text-sm mt-2">No invoices found for this license.</p>
         </div>
       </div>
       <!-- Drawer Footer Action -->
       <div class="p-6 border-t border-border-default bg-surface-subtle rounded-bl-2xl">
         <button
+          @click="handleManageSubscription"
           class="w-full py-2.5 bg-primary text-on-primary rounded-lg font-medium hover:bg-primary-hover transition-colors"
         >
           Manage Subscription
@@ -389,6 +471,36 @@ interface SoftwareLicense {
 const licenses = ref<SoftwareLicense[]>([]);
 const loading = ref(true);
 const selectedLicense = ref<SoftwareLicense | null>(null);
+const currentFilter = ref('All');
+const searchQuery = ref('');
+const drawerActiveTab = ref('overview');
+const userSearchQuery = ref('');
+
+const assignedUsers = ref([
+  {
+    name: 'John Doe',
+    email: 'john.doe@tasm.com',
+    dept: 'Engineering',
+    location: 'Tejaswini',
+    initials: 'JD',
+  },
+  {
+    name: 'Sarah Smith',
+    email: 'sarah.s@tasm.com',
+    dept: 'Design',
+    location: 'Gayathri',
+    initials: 'SS',
+  },
+  { name: 'Mike Ross', email: 'mike.r@tasm.com', dept: 'Legal', location: 'Nila', initials: 'MR' },
+]);
+
+const filteredAssignedUsers = computed(() => {
+  if (!userSearchQuery.value) return assignedUsers.value;
+  const q = userSearchQuery.value.toLowerCase();
+  return assignedUsers.value.filter(
+    (u) => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q),
+  );
+});
 
 const expiringCount = computed(() => {
   return licenses.value.filter((l) => l.status === 'Expiring Soon').length;
@@ -402,13 +514,94 @@ const annualSpend = computed(() => {
   return licenses.value.reduce((sum, l) => sum + l.annualCost, 0);
 });
 
+const filteredLicenses = computed(() => {
+  let result = licenses.value;
+
+  if (currentFilter.value !== 'All') {
+    result = result.filter((l) => l.status === currentFilter.value);
+  }
+
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase();
+    result = result.filter(
+      (l) => l.softwareName.toLowerCase().includes(q) || l.planName.toLowerCase().includes(q),
+    );
+  }
+
+  return result;
+});
+
 const fetchLicenses = async () => {
+  loading.value = true;
   try {
-    licenses.value = (await getSoftwareLicenses()) as any[];
+    const data = await getSoftwareLicenses();
+    licenses.value = data as SoftwareLicense[];
   } catch (error) {
     console.error('Failed to fetch licenses:', error);
   } finally {
     loading.value = false;
+  }
+};
+
+const handleExport = () => {
+  const headers = [
+    'Software',
+    'Plan',
+    'Status',
+    'Total Seats',
+    'Used Seats',
+    'Renewal Date',
+    'Annual Cost',
+  ];
+  const rows = filteredLicenses.value.map((l) => [
+    l.softwareName,
+    l.planName,
+    l.status,
+    l.totalSeats,
+    l.usedSeats,
+    new Date(l.renewalDate).toLocaleDateString(),
+    l.annualCost,
+  ]);
+
+  const csvContent = [
+    headers.join(','),
+    ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
+  ].join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `tasm_software_licenses_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+};
+
+const handleManageSubscription = () => {
+  if (!selectedLicense.value) return;
+  alert(`Redirecting to vendor portal for ${selectedLicense.value.softwareName}...`);
+  // In a real app, this might navigate to a specific subscription management page or open an external link
+};
+
+const handleRevokeUser = (email: string) => {
+  if (confirm(`Are you sure you want to revoke license access for ${email}?`)) {
+    assignedUsers.value = assignedUsers.value.filter((u) => u.email !== email);
+  }
+};
+
+const handleAssignUser = () => {
+  const name = prompt('Enter user name:');
+  const email = prompt('Enter user email:');
+  if (name && email) {
+    assignedUsers.value.push({
+      name,
+      email,
+      dept: 'Unassigned',
+      location: 'Central',
+      initials: name
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase(),
+    });
   }
 };
 

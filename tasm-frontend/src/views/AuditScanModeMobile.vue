@@ -3,6 +3,7 @@
     <!-- Hero: Massive Scan Button -->
     <section class="flex flex-col items-center justify-center py-section-gap">
       <button
+        @click="handleScan"
         class="w-full max-w-sm h-[72px] bg-text-primary text-surface rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] flex items-center justify-center gap-inline active:translate-y-[2px] transition-transform"
       >
         <span
@@ -14,6 +15,7 @@
         <span class="font-h2 text-h2 uppercase tracking-wide"> Scan Asset </span>
       </button>
       <button
+        @click="handleManualEntry"
         class="mt-stack font-body text-body text-text-secondary underline decoration-border-default hover:text-primary transition-colors"
       >
         Enter asset ID manually

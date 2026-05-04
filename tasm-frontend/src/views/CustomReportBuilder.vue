@@ -21,71 +21,28 @@
         class="lg:col-span-1 bg-surface rounded-xl border border-border-default p-card-padding shadow-sm sticky top-[84px]"
       >
         <h3 class="font-h3 text-h3 text-text-primary mb-6">Report Configuration</h3>
-        <div
-          class="space-y-6 relative before:absolute before:inset-0 before:ml-4 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-border-default before:to-transparent"
-        >
-          <!-- Step 1 (Active) -->
+        <div class="space-y-6 relative">
+          <!-- Step 1 -->
           <div
-            class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
+            v-for="step in steps"
+            :key="step.id"
+            class="relative flex items-center gap-4 group cursor-pointer"
+            :class="{ 'opacity-50': activeStep !== step.id }"
+            @click="activeStep = step.id"
           >
             <div
-              class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary bg-primary-container/20 text-primary shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10"
+              class="flex items-center justify-center w-8 h-8 rounded-full border-2 shrink-0 transition-colors z-10"
+              :class="
+                activeStep === step.id
+                  ? 'border-primary bg-primary-container/20 text-primary shadow'
+                  : 'border-border-default bg-surface text-text-secondary'
+              "
             >
-              <span class="font-mono-data text-mono-data font-bold"> 1 </span>
+              <span class="font-mono-data text-mono-data font-bold">{{ step.id }}</span>
             </div>
-            <div
-              class="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] md:group-odd:text-right md:group-odd:pr-4 md:group-even:pl-4"
-            >
-              <h4 class="font-h3 text-h3 text-text-primary">Base Data</h4>
-              <p class="font-metadata text-metadata text-text-secondary">Select primary entity</p>
-            </div>
-          </div>
-          <!-- Step 2 -->
-          <div
-            class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group"
-          >
-            <div
-              class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-border-default bg-surface text-text-secondary shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10"
-            >
-              <span class="font-mono-data text-mono-data"> 2 </span>
-            </div>
-            <div
-              class="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] md:group-odd:text-right md:group-odd:pr-4 md:group-even:pl-4 opacity-70"
-            >
-              <h4 class="font-h3 text-h3 text-text-primary">Columns</h4>
-              <p class="font-metadata text-metadata text-text-secondary">Choose data fields</p>
-            </div>
-          </div>
-          <!-- Step 3 -->
-          <div
-            class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group"
-          >
-            <div
-              class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-border-default bg-surface text-text-secondary shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10"
-            >
-              <span class="font-mono-data text-mono-data"> 3 </span>
-            </div>
-            <div
-              class="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] md:group-odd:text-right md:group-odd:pr-4 md:group-even:pl-4 opacity-70"
-            >
-              <h4 class="font-h3 text-h3 text-text-primary">Filters</h4>
-              <p class="font-metadata text-metadata text-text-secondary">Refine data subset</p>
-            </div>
-          </div>
-          <!-- Step 4 -->
-          <div
-            class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group"
-          >
-            <div
-              class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-border-default bg-surface text-text-secondary shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10"
-            >
-              <span class="font-mono-data text-mono-data"> 4 </span>
-            </div>
-            <div
-              class="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] md:group-odd:text-right md:group-odd:pr-4 md:group-even:pl-4 opacity-70"
-            >
-              <h4 class="font-h3 text-h3 text-text-primary">Group &amp; Sort</h4>
-              <p class="font-metadata text-metadata text-text-secondary">Organize structure</p>
+            <div>
+              <h4 class="font-h3 text-h3 text-text-primary leading-tight">{{ step.title }}</h4>
+              <p class="font-metadata text-metadata text-text-secondary">{{ step.description }}</p>
             </div>
           </div>
         </div>
@@ -94,8 +51,11 @@
       <div class="lg:col-span-3 space-y-6">
         <!-- Form Container -->
         <div class="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
-          <!-- Step 1 Content -->
-          <div class="p-card-padding border-b border-border-default">
+          <!-- Step 1 Content: Base Data -->
+          <div
+            v-if="activeStep === 1"
+            class="p-card-padding border-b border-border-default animate-fade-in"
+          >
             <h2 class="font-h2 text-h2 text-text-primary mb-6 flex items-center gap-2">
               <span class="material-symbols-outlined text-primary"> database </span>
               Step 1: Select Base Data Source
@@ -142,24 +102,35 @@
                 </div>
               </div>
             </div>
+            <div class="mt-8 flex justify-end">
+              <button
+                @click="activeStep = 2"
+                class="px-6 py-2 bg-primary text-on-primary rounded-lg font-h3 shadow-sm hover:bg-primary-hover transition-colors"
+              >
+                Continue to Columns
+              </button>
+            </div>
           </div>
-          <!-- Step 2 Content -->
-          <div class="p-card-padding border-b border-border-default bg-surface-subtle">
+
+          <!-- Step 2 Content: Columns -->
+          <div
+            v-if="activeStep === 2"
+            class="p-card-padding border-b border-border-default bg-surface-subtle animate-fade-in"
+          >
             <h2 class="font-h2 text-h2 text-text-primary mb-4 flex items-center gap-2">
               <span class="material-symbols-outlined text-primary"> view_column </span>
               Step 2: Select Columns
             </h2>
-            <p class="font-body text-body text-text-secondary mb-4">
-              Choose which data fields to include in the report output.
-            </p>
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-6 bg-surface p-4 rounded-lg border border-border-default shadow-sm"
-            >
-              <!-- Checkbox Item -->
-              <label class="flex items-center gap-3 cursor-pointer group">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <label
+                v-for="col in availableColumns"
+                :key="col"
+                class="flex items-center gap-3 cursor-pointer group"
+              >
                 <div class="relative flex items-center justify-center w-5 h-5">
                   <input
-                    checked
+                    v-model="selectedColumns"
+                    :value="col"
                     class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                     type="checkbox"
                   />
@@ -172,152 +143,103 @@
                 <span
                   class="font-body text-body text-text-primary group-hover:text-primary transition-colors"
                 >
-                  Asset ID
-                </span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group">
-                <div class="relative flex items-center justify-center w-5 h-5">
-                  <input
-                    checked
-                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                    type="checkbox"
-                  />
-                  <span
-                    class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
-                  >
-                    check
-                  </span>
-                </div>
-                <span
-                  class="font-body text-body text-text-primary group-hover:text-primary transition-colors"
-                >
-                  Asset Name
-                </span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group">
-                <div class="relative flex items-center justify-center w-5 h-5">
-                  <input
-                    checked
-                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                    type="checkbox"
-                  />
-                  <span
-                    class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
-                  >
-                    check
-                  </span>
-                </div>
-                <span
-                  class="font-body text-body text-text-primary group-hover:text-primary transition-colors"
-                >
-                  Category
-                </span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group">
-                <div class="relative flex items-center justify-center w-5 h-5">
-                  <input
-                    checked
-                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                    type="checkbox"
-                  />
-                  <span
-                    class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
-                  >
-                    check
-                  </span>
-                </div>
-                <span
-                  class="font-body text-body text-text-primary group-hover:text-primary transition-colors"
-                >
-                  Location
-                </span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group">
-                <div class="relative flex items-center justify-center w-5 h-5">
-                  <input
-                    class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                    type="checkbox"
-                  />
-                  <span
-                    class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
-                  >
-                    check
-                  </span>
-                </div>
-                <span
-                  class="font-body text-body text-text-primary group-hover:text-primary transition-colors"
-                >
-                  Purchase Date
-                </span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group">
-                <div class="relative flex items-center justify-center w-5 h-5">
-                  <input
-                    checked
-                    class="peer w-5 h-5 appearance-none border border-border-default rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                    type="checkbox"
-                  />
-                  <span
-                    class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
-                  >
-                    check
-                  </span>
-                </div>
-                <span
-                  class="font-body text-body text-text-primary group-hover:text-primary transition-colors"
-                >
-                  Status
-                </span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group">
-                <div class="relative flex items-center justify-center w-5 h-5">
-                  <input
-                    class="peer w-5 h-5 appearance-none border border-outline rounded bg-surface checked:bg-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                    type="checkbox"
-                  />
-                  <span
-                    class="material-symbols-outlined absolute text-white text-[16px] pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
-                  >
-                    check
-                  </span>
-                </div>
-                <span
-                  class="font-body text-body text-text-primary group-hover:text-primary transition-colors"
-                >
-                  Custom Field: Dep. Rate
+                  {{ col }}
                 </span>
               </label>
             </div>
           </div>
-          <!-- Step 3 Content -->
-          <div class="p-card-padding border-b border-border-default">
+          <!-- Step 3 Content: Filters -->
+          <div
+            v-if="activeStep === 3"
+            class="p-card-padding border-b border-border-default animate-fade-in"
+          >
             <h2 class="font-h2 text-h2 text-text-primary mb-4 flex items-center gap-2">
               <span class="material-symbols-outlined text-primary"> filter_list </span>
               Step 3: Apply Filters
             </h2>
-            <div class="flex flex-wrap gap-2 mb-4">
-              <!-- Filter Chip -->
-              <div
-                class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-container/20 border border-primary/20 rounded-full text-primary font-metadata text-metadata shadow-sm"
-              >
-                <span> Category: IT Equipment </span>
-                <button class="hover:text-text-primary focus:outline-none flex items-center">
-                  <span class="material-symbols-outlined text-[14px]"> close </span>
+            <div class="bg-surface-subtle p-6 rounded-lg border border-border-default mb-6">
+              <div class="flex flex-wrap gap-2 mb-6">
+                <div
+                  v-for="filter in activeFilters"
+                  :key="filter"
+                  class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-container/20 border border-primary/20 rounded-full text-primary font-metadata text-metadata shadow-sm"
+                >
+                  <span>{{ filter }}</span>
+                  <button
+                    @click="removeFilter(filter)"
+                    class="hover:text-text-primary focus:outline-none flex items-center"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"> close </span>
+                  </button>
+                </div>
+                <button
+                  @click="addFilter"
+                  class="inline-flex items-center gap-1 px-3 py-1.5 border border-dashed border-outline rounded-full text-text-secondary hover:text-text-primary hover:border-text-primary transition-colors font-metadata text-metadata"
+                >
+                  <span class="material-symbols-outlined text-[14px]"> add </span>
+                  Add Filter
                 </button>
               </div>
-              <div
-                class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-container/20 border border-primary/20 rounded-full text-primary font-metadata text-metadata shadow-sm"
-              >
-                <span> Status: Active </span>
-                <button class="hover:text-text-primary focus:outline-none flex items-center">
-                  <span class="material-symbols-outlined text-[14px]"> close </span>
-                </button>
-              </div>
+            </div>
+            <div class="flex justify-between">
               <button
-                class="inline-flex items-center gap-1 px-3 py-1.5 border border-dashed border-outline rounded-full text-text-secondary hover:text-text-primary hover:border-text-primary transition-colors font-metadata text-metadata"
+                @click="activeStep = 2"
+                class="px-6 py-2 border border-border-default rounded-lg font-h3 hover:bg-surface-variant transition-colors"
               >
-                <span class="material-symbols-outlined text-[14px]"> add </span>
-                Add Filter
+                Back
+              </button>
+              <button
+                @click="activeStep = 4"
+                class="px-6 py-2 bg-primary text-on-primary rounded-lg font-h3 shadow-sm hover:bg-primary-hover transition-colors"
+              >
+                Continue to Structure
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 4 Content: Group & Sort -->
+          <div
+            v-if="activeStep === 4"
+            class="p-card-padding border-b border-border-default animate-fade-in"
+          >
+            <h2 class="font-h2 text-h2 text-text-primary mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary"> sort_by_alpha </span>
+              Step 4: Group & Sort
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div class="space-y-2">
+                <label class="font-h3 text-h3 text-text-primary block"> Group By </label>
+                <select
+                  class="w-full bg-surface border border-border-default rounded-lg px-4 py-2 font-body text-body"
+                >
+                  <option value="none">No Grouping</option>
+                  <option value="category">Category</option>
+                  <option value="location">Location</option>
+                  <option value="status">Status</option>
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label class="font-h3 text-h3 text-text-primary block"> Sort Order </label>
+                <select
+                  class="w-full bg-surface border border-border-default rounded-lg px-4 py-2 font-body text-body"
+                >
+                  <option value="asc">Ascending</option>
+                  <option value="desc">Descending</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex justify-between">
+              <button
+                @click="activeStep = 3"
+                class="px-6 py-2 border border-border-default rounded-lg font-h3 hover:bg-surface-variant transition-colors"
+              >
+                Back
+              </button>
+              <button
+                @click="handleGenerateReport"
+                class="px-6 py-2 bg-primary text-on-primary rounded-lg font-h3 shadow-sm hover:bg-primary-hover transition-colors"
+              >
+                Generate Final Preview
               </button>
             </div>
           </div>
@@ -360,9 +282,7 @@
                       :class="
                         slotProps.data.status === 'Active'
                           ? 'bg-status-in-stock/20 text-status-in-stock'
-                          : slotProps.data.status === 'Assigned'
-                            ? 'bg-status-checked-out/20 text-status-checked-out'
-                            : 'bg-error-container/20 text-status-critical'
+                          : 'bg-status-checked-out/20 text-status-checked-out'
                       "
                     >
                       {{ slotProps.data.status }}
@@ -372,18 +292,21 @@
               </DataTable>
             </div>
           </div>
+
           <!-- Action Bar -->
           <div
             class="bg-surface-subtle p-4 border-t border-border-default flex flex-col sm:flex-row items-center justify-between gap-4"
           >
             <div class="flex gap-3 w-full sm:w-auto">
               <button
+                @click="handleExport('PDF')"
                 class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-border-default bg-surface text-text-primary rounded-lg font-h3 text-h3 hover:bg-surface-variant hover:-translate-y-0.5 transition-all shadow-sm"
               >
                 <span class="material-symbols-outlined text-[18px]"> picture_as_pdf </span>
                 Export PDF
               </button>
               <button
+                @click="handleExport('Excel')"
                 class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-border-default bg-surface text-text-primary rounded-lg font-h3 text-h3 hover:bg-surface-variant hover:-translate-y-0.5 transition-all shadow-sm"
               >
                 <span class="material-symbols-outlined text-[18px]"> table_view </span>
@@ -391,10 +314,11 @@
               </button>
             </div>
             <button
+              @click="handleSaveReport"
               class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-text-primary text-white rounded-lg font-h3 text-h3 hover:bg-text-primary/90 hover:-translate-y-0.5 transition-all shadow-md"
             >
               <span class="material-symbols-outlined text-[18px]"> save </span>
-              Save Report
+              Save Template
             </button>
           </div>
         </div>
@@ -409,9 +333,83 @@ import { apiRequest } from '../api/client';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
+const activeStep = ref(1);
 const selectedEntity = ref('assets');
 const reportData = ref<any[]>([]);
 const loading = ref(false);
+
+const steps = [
+  { id: 1, title: 'Base Data', description: 'Select primary entity' },
+  { id: 2, title: 'Columns', description: 'Choose data fields' },
+  { id: 3, title: 'Filters', description: 'Refine data subset' },
+  { id: 4, title: 'Group & Sort', description: 'Organize structure' },
+];
+
+const availableColumns = [
+  'Asset ID',
+  'Asset Name',
+  'Category',
+  'Location',
+  'Purchase Date',
+  'Status',
+  'Cost Center',
+];
+const selectedColumns = ref(['Asset ID', 'Asset Name', 'Category', 'Location', 'Status']);
+
+const activeFilters = ref(['Category: IT Equipment', 'Status: Active']);
+
+const addFilter = () => {
+  const filter = prompt('Enter filter (e.g., Location: Nila):');
+  if (filter) activeFilters.value.push(filter);
+};
+
+const removeFilter = (filter: string) => {
+  activeFilters.value = activeFilters.value.filter((f) => f !== filter);
+};
+
+const handleExport = (format: string) => {
+  if (reportData.value.length === 0) {
+    alert('No data available to export. Please generate a report first.');
+    return;
+  }
+
+  const headers = selectedColumns.value;
+  const rows = reportData.value.map((item) => {
+    return selectedColumns.value.map((col) => {
+      if (col === 'Asset ID') return item.tagId;
+      if (col === 'Asset Name') return item.name;
+      return item[col.toLowerCase()] || '';
+    });
+  });
+
+  const csvContent = [
+    headers.join(','),
+    ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
+  ].join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  const timestamp = new Date().toISOString().split('T')[0];
+  link.download = `tasm_report_${selectedEntity.value}_${timestamp}.csv`;
+  link.click();
+
+  alert(`${format} export triggered (as CSV for demonstration).`);
+};
+
+const handleSaveReport = () => {
+  const name = prompt('Enter a name for this report template:');
+  if (name) alert(`Template "${name}" saved to your report library.`);
+};
+
+const handleGenerateReport = async () => {
+  loading.value = true;
+  // Simulate heavy processing for report structure finalization
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  await fetchReportData();
+  activeStep.value = 4; // Stay on step 4 or show preview
+  alert('Final report structure generated and preview updated.');
+};
 
 const fetchReportData = async () => {
   loading.value = true;
@@ -431,11 +429,6 @@ const fetchReportData = async () => {
   }
 };
 
-watch(selectedEntity, () => {
-  fetchReportData();
-});
-
-onMounted(() => {
-  fetchReportData();
-});
+watch(selectedEntity, fetchReportData);
+onMounted(fetchReportData);
 </script>

@@ -1,80 +1,94 @@
 <template>
   <main class="space-y-section-gap pb-24">
     <!-- Header -->
-    <!-- Top Row: Pastel KPI Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-inline">
-      <!-- KPI 1 -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-section-gap">
+      <div>
+        <h2 class="font-h1 text-h1 text-text-primary mb-2">Financial Analytics</h2>
+        <p class="font-body text-body text-text-secondary">
+          Comprehensive overview of asset valuations and maintenance expenditures.
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button
+          @click="handleRefresh"
+          class="p-2 bg-surface text-text-secondary border border-border-default rounded-lg hover:bg-surface-subtle transition-colors"
+          title="Refresh Data"
+          :disabled="loading"
+        >
+          <span class="material-symbols-outlined text-[20px]" :class="{ 'animate-spin': loading }">
+            refresh
+          </span>
+        </button>
+        <button
+          @click="handleExport"
+          class="px-4 py-2 bg-[#1C1917] text-white rounded-lg font-h3 text-h3 hover:bg-stone-800 transition-colors flex items-center gap-2 shadow-sm"
+        >
+          <span class="material-symbols-outlined text-[18px]"> download </span>
+          Export Report
+        </button>
+      </div>
+    </div>
+    <!-- KPI Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-section-gap">
       <div
-        class="bg-metric-amber rounded-xl p-card-padding border border-border-default shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform cursor-pointer"
+        @click="navigateToLedger"
+        class="bg-surface border border-border-default rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform cursor-pointer group"
       >
-        <div class="flex justify-between items-start mb-4">
-          <span class="font-metadata text-metadata text-on-surface-variant font-medium">
+        <div class="flex items-center justify-between mb-4">
+          <span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider">
             Net Asset Value
           </span>
-          <div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary text-[18px]">
-              account_balance
-            </span>
-          </div>
-        </div>
-        <div>
-          <div class="font-kpi-number text-kpi-number text-text-primary">
-            ₹{{ netAssetValue.toLocaleString() }}
-          </div>
-          <div
-            class="flex items-center gap-1 mt-2 text-status-in-stock font-metadata text-metadata"
+          <span
+            class="material-symbols-outlined text-primary-container bg-surface-subtle p-2 rounded-lg"
           >
+            account_balance
+          </span>
+        </div>
+        <div class="font-kpi-number text-kpi-number text-text-primary">
+          ₹{{ netAssetValue.toLocaleString() }}
+        </div>
+        <div class="flex items-center gap-2 mt-2">
+          <span class="text-status-in-stock text-xs font-medium flex items-center gap-0.5">
             <span class="material-symbols-outlined text-[14px]"> trending_up </span>
-            <span> +4.2% from last quarter </span>
-          </div>
+            +4.2%
+          </span>
+          <span class="font-metadata text-[11px] text-text-secondary"> vs last quarter </span>
         </div>
       </div>
-      <!-- KPI 2 -->
       <div
-        class="bg-metric-lavender rounded-xl p-card-padding border border-border-default shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform cursor-pointer"
+        @click="navigateToLedger"
+        class="bg-surface border border-border-default rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform cursor-pointer group"
       >
-        <div class="flex justify-between items-start mb-4">
-          <span class="font-metadata text-metadata text-on-surface-variant font-medium">
+        <div class="flex items-center justify-between mb-4">
+          <span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider">
             Depreciation YTD
           </span>
-          <div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary text-[18px]"> trending_down </span>
-          </div>
+          <span class="material-symbols-outlined text-error bg-error/5 p-2 rounded-lg">
+            trending_down
+          </span>
         </div>
-        <div>
-          <div class="font-kpi-number text-kpi-number text-text-primary">
-            ₹{{ totalDepreciation.toLocaleString() }}
-          </div>
-          <div
-            class="flex items-center gap-1 mt-2 text-status-critical font-metadata text-metadata"
-          >
-            <span class="material-symbols-outlined text-[14px]"> arrow_upward </span>
-            <span> +1.1% vs projected </span>
-          </div>
+        <div class="font-kpi-number text-kpi-number text-text-primary">
+          ₹{{ totalDepreciation.toLocaleString() }}
+        </div>
+        <div class="font-metadata text-[11px] text-text-secondary mt-2">
+          Calculated using Straight-Line method
         </div>
       </div>
-      <!-- KPI 3 -->
       <div
-        class="bg-surface-container-high rounded-xl p-card-padding border border-border-default shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform cursor-pointer"
+        class="bg-metric-sage border border-status-in-stock/10 rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform"
       >
-        <div class="flex justify-between items-start mb-4">
-          <span class="font-metadata text-metadata text-on-surface-variant font-medium">
+        <div class="flex items-center justify-between mb-4">
+          <span
+            class="font-metadata text-metadata text-status-in-stock uppercase tracking-wider font-semibold"
+          >
             Maintenance Spend
           </span>
-          <div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary text-[18px]"> build_circle </span>
-          </div>
+          <span class="material-symbols-outlined text-status-in-stock bg-white/50 p-2 rounded-lg">
+            build
+          </span>
         </div>
-        <div>
-          <div class="font-kpi-number text-kpi-number text-text-primary">
-            ₹{{ maintenanceSpend.toLocaleString() }}
-          </div>
-          <div
-            class="flex items-center gap-1 mt-2 text-status-in-stock font-metadata text-metadata"
-          >
-            <span class="material-symbols-outlined text-[14px]"> arrow_downward </span>
-            <span> -2.4% vs budget </span>
-          </div>
+        <div class="font-kpi-number text-kpi-number text-text-primary">
+          ₹{{ maintenanceSpend.toLocaleString() }}
         </div>
       </div>
       <!-- KPI 4 -->
@@ -396,7 +410,12 @@
             Highest accumulating costs across all categories (YTD)
           </p>
         </div>
-        <button class="text-sm font-medium text-primary hover:underline">View Full Report</button>
+        <button
+          @click="router.push('/custom-report-builder')"
+          class="text-sm font-medium text-primary hover:underline"
+        >
+          View Full Report
+        </button>
       </div>
       <div class="flex flex-col gap-4">
         <!-- Row 1 -->
@@ -476,14 +495,18 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { getDepreciations } from '../api/financial';
 import { getWorkOrders } from '../api/workOrders';
 
+const router = useRouter();
 const netAssetValue = ref(0);
 const totalDepreciation = ref(0);
 const maintenanceSpend = ref(0);
+const loading = ref(false);
 
 const fetchMetrics = async () => {
+  loading.value = true;
   try {
     const depreciations = (await getDepreciations()) as any[];
     netAssetValue.value = depreciations.reduce(
@@ -501,7 +524,33 @@ const fetchMetrics = async () => {
       .reduce((sum: number, wo: any) => sum + (wo.cost || 0), 0);
   } catch (error) {
     console.error('Failed to fetch analytics metrics:', error);
+  } finally {
+    loading.value = false;
   }
+};
+
+const handleExport = () => {
+  const data = [
+    ['Metric', 'Value'],
+    ['Net Asset Value', `₹${netAssetValue.value.toLocaleString()}`],
+    ['Depreciation YTD', `₹${totalDepreciation.value.toLocaleString()}`],
+    ['Maintenance Spend', `₹${maintenanceSpend.value.toLocaleString()}`],
+  ];
+
+  const csvContent = data.map((row) => row.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `tasm_financial_report_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+};
+
+const handleRefresh = () => {
+  fetchMetrics();
+};
+
+const navigateToLedger = () => {
+  router.push({ name: 'AssetDepreciationLedger' });
 };
 
 onMounted(() => {

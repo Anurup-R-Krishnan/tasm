@@ -9,6 +9,7 @@
         </p>
       </div>
       <button
+        @click="router.push('/user-management-settings')"
         class="bg-primary text-on-primary px-4 py-2.5 rounded-lg flex items-center gap-2 font-h3 text-h3 hover:bg-primary/90 transition-colors shadow-sm active:scale-95 duration-150"
       >
         <span class="material-symbols-outlined" style="font-size: 18px"> person_add </span>
@@ -113,6 +114,7 @@
             search
           </span>
           <input
+            v-model="searchQuery"
             class="w-full pl-10 pr-4 py-2 bg-canvas border border-border-default rounded-lg font-body text-body text-text-primary outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all"
             placeholder="Search users by name or email..."
             type="text"
@@ -120,6 +122,7 @@
         </div>
         <div class="h-6 w-px bg-border-default hidden md:block"></div>
         <select
+          v-model="selectedDepartment"
           class="bg-canvas border border-border-default text-text-primary font-body text-body rounded-lg py-2 pl-3 pr-8 outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container appearance-none hidden md:block"
           style="
             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231C1917%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
@@ -129,10 +132,10 @@
           "
         >
           <option value="">All Departments</option>
-          <option value="it">Information Technology</option>
-          <option value="facilities">Facilities Management</option>
-          <option value="finance">Finance &amp; Procurement</option>
-          <option value="hr">Human Resources</option>
+          <option value="Information Technology">Information Technology</option>
+          <option value="Facilities Management">Facilities Management</option>
+          <option value="Finance & Procurement">Finance & Procurement</option>
+          <option value="Human Resources">Human Resources</option>
         </select>
       </div>
       <div class="flex items-center gap-inline w-full md:w-auto">
@@ -143,6 +146,7 @@
           More Filters
         </button>
         <button
+          @click="handleExport"
           class="flex items-center justify-center p-2 border border-border-default rounded-lg text-text-secondary hover:bg-canvas transition-colors"
         >
           <span class="material-symbols-outlined" style="font-size: 20px"> download </span>
@@ -154,7 +158,7 @@
       class="bg-surface border border-border-default rounded-xl overflow-hidden shadow-[0_4px_16px_-4px_rgba(0,0,0,0.02)] p-4"
     >
       <DataTable
-        :value="users"
+        :value="filteredUsers"
         :loading="loading"
         paginator
         :rows="10"
@@ -242,6 +246,27 @@ interface SystemUser {
 
 const users = ref<SystemUser[]>([]);
 const loading = ref(true);
+const searchQuery = ref('');
+const selectedDepartment = ref('');
+
+const filteredUsers = computed(() => {
+  let result = users.value;
+
+  if (selectedDepartment.value) {
+    result = result.filter(
+      (u) => u.department.toLowerCase() === selectedDepartment.value.toLowerCase(),
+    );
+  }
+
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase();
+    result = result.filter(
+      (u) => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q),
+    );
+  }
+
+  return result;
+});
 
 const fetchUsers = async () => {
   try {
@@ -251,6 +276,25 @@ const fetchUsers = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const handleExport = () => {
+  const headers = ['Name', 'Email', 'Role', 'Department', 'Status', 'Last Login'];
+  const rows = filteredUsers.value.map((u) => [
+    u.name,
+    u.email,
+    u.role,
+    u.department,
+    u.status,
+    new Date(u.lastLogin).toLocaleString(),
+  ]);
+
+  const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `tasm_users_export_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
 };
 
 onMounted(() => {

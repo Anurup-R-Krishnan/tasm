@@ -196,6 +196,7 @@
           </div>
           <div class="p-4 bg-surface-subtle/50 border-t border-border-default">
             <button
+              @click="router.push('/asset-depreciation-ledger')"
               class="w-full py-2 bg-white border border-border-default rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-colors shadow-sm"
             >
               View Full Audit Log
@@ -209,10 +210,12 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { getLedgers } from '../api/financial';
 import { getProcurements } from '../api/procurements';
 import type { LedgerEntry, ProcurementRequest } from '../types/models';
 
+const router = useRouter();
 const ledgers = ref<LedgerEntry[]>([]);
 const procurements = ref<ProcurementRequest[]>([]);
 const loading = ref(true);

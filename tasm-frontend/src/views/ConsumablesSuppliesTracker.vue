@@ -7,12 +7,20 @@
       </div>
       <div class="flex gap-3">
         <button
+          @click="exportToCSV"
+          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
+        >
+          <span class="material-symbols-outlined text-[18px]">file_download</span>
+          Export
+        </button>
+        <button
+          @click="router.push('/stockroom-inventory')"
           class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
         >
           <span class="material-symbols-outlined text-[18px]">download</span>
           Receive Stock
         </button>
-        <button class="btn-primary">
+        <button @click="router.push('/asset-check-out-flow')" class="btn-primary">
           <span class="material-symbols-outlined">add_circle</span>
           Issue Consumable
         </button>
@@ -137,9 +145,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { getConsumables, deleteConsumable as apiDeleteConsumable } from '../api/consumables';
 import type { Consumable } from '../types/models';
 
+const router = useRouter();
 const consumables = ref<Consumable[]>([]);
 const loading = ref(true);
 const errorMessage = ref('');
@@ -227,6 +237,25 @@ async function deleteConsumable(id: number): Promise<void> {
     alert('Failed to delete item');
   }
 }
+
+const exportToCSV = () => {
+  const headers = ['Item Name', 'Category', 'Location', 'Current Stock', 'Reorder Level', 'Status'];
+  const rows = filteredConsumables.value.map((item) => [
+    item.name,
+    item.category,
+    item.location,
+    item.currentStock,
+    item.reorderLevel,
+    stockLabel(item),
+  ]);
+
+  const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `consumables_export_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+};
 
 function stockLabel(consumable: Consumable): string {
   if (consumable.currentStock === 0) return 'Out of Stock';

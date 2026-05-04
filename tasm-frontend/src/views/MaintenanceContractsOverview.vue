@@ -87,6 +87,7 @@
         >
           <h2 class="font-h2 text-h2 text-text-primary">Work Order Queue</h2>
           <button
+            @click="router.push('/maintenance-schedule-contracts')"
             class="bg-text-primary text-on-primary font-body text-body px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-sm"
           >
             New Order
@@ -226,7 +227,10 @@
           </div>
         </div>
         <div class="p-4 mt-auto border-t border-border-default text-center">
-          <button class="font-metadata text-metadata text-tertiary hover:underline font-medium">
+          <button
+            @click="router.push('/maintenance-schedule-contracts')"
+            class="font-metadata text-metadata text-tertiary hover:underline font-medium"
+          >
             Manage Contracts
           </button>
         </div>

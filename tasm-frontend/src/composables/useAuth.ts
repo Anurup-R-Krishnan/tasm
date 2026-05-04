@@ -45,11 +45,15 @@ export function useAuth() {
 
   const initAuth = async () => {
     isInitializing.value = true;
-    if (token.value) {
-      if (isE2E) {
-        isInitializing.value = false;
-        return;
+    if (isE2E) {
+      if (!token.value) {
+        setToken('e2e-dummy-token');
       }
+      isInitializing.value = false;
+      return;
+    }
+
+    if (token.value) {
       try {
         const user = await getMe();
         currentUser.value = user;

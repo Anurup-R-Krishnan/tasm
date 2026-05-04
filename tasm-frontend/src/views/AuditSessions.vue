@@ -10,6 +10,7 @@
       </div>
       <button
         class="bg-primary hover:bg-primary-hover text-on-primary rounded font-body text-body py-2 px-5 transition-colors shadow-sm flex items-center gap-2"
+        @click="handleStartAudit"
       >
         <span class="material-symbols-outlined" style="font-size: 18px"> qr_code_scanner </span>
         Start New Audit Session
@@ -23,13 +24,23 @@
         class="px-card-padding py-4 border-b border-border-default bg-surface-subtle flex justify-between items-center"
       >
         <h2 class="font-h2 text-h2 text-text-primary">Recent Audit Sessions</h2>
-        <button class="text-text-secondary hover:text-primary transition-colors">
-          <span class="material-symbols-outlined"> filter_list </span>
-        </button>
+        <div class="flex items-center gap-2">
+          <select
+            v-model="statusFilter"
+            class="bg-surface border border-border-default rounded text-metadata font-metadata text-text-secondary py-1 px-2 focus:ring-1 focus:ring-primary outline-none cursor-pointer"
+          >
+            <option value="all">All Sessions</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <button class="text-text-secondary hover:text-primary transition-colors">
+            <span class="material-symbols-outlined"> filter_list </span>
+          </button>
+        </div>
       </div>
       <div class="overflow-x-auto border-t border-border-default">
         <DataTable
-          :value="audits"
+          :value="filteredAudits"
           :loading="loadingAudits"
           paginator
           :rows="5"
@@ -127,7 +138,10 @@
           </Column>
           <Column header="Action" alignFrozen="right">
             <template #body>
-              <button class="text-primary hover:text-primary-hover font-medium transition-colors">
+              <button
+                class="text-primary hover:text-primary-hover font-medium transition-colors"
+                @click="router.push(`/audit-report/${slotProps.data.sessionId}`)"
+              >
                 View Report
               </button>
             </template>
@@ -137,6 +151,7 @@
       <div class="px-card-padding py-3 border-t border-border-default bg-surface flex justify-end">
         <button
           class="text-text-secondary hover:text-text-primary font-metadata text-metadata transition-colors flex items-center gap-1"
+          @click="statusFilter = 'all'"
         >
           View All Sessions
           <span class="material-symbols-outlined" style="font-size: 16px"> arrow_forward </span>
@@ -146,154 +161,98 @@
     <!-- Section 2: Discrepancy Resolution Queue (Bento/Card layout) -->
     <h2 class="font-h2 text-h2 text-text-primary mb-4">Discrepancy Resolution Queue</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      <!-- Discrepancy Card 1 -->
       <div
+        v-for="discrepancy in discrepancies"
+        :key="discrepancy.id"
         class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_4px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 flex flex-col h-full"
       >
         <div class="flex justify-between items-start mb-4">
           <div class="flex items-center gap-2">
             <span
-              class="material-symbols-outlined text-status-critical bg-error-container p-1.5 rounded-lg"
+              class="material-symbols-outlined p-1.5 rounded-lg"
+              :class="
+                discrepancy.type === 'Missing'
+                  ? 'text-status-critical bg-error-container'
+                  : discrepancy.type === 'Location Mismatch'
+                    ? 'text-primary-container bg-accent-subtle'
+                    : 'text-tertiary bg-tertiary-fixed'
+              "
             >
-              warning
+              {{ discrepancy.icon }}
             </span>
             <span
-              class="font-metadata text-metadata text-status-critical font-medium uppercase tracking-wider"
+              class="font-metadata text-metadata font-medium uppercase tracking-wider"
+              :class="
+                discrepancy.type === 'Missing'
+                  ? 'text-status-critical'
+                  : discrepancy.type === 'Location Mismatch'
+                    ? 'text-primary-container'
+                    : 'text-tertiary'
+              "
             >
-              Missing
+              {{ discrepancy.type }}
             </span>
           </div>
           <span
-            class="text-status-critical font-metadata text-metadata font-bold bg-error-container/20 px-2 py-1 rounded border border-error-container/30"
+            class="font-metadata text-metadata font-bold px-2 py-1 rounded"
+            :class="
+              discrepancy.type === 'Missing'
+                ? 'text-status-critical bg-error-container/20 border border-error-container/30'
+                : discrepancy.type === 'Location Mismatch'
+                  ? 'text-primary-container bg-accent-subtle'
+                  : 'text-tertiary bg-tertiary-fixed'
+            "
           >
-            4 Days
+            {{ discrepancy.duration }}
           </span>
         </div>
-        <h3 class="font-h3 text-h3 text-text-primary mb-1">Dell Latitude 5420</h3>
-        <p class="font-mono-data text-mono-data text-text-secondary mb-4">AST-LPT-8892</p>
+        <h3 class="font-h3 text-h3 text-text-primary mb-1">{{ discrepancy.assetName }}</h3>
+        <p class="font-mono-data text-mono-data text-text-secondary mb-4">
+          {{ discrepancy.assetTag }}
+        </p>
         <div class="bg-surface-subtle p-3 rounded border border-border-default mb-4 flex-1">
           <p class="font-metadata text-metadata text-text-secondary mb-1">Flagged In:</p>
-          <p class="font-body text-body text-text-primary">AUD-2023-11-A (Gayathri - Floor 2)</p>
+          <p class="font-body text-body text-text-primary">{{ discrepancy.flaggedIn }}</p>
+          <p v-if="discrepancy.notes" class="font-metadata text-metadata text-text-secondary mt-2">
+            {{ discrepancy.notes }}
+          </p>
         </div>
         <div class="mt-auto pt-4 border-t border-border-default flex justify-end gap-2">
           <select
+            v-model="discrepancy.selectedAction"
             class="form-select w-full bg-surface border border-[#D6D3CE] rounded text-body font-body text-text-primary py-1.5 px-3 focus:ring-primary focus:border-primary"
           >
-            <option disabled selected value="">Select Action...</option>
-            <option value="confirm">Confirm Location</option>
-            <option value="lost">Mark as Lost</option>
-            <option value="reassign">Reassign Asset</option>
+            <option disabled value="">Select Action...</option>
+            <option v-for="action in discrepancy.actions" :key="action.value" :value="action.value">
+              {{ action.label }}
+            </option>
           </select>
           <button
             class="bg-surface border border-[#D6D3CE] hover:bg-surface-subtle text-text-primary rounded p-1.5 transition-colors flex-shrink-0"
+            @click="handleResolveDiscrepancy(discrepancy.id)"
           >
             <span class="material-symbols-outlined"> check </span>
           </button>
         </div>
       </div>
-      <!-- Discrepancy Card 2 -->
       <div
-        class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_4px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 flex flex-col h-full"
+        v-if="discrepancies.length === 0"
+        class="col-span-full py-12 text-center text-text-secondary italic"
       >
-        <div class="flex justify-between items-start mb-4">
-          <div class="flex items-center gap-2">
-            <span
-              class="material-symbols-outlined text-primary-container bg-accent-subtle p-1.5 rounded-lg"
-            >
-              location_off
-            </span>
-            <span
-              class="font-metadata text-metadata text-primary-container font-medium uppercase tracking-wider"
-            >
-              Location Mismatch
-            </span>
-          </div>
-          <span
-            class="text-primary-container font-metadata text-metadata font-bold bg-accent-subtle px-2 py-1 rounded"
-          >
-            2 Days
-          </span>
-        </div>
-        <h3 class="font-h3 text-h3 text-text-primary mb-1">Herman Miller Aeron</h3>
-        <p class="font-mono-data text-mono-data text-text-secondary mb-4">AST-FUR-1104</p>
-        <div class="bg-surface-subtle p-3 rounded border border-border-default mb-4 flex-1">
-          <p class="font-metadata text-metadata text-text-secondary mb-1">Flagged In:</p>
-          <p class="font-body text-body text-text-primary">AUD-2023-11-A (Gayathri - Floor 2)</p>
-          <p class="font-metadata text-metadata text-text-secondary mt-2">
-            Expected: Nila - Floor 4
-          </p>
-        </div>
-        <div class="mt-auto pt-4 border-t border-border-default flex justify-end gap-2">
-          <select
-            class="form-select w-full bg-surface border border-[#D6D3CE] rounded text-body font-body text-text-primary py-1.5 px-3 focus:ring-primary focus:border-primary"
-          >
-            <option disabled selected value="">Select Action...</option>
-            <option value="confirm">Update Location to Gayathri</option>
-            <option value="lost">Mark for Return to Nila</option>
-          </select>
-          <button
-            class="bg-surface border border-[#D6D3CE] hover:bg-surface-subtle text-text-primary rounded p-1.5 transition-colors flex-shrink-0"
-          >
-            <span class="material-symbols-outlined"> check </span>
-          </button>
-        </div>
-      </div>
-      <!-- Discrepancy Card 3 (Unregistered) -->
-      <div
-        class="bg-surface border border-border-default rounded-xl p-card-padding shadow-[0_4px_4px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 flex flex-col h-full"
-      >
-        <div class="flex justify-between items-start mb-4">
-          <div class="flex items-center gap-2">
-            <span
-              class="material-symbols-outlined text-tertiary bg-tertiary-fixed p-1.5 rounded-lg"
-            >
-              help_center
-            </span>
-            <span
-              class="font-metadata text-metadata text-tertiary font-medium uppercase tracking-wider"
-            >
-              Unregistered
-            </span>
-          </div>
-          <span
-            class="text-tertiary font-metadata text-metadata font-bold bg-tertiary-fixed px-2 py-1 rounded"
-          >
-            1 Day
-          </span>
-        </div>
-        <h3 class="font-h3 text-h3 text-text-primary mb-1">Unknown Cisco Switch</h3>
-        <p class="font-mono-data text-mono-data text-text-secondary mb-4">No Asset Tag</p>
-        <div class="bg-surface-subtle p-3 rounded border border-border-default mb-4 flex-1">
-          <p class="font-metadata text-metadata text-text-secondary mb-1">Flagged In:</p>
-          <p class="font-body text-body text-text-primary">AUD-2023-11-A (Gayathri - Floor 2)</p>
-          <p class="font-metadata text-metadata text-text-secondary mt-2">
-            Notes: Found in network closet G2-B.
-          </p>
-        </div>
-        <div class="mt-auto pt-4 border-t border-border-default flex justify-end gap-2">
-          <select
-            class="form-select w-full bg-surface border border-[#D6D3CE] rounded text-body font-body text-text-primary py-1.5 px-3 focus:ring-primary focus:border-primary"
-          >
-            <option disabled selected value="">Select Action...</option>
-            <option value="register">Register New Asset</option>
-            <option value="ignore">Ignore/Not Asset</option>
-          </select>
-          <button
-            class="bg-surface border border-[#D6D3CE] hover:bg-surface-subtle text-text-primary rounded p-1.5 transition-colors flex-shrink-0"
-          >
-            <span class="material-symbols-outlined"> check </span>
-          </button>
-        </div>
+        All discrepancies resolved.
       </div>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { getAudits } from '../api/audits';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+
+const router = useRouter();
 
 interface AuditSession {
   id: number;
@@ -310,10 +269,82 @@ interface AuditSession {
 
 const audits = ref<AuditSession[]>([]);
 const loadingAudits = ref(true);
+const statusFilter = ref('all');
+
+const discrepancies = ref([
+  {
+    id: 1,
+    type: 'Missing',
+    icon: 'warning',
+    duration: '4 Days',
+    assetName: 'Dell Latitude 5420',
+    assetTag: 'AST-LPT-8892',
+    flaggedIn: 'AUD-2023-11-A (Gayathri - Floor 2)',
+    selectedAction: '',
+    actions: [
+      { label: 'Confirm Location', value: 'confirm' },
+      { label: 'Mark as Lost', value: 'lost' },
+      { label: 'Reassign Asset', value: 'reassign' },
+    ],
+  },
+  {
+    id: 2,
+    type: 'Location Mismatch',
+    icon: 'location_off',
+    duration: '2 Days',
+    assetName: 'Herman Miller Aeron',
+    assetTag: 'AST-FUR-1104',
+    flaggedIn: 'AUD-2023-11-A (Gayathri - Floor 2)',
+    notes: 'Expected: Nila - Floor 4',
+    selectedAction: '',
+    actions: [
+      { label: 'Update Location to Gayathri', value: 'confirm' },
+      { label: 'Mark for Return to Nila', value: 'lost' },
+    ],
+  },
+  {
+    id: 3,
+    type: 'Unregistered',
+    icon: 'help_center',
+    duration: '1 Day',
+    assetName: 'Unknown Cisco Switch',
+    assetTag: 'No Asset Tag',
+    flaggedIn: 'AUD-2023-11-A (Gayathri - Floor 2)',
+    notes: 'Found in network closet G2-B.',
+    selectedAction: '',
+    actions: [
+      { label: 'Register New Asset', value: 'register' },
+      { label: 'Ignore/Not Asset', value: 'ignore' },
+    ],
+  },
+]);
+
+const filteredAudits = computed(() => {
+  if (statusFilter.value === 'all') return audits.value;
+  return audits.value.filter((audit) => audit.status === statusFilter.value);
+});
+
+const handleStartAudit = () => {
+  // Navigate to mobile scan mode as a demonstration of starting a field audit
+  router.push('/audit-scan-mobile');
+};
+
+const handleResolveDiscrepancy = (id: number) => {
+  const discrepancy = discrepancies.value.find((d) => d.id === id);
+  if (!discrepancy?.selectedAction) {
+    alert('Please select an action first.');
+    return;
+  }
+
+  if (confirm(`Resolve ${discrepancy.assetTag} with action: ${discrepancy.selectedAction}?`)) {
+    discrepancies.value = discrepancies.value.filter((d) => d.id !== id);
+  }
+};
 
 const fetchAudits = async () => {
   try {
-    audits.value = (await getAudits()) as any[];
+    const data = await getAudits();
+    audits.value = data as AuditSession[];
   } catch (error) {
     console.error('Failed to fetch audits:', error);
   } finally {

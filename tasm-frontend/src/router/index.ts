@@ -32,7 +32,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  const { currentUser, initAuth, isInitializing } = useAuth();
+  const { initAuth, isInitializing } = useAuth();
 
   // If initializing, wait for it (though initAuth should be called once at app level)
   // For safety, we can ensure it's called or check state.
@@ -40,11 +40,10 @@ router.beforeEach(async (to) => {
     await initAuth();
   }
 
-  const token = localStorage.getItem('tasm_auth_token');
+  const { isAuthenticated } = useAuth();
   const requiresAuth = to.matched.some((record) => record.meta['requiresAuth']);
-  const isAuthenticated = !!currentUser.value || !!token;
 
-  if (requiresAuth && !isAuthenticated) {
+  if (requiresAuth && !isAuthenticated.value) {
     return { name: 'Login' };
   }
 
