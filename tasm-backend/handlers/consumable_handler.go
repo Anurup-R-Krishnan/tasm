@@ -83,20 +83,49 @@ func CreateConsumable(c *gin.Context) {
 }
 
 func UpdateConsumable(c *gin.Context) {
-	id := c.Param("id")
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
 	db, ok := requireDB(c)
 	if !ok {
 		return
 	}
 
 	var item models.Consumable
-	if err := db.First(&item, "id = ?", id).Error; err != nil {
+	if err := db.First(&item, id).Error; err != nil {
 		c.JSON(404, gin.H{"error": "Item not found"})
 		return
 	}
 
-	if err := c.ShouldBindJSON(&item); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+	var payload models.Consumable
+	if !bindJSON(c, &payload) {
+		return
+	}
+
+	if payload.Name != "" {
+		item.Name = trimSpace(payload.Name)
+	}
+	if payload.Category != "" {
+		item.Category = trimSpace(payload.Category)
+	}
+	if payload.Location != "" {
+		item.Location = trimSpace(payload.Location)
+	}
+	if payload.CurrentStock != 0 {
+		item.CurrentStock = payload.CurrentStock
+	}
+	if payload.ReorderLevel != 0 {
+		item.ReorderLevel = payload.ReorderLevel
+	}
+
+	if !requireNonEmpty(c, "name", item.Name) ||
+		!requireNonEmpty(c, "category", item.Category) ||
+		!requireNonEmpty(c, "location", item.Location) {
+		return
+	}
+	if !requireIntPositiveOrZero(c, "currentStock", item.CurrentStock) ||
+		!requireIntPositiveOrZero(c, "reorderLevel", item.ReorderLevel) {
 		return
 	}
 
@@ -109,13 +138,16 @@ func UpdateConsumable(c *gin.Context) {
 }
 
 func DeleteConsumable(c *gin.Context) {
-	id := c.Param("id")
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
 	db, ok := requireDB(c)
 	if !ok {
 		return
 	}
 
-	if err := db.Delete(&models.Consumable{}, "id = ?", id).Error; err != nil {
+	if err := db.Delete(&models.Consumable{}, id).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Failed to delete"})
 		return
 	}
