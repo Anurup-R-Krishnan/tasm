@@ -142,7 +142,7 @@ type SystemUser struct {
 	DeletedAt    gorm.DeletedAt `gorm:"index" json:"-"`
 	EmployeeID   string         `json:"employeeId"`
 	Name         string         `json:"name"`
-	Email        string         `json:"email"`
+	Email        string         `gorm:"uniqueIndex" json:"email"`
 	PasswordHash string         `json:"-"`
 	Department   string         `json:"department"`
 	Role         string         `json:"role"`
