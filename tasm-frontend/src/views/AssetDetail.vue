@@ -252,7 +252,7 @@ const technicalSpecs = computed(() => {
     'Purchase Date': formatDate(asset.value.purchaseDate),
     'Warranty Expiry': formatDate(asset.value.warrantyExpiry),
     'Asset Model': 'Enterprise Edition v2',
-    Manufacturer: 'Dell Technopark Systems',
+    Manufacturer: 'TASM Systems',
     'Network Status': 'Connected',
     'Last Audit': '12 Oct 2025',
   };
