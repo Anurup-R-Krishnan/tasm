@@ -45,6 +45,13 @@
     </div>
 
     <div class="flex items-center gap-inline">
+      <RouterLink
+        to="/audit-scan"
+        class="p-2 text-text-secondary hover:text-primary transition-colors flex items-center"
+        title="Scan Asset QR"
+      >
+        <span class="material-symbols-outlined">qr_code_scanner</span>
+      </RouterLink>
       <button class="p-2 text-text-secondary hover:text-primary transition-colors">
         <span class="material-symbols-outlined">notifications</span>
       </button>

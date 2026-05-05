@@ -1,10 +1,27 @@
 <template>
-  <main class="space-y-section-gap pb-24">
+  <main class="space-y-section-gap pb-24 px-page-margin">
+    <!-- Scanner View -->
+    <section v-if="isScanning" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center">
+      <div class="absolute top-8 left-8 right-8 flex justify-between items-center text-white z-10">
+        <h2 class="font-h2 text-h2">Scan Asset QR</h2>
+        <button @click="isScanning = false" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      
+      <div class="w-full max-w-sm px-6">
+        <QRScanner @result="onScanResult" @error="onScanError" />
+        <p class="text-white/60 text-center mt-6 font-body text-sm px-10">
+          Position the asset QR code within the frame to scan automatically.
+        </p>
+      </div>
+    </section>
+
     <!-- Hero: Massive Scan Button -->
     <section class="flex flex-col items-center justify-center py-section-gap">
       <button
-        @click="handleScan"
-        class="w-full max-w-sm h-[72px] bg-text-primary text-surface rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] flex items-center justify-center gap-inline active:translate-y-[2px] transition-transform"
+        @click="isScanning = true"
+        class="w-full max-w-sm h-[80px] bg-primary text-on-primary rounded-2xl shadow-xl flex items-center justify-center gap-inline active:scale-95 transition-all"
       >
         <span
           class="material-symbols-outlined text-[32px]"
@@ -12,15 +29,17 @@
         >
           qr_code_scanner
         </span>
-        <span class="font-h2 text-h2 uppercase tracking-wide"> Scan Asset </span>
+        <span class="font-h2 text-h2 uppercase tracking-widest"> Start Scanning </span>
       </button>
       <button
         @click="handleManualEntry"
-        class="mt-stack font-body text-body text-text-secondary underline decoration-border-default hover:text-primary transition-colors"
+        class="mt-stack font-metadata text-metadata text-text-secondary uppercase tracking-widest hover:text-primary transition-colors flex items-center gap-1"
       >
+        <span class="material-symbols-outlined text-sm">keyboard</span>
         Enter asset ID manually
       </button>
     </section>
+    
     <!-- Verified Section (Collapsible) -->
     <section class="bg-surface rounded-xl border border-border-default overflow-hidden shadow-sm">
       <div
@@ -118,13 +137,22 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getDiscrepancies } from '../api/audits';
 import type { AuditDiscrepancy } from '../types/models';
+import QRScanner from '../components/QRScanner.vue';
 
 const router = useRouter();
 const unresolvedExpanded = ref(true);
 const discrepancies = ref<AuditDiscrepancy[]>([]);
+const isScanning = ref(false);
 
-const handleScan = () => {
-  router.push('/check-out');
+const onScanResult = (decodedText: string) => {
+  isScanning.value = false;
+  // Assuming the QR code contains the asset ID or tag
+  // Redirect to asset detail or check-out flow
+  router.push({ name: 'AssetDetail', params: { id: decodedText } });
+};
+
+const onScanError = (error: string) => {
+  console.error("Scanner error:", error);
 };
 
 const handleManualEntry = () => {
