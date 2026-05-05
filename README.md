@@ -83,8 +83,6 @@ The system follows a decoupled micro-architecture:
 - API Backend: http://localhost:8080
 - Metrics Dashboard: http://localhost:9090
 
-
-=
 ## License
 
 This project is licensed under the MIT License.
