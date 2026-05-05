@@ -47,10 +47,6 @@ func bindJSON(c *gin.Context, target interface{}) bool {
 	return true
 }
 
-func mapValidationErrors(c *gin.Context, err error) {
-	c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload", "details": err.Error()})
-}
-
 func trimSpace(value string) string {
 	return strings.TrimSpace(value)
 }
@@ -93,27 +89,6 @@ func validateStatus(c *gin.Context, field string, value string, allowed []string
 		"error": field + " must be one of: " + strings.Join(allowed, ", "),
 	})
 	return false
-}
-
-func parseDatePointer(value string) (*time.Time, error) {
-	if strings.TrimSpace(value) == "" {
-		return nil, nil
-	}
-
-	layouts := []string{
-		time.RFC3339,
-		"2006-01-02T15:04:05",
-		"2006-01-02",
-	}
-
-	for _, layout := range layouts {
-		parsed, err := time.Parse(layout, value)
-		if err == nil {
-			return &parsed, nil
-		}
-	}
-
-	return nil, errors.New("invalid date format")
 }
 
 func parseTime(value string) (time.Time, error) {
