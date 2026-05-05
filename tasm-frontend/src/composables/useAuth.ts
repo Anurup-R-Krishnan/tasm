@@ -1,6 +1,5 @@
 import { ref, computed } from 'vue';
-import { login as apiLogin, getMe, type LoginCredentials } from '../api/auth';
-import { useRouter } from 'vue-router';
+import { login as apiLogin, getMe, type LoginCredentials, type AuthResponse } from '../api/auth';
 import type { SystemUser } from '../types/models';
 
 const TOKEN_KEY = 'tasm_auth_token';
@@ -12,8 +11,6 @@ const token = ref<string | null>(localStorage.getItem(TOKEN_KEY));
 const isInitializing = ref(true);
 
 export function useAuth() {
-  const router = useRouter();
-
   const isAuthenticated = computed(() => !!token.value);
 
   const setToken = (newToken: string | null) => {
@@ -27,7 +24,7 @@ export function useAuth() {
 
   const login = async (credentials: LoginCredentials) => {
     try {
-      const response = await apiLogin(credentials);
+      const response: AuthResponse = await apiLogin(credentials);
       setToken(response.token);
       currentUser.value = response.user;
       return true;
@@ -40,7 +37,9 @@ export function useAuth() {
   const logout = () => {
     setToken(null);
     currentUser.value = null;
-    router.push({ name: 'Login' });
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
   };
 
   const initAuth = async () => {

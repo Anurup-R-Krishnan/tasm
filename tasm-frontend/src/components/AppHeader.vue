@@ -21,9 +21,11 @@
           class="w-full bg-surface-subtle border border-border-default rounded-full py-1.5 pl-10 pr-4 text-sm focus:outline-none focus:border-primary/30 transition-all"
           placeholder="Search routes..."
           type="text"
+          @focus="isFocused = true"
+          @blur="isFocused = false"
         />
         <div
-          v-if="filteredRoutes.length > 0"
+          v-if="filteredRoutes.length > 0 && isFocused && (query.length > 0 || isFocused)"
           class="absolute left-0 right-0 top-[calc(100%+8px)] rounded-xl border border-border-default bg-surface shadow-lg overflow-hidden"
         >
           <RouterLink
@@ -50,7 +52,7 @@
         <span class="material-symbols-outlined">help</span>
       </button>
       <RouterLink
-        to="/user-management-settings"
+        to="/settings"
         class="p-2 text-text-secondary hover:text-primary transition-colors"
       >
         <span class="material-symbols-outlined">settings</span>
@@ -80,6 +82,7 @@ import { useAuth } from '../composables/useAuth';
 
 const route = useRoute();
 const query = ref('');
+const isFocused = ref(false);
 const { currentUser } = useAuth();
 
 const currentTitle = computed(() => route.meta['title']?.toString() ?? 'Dashboard');
@@ -99,8 +102,9 @@ const userInitials = computed(() => {
 });
 
 const filteredRoutes = computed(() => {
+  if (!isFocused.value && !query.value) return [];
   const normalizedQuery = query.value.trim().toLowerCase();
-  if (normalizedQuery.length < 2) return [];
+  if (normalizedQuery.length < 2 && !isFocused.value) return [];
   return routeIndex
     .filter((item) => item.title.toLowerCase().includes(normalizedQuery))
     .slice(0, 6);

@@ -20,7 +20,7 @@
     <!-- Action Button -->
     <RouterLink
       class="w-full mb-6 py-2.5 px-4 bg-primary text-on-primary rounded-xl font-bold hover:opacity-90 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
-      to="/add-new-asset-form"
+      to="/add-asset"
     >
       <span class="material-symbols-outlined text-[20px]"> add </span>
       Add Asset

@@ -32,22 +32,17 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  const { initAuth, isInitializing } = useAuth();
-
-  // If initializing, wait for it (though initAuth should be called once at app level)
-  // For safety, we can ensure it's called or check state.
+  const { initAuth, isInitializing, isAuthenticated } = useAuth();
   if (isInitializing.value) {
     await initAuth();
   }
-
-  const { isAuthenticated } = useAuth();
   const requiresAuth = to.matched.some((record) => record.meta['requiresAuth']);
 
   if (requiresAuth && !isAuthenticated.value) {
     return { name: 'Login' };
   }
 
-  if (to.name === 'Login' && isAuthenticated) {
+  if (to.name === 'Login' && isAuthenticated.value) {
     return { name: 'Dashboard' };
   }
 

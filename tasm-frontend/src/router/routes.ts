@@ -19,7 +19,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/Dashboard.vue'),
   },
   {
-    path: 'asset-registry',
+    path: 'inventory',
     name: 'AssetRegistry',
     title: 'Asset Registry',
     icon: 'inventory_2',
@@ -27,7 +27,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/AssetRegistry.vue'),
   },
   {
-    path: 'consumables-supplies-tracker',
+    path: 'consumables',
     name: 'ConsumablesSuppliesTracker',
     title: 'Consumables',
     icon: 'inventory',
@@ -41,7 +41,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/WorkOrderDetail.vue'),
   },
   {
-    path: 'audit-sessions',
+    path: 'audits',
     name: 'AuditSessions',
     title: 'Audit Sessions',
     icon: 'fact_check',
@@ -49,7 +49,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/AuditSessions.vue'),
   },
   {
-    path: 'user-management-settings',
+    path: 'settings',
     name: 'UserManagementSettings',
     title: 'Settings',
     icon: 'settings',
@@ -57,7 +57,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/UserManagementSettings.vue'),
   },
   {
-    path: 'financial-analytics-dashboard',
+    path: 'financials',
     name: 'FinancialAnalyticsDashboard',
     title: 'Financials',
     icon: 'payments',
@@ -65,7 +65,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/FinancialAnalyticsDashboard.vue'),
   },
   {
-    path: 'asset-depreciation-ledger',
+    path: 'depreciation',
     name: 'AssetDepreciationLedger',
     title: 'Depreciation',
     icon: 'trending_down',
@@ -73,7 +73,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/AssetDepreciationLedger.vue'),
   },
   {
-    path: 'software-license-registry',
+    path: 'licenses',
     name: 'SoftwareLicenseRegistry',
     title: 'Licenses',
     icon: 'verified_user',
@@ -81,7 +81,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/SoftwareLicenseRegistry.vue'),
   },
   {
-    path: 'reservations-bookings',
+    path: 'reservations',
     name: 'ReservationsBookings',
     title: 'Reservations',
     icon: 'event_available',
@@ -89,19 +89,21 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/ReservationsBookings.vue'),
   },
   {
-    path: 'asset-detail/:id',
+    path: 'asset/:id',
     name: 'AssetDetail',
     title: 'Asset Detail',
     component: () => import('../views/AssetDetail.vue'),
   },
   {
-    path: 'maintenance-contracts-overview',
+    path: 'maintenance-contracts',
     name: 'MaintenanceContractsOverview',
-    title: 'Maintenance Contracts Overview',
+    title: 'Maintenance Contracts',
+    icon: 'contract_edit',
+    showInSidebar: true,
     component: () => import('../views/MaintenanceContractsOverview.vue'),
   },
   {
-    path: 'user-access-role-control',
+    path: 'roles',
     name: 'UserAccessRoleControl',
     title: 'User Roles',
     icon: 'admin_panel_settings',
@@ -109,7 +111,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/UserAccessRoleControl.vue'),
   },
   {
-    path: 'maintenance-schedule-contracts',
+    path: 'maintenance',
     name: 'MaintenanceScheduleContracts',
     title: 'Maintenance',
     icon: 'build_circle',
@@ -117,13 +119,23 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/MaintenanceScheduleContracts.vue'),
   },
   {
-    path: 'maintenance-service-history-log',
+    path: 'maintenance-tracker',
+    name: 'ScheduledMaintenanceTracker',
+    title: 'Maintenance Tracker',
+    icon: 'event_repeat',
+    showInSidebar: true,
+    component: () => import('../views/ScheduledMaintenanceTracker.vue'),
+  },
+  {
+    path: 'maintenance-history',
     name: 'MaintenanceServiceHistoryLog',
-    title: 'Maintenance Service History Log',
+    title: 'Service History',
+    icon: 'history',
+    showInSidebar: true,
     component: () => import('../views/MaintenanceServiceHistoryLog.vue'),
   },
   {
-    path: 'audit-discrepancy-resolution',
+    path: 'audit-cleanup',
     name: 'AuditDiscrepancyResolution',
     title: 'Audit Cleanup',
     icon: 'rule_folder',
@@ -131,7 +143,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/AuditDiscrepancyResolution.vue'),
   },
   {
-    path: 'custom-report-builder',
+    path: 'report-builder',
     name: 'CustomReportBuilder',
     title: 'Report Builder',
     icon: 'edit_note',
@@ -139,31 +151,37 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/CustomReportBuilder.vue'),
   },
   {
-    path: 'financial-ledger-detail',
+    path: 'financial-ledger',
     name: 'FinancialLedgerDetail',
-    title: 'Financial Ledger Detail',
+    title: 'Financial Ledger',
     component: () => import('../views/FinancialLedgerDetail.vue'),
   },
   {
-    path: 'asset-check-out-flow',
+    path: 'check-out',
     name: 'AssetCheckOutFlow',
-    title: 'Asset Check Out Flow',
+    title: 'Asset Check Out',
     component: () => import('../views/AssetCheckOutFlow.vue'),
+  },
+  {
+    path: 'check-out-assign',
+    name: 'AssetCheckOutStep2',
+    title: 'Check Out Assignment',
+    component: () => import('../views/AssetCheckOutStep2.vue'),
   },
   {
     path: 'lease/:id',
     name: 'LeaseAgreementDetail',
-    title: 'Lease Agreement Detail',
+    title: 'Lease Detail',
     component: () => import('../views/LeaseAgreementDetail.vue'),
   },
   {
     path: 'procurement/:id',
     name: 'ProcurementRequestDetail',
-    title: 'Procurement Request Detail',
+    title: 'Procurement Detail',
     component: () => import('../views/ProcurementRequestDetail.vue'),
   },
   {
-    path: 'procurement-pipeline',
+    path: 'procurement',
     name: 'ProcurementPipeline',
     title: 'Procurement',
     icon: 'shopping_cart',
@@ -171,19 +189,19 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/ProcurementPipeline.vue'),
   },
   {
-    path: 'audit-scan-mode-mobile',
+    path: 'audit-scan',
     name: 'AuditScanModeMobile',
-    title: 'Audit Scan Mode Mobile',
+    title: 'Audit Scan',
     component: () => import('../views/AuditScanModeMobile.vue'),
   },
   {
-    path: 'add-new-asset-form',
+    path: 'add-asset',
     name: 'AddNewAssetForm',
-    title: 'Add New Asset',
+    title: 'Add Asset',
     component: () => import('../views/AddNewAssetForm.vue'),
   },
   {
-    path: 'employee-self-service-portal',
+    path: 'self-service',
     name: 'EmployeeSelfServicePortal',
     title: 'Self Service',
     icon: 'person_pin',
@@ -191,7 +209,15 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/EmployeeSelfServicePortal.vue'),
   },
   {
-    path: 'reports-analytics-dashboard',
+    path: 'setup-wizard',
+    name: 'SetupWizardLocationsConfiguration',
+    title: 'Setup Wizard',
+    icon: 'tune',
+    showInSidebar: true,
+    component: () => import('../views/SetupWizardLocationsConfiguration.vue'),
+  },
+  {
+    path: 'reports',
     name: 'ReportsAnalyticsDashboard',
     title: 'Reports',
     icon: 'analytics',
@@ -199,7 +225,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/ReportsAnalyticsDashboard.vue'),
   },
   {
-    path: 'stockroom-inventory',
+    path: 'stockrooms',
     name: 'StockroomInventory',
     title: 'Stockrooms',
     icon: 'warehouse',
@@ -207,7 +233,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/StockroomInventory.vue'),
   },
   {
-    path: 'inventory-card-view',
+    path: 'inventory-cards',
     name: 'InventoryCardView',
     title: 'Asset Cards',
     icon: 'grid_view',
@@ -215,7 +241,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/InventoryCardView.vue'),
   },
   {
-    path: 'alerts-notifications-center',
+    path: 'alerts',
     name: 'AlertsNotificationsCenter',
     title: 'Alerts',
     icon: 'notifications',
@@ -238,10 +264,12 @@ export const sidebarGroups = [
   {
     name: 'Operations',
     items: [
-      'WorkOrderDetail',
       'MaintenanceScheduleContracts',
+      'ScheduledMaintenanceTracker',
       'AuditSessions',
       'ReservationsBookings',
+      'MaintenanceContractsOverview',
+      'MaintenanceServiceHistoryLog',
     ],
   },
   {
@@ -249,13 +277,16 @@ export const sidebarGroups = [
     items: ['ProcurementPipeline', 'FinancialAnalyticsDashboard', 'AssetDepreciationLedger'],
   },
   {
-    name: 'Compliance',
-    items: ['AuditDiscrepancyResolution', 'CustomReportBuilder'],
+    name: 'Analytics',
+    items: ['ReportsAnalyticsDashboard', 'CustomReportBuilder'],
   },
   {
     name: 'System',
-    items: ['AlertsNotificationsCenter', 'EmployeeSelfServicePortal', 'UserAccessRoleControl'],
+    items: [
+      'AlertsNotificationsCenter',
+      'EmployeeSelfServicePortal',
+      'UserAccessRoleControl',
+      'SetupWizardLocationsConfiguration',
+    ],
   },
 ];
-
-export const sidebarRoutes = appRoutes.filter((route) => route.showInSidebar);

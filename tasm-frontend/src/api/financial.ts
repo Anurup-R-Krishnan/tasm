@@ -3,8 +3,8 @@ import type {
   LedgerEntry,
   LeaseAgreement,
   DepreciationSchedule,
-  SoftwareLicense,
   MaintenanceContract,
+  SoftwareLicense,
 } from '../types/models';
 
 export function getLedgers(): Promise<LedgerEntry[]> {
