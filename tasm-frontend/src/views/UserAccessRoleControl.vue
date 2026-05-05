@@ -9,7 +9,7 @@
         </p>
       </div>
       <button
-        @click="router.push('/user-management-settings')"
+        @click="router.push('/settings')"
         class="bg-primary text-on-primary px-4 py-2.5 rounded-lg flex items-center gap-2 font-h3 text-h3 hover:bg-primary/90 transition-colors shadow-sm active:scale-95 duration-150"
       >
         <span class="material-symbols-outlined" style="font-size: 18px"> person_add </span>
@@ -18,86 +18,29 @@
     </div>
     <!-- Role Metrics Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack mb-section-gap">
-      <!-- Card 1 -->
       <div
+        v-for="role in roleMetrics"
+        :key="role.roleName"
         class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer relative overflow-hidden group"
+        @click="showRoleDetails(role.id)"
       >
         <div
-          class="absolute top-0 right-0 w-24 h-24 bg-metric-amber/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"
+          class="absolute top-0 right-0 w-24 h-24 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"
+          :class="role.accent"
         ></div>
         <div class="flex items-center gap-3 mb-4 relative z-10">
-          <div
-            class="w-10 h-10 rounded-lg bg-metric-amber flex items-center justify-center text-surface-tint"
-          >
-            <span class="material-symbols-outlined"> shield_person </span>
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" :class="role.iconBg">
+            <span class="material-symbols-outlined" :class="role.iconColor"> {{ role.icon }} </span>
           </div>
-          <span class="font-h3 text-h3 text-text-primary"> Administrators </span>
+          <span class="font-h3 text-h3 text-text-primary"> {{ role.roleName }} </span>
         </div>
         <div class="relative z-10">
-          <div class="font-kpi-number text-kpi-number text-text-primary mb-1">12</div>
+          <div class="font-kpi-number text-kpi-number text-text-primary mb-1">
+            {{ role.usersCount }}
+          </div>
           <p class="font-metadata text-metadata text-text-secondary">
-            Full system access &amp; settings
+            {{ role.description }}
           </p>
-        </div>
-      </div>
-      <!-- Card 2 -->
-      <div
-        class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer relative overflow-hidden group"
-      >
-        <div
-          class="absolute top-0 right-0 w-24 h-24 bg-metric-sage/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"
-        ></div>
-        <div class="flex items-center gap-3 mb-4 relative z-10">
-          <div
-            class="w-10 h-10 rounded-lg bg-metric-sage flex items-center justify-center text-status-in-stock"
-          >
-            <span class="material-symbols-outlined"> assignment_ind </span>
-          </div>
-          <span class="font-h3 text-h3 text-text-primary"> Asset Managers </span>
-        </div>
-        <div class="relative z-10">
-          <div class="font-kpi-number text-kpi-number text-text-primary mb-1">48</div>
-          <p class="font-metadata text-metadata text-text-secondary">Write access for inventory</p>
-        </div>
-      </div>
-      <!-- Card 3 -->
-      <div
-        class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer relative overflow-hidden group"
-      >
-        <div
-          class="absolute top-0 right-0 w-24 h-24 bg-tertiary-fixed/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"
-        ></div>
-        <div class="flex items-center gap-3 mb-4 relative z-10">
-          <div
-            class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary"
-          >
-            <span class="material-symbols-outlined"> engineering </span>
-          </div>
-          <span class="font-h3 text-h3 text-text-primary"> IT Technicians </span>
-        </div>
-        <div class="relative z-10">
-          <div class="font-kpi-number text-kpi-number text-text-primary mb-1">36</div>
-          <p class="font-metadata text-metadata text-text-secondary">Maintenance &amp; ticketing</p>
-        </div>
-      </div>
-      <!-- Card 4 -->
-      <div
-        class="bg-surface rounded-xl border border-border-default p-card-padding shadow-[0_4px_16px_-4px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer relative overflow-hidden group"
-      >
-        <div
-          class="absolute top-0 right-0 w-24 h-24 bg-metric-lavender/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"
-        ></div>
-        <div class="flex items-center gap-3 mb-4 relative z-10">
-          <div
-            class="w-10 h-10 rounded-lg bg-metric-lavender flex items-center justify-center text-secondary"
-          >
-            <span class="material-symbols-outlined"> visibility </span>
-          </div>
-          <span class="font-h3 text-h3 text-text-primary"> Auditors </span>
-        </div>
-        <div class="relative z-10">
-          <div class="font-kpi-number text-kpi-number text-text-primary mb-1">8</div>
-          <p class="font-metadata text-metadata text-text-secondary">Global read-only access</p>
         </div>
       </div>
     </div>
@@ -228,23 +171,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { getUsers } from '../api/users';
+import { getRoles, getRoleById } from '../api/roles';
+import type { UserRole } from '../types/models';
+import type { SystemUser } from '../types/models';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
-interface SystemUser {
-  id: number;
-  employeeId: string;
-  name: string;
-  email: string;
-  department: string;
-  role: string;
-  status: string;
-  lastLogin: string;
-}
+const router = useRouter();
 
 const users = ref<SystemUser[]>([]);
+const roles = ref<UserRole[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const selectedDepartment = ref('');
@@ -278,6 +217,58 @@ const fetchUsers = async () => {
   }
 };
 
+const fetchRoles = async () => {
+  try {
+    roles.value = await getRoles();
+  } catch (error) {
+    console.error('Failed to fetch roles:', error);
+  }
+};
+
+const showRoleDetails = async (roleId: number) => {
+  try {
+    const role = await getRoleById(roleId);
+    alert(`${role.roleName}\n${role.description}\nUsers: ${role.usersCount}`);
+  } catch (error) {
+    console.error('Failed to load role details:', error);
+    alert('Failed to load role details');
+  }
+};
+
+const roleMetrics = computed(() => {
+  const palette = [
+    {
+      accent: 'bg-metric-amber/30',
+      iconBg: 'bg-metric-amber',
+      iconColor: 'text-surface-tint',
+      icon: 'shield_person',
+    },
+    {
+      accent: 'bg-metric-sage/30',
+      iconBg: 'bg-metric-sage',
+      iconColor: 'text-status-in-stock',
+      icon: 'assignment_ind',
+    },
+    {
+      accent: 'bg-tertiary-fixed/30',
+      iconBg: 'bg-tertiary-fixed',
+      iconColor: 'text-tertiary',
+      icon: 'engineering',
+    },
+    {
+      accent: 'bg-metric-lavender/30',
+      iconBg: 'bg-metric-lavender',
+      iconColor: 'text-secondary',
+      icon: 'visibility',
+    },
+  ];
+
+  return roles.value.map((role, index) => ({
+    ...role,
+    ...palette[index % palette.length],
+  }));
+});
+
 const handleExport = () => {
   const headers = ['Name', 'Email', 'Role', 'Department', 'Status', 'Last Login'];
   const rows = filteredUsers.value.map((u) => [
@@ -299,5 +290,6 @@ const handleExport = () => {
 
 onMounted(() => {
   fetchUsers();
+  fetchRoles();
 });
 </script>

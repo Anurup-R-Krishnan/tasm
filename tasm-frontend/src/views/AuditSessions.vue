@@ -140,7 +140,7 @@
             <template #body>
               <button
                 class="text-primary hover:text-primary-hover font-medium transition-colors"
-                @click="router.push(`/audit-report/${slotProps.data.sessionId}`)"
+                @click="router.push('/audit-cleanup')"
               >
                 View Report
               </button>
@@ -251,23 +251,19 @@ import { useRouter } from 'vue-router';
 import { getAudits } from '../api/audits';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import type { AuditSession as AuditSessionModel } from '../types/models';
 
 const router = useRouter();
 
-interface AuditSession {
-  id: number;
+interface AuditSessionRow extends AuditSessionModel {
   sessionId: string;
-  title: string;
-  status: string;
-  auditor: string;
   location: string;
   verifiedPercent: number;
   missingCount: number;
   unregisteredCount: number;
-  createdAt: string;
 }
 
-const audits = ref<AuditSession[]>([]);
+const audits = ref<AuditSessionRow[]>([]);
 const loadingAudits = ref(true);
 const statusFilter = ref('all');
 
@@ -326,7 +322,7 @@ const filteredAudits = computed(() => {
 
 const handleStartAudit = () => {
   // Navigate to mobile scan mode as a demonstration of starting a field audit
-  router.push('/audit-scan-mobile');
+  router.push('/audit-scan');
 };
 
 const handleResolveDiscrepancy = (id: number) => {
@@ -344,7 +340,7 @@ const handleResolveDiscrepancy = (id: number) => {
 const fetchAudits = async () => {
   try {
     const data = await getAudits();
-    audits.value = data as AuditSession[];
+    audits.value = data as unknown as AuditSessionRow[];
   } catch (error) {
     console.error('Failed to fetch audits:', error);
   } finally {

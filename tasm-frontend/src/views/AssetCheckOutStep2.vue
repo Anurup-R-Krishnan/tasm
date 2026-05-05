@@ -98,7 +98,7 @@
         <div class="flex items-center gap-4">
           <button
             class="flex-1 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-surface-subtle transition-colors shadow-sm"
-            @click="router.back()"
+            @click="router.push({ name: 'AssetCheckOutFlow' })"
           >
             Back to Selection
           </button>
@@ -107,8 +107,9 @@
             :disabled="!isFormValid"
             @click="completeCheckout"
           >
+            <span v-if="submitting" class="material-symbols-outlined animate-spin">refresh</span>
             <span class="material-symbols-outlined">verified_user</span>
-            Complete Assignment
+            {{ submitting ? 'Completing...' : 'Complete Assignment' }}
           </button>
         </div>
       </div>
@@ -124,8 +125,7 @@
 
           <div class="space-y-4">
             <div
-              v-for="i in 2"
-              :key="i"
+              v-if="selectedAsset"
               class="flex gap-4 p-3 bg-surface-subtle/50 rounded-xl border border-border-default"
             >
               <div
@@ -134,18 +134,19 @@
                 <span class="material-symbols-outlined">laptop_mac</span>
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-bold text-text-primary truncate">MacBook Pro 16" (M2 Max)</p>
+                <p class="text-sm font-bold text-text-primary truncate">{{ selectedAsset.name }}</p>
                 <p class="text-[10px] font-mono text-text-secondary mt-1 tracking-wider">
-                  AST-IT-4092
+                  {{ selectedAsset.tagId || selectedAsset.id }}
                 </p>
               </div>
             </div>
+            <div v-else class="text-xs text-text-secondary italic">No asset selected.</div>
           </div>
 
           <div class="space-y-3 pt-6 border-t border-border-default">
             <div class="flex justify-between text-xs font-medium">
               <span class="text-text-secondary">Total Items</span>
-              <span class="text-text-primary">2 Units</span>
+              <span class="text-text-primary">{{ selectedAsset ? '1 Unit' : '0 Units' }}</span>
             </div>
             <div class="flex justify-between text-xs font-medium">
               <span class="text-text-secondary">Recipient</span>
@@ -153,7 +154,7 @@
             </div>
             <div class="flex justify-between text-xs font-medium">
               <span class="text-text-secondary">Estimated Duration</span>
-              <span class="text-text-primary">6 Months</span>
+              <span class="text-text-primary">{{ estimatedDuration }}</span>
             </div>
           </div>
 
@@ -174,16 +175,21 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getUsers } from '../api/users';
-import type { SystemUser } from '../types/models';
+import { getAssetById, updateAsset } from '../api/assets';
+import type { Asset, SystemUser } from '../types/models';
 
 const router = useRouter();
+const route = useRoute();
 const users = ref<SystemUser[]>([]);
 const selectedUserId = ref<number | string>('');
 const checkoutDate = ref(new Date().toISOString().split('T')[0]);
 const returnDate = ref('');
 const notes = ref('');
+const selectedAsset = ref<Asset | null>(null);
+const loadingAsset = ref(false);
+const submitting = ref(false);
 
 const fetchData = async () => {
   try {
@@ -193,25 +199,70 @@ const fetchData = async () => {
   }
 };
 
+const fetchAsset = async (assetId: string) => {
+  try {
+    loadingAsset.value = true;
+    selectedAsset.value = await getAssetById(assetId);
+  } catch (err) {
+    console.error('Failed to fetch asset:', err);
+  } finally {
+    loadingAsset.value = false;
+  }
+};
+
 const selectedUserName = computed(() => {
   const user = users.value.find((u) => u.id === selectedUserId.value);
   return user ? user.name : '';
 });
 
-const isFormValid = computed(() => {
-  return selectedUserId.value && checkoutDate.value && returnDate.value;
+const estimatedDuration = computed(() => {
+  if (!checkoutDate.value || !returnDate.value) return 'Not set';
+  const start = new Date(checkoutDate.value);
+  const end = new Date(returnDate.value);
+  const diffMs = end.getTime() - start.getTime();
+  if (Number.isNaN(diffMs) || diffMs <= 0) return 'Invalid dates';
+  const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  const months = Math.round(days / 30);
+  if (months >= 1) return `${months} Month${months > 1 ? 's' : ''}`;
+  return `${days} Day${days > 1 ? 's' : ''}`;
 });
 
-const completeCheckout = () => {
-  // In a real app, this would be a POST to /api/checkout
-  console.log('Completing checkout...', {
-    userId: selectedUserId.value,
-    checkoutDate: checkoutDate.value,
-    returnDate: returnDate.value,
-    notes: notes.value,
-  });
-  router.push('/asset-registry');
+const isFormValid = computed(() => {
+  return (
+    selectedUserId.value &&
+    checkoutDate.value &&
+    returnDate.value &&
+    selectedAsset.value &&
+    !submitting.value
+  );
+});
+
+const completeCheckout = async () => {
+  if (!selectedAsset.value) return;
+  try {
+    submitting.value = true;
+    await updateAsset(selectedAsset.value.id, {
+      status: 'Checked Out',
+      custodian: selectedUserName.value,
+    });
+    router.push('/inventory');
+  } catch (err) {
+    console.error('Failed to complete checkout:', err);
+    alert('Failed to complete checkout. Please try again.');
+  } finally {
+    submitting.value = false;
+  }
 };
 
-onMounted(fetchData);
+onMounted(() => {
+  fetchData();
+  const assetId = route.query['assetId'];
+  const userId = route.query['userId'];
+  if (typeof userId === 'string' && userId) {
+    selectedUserId.value = userId;
+  }
+  if (typeof assetId === 'string' && assetId) {
+    fetchAsset(assetId);
+  }
+});
 </script>

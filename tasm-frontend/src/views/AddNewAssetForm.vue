@@ -163,6 +163,7 @@
           <button
             type="button"
             class="px-6 py-2 border border-border-default rounded-lg text-text-primary hover:bg-surface-subtle font-medium transition-colors"
+            @click="router.back()"
           >
             Cancel
           </button>
@@ -183,8 +184,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { createAsset } from '../api/assets';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { createAsset, getAssetById, updateAsset } from '../api/assets';
+
+const router = useRouter();
+const route = useRoute();
 
 const form = ref({
   name: '',
@@ -203,6 +208,7 @@ const form = ref({
 });
 
 const isSubmitting = ref(false);
+const isEditMode = ref(false);
 
 const generateTagId = () => {
   form.value.tagId = 'TAG-' + Math.floor(1000 + Math.random() * 9000);
@@ -217,9 +223,17 @@ const submitForm = async () => {
         ? new Date(form.value.purchaseDate).toISOString()
         : new Date().toISOString(),
     };
-    await createAsset(payload as any);
-    alert('Asset created successfully!');
-    // Reset form or navigate away
+    if (isEditMode.value) {
+      const id = route.query['edit'];
+      if (typeof id === 'string') {
+        await updateAsset(id, payload as any);
+        alert('Asset updated successfully!');
+      }
+    } else {
+      await createAsset(payload as any);
+      alert('Asset created successfully!');
+    }
+    router.push('/inventory');
   } catch (error) {
     console.error(error);
     alert('Network error');
@@ -227,4 +241,27 @@ const submitForm = async () => {
     isSubmitting.value = false;
   }
 };
+
+const loadAsset = async (id: string) => {
+  try {
+    const asset = await getAssetById(id);
+    form.value = {
+      ...form.value,
+      ...asset,
+      purchaseDate: asset.purchaseDate ? (asset.purchaseDate.split('T')[0] ?? '') : '',
+      warrantyExpiry: asset.warrantyExpiry ? asset.warrantyExpiry : new Date().toISOString(),
+      condition: form.value.condition,
+    };
+    isEditMode.value = true;
+  } catch (error) {
+    console.error('Failed to load asset', error);
+  }
+};
+
+onMounted(() => {
+  const editId = route.query['edit'];
+  if (typeof editId === 'string' && editId) {
+    loadAsset(editId);
+  }
+});
 </script>

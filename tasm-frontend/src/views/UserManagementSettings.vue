@@ -151,6 +151,7 @@
               <button
                 class="p-1.5 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-md transition-colors"
                 title="Edit User"
+                @click="openUserDetails(slotProps.data.id)"
               >
                 <span class="material-symbols-outlined text-[18px]"> edit </span>
               </button>
@@ -171,7 +172,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { getUsers, deleteUser as deleteUserApi } from '../api/users';
+import { getUsers, deleteUser as deleteUserApi, getUserById } from '../api/users';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type { SystemUser } from '../types/models';
@@ -217,6 +218,16 @@ const deleteUser = async (id: number) => {
   } catch (error) {
     console.error('Error deleting user:', error);
     alert('Failed to delete user');
+  }
+};
+
+const openUserDetails = async (id: number) => {
+  try {
+    const user = await getUserById(id);
+    alert(`User: ${user.name}\nRole: ${user.role}\nDepartment: ${user.department}`);
+  } catch (error) {
+    console.error('Failed to fetch user', error);
+    alert('Failed to load user details');
   }
 };
 

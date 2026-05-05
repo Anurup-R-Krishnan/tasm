@@ -10,6 +10,7 @@
       </div>
       <button
         class="bg-text-primary text-surface px-5 py-2.5 rounded-lg text-body font-body font-medium hover:bg-opacity-90 transition-colors shadow-sm flex items-center gap-2"
+        @click="openNewSchedule"
       >
         <span class="material-symbols-outlined text-[20px]"> calendar_add_on </span>
         Add Schedule
@@ -53,11 +54,13 @@
       <div class="flex gap-2">
         <button
           class="p-2 text-text-secondary hover:text-text-primary border border-transparent hover:border-border-default rounded-md transition-all"
+          @click="resetFilters"
         >
           <span class="material-symbols-outlined">filter_list</span>
         </button>
         <button
           class="p-2 text-text-secondary hover:text-text-primary border border-transparent hover:border-border-default rounded-md transition-all"
+          @click="exportWorkOrders"
         >
           <span class="material-symbols-outlined">download</span>
         </button>
@@ -135,12 +138,21 @@
           </template>
         </Column>
         <Column header="">
-          <template #body>
-            <button
-              class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface-subtle rounded transition-colors"
-            >
-              <span class="material-symbols-outlined text-[18px]">more_vert</span>
-            </button>
+          <template #body="slotProps">
+            <div class="flex items-center justify-end gap-1">
+              <button
+                class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface-subtle rounded transition-colors"
+                @click="viewWorkOrder(slotProps.data)"
+              >
+                <span class="material-symbols-outlined text-[18px]">visibility</span>
+              </button>
+              <button
+                class="p-1 text-text-secondary hover:text-primary-container hover:bg-surface-subtle rounded transition-colors"
+                @click="toggleStatus(slotProps.data)"
+              >
+                <span class="material-symbols-outlined text-[18px]">autorenew</span>
+              </button>
+            </div>
           </template>
         </Column>
       </DataTable>
@@ -150,25 +162,17 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { getWorkOrders } from '../api/workOrders';
+import { useRouter } from 'vue-router';
+import { getWorkOrders, updateWorkOrder } from '../api/workOrders';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-
-interface WorkOrder {
-  id: number;
-  workOrderId: string;
-  title: string;
-  assetLocation: string;
-  issue: string;
-  severity: string;
-  targetDate: string;
-  status: string;
-}
+import type { WorkOrder } from '../types/models';
 
 const workOrders = ref<WorkOrder[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const selectedStatus = ref('');
+const router = useRouter();
 
 const filteredWorkOrders = computed(() => {
   return workOrders.value.filter((wo) => {
@@ -191,6 +195,59 @@ const fetchWorkOrders = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const resetFilters = () => {
+  searchQuery.value = '';
+  selectedStatus.value = '';
+};
+
+const exportWorkOrders = () => {
+  const headers = ['Work Order ID', 'Title', 'Location', 'Severity', 'Target Date', 'Status'];
+  const rows = filteredWorkOrders.value.map((wo) => [
+    wo.workOrderId,
+    wo.title,
+    wo.assetLocation,
+    wo.severity,
+    wo.targetDate,
+    wo.status,
+  ]);
+  const csvContent = [
+    headers.join(','),
+    ...rows.map((row) => row.map((cell) => `"${cell ?? ''}"`).join(',')),
+  ].join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `tasm_work_orders_${new Date().toISOString().split('T')[0]}.csv`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+const viewWorkOrder = (workOrder: WorkOrder) => {
+  router.push({ name: 'WorkOrderDetail', params: { id: workOrder.id } });
+};
+
+const toggleStatus = async (workOrder: WorkOrder) => {
+  const nextStatus = workOrder.status === 'Open' ? 'In Progress' : 'Closed';
+  try {
+    const updated = await updateWorkOrder(workOrder.id, {
+      status: nextStatus,
+    });
+    workOrders.value = workOrders.value.map((wo) =>
+      wo.id === workOrder.id ? { ...wo, ...updated } : wo,
+    );
+  } catch (error) {
+    console.error('Failed to update status', error);
+    alert('Unable to update status.');
+  }
+};
+
+const openNewSchedule = () => {
+  router.push({ name: 'MaintenanceScheduleContracts' });
 };
 
 const formatDate = (dateStr: string) => {

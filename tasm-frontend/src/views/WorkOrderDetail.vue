@@ -5,7 +5,7 @@
       <div>
         <div class="flex items-center gap-2 text-text-secondary font-metadata text-metadata mb-2">
           <button
-            @click="router.push('/work-order-detail')"
+            @click="router.push('/maintenance-tracker')"
             class="hover:text-primary transition-colors flex items-center"
           >
             Work Orders

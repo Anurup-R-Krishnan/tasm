@@ -196,7 +196,7 @@
           </div>
           <div class="p-4 bg-surface-subtle/50 border-t border-border-default">
             <button
-              @click="router.push('/asset-depreciation-ledger')"
+              @click="router.push('/depreciation')"
               class="w-full py-2 bg-white border border-border-default rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-colors shadow-sm"
             >
               View Full Audit Log

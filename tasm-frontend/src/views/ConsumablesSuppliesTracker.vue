@@ -14,15 +14,15 @@
           Export
         </button>
         <button
-          @click="router.push('/stockroom-inventory')"
+          @click="router.push('/stockrooms')"
           class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
         >
           <span class="material-symbols-outlined text-[18px]">download</span>
           Receive Stock
         </button>
-        <button @click="router.push('/asset-check-out-flow')" class="btn-primary">
+        <button @click="openNewConsumable" class="btn-primary">
           <span class="material-symbols-outlined">add_circle</span>
-          Issue Consumable
+          New Consumable
         </button>
       </div>
     </div>
@@ -123,12 +123,20 @@
                 </span>
               </td>
               <td class="px-6 py-4 text-right">
-                <button
-                  @click="deleteConsumable(item.id)"
-                  class="p-2 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-lg transition-all"
-                >
-                  <span class="material-symbols-outlined text-[20px]">delete</span>
-                </button>
+                <div class="flex items-center justify-end gap-1">
+                  <button
+                    @click="openEditConsumable(item.id)"
+                    class="p-2 text-text-secondary hover:text-primary hover:bg-surface-subtle rounded-lg transition-all"
+                  >
+                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                  </button>
+                  <button
+                    @click="deleteConsumable(item.id)"
+                    class="p-2 text-text-secondary hover:text-status-critical hover:bg-error-container/50 rounded-lg transition-all"
+                  >
+                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                  </button>
+                </div>
               </td>
             </tr>
             <tr v-if="filteredConsumables.length === 0">
@@ -146,7 +154,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getConsumables, deleteConsumable as apiDeleteConsumable } from '../api/consumables';
+import {
+  getConsumables,
+  deleteConsumable as apiDeleteConsumable,
+  getConsumableById,
+  createConsumable,
+  updateConsumable,
+} from '../api/consumables';
 import type { Consumable } from '../types/models';
 
 const router = useRouter();
@@ -155,6 +169,7 @@ const loading = ref(true);
 const errorMessage = ref('');
 const searchQuery = ref('');
 const selectedCategory = ref<string | null>(null);
+const editingConsumable = ref<Consumable | null>(null);
 
 const categoryOptions = computed(() => [
   ...Array.from(new Set(consumables.value.map((item) => item.category)))
@@ -237,6 +252,51 @@ async function deleteConsumable(id: number): Promise<void> {
     alert('Failed to delete item');
   }
 }
+
+const openNewConsumable = async () => {
+  const name = prompt('Consumable name?');
+  if (!name) return;
+  const category = prompt('Category?') || 'General';
+  const location = prompt('Location?') || 'Central Store';
+  const currentStock = Number(prompt('Current stock?', '0') || 0);
+  const reorderLevel = Number(prompt('Reorder level?', '0') || 0);
+  try {
+    const created = await createConsumable({
+      name,
+      category,
+      location,
+      currentStock,
+      reorderLevel,
+    });
+    consumables.value = [created, ...consumables.value];
+  } catch (error) {
+    console.error('Failed to create consumable', error);
+    alert('Failed to create consumable');
+  }
+};
+
+const openEditConsumable = async (id: number) => {
+  try {
+    const item = await getConsumableById(id);
+    editingConsumable.value = item;
+    const currentStockInput = prompt('Update stock level', String(item.currentStock));
+    if (currentStockInput === null) return;
+    const reorderLevelInput = prompt('Update reorder level', String(item.reorderLevel));
+    if (reorderLevelInput === null) return;
+    const currentStock = Number(currentStockInput);
+    const reorderLevel = Number(reorderLevelInput);
+    const updated = await updateConsumable(id, {
+      currentStock,
+      reorderLevel,
+    });
+    consumables.value = consumables.value.map((c) => (c.id === id ? updated : c));
+  } catch (error) {
+    console.error('Failed to update consumable', error);
+    alert('Failed to update consumable');
+  } finally {
+    editingConsumable.value = null;
+  }
+};
 
 const exportToCSV = () => {
   const headers = ['Item Name', 'Category', 'Location', 'Current Stock', 'Reorder Level', 'Status'];

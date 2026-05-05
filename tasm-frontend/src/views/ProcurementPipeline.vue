@@ -16,7 +16,7 @@
           <span class="material-symbols-outlined text-[18px]">file_download</span>
           Export Report
         </button>
-        <button @click="router.push('/add-new-asset-form')" class="btn-primary">
+        <button @click="openNewRequest" class="btn-primary">
           <span class="material-symbols-outlined">add_shopping_cart</span>
           New Request
         </button>
@@ -131,12 +131,26 @@
                 </div>
               </td>
               <td class="px-6 py-4 text-right">
-                <button
-                  @click="router.push(`/procurement/${req.id}`)"
-                  class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm border border-transparent hover:border-border-default"
-                >
-                  <span class="material-symbols-outlined text-[20px]">visibility</span>
-                </button>
+                <div class="flex items-center justify-end gap-1">
+                  <button
+                    @click="router.push(`/procurement/${req.id}`)"
+                    class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm border border-transparent hover:border-border-default"
+                  >
+                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                  </button>
+                  <button
+                    @click="updateRequestStatus(req)"
+                    class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm border border-transparent hover:border-border-default"
+                  >
+                    <span class="material-symbols-outlined text-[20px]">autorenew</span>
+                  </button>
+                  <button
+                    @click="deleteRequest(req.id)"
+                    class="p-2 text-text-secondary hover:text-status-critical hover:bg-error-container/40 rounded-lg transition-all shadow-sm border border-transparent"
+                  >
+                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                  </button>
+                </div>
               </td>
             </tr>
             <tr v-if="filteredProcurements.length === 0">
@@ -154,23 +168,15 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getProcurements } from '../api/procurements';
+import {
+  getProcurements,
+  createProcurement,
+  updateProcurement,
+  deleteProcurement,
+} from '../api/procurements';
+import type { ProcurementRequest } from '../types/models';
 
 const router = useRouter();
-
-interface ProcurementRequest {
-  id: number;
-  title: string;
-  status: string;
-  priority: string;
-  estimatedValue: number;
-  actualValue: number;
-  requestorName: string;
-  requestorInitials: string;
-  department: string;
-  poNumber: string;
-  createdAt: string;
-}
 
 const requests = ref<ProcurementRequest[]>([]);
 const loading = ref(true);
@@ -183,6 +189,67 @@ const fetchRequests = async () => {
     console.error('Failed to fetch procurements:', error);
   } finally {
     loading.value = false;
+  }
+};
+
+const openNewRequest = async () => {
+  const title = prompt('Request title?');
+  if (!title) return;
+  const department = prompt('Department?') || 'General';
+  const priority = (prompt('Priority? (Low/Medium/High)') || 'Low').trim();
+  const estimatedValue = Number(prompt('Estimated value?', '0') || 0);
+  const requestorName = prompt('Requestor name?') || 'Unknown';
+  const requestorInitials = requestorName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+  try {
+    const created = await createProcurement({
+      title,
+      department,
+      priority,
+      estimatedValue,
+      actualValue: 0,
+      requestorName,
+      requestorInitials,
+      status: 'Draft',
+      poNumber: '',
+    });
+    requests.value = [created, ...requests.value];
+  } catch (error) {
+    console.error('Failed to create procurement', error);
+    alert('Failed to create procurement');
+  }
+};
+
+const updateRequestStatus = async (request: ProcurementRequest) => {
+  const nextStatus =
+    request.status === 'Draft'
+      ? 'Pending Approval'
+      : request.status === 'Pending Approval'
+        ? 'Shipping'
+        : request.status === 'Shipping'
+          ? 'Received'
+          : 'Draft';
+  try {
+    const updated = await updateProcurement(request.id, { status: nextStatus });
+    requests.value = requests.value.map((r) => (r.id === request.id ? updated : r));
+  } catch (error) {
+    console.error('Failed to update procurement', error);
+    alert('Failed to update procurement status');
+  }
+};
+
+const deleteRequest = async (id: number) => {
+  if (!confirm('Delete this procurement request?')) return;
+  try {
+    await deleteProcurement(id);
+    requests.value = requests.value.filter((r) => r.id !== id);
+  } catch (error) {
+    console.error('Failed to delete procurement', error);
+    alert('Failed to delete procurement');
   }
 };
 
@@ -229,6 +296,25 @@ const kpis = computed(() => [
     subtext: 'Requires management review',
   },
 ]);
+
+const exportToCSV = () => {
+  const headers = ['Title', 'Status', 'Priority', 'Estimated Value', 'Department', 'PO Number'];
+  const rows = filteredProcurements.value.map((req) => [
+    req.title,
+    req.status,
+    req.priority,
+    String(req.estimatedValue || 0),
+    req.department,
+    req.poNumber || '',
+  ]);
+
+  const csvContent = [headers, ...rows].map((row) => row.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `procurement_pipeline_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+};
 
 const getStatusClass = (status: string) => {
   switch (status) {

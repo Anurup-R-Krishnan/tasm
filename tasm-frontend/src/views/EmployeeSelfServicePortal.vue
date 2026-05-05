@@ -49,7 +49,7 @@
           </p>
         </div>
         <button
-          @click="router.push('/procurement-pipeline')"
+          @click="router.push('/procurement')"
           class="w-full bg-metric-amber text-surface-tint rounded-lg py-3 font-semibold hover:opacity-90 transition-all z-10 flex items-center justify-center gap-2 border border-surface-tint/20"
         >
           Request New Asset
@@ -62,7 +62,7 @@
       <div class="flex items-center justify-between mb-4">
         <h2 class="font-h2 text-h2 text-text-primary">My Assigned Assets</h2>
         <button
-          @click="router.push('/asset-registry')"
+          @click="router.push('/inventory')"
           class="text-primary font-medium text-sm hover:underline"
         >
           View All History
@@ -123,7 +123,7 @@
           <Column header="Action" alignFrozen="right">
             <template #body>
               <button
-                @click="router.push('/maintenance-schedule-contracts')"
+                @click="router.push('/maintenance')"
                 class="text-sm font-medium text-primary hover:bg-primary/10 px-3 py-1.5 rounded transition-colors"
               >
                 Report Issue
@@ -191,7 +191,7 @@
           </div>
         </div>
         <button
-          @click="router.push('/reservations-bookings')"
+          @click="router.push('/reservations')"
           class="mt-4 w-full py-2 border border-border-default rounded-lg text-sm font-medium text-text-secondary hover:bg-stone-50 transition-colors"
         >
           Book Equipment
@@ -292,11 +292,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { getAssets } from '../api/assets';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type { Asset } from '../types/models';
 
+const router = useRouter();
 const myAssets = ref<Asset[]>([]);
 const loading = ref(true);
 

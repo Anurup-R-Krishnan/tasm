@@ -81,7 +81,7 @@
               </p>
             </div>
             <button
-              @click="router.push('/maintenance-schedule-contracts')"
+              @click="router.push('/maintenance')"
               class="text-xs font-bold text-primary hover:text-primary/80"
             >
               View All
@@ -144,7 +144,7 @@
           </h3>
           <div class="grid grid-cols-2 gap-4">
             <button
-              @click="router.push('/procurement-pipeline')"
+              @click="router.push('/procurement')"
               class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-primary-container/20 border border-primary-container/30 hover:bg-primary hover:text-on-primary transition-all group shadow-sm"
             >
               <span class="material-symbols-outlined text-primary group-hover:text-on-primary"
@@ -153,7 +153,7 @@
               <span class="text-[10px] font-bold uppercase tracking-wider">Procurement</span>
             </button>
             <button
-              @click="router.push('/maintenance-service-history-log')"
+              @click="router.push('/maintenance-history')"
               class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-status-in-stock/10 border border-status-in-stock/20 hover:bg-status-in-stock hover:text-white transition-all group shadow-sm"
             >
               <span class="material-symbols-outlined text-status-in-stock group-hover:text-white"
@@ -162,7 +162,7 @@
               <span class="text-[10px] font-bold uppercase tracking-wider">Service Log</span>
             </button>
             <button
-              @click="router.push('/audit-scan-mode-mobile')"
+              @click="router.push('/audit-scan')"
               class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-error-container/20 border border-status-critical/20 hover:bg-status-critical hover:text-white transition-all group shadow-sm"
             >
               <span class="material-symbols-outlined text-status-critical group-hover:text-white"
@@ -171,7 +171,7 @@
               <span class="text-[10px] font-bold uppercase tracking-wider">Audit Scan</span>
             </button>
             <button
-              @click="router.push('/asset-check-out-flow')"
+              @click="router.push('/check-out')"
               class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-metric-amber/10 border border-metric-amber/30 hover:bg-surface-tint hover:text-white transition-all group shadow-sm"
             >
               <span class="material-symbols-outlined text-surface-tint group-hover:text-white"

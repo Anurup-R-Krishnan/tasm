@@ -115,11 +115,21 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { getDiscrepancies } from '../api/audits';
 import type { AuditDiscrepancy } from '../types/models';
 
+const router = useRouter();
 const unresolvedExpanded = ref(true);
 const discrepancies = ref<AuditDiscrepancy[]>([]);
+
+const handleScan = () => {
+  router.push('/check-out');
+};
+
+const handleManualEntry = () => {
+  router.push('/inventory');
+};
 
 const fetchDiscrepancies = async () => {
   try {

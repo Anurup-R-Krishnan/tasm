@@ -157,14 +157,49 @@
               >search</span
             >
             <input
+              v-model="userSearchQuery"
               class="w-full pl-10 pr-inline py-2 bg-surface border border-primary-container rounded-DEFAULT font-body text-body text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent shadow-sm"
               type="text"
               placeholder="Search employees..."
             />
           </div>
-
-          <div class="text-sm text-stone-500 italic p-4 border border-dashed rounded text-center">
-            Integration with Users API pending. Will search user directory.
+          <div v-if="loadingUsers" class="text-sm text-text-secondary italic p-4 text-center">
+            Loading employees...
+          </div>
+          <div v-else class="space-y-2">
+            <div
+              v-for="user in filteredUsers"
+              :key="user.id"
+              class="flex items-center justify-between p-3 border border-border-default rounded-xl bg-surface-subtle/50"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-9 h-9 rounded-full bg-primary-container/20 border border-primary-container/30 flex items-center justify-center text-xs font-bold text-primary"
+                >
+                  {{ user.name?.charAt(0) || '?' }}
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-text-primary">{{ user.name }}</p>
+                  <p class="text-[11px] text-text-secondary">
+                    {{ user.employeeId }} • {{ user.department }}
+                  </p>
+                </div>
+              </div>
+              <button
+                class="px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors"
+                :class="
+                  selectedUser?.id === user.id
+                    ? 'bg-primary-container/20 text-primary border-primary-container'
+                    : 'text-text-secondary border-border-default hover:text-primary hover:border-primary'
+                "
+                @click="selectUser(user)"
+              >
+                {{ selectedUser?.id === user.id ? 'Selected' : 'Assign' }}
+              </button>
+            </div>
+            <div v-if="filteredUsers.length === 0" class="text-sm text-text-secondary italic">
+              No users match this search.
+            </div>
           </div>
         </div>
       </div>
@@ -174,12 +209,14 @@
     <div class="mt-section-gap flex justify-end gap-inline border-t border-border-default pt-stack">
       <button
         class="px-6 py-2 bg-surface border border-outline text-text-primary font-h3 text-h3 rounded-DEFAULT hover:bg-surface-subtle transition-colors shadow-sm"
+        @click="router.push('/inventory')"
       >
         Back
       </button>
       <button
-        :disabled="!selectedAsset"
+        :disabled="!selectedAsset || !selectedUser"
         class="px-6 py-2 bg-text-primary text-surface font-h3 text-h3 rounded-DEFAULT hover:bg-inverse-surface transition-colors shadow-sm flex items-center gap-2 disabled:opacity-50"
+        @click="goToAssignment"
       >
         Continue to Review
         <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
@@ -190,27 +227,38 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { getAssets } from '../api/assets';
+import { getUsers } from '../api/users';
+import type { Asset, SystemUser, BaseEntity } from '../types/models';
 
-interface Asset {
-  id: number;
-  tagId: string;
-  name: string;
-  category: string;
-  status: string;
-  location: string;
-}
-
+const router = useRouter();
+const route = useRoute();
 const assets = ref<Asset[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const selectedAsset = ref<Asset | null>(null);
+const users = ref<SystemUser[]>([]);
+const loadingUsers = ref(true);
+const userSearchQuery = ref('');
+const selectedUser = ref<SystemUser | null>(null);
 
 const filteredAssets = computed(() => {
   if (!searchQuery.value) return assets.value;
   const q = searchQuery.value.toLowerCase();
   return assets.value.filter(
     (a) => a.name.toLowerCase().includes(q) || a.tagId.toLowerCase().includes(q),
+  );
+});
+
+const filteredUsers = computed(() => {
+  if (!userSearchQuery.value) return users.value;
+  const q = userSearchQuery.value.toLowerCase();
+  return users.value.filter(
+    (u) =>
+      u.name.toLowerCase().includes(q) ||
+      u.employeeId.toLowerCase().includes(q) ||
+      u.department.toLowerCase().includes(q),
   );
 });
 
@@ -223,9 +271,36 @@ const selectAsset = (asset: Asset) => {
   }
 };
 
+const selectUser = (user: SystemUser) => {
+  selectedUser.value = user;
+};
+
+const goToAssignment = () => {
+  if (!selectedAsset.value || !selectedUser.value) return;
+  router.push({
+    name: 'AssetCheckOutStep2',
+    query: {
+      assetId: String(selectedAsset.value.id),
+      userId: String(selectedUser.value.id),
+    },
+  });
+};
+
+const mapAssetIds = (items: BaseEntity[]) => items.map((item) => item.id);
+
 const fetchAssets = async () => {
   try {
     assets.value = (await getAssets()) as any[];
+    mapAssetIds(assets.value);
+    const preselectedId = route.query['assetId'];
+    if (typeof preselectedId === 'string' && preselectedId) {
+      const match = assets.value.find((asset) => String(asset.id) === preselectedId);
+      if (match) {
+        selectedAsset.value = match;
+      } else {
+        alert('Selected asset not found in inventory list.');
+      }
+    }
   } catch (error) {
     console.error(error);
   } finally {
@@ -233,7 +308,18 @@ const fetchAssets = async () => {
   }
 };
 
+const fetchUsers = async () => {
+  try {
+    users.value = await getUsers();
+  } catch (error) {
+    console.error('Failed to load users', error);
+  } finally {
+    loadingUsers.value = false;
+  }
+};
+
 onMounted(() => {
   fetchAssets();
+  fetchUsers();
 });
 </script>

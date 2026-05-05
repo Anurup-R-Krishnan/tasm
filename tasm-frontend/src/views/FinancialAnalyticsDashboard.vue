@@ -411,7 +411,7 @@
           </p>
         </div>
         <button
-          @click="router.push('/custom-report-builder')"
+          @click="router.push('/report-builder')"
           class="text-sm font-medium text-primary hover:underline"
         >
           View Full Report

@@ -10,13 +10,13 @@
       </div>
       <div class="flex gap-3">
         <button
-          @click="window.print()"
+          @click="handlePrint"
           class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
         >
           <span class="material-symbols-outlined text-[18px]">print</span>
           Reports
         </button>
-        <button @click="router.push('/user-management-settings')" class="btn-primary">
+        <button @click="router.push('/setup-wizard')" class="btn-primary">
           <span class="material-symbols-outlined">add_location</span>
           New Location
         </button>
@@ -194,7 +194,7 @@
                     </td>
                     <td class="px-6 py-4 text-right">
                       <button
-                        @click="router.push(`/asset-detail/${asset.id}`)"
+                        @click="router.push(`/asset/${asset.id}`)"
                         class="p-2 hover:bg-white rounded-lg text-text-secondary hover:text-primary transition-all shadow-sm"
                       >
                         <span class="material-symbols-outlined">arrow_forward</span>
@@ -232,10 +232,12 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { getLocations } from '../api/locations';
 import { getAssets } from '../api/assets';
 import type { Asset, Location } from '../types/models';
 
+const router = useRouter();
 const locations = ref<Location[]>([]);
 const assets = ref<Asset[]>([]);
 const selectedLocation = ref<Location | null>(null);
@@ -283,6 +285,10 @@ const summaryStats = computed(() => [
     iconClass: 'text-rose-500',
   },
 ]);
+
+const handlePrint = () => {
+  window.print();
+};
 
 const getLocIcon = (type: string) => {
   if (type.includes('Office')) return 'business';

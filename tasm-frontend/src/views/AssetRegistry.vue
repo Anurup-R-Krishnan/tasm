@@ -16,7 +16,7 @@
           <span class="material-symbols-outlined text-[18px]">file_download</span>
           Export
         </button>
-        <button @click="router.push('/add-new-asset-form')" class="btn-primary">
+        <button @click="router.push('/add-asset')" class="btn-primary">
           <span class="material-symbols-outlined">add_circle</span>
           Add Asset
         </button>
@@ -220,7 +220,7 @@
                     <span class="material-symbols-outlined text-[18px]">visibility</span>
                   </button>
                   <button
-                    @click="router.push(`/add-new-asset-form?edit=${asset.id}`)"
+                    @click="router.push(`/add-asset?edit=${asset.id}`)"
                     class="p-2 text-text-secondary hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm"
                   >
                     <span class="material-symbols-outlined text-[18px]">edit</span>

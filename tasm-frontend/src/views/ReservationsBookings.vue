@@ -445,7 +445,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { getReservations } from '../api/reservations';
+import { getReservations, createReservation, deleteReservation } from '../api/reservations';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type { Reservation } from '../types/models';
@@ -506,9 +506,7 @@ const filteredReservations = computed(() => {
   } else if (currentTab.value === 'Past') {
     return base.filter((r) => new Date(r.startTime) < now);
   } else if (currentTab.value === 'My Bookings') {
-    return base.filter(
-      (r) => r.userId === currentUser.value?.id || r.bookedBy === currentUser.value?.name,
-    );
+    return base.filter((r) => r.bookedBy === currentUser.value?.name);
   }
   return base;
 });
@@ -525,36 +523,42 @@ const fetchReservations = async () => {
   }
 };
 
-const handleConfirmBooking = () => {
+const handleConfirmBooking = async () => {
   if (!bookingForm.value.date || !bookingForm.value.resourceId) {
     alert('Please provide resource name and date.');
     return;
   }
 
-  const newBooking = {
-    id: Date.now(),
-    title: bookingForm.value.resourceId,
-    type: currentCategory.value,
-    bookedBy: currentUser.value?.name || 'Current User',
-    startTime: `${bookingForm.value.date}T${bookingForm.value.startTime}:00`,
-    endTime: `${bookingForm.value.date}T${bookingForm.value.endTime}:00`,
-    status: 'Confirmed',
-    location: 'Main Campus',
-  };
+  try {
+    const newBooking = await createReservation({
+      title: bookingForm.value.resourceId,
+      type: currentCategory.value,
+      bookedBy: currentUser.value?.name || 'Unknown',
+      startTime: `${bookingForm.value.date}T${bookingForm.value.startTime}:00`,
+      endTime: `${bookingForm.value.date}T${bookingForm.value.endTime}:00`,
+      status: 'Active',
+      location: 'Main Campus',
+    });
+    reservations.value = [newBooking, ...reservations.value];
+    alert(`Booking confirmed for ${newBooking.title} on ${bookingForm.value.date}`);
 
-  // Simulate API call
-  reservations.value = [newBooking as any, ...reservations.value];
-  alert(`Booking confirmed for ${newBooking.title} on ${bookingForm.value.date}`);
-
-  // Reset form
-  bookingForm.value.resourceId = '';
-  bookingForm.value.notes = '';
+    bookingForm.value.resourceId = '';
+    bookingForm.value.notes = '';
+  } catch (error) {
+    console.error('Failed to create reservation:', error);
+    alert('Failed to create reservation. Please try again.');
+  }
 };
 
-const handleCancelBooking = (id: number) => {
-  if (confirm('Are you sure you want to cancel this reservation?')) {
+const handleCancelBooking = async (id: number) => {
+  if (!confirm('Are you sure you want to cancel this reservation?')) return;
+  try {
+    await deleteReservation(id);
     reservations.value = reservations.value.filter((r) => r.id !== id);
     alert('Reservation cancelled successfully.');
+  } catch (error) {
+    console.error('Failed to cancel reservation:', error);
+    alert('Failed to cancel reservation. Please try again.');
   }
 };
 

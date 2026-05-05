@@ -453,20 +453,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { getSoftwareLicenses } from '../api/software-licenses';
+import { getSoftwareLicenses } from '../api/financial';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-
-interface SoftwareLicense {
-  id: number;
-  softwareName: string;
-  planName: string;
-  status: string;
-  totalSeats: number;
-  usedSeats: number;
-  renewalDate: string;
-  annualCost: number;
-}
+import type { SoftwareLicense } from '../types/models';
 
 const licenses = ref<SoftwareLicense[]>([]);
 const loading = ref(true);

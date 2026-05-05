@@ -188,7 +188,8 @@
               <div>
                 <button
                   @click="addLocation"
-                  class="text-amber-700 hover:bg-amber-100 transition-colors p-1.5 rounded-md flex items-center justify-center w-full border border-amber-200 bg-white"
+                  :disabled="!canAddLocation"
+                  class="text-amber-700 hover:bg-amber-100 transition-colors p-1.5 rounded-md flex items-center justify-center w-full border border-amber-200 bg-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span class="material-symbols-outlined text-[20px]"> add </span>
                 </button>
@@ -202,6 +203,7 @@
     <div class="flex justify-between items-center mt-auto pt-6 border-t border-border-default">
       <button
         class="px-6 py-2 bg-white border border-border-default text-text-primary rounded-md font-body text-body font-medium hover:bg-stone-50 transition-colors flex items-center gap-2 shadow-sm"
+        @click="router.push('/stockrooms')"
       >
         <span class="material-symbols-outlined text-[18px]"> arrow_back </span>
         Back to Buildings
@@ -209,12 +211,13 @@
       <div class="flex gap-4">
         <button
           class="px-6 py-2 bg-white border border-border-default text-text-secondary rounded-md font-body text-body font-medium hover:bg-stone-50 transition-colors shadow-sm"
+          @click="saveDraft"
         >
           Save as Draft
         </button>
         <button
           class="px-6 py-2 bg-text-primary text-white rounded-md font-body text-body font-medium hover:bg-stone-800 transition-colors flex items-center gap-2 shadow-sm"
-          @click="$router.push({ name: 'Dashboard' })"
+          @click="completeSetup"
         >
           Complete Setup
           <span class="material-symbols-outlined text-[18px]"> arrow_forward </span>
@@ -225,11 +228,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { getLocations, createLocation } from '../api/locations';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type { Location } from '../types/models';
+
+const router = useRouter();
 
 const locations = ref<Location[]>([]);
 const loading = ref(true);
@@ -240,6 +246,10 @@ const newLocation = ref<Partial<Location>>({
   address: '',
   capacity: 0,
   status: 'Active',
+});
+
+const canAddLocation = computed(() => {
+  return Boolean(newLocation.value.name && newLocation.value.type);
 });
 
 const fetchLocations = async () => {
@@ -253,7 +263,7 @@ const fetchLocations = async () => {
 };
 
 const addLocation = async () => {
-  if (!newLocation.value.name || !newLocation.value.type) return;
+  if (!canAddLocation.value) return;
 
   try {
     const added = await createLocation(newLocation.value);
@@ -262,6 +272,18 @@ const addLocation = async () => {
   } catch (error) {
     console.error('Failed to create location:', error);
   }
+};
+
+const saveDraft = () => {
+  alert('Draft saved locally for now.');
+};
+
+const completeSetup = () => {
+  if (!locations.value.length) {
+    alert('Add at least one location before completing setup.');
+    return;
+  }
+  router.push({ name: 'Dashboard' });
 };
 
 onMounted(() => {

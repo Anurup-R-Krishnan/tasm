@@ -123,7 +123,7 @@
             </span>
           </div>
           <div class="flex-1">
-            <div class="flex items-center gap-2 mb-1">
+            <div class="flex items-center gap-2 mb-1" @click="markAsRead(alert)">
               <span
                 class="px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide uppercase"
                 :class="
@@ -147,6 +147,7 @@
           <div class="flex-shrink-0 sm:ml-4 mt-4 sm:mt-0 flex gap-2">
             <button
               class="bg-surface border border-border-default text-text-primary px-3 py-1.5 rounded-lg font-h3 text-[13px] hover:bg-surface-subtle transition-colors"
+              @click="dismissAlert(alert.id)"
             >
               Dismiss
             </button>
@@ -185,17 +186,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { getAlerts } from '../api/alerts';
-
-interface SystemAlert {
-  id: number;
-  title: string;
-  message: string;
-  type: string;
-  source: string;
-  isRead: boolean;
-  createdAt: string;
-}
+import { getAlerts, updateAlert, deleteAlert } from '../api/alerts';
+import type { SystemAlert } from '../types/models';
 
 const alerts = ref<SystemAlert[]>([]);
 const loading = ref(true);
@@ -217,11 +209,31 @@ const counts = computed(() => {
 
 const fetchAlerts = async () => {
   try {
-    alerts.value = (await getAlerts()) as any[];
+    alerts.value = await getAlerts();
   } catch (error) {
     console.error('Failed to fetch alerts:', error);
   } finally {
     loading.value = false;
+  }
+};
+
+const markAsRead = async (alert: SystemAlert) => {
+  if (alert.isRead) return;
+  try {
+    const updated = await updateAlert(alert.id, { isRead: true });
+    alerts.value = alerts.value.map((a) => (a.id === alert.id ? updated : a));
+  } catch (error) {
+    console.error('Failed to mark alert as read:', error);
+  }
+};
+
+const dismissAlert = async (id: number) => {
+  try {
+    await deleteAlert(id);
+    alerts.value = alerts.value.filter((a) => a.id !== id);
+  } catch (error) {
+    console.error('Failed to dismiss alert:', error);
+    alert('Failed to dismiss alert.');
   }
 };
 

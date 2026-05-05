@@ -8,13 +8,13 @@
       </div>
       <div class="flex items-center gap-3">
         <button
-          @click="window.print()"
+          @click="handlePrint"
           class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
         >
           <span class="material-symbols-outlined text-[18px]">print</span>
           Print All Tags
         </button>
-        <button @click="router.push('/add-new-asset-form')" class="btn-primary">
+        <button @click="router.push('/add-asset')" class="btn-primary">
           <span class="material-symbols-outlined">add_circle</span>
           New Asset
         </button>
@@ -112,7 +112,7 @@
             v-for="asset in filteredAssets"
             :key="asset.id"
             class="premium-card !p-0 overflow-hidden group cursor-pointer"
-            @click="router.push(`/asset-detail/${asset.id}`)"
+            @click="router.push(`/asset/${asset.id}`)"
           >
             <div
               class="h-44 bg-surface-variant relative overflow-hidden flex items-center justify-center"
@@ -251,6 +251,10 @@ const filteredAssets = computed(() => {
     return catMatch && locMatch;
   });
 });
+
+const handlePrint = () => {
+  window.print();
+};
 
 const getStatusClass = (status: string) => {
   switch (status) {

@@ -35,11 +35,15 @@
         <div class="flex gap-3 w-full md:w-auto">
           <button
             class="flex-1 md:flex-none bg-surface border border-border-default text-text-primary px-6 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-surface-subtle transition-all shadow-sm"
+            @click="editAsset"
           >
             <span class="material-symbols-outlined text-[18px]">edit</span>
             Edit Record
           </button>
-          <button class="flex-1 md:flex-none btn-primary px-6 py-2.5 !text-sm">
+          <button
+            class="flex-1 md:flex-none btn-primary px-6 py-2.5 !text-sm"
+            @click="startCheckout"
+          >
             <span class="material-symbols-outlined">sync_alt</span>
             Checkout / Transfer
           </button>
@@ -296,6 +300,16 @@ const formatDate = (date: string) => {
     month: 'short',
     year: 'numeric',
   });
+};
+
+const editAsset = () => {
+  if (!asset.value) return;
+  router.push(`/add-asset?edit=${asset.value.id}`);
+};
+
+const startCheckout = () => {
+  if (!asset.value) return;
+  router.push({ name: 'AssetCheckOutFlow', query: { assetId: String(asset.value.id) } });
 };
 
 onMounted(fetchAssetDetails);
