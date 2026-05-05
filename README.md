@@ -83,21 +83,8 @@ The system follows a decoupled micro-architecture:
 - API Backend: http://localhost:8080
 - Metrics Dashboard: http://localhost:9090
 
-## Configuration
 
-Environment variables can be configured in the respective service directories:
-- `tasm-backend/.env`: Database credentials and API settings.
-- `tasm-frontend/src/api/config.ts`: API endpoint configurations.
-
-## Initial Setup
-
-Upon the first successful deployment:
-1. Navigate to the management interface.
-2. Log in using default credentials:
-   - Email: `admin@tasm.com`
-   - Password: `admin123`
-3. The system will automatically launch the **Setup Wizard**. Completion of this process is mandatory for system initialization.
-
+=
 ## License
 
 This project is licensed under the MIT License.
