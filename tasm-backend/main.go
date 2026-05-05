@@ -62,10 +62,13 @@ func main() {
 			auth.POST("/login", handlers.Login)
 		}
 
+		api.GET("/setup/status", handlers.GetSetupStatus)
+
 		// Protected Routes
 		protected := api.Group("/")
 		protected.Use(middleware.AuthRequired())
 		{
+			protected.POST("/setup/complete", handlers.CompleteSetup)
 			protected.GET("/auth/me", handlers.GetMe)
 
 			protected.GET("/assets", handlers.GetAssets)

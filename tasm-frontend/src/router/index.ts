@@ -23,6 +23,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: '/setup',
+      name: 'Setup',
+      component: () => import('../views/SetupWizard.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/',
       component: AppLayout,
       meta: { requiresAuth: true },
@@ -32,7 +38,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  const { initAuth, isInitializing, isAuthenticated } = useAuth();
+  const { initAuth, isInitializing, isAuthenticated, isSetupCompleted } = useAuth();
   if (isInitializing.value) {
     await initAuth();
   }
@@ -42,8 +48,16 @@ router.beforeEach(async (to) => {
     return { name: 'Login' };
   }
 
-  if (to.name === 'Login' && isAuthenticated.value) {
+  if (isAuthenticated.value && !isSetupCompleted.value && to.name !== 'Setup') {
+    return { name: 'Setup' };
+  }
+
+  if (isAuthenticated.value && isSetupCompleted.value && to.name === 'Setup') {
     return { name: 'Dashboard' };
+  }
+
+  if (to.name === 'Login' && isAuthenticated.value) {
+    return isSetupCompleted.value ? { name: 'Dashboard' } : { name: 'Setup' };
   }
 
   return true;
