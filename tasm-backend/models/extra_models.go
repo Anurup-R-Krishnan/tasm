@@ -53,12 +53,17 @@ type WorkOrder struct {
 	WorkOrderID   string         `json:"workOrderId"`
 	Title         string         `json:"title"`
 	AssetLocation string         `json:"assetLocation"`
+	AssetName     string         `json:"assetName"`
+	AssetTag      string         `json:"assetTag"`
+	Description   string         `json:"description"`
 	Issue         string         `json:"issue"`
 	Severity      string         `json:"severity"` // Critical, High, Medium, Low
+	ReportedBy    string         `json:"reportedBy"`
 	TargetDate    time.Time      `json:"targetDate"`
 	Status        string         `json:"status"` // Open, In Progress, Closed
 	Technician    string         `json:"technician"`
 	Cost          float64        `json:"cost"`
+	EstimatedCost float64        `json:"estimatedCost"`
 }
 
 type ProcurementRequest struct {
@@ -150,6 +155,7 @@ type AuditDiscrepancy struct {
 	CreatedAt         time.Time      `json:"createdAt"`
 	UpdatedAt         time.Time      `json:"updatedAt"`
 	DeletedAt         gorm.DeletedAt `gorm:"index" json:"-"`
+	AssetName         string         `json:"assetName"`
 	AssetTag          string         `json:"assetTag"`
 	IssueType         string         `json:"issueType"` // Missing, Location Mismatch, Unregistered
 	LastKnownLocation string         `json:"lastKnownLocation"`

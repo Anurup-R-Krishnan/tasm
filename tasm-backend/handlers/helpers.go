@@ -1,7 +1,11 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
+	"strconv"
+	"strings"
+	"time"
 
 	"tasm-backend/database"
 
@@ -16,4 +20,119 @@ func requireDB(c *gin.Context) (*gorm.DB, bool) {
 	}
 
 	return database.DB, true
+}
+
+func parseIDParam(c *gin.Context) (uint, bool) {
+	value := strings.TrimSpace(c.Param("id"))
+	if value == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		return 0, false
+	}
+
+	id, err := strconv.ParseUint(value, 10, 64)
+	if err != nil || id == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id must be a positive integer"})
+		return 0, false
+	}
+
+	return uint(id), true
+}
+
+func bindJSON(c *gin.Context, target interface{}) bool {
+	if err := c.ShouldBindJSON(target); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload", "details": err.Error()})
+		return false
+	}
+
+	return true
+}
+
+func mapValidationErrors(c *gin.Context, err error) {
+	c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload", "details": err.Error()})
+}
+
+func trimSpace(value string) string {
+	return strings.TrimSpace(value)
+}
+
+func requireNonEmpty(c *gin.Context, field string, value string) bool {
+	if strings.TrimSpace(value) == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": field + " is required"})
+		return false
+	}
+
+	return true
+}
+
+func requirePositiveOrZero(c *gin.Context, field string, value float64) bool {
+	if value < 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": field + " cannot be negative"})
+		return false
+	}
+
+	return true
+}
+
+func requireIntPositiveOrZero(c *gin.Context, field string, value int) bool {
+	if value < 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": field + " cannot be negative"})
+		return false
+	}
+
+	return true
+}
+
+func validateStatus(c *gin.Context, field string, value string, allowed []string) bool {
+	for _, option := range allowed {
+		if value == option {
+			return true
+		}
+	}
+
+	c.JSON(http.StatusBadRequest, gin.H{
+		"error": field + " must be one of: " + strings.Join(allowed, ", "),
+	})
+	return false
+}
+
+func parseDatePointer(value string) (*time.Time, error) {
+	if strings.TrimSpace(value) == "" {
+		return nil, nil
+	}
+
+	layouts := []string{
+		time.RFC3339,
+		"2006-01-02T15:04:05",
+		"2006-01-02",
+	}
+
+	for _, layout := range layouts {
+		parsed, err := time.Parse(layout, value)
+		if err == nil {
+			return &parsed, nil
+		}
+	}
+
+	return nil, errors.New("invalid date format")
+}
+
+func parseTime(value string) (time.Time, error) {
+	if strings.TrimSpace(value) == "" {
+		return time.Time{}, errors.New("time value is required")
+	}
+
+	layouts := []string{
+		time.RFC3339,
+		"2006-01-02T15:04:05",
+		"2006-01-02",
+	}
+
+	for _, layout := range layouts {
+		parsed, err := time.Parse(layout, value)
+		if err == nil {
+			return parsed, nil
+		}
+	}
+
+	return time.Time{}, errors.New("invalid time format")
 }

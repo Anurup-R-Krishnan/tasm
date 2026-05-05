@@ -25,12 +25,22 @@ func main() {
 	// Setup Router
 	r := gin.Default()
 
-	// CORS middleware
+	allowedOrigin := os.Getenv("FRONTEND_ORIGIN")
+
 	r.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		if c.Request.Method == "OPTIONS" {
+		origin := c.GetHeader("Origin")
+		if allowedOrigin == "" || origin == allowedOrigin {
+			if origin != "" {
+				c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
+			} else if allowedOrigin != "" {
+				c.Writer.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
+			}
+			c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		}
+
+		if c.Request.Method == http.MethodOptions {
 			c.AbortWithStatus(204)
 			return
 		}
@@ -100,6 +110,7 @@ func main() {
 
 			protected.GET("/reservations", handlers.GetReservations)
 			protected.GET("/reservations/:id", handlers.GetReservationByID)
+			protected.POST("/reservations", handlers.CreateReservation)
 			protected.PUT("/reservations/:id", handlers.UpdateReservation)
 			protected.DELETE("/reservations/:id", handlers.DeleteReservation)
 
@@ -112,28 +123,34 @@ func main() {
 			// Financial APIs
 			protected.GET("/ledgers", handlers.GetLedgers)
 			protected.GET("/ledgers/:id", handlers.GetLedgerByID)
+			protected.POST("/ledgers", handlers.CreateLedger)
 			protected.PUT("/ledgers/:id", handlers.UpdateLedger)
 			protected.DELETE("/ledgers/:id", handlers.DeleteLedger)
 			protected.GET("/leases", handlers.GetLeases)
 			protected.GET("/leases/:id", handlers.GetLeaseByID)
+			protected.POST("/leases", handlers.CreateLease)
 			protected.PUT("/leases/:id", handlers.UpdateLease)
 			protected.DELETE("/leases/:id", handlers.DeleteLease)
 			protected.GET("/depreciations", handlers.GetDepreciations)
 			protected.GET("/depreciations/:id", handlers.GetDepreciationByID)
+			protected.POST("/depreciations", handlers.CreateDepreciation)
 			protected.PUT("/depreciations/:id", handlers.UpdateDepreciation)
 			protected.DELETE("/depreciations/:id", handlers.DeleteDepreciation)
 			protected.GET("/software-licenses", handlers.GetSoftwareLicenses)
 			protected.GET("/software-licenses/:id", handlers.GetSoftwareLicenseByID)
+			protected.POST("/software-licenses", handlers.CreateSoftwareLicense)
 			protected.PUT("/software-licenses/:id", handlers.UpdateSoftwareLicense)
 			protected.DELETE("/software-licenses/:id", handlers.DeleteSoftwareLicense)
 
 			// User Management APIs
 			protected.GET("/users", handlers.GetUsers)
 			protected.GET("/users/:id", handlers.GetUserByID)
+			protected.POST("/users", handlers.CreateUser)
 			protected.PUT("/users/:id", handlers.UpdateUser)
 			protected.DELETE("/users/:id", handlers.DeleteUser)
 			protected.GET("/roles", handlers.GetRoles)
 			protected.GET("/roles/:id", handlers.GetRoleByID)
+			protected.POST("/roles", handlers.CreateRole)
 			protected.PUT("/roles/:id", handlers.UpdateRole)
 			protected.DELETE("/roles/:id", handlers.DeleteRole)
 

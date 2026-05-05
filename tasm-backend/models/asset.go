@@ -14,6 +14,7 @@ type Asset struct {
 	TagID          string         `json:"tagId"`
 	Category       string         `json:"category"`
 	Location       string         `json:"location"`
+	Condition      string         `json:"condition"`
 	Status         string         `json:"status"`
 	Custodian      string         `json:"custodian"`
 	CurrentStock   int            `json:"currentStock"`

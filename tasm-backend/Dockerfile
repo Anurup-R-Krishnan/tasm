@@ -2,6 +2,8 @@ FROM golang:1.26-alpine AS builder
 
 WORKDIR /app
 
+RUN apk add --no-cache gcc musl-dev
+
 # Copy dependency files
 COPY go.mod go.sum ./
 RUN go mod download
@@ -12,7 +14,7 @@ COPY . .
 # Build the application
 # CGO_ENABLED=0 creates a statically linked binary
 # -ldflags="-w -s" reduces binary size by stripping debug info
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o tasm-api .
+RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-w -s" -o tasm-api .
 
 # Final stage
 FROM alpine:latest

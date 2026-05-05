@@ -21,17 +21,8 @@ func ConnectDB() error {
 		return err
 	}
 
-	sqlDB, err := db.DB()
-	if err != nil {
-		return err
-	}
-
-	if err := sqlDB.Ping(); err != nil {
-		return err
-	}
-
 	DB = db
-	log.Printf("Database connection established for %s@%s:%s/%s", config.User, config.Host, config.Port, config.Name)
+	log.Printf("Database connected: %s:%s/%s", config.Host, config.Port, config.Name)
 
 	if err := DB.AutoMigrate(
 		&models.Asset{},
@@ -51,7 +42,7 @@ func ConnectDB() error {
 		&models.Location{},
 		&models.SystemAlert{},
 	); err != nil {
-		log.Fatalf("Failed to auto-migrate extra models: %v", err)
+		log.Fatalf("Failed to auto-migrate models: %v", err)
 	}
 
 	return nil
