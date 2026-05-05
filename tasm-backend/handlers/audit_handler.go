@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 	"strings"
-	"time"
 
 	"tasm-backend/models"
 
@@ -152,31 +151,57 @@ func UpdateAudit(c *gin.Context) {
 		return
 	}
 
-	type auditUpdateRequest struct {
-		Title            *string    `json:"title"`
-		StartDate        *time.Time `json:"startDate"`
-		EndDate          *time.Time `json:"endDate"`
-		Status           *string    `json:"status"`
-		TotalAssets      *int       `json:"totalAssets"`
-		ScannedAssets    *int       `json:"scannedAssets"`
-		DiscrepancyCount *int       `json:"discrepancyCount"`
-		AuditorName      *string    `json:"auditorName"`
-		Progress         *int       `json:"progress"`
+	if !updateAuditFromPayload(c, &item) {
+		return
 	}
 
-	var payload auditUpdateRequest
-	if !bindJSON(c, &payload) {
+	if !validateAuditFields(c, &item) {
 		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func updateAuditFromPayload(c *gin.Context, item *models.AuditSession) bool {
+	var payload struct {
+		Title            *string `json:"title"`
+		StartDate        *string `json:"startDate"`
+		EndDate          *string `json:"endDate"`
+		Status           *string `json:"status"`
+		TotalAssets      *int    `json:"totalAssets"`
+		ScannedAssets    *int    `json:"scannedAssets"`
+		DiscrepancyCount *int    `json:"discrepancyCount"`
+		AuditorName      *string `json:"auditorName"`
+		Progress         *int    `json:"progress"`
+	}
+
+	if !bindJSON(c, &payload) {
+		return false
 	}
 
 	if payload.Title != nil {
 		item.Title = trimSpace(*payload.Title)
 	}
 	if payload.StartDate != nil {
-		item.StartDate = *payload.StartDate
+		parsed, err := parseTime(*payload.StartDate)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "startDate must be a valid datetime"})
+			return false
+		}
+		item.StartDate = parsed
 	}
 	if payload.EndDate != nil {
-		item.EndDate = payload.EndDate
+		parsed, err := parseDatePointer(*payload.EndDate)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "endDate must be a valid datetime"})
+			return false
+		}
+		item.EndDate = parsed
 	}
 	if payload.Status != nil {
 		item.Status = trimSpace(*payload.Status)
@@ -196,44 +221,41 @@ func UpdateAudit(c *gin.Context) {
 	if payload.Progress != nil {
 		item.Progress = *payload.Progress
 	}
+	return true
+}
 
+func validateAuditFields(c *gin.Context, item *models.AuditSession) bool {
 	if !requireNonEmpty(c, "title", item.Title) ||
 		!requireNonEmpty(c, "auditorName", item.AuditorName) {
-		return
+		return false
 	}
 	if item.StartDate.IsZero() {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "startDate is required"})
-		return
+		return false
 	}
 	if item.EndDate != nil && item.EndDate.Before(item.StartDate) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "endDate cannot be before startDate"})
-		return
+		return false
 	}
 	if item.Status == "" {
 		item.Status = "Active"
 	}
 	if !validateStatus(c, "status", item.Status, []string{"Active", "Completed"}) {
-		return
+		return false
 	}
 	if item.TotalAssets < 0 || item.ScannedAssets < 0 || item.DiscrepancyCount < 0 || item.Progress < 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "counts cannot be negative"})
-		return
+		return false
 	}
 	if item.TotalAssets > 0 && item.ScannedAssets > item.TotalAssets {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "scannedAssets cannot exceed totalAssets"})
-		return
+		return false
 	}
 	if item.Progress > 100 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "progress cannot exceed 100"})
-		return
+		return false
 	}
-
-	if err := db.Save(&item).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to update"})
-		return
-	}
-
-	c.JSON(200, item)
+	return true
 }
 
 func DeleteAudit(c *gin.Context) {

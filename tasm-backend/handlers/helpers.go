@@ -40,7 +40,7 @@ func parseIDParam(c *gin.Context) (uint, bool) {
 
 func bindJSON(c *gin.Context, target interface{}) bool {
 	if err := c.ShouldBindJSON(target); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload", "details": err.Error()})
+		mapValidationErrors(c, err)
 		return false
 	}
 
@@ -110,4 +110,29 @@ func parseTime(value string) (time.Time, error) {
 	}
 
 	return time.Time{}, errors.New("invalid time format")
+}
+
+func parseDatePointer(value string) (*time.Time, error) {
+	if strings.TrimSpace(value) == "" {
+		return nil, nil
+	}
+
+	layouts := []string{
+		time.RFC3339,
+		"2006-01-02T15:04:05",
+		"2006-01-02",
+	}
+
+	for _, layout := range layouts {
+		parsed, err := time.Parse(layout, value)
+		if err == nil {
+			return &parsed, nil
+		}
+	}
+
+	return nil, errors.New("invalid date format")
+}
+
+func mapValidationErrors(c *gin.Context, err error) {
+	c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload", "details": err.Error()})
 }
