@@ -8,6 +8,7 @@ import (
 	"tasm-backend/models"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func GetAssets(c *gin.Context) {
@@ -207,7 +208,20 @@ func UpdateAsset(c *gin.Context) {
 		return
 	}
 
-	type assetUpdateRequest struct {
+	if !updateAssetFromPayload(c, db, &asset) {
+		return
+	}
+
+	if err := db.Save(&asset).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update asset"})
+		return
+	}
+
+	c.JSON(http.StatusOK, asset)
+}
+
+func updateAssetFromPayload(c *gin.Context, db *gorm.DB, asset *models.Asset) bool {
+	var payload struct {
 		Name           *string  `json:"name"`
 		TagID          *string  `json:"tagId"`
 		Category       *string  `json:"category"`
@@ -223,79 +237,83 @@ func UpdateAsset(c *gin.Context) {
 		WarrantyExpiry *string  `json:"warrantyExpiry"`
 	}
 
-	var payload assetUpdateRequest
 	if !bindJSON(c, &payload) {
-		return
+		return false
 	}
 
-	if payload.Name != nil {
-		asset.Name = trimSpace(*payload.Name)
-	}
-	if payload.TagID != nil {
-		asset.TagID = trimSpace(*payload.TagID)
-	}
-	if payload.Category != nil {
-		asset.Category = trimSpace(*payload.Category)
-	}
-	if payload.Location != nil {
-		asset.Location = trimSpace(*payload.Location)
-	}
-	if payload.Condition != nil {
-		asset.Condition = trimSpace(*payload.Condition)
-	}
-	if payload.Status != nil {
-		asset.Status = trimSpace(*payload.Status)
-	}
-	if payload.Custodian != nil {
-		asset.Custodian = trimSpace(*payload.Custodian)
-	}
-	if payload.CurrentStock != nil {
-		asset.CurrentStock = *payload.CurrentStock
-	}
-	if payload.ReorderLevel != nil {
-		asset.ReorderLevel = *payload.ReorderLevel
-	}
-	if payload.Value != nil {
-		asset.Value = *payload.Value
-	}
+	applyAssetStringField(&asset.Name, payload.Name)
+	applyAssetStringField(&asset.TagID, payload.TagID)
+	applyAssetStringField(&asset.Category, payload.Category)
+	applyAssetStringField(&asset.Location, payload.Location)
+	applyAssetStringField(&asset.Condition, payload.Condition)
+	applyAssetStringField(&asset.Status, payload.Status)
+	applyAssetStringField(&asset.Custodian, payload.Custodian)
+	applyAssetIntField(&asset.CurrentStock, payload.CurrentStock)
+	applyAssetIntField(&asset.ReorderLevel, payload.ReorderLevel)
+	applyAssetFloatField(&asset.Value, payload.Value)
+
 	if payload.PurchaseDate != nil {
 		parsed, err := parseTime(*payload.PurchaseDate)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "purchaseDate must be a valid datetime"})
-			return
+			return false
 		}
 		asset.PurchaseDate = parsed
 	}
+
 	if payload.WarrantyStatus != nil {
 		asset.WarrantyStatus = trimSpace(*payload.WarrantyStatus)
 	}
+
 	if payload.WarrantyExpiry != nil {
 		parsed, err := parseTime(*payload.WarrantyExpiry)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "warrantyExpiry must be a valid datetime"})
-			return
+			return false
 		}
 		asset.WarrantyExpiry = parsed
 	}
 
+	return validateAssetFields(c, asset, db, payload.TagID)
+}
+
+func applyAssetStringField(target *string, src *string) {
+	if src != nil {
+		*target = trimSpace(*src)
+	}
+}
+
+func applyAssetIntField(target *int, src *int) {
+	if src != nil {
+		*target = *src
+	}
+}
+
+func applyAssetFloatField(target *float64, src *float64) {
+	if src != nil {
+		*target = *src
+	}
+}
+
+func validateAssetFields(c *gin.Context, asset *models.Asset, db *gorm.DB, tagIDChanged *string) bool {
 	if asset.Name == "" || asset.TagID == "" || asset.Category == "" || asset.Location == "" || asset.Status == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "name, tagId, category, location, and status are required"})
-		return
+		return false
 	}
 
 	if !requireIntPositiveOrZero(c, "currentStock", asset.CurrentStock) ||
 		!requireIntPositiveOrZero(c, "reorderLevel", asset.ReorderLevel) ||
 		!requirePositiveOrZero(c, "value", asset.Value) {
-		return
+		return false
 	}
 
 	if !validateStatus(c, "status", asset.Status, []string{"In Stock", "Checked Out", "Reserved", "Retired"}) {
-		return
+		return false
 	}
 
 	if !asset.PurchaseDate.IsZero() && asset.PurchaseDate.After(time.Now().AddDate(1, 0, 0)) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "purchaseDate is not realistic"})
-		return
+		return false
 	}
 
 	if asset.WarrantyExpiry.IsZero() {
@@ -304,23 +322,18 @@ func UpdateAsset(c *gin.Context) {
 
 	if !asset.PurchaseDate.IsZero() && asset.WarrantyExpiry.Before(asset.PurchaseDate) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "warrantyExpiry cannot be before purchaseDate"})
-		return
+		return false
 	}
 
-	if payload.TagID != nil {
+	if tagIDChanged != nil {
 		var existing models.Asset
 		if err := db.Where("tag_id = ? AND id <> ?", asset.TagID, asset.ID).First(&existing).Error; err == nil {
 			c.JSON(http.StatusConflict, gin.H{"error": "asset with this tagId already exists"})
-			return
+			return false
 		}
 	}
 
-	if err := db.Save(&asset).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update asset"})
-		return
-	}
-
-	c.JSON(http.StatusOK, asset)
+	return true
 }
 
 func DeleteAsset(c *gin.Context) {

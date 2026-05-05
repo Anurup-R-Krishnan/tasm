@@ -339,7 +339,20 @@ func UpdateWorkOrder(c *gin.Context) {
 		return
 	}
 
-	type workOrderUpdateRequest struct {
+	if !updateWorkOrderFromPayload(c, &item) {
+		return
+	}
+
+	if err := db.Save(&item).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to update"})
+		return
+	}
+
+	c.JSON(200, item)
+}
+
+func updateWorkOrderFromPayload(c *gin.Context, item *models.WorkOrder) bool {
+	var payload struct {
 		WorkOrderID   *string    `json:"workOrderId"`
 		Title         *string    `json:"title"`
 		AssetLocation *string    `json:"assetLocation"`
@@ -356,46 +369,24 @@ func UpdateWorkOrder(c *gin.Context) {
 		EstimatedCost *float64   `json:"estimatedCost"`
 	}
 
-	var payload workOrderUpdateRequest
 	if !bindJSON(c, &payload) {
-		return
+		return false
 	}
 
-	if payload.WorkOrderID != nil {
-		item.WorkOrderID = trimSpace(*payload.WorkOrderID)
-	}
-	if payload.Title != nil {
-		item.Title = trimSpace(*payload.Title)
-	}
-	if payload.AssetLocation != nil {
-		item.AssetLocation = trimSpace(*payload.AssetLocation)
-	}
-	if payload.AssetName != nil {
-		item.AssetName = trimSpace(*payload.AssetName)
-	}
-	if payload.AssetTag != nil {
-		item.AssetTag = trimSpace(*payload.AssetTag)
-	}
-	if payload.Description != nil {
-		item.Description = trimSpace(*payload.Description)
-	}
-	if payload.Issue != nil {
-		item.Issue = trimSpace(*payload.Issue)
-	}
-	if payload.Severity != nil {
-		item.Severity = trimSpace(*payload.Severity)
-	}
-	if payload.ReportedBy != nil {
-		item.ReportedBy = trimSpace(*payload.ReportedBy)
-	}
+	applyWOStringField(&item.WorkOrderID, payload.WorkOrderID)
+	applyWOStringField(&item.Title, payload.Title)
+	applyWOStringField(&item.AssetLocation, payload.AssetLocation)
+	applyWOStringField(&item.AssetName, payload.AssetName)
+	applyWOStringField(&item.AssetTag, payload.AssetTag)
+	applyWOStringField(&item.Description, payload.Description)
+	applyWOStringField(&item.Issue, payload.Issue)
+	applyWOStringField(&item.Severity, payload.Severity)
+	applyWOStringField(&item.ReportedBy, payload.ReportedBy)
+	applyWOStringField(&item.Status, payload.Status)
+	applyWOStringField(&item.Technician, payload.Technician)
+
 	if payload.TargetDate != nil {
 		item.TargetDate = *payload.TargetDate
-	}
-	if payload.Status != nil {
-		item.Status = trimSpace(*payload.Status)
-	}
-	if payload.Technician != nil {
-		item.Technician = trimSpace(*payload.Technician)
 	}
 	if payload.Cost != nil {
 		item.Cost = *payload.Cost
@@ -404,30 +395,40 @@ func UpdateWorkOrder(c *gin.Context) {
 		item.EstimatedCost = *payload.EstimatedCost
 	}
 
+	return validateWorkOrderFields(c, item)
+}
+
+func applyWOStringField(target *string, src *string) {
+	if src != nil {
+		*target = trimSpace(*src)
+	}
+}
+
+func validateWorkOrderFields(c *gin.Context, item *models.WorkOrder) bool {
 	if !requireNonEmpty(c, "workOrderId", item.WorkOrderID) ||
 		!requireNonEmpty(c, "title", item.Title) ||
 		!requireNonEmpty(c, "assetLocation", item.AssetLocation) ||
 		!requireNonEmpty(c, "issue", item.Issue) {
-		return
+		return false
 	}
 
 	if item.TargetDate.IsZero() {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "targetDate is required"})
-		return
+		return false
 	}
 
 	if item.Severity == "" {
 		item.Severity = "Medium"
 	}
 	if !validateStatus(c, "severity", item.Severity, []string{"Critical", "High", "Medium", "Low"}) {
-		return
+		return false
 	}
 
 	if item.Status == "" {
 		item.Status = "Open"
 	}
 	if !validateStatus(c, "status", item.Status, []string{"Open", "In Progress", "Closed", "On Hold"}) {
-		return
+		return false
 	}
 
 	if item.EstimatedCost == 0 && item.Cost != 0 {
@@ -436,15 +437,10 @@ func UpdateWorkOrder(c *gin.Context) {
 
 	if !requirePositiveOrZero(c, "cost", item.Cost) ||
 		!requirePositiveOrZero(c, "estimatedCost", item.EstimatedCost) {
-		return
+		return false
 	}
 
-	if err := db.Save(&item).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to update"})
-		return
-	}
-
-	c.JSON(200, item)
+	return true
 }
 
 func DeleteWorkOrder(c *gin.Context) {
