@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 	"time"
@@ -229,6 +230,31 @@ func GetAssetHistory(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, events)
+}
+
+// GetAssetByTag returns the asset record matching the given tag ID
+func GetAssetByTag(c *gin.Context) {
+	tagID := c.Param("tagId")
+	if tagID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "tagId is required"})
+		return
+	}
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var asset models.Asset
+	if err := db.Where("tag_id = ?", tagID).First(&asset).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{"error": "asset not found"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to fetch asset"})
+		return
+	}
+
+	c.JSON(http.StatusOK, asset)
 }
 
 // logAssetEvent creates an asset event record

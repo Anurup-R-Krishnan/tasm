@@ -198,13 +198,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getAssetById } from '../api/assets';
-import type { Asset } from '../types/models';
+import { getAssetById, getAssetHistory } from '../api/assets';
+import type { Asset, AssetEvent } from '../types/models';
 
 const route = useRoute();
 const router = useRouter();
 const asset = ref<Asset | null>(null);
 const loading = ref(true);
+const events = ref<AssetEvent[]>([]);
 
 const fetchAssetDetails = async () => {
   try {
@@ -212,6 +213,7 @@ const fetchAssetDetails = async () => {
     if (!id) return;
 
     asset.value = await getAssetById(id);
+    events.value = await getAssetHistory(id);
   } catch (error) {
     console.error('Failed to fetch asset details:', error);
   } finally {
@@ -258,27 +260,19 @@ const technicalSpecs = computed(() => {
   };
 });
 
-const historyLogs = [
-  {
-    event: 'Maintenance Completed',
-    date: '24 Oct 2025',
-    description:
-      'Annual hardware calibration and component cleaning performed by onsite technician.',
-    icon: 'handyman',
-  },
-  {
-    event: 'Asset Checked Out',
-    date: '15 Aug 2025',
-    description: 'Assigned to Rajesh Kumar for Product Design project. Expected return: Feb 2026.',
-    icon: 'sync_alt',
-  },
-  {
-    event: 'Initial Procurement',
-    date: '12 Jan 2025',
-    description: 'Asset registered and tagged after PO-8821 verification.',
-    icon: 'inventory',
-  },
-];
+const historyLogs = computed(() => {
+  return events.value.map((e) => ({
+    event: e.eventType.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+    date: new Date(e.createdAt).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }),
+    description: e.notes || `${e.previousStatus} → ${e.newStatus}`,
+    icon:
+      e.eventType === 'checkout' ? 'sync_alt' : e.eventType === 'checkin' ? 'sync_alt' : 'history',
+  }));
+});
 
 const getStatusClass = (status: string) => {
   switch (status) {

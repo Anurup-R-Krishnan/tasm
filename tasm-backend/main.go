@@ -65,7 +65,7 @@ func main() {
 		api.GET("/setup/status", handlers.GetSetupStatus)
 
 		// Protected Routes
-		protected := api.Group("/")
+		protected := api.Group("")
 		protected.Use(middleware.AuthRequired())
 		{
 			protected.POST("/setup/complete", handlers.CompleteSetup)
@@ -79,6 +79,11 @@ func main() {
 			protected.POST("/assets/:id/checkout", handlers.CheckoutAsset)
 			protected.POST("/assets/:id/checkin", handlers.CheckinAsset)
 			protected.GET("/assets/:id/history", handlers.GetAssetHistory)
+			protected.GET("/assets/by-tag/:tagId", handlers.GetAssetByTag)
+
+			protected.GET("/test", func(c *gin.Context) {
+				c.JSON(200, gin.H{"message": "test"})
+			})
 
 			protected.GET("/consumables", handlers.GetConsumables)
 			protected.GET("/consumables/:id", handlers.GetConsumableByID)

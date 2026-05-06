@@ -161,3 +161,17 @@ export interface SystemAlert extends BaseEntity {
   source: string;
   isRead: boolean;
 }
+
+export interface AssetEvent extends BaseEntity {
+  assetId: number;
+  eventType: string;
+  description: string;
+  previousStatus: string;
+  newStatus: string;
+  previousCustodian: string;
+  newCustodian: string;
+  actorId: number;
+  actorName: string;
+  dueDate?: string;
+  notes: string;
+}

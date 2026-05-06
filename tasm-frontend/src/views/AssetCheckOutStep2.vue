@@ -177,7 +177,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getUsers } from '../api/users';
-import { getAssetById, updateAsset } from '../api/assets';
+import { getAssetById, checkoutAsset } from '../api/assets';
 import type { Asset, SystemUser } from '../types/models';
 
 const router = useRouter();
@@ -238,12 +238,13 @@ const isFormValid = computed(() => {
 });
 
 const completeCheckout = async () => {
-  if (!selectedAsset.value) return;
+  if (!selectedAsset.value || !selectedUserId.value) return;
   try {
     submitting.value = true;
-    await updateAsset(selectedAsset.value.id, {
-      status: 'Checked Out',
-      custodian: selectedUserName.value,
+    await checkoutAsset(selectedAsset.value.id, {
+      userId: Number(selectedUserId.value),
+      dueDate: returnDate.value,
+      notes: notes.value,
     });
     router.push('/inventory');
   } catch (err) {
