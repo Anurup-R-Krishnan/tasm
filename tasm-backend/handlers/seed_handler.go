@@ -18,6 +18,17 @@ func SeedDatabase(c *gin.Context) {
 	// Wipe all tables
 	database.DB.Exec("TRUNCATE TABLE assets, audit_sessions, audit_discrepancies, consumables, maintenance_contracts, work_orders, procurement_requests, ledger_entries, lease_agreements, depreciation_schedules, software_licenses, system_users, user_roles, reservations, locations, system_alerts, system_configs RESTART IDENTITY CASCADE")
 
+	// Create roles
+	roles := []models.UserRole{
+		{RoleName: "System Admin", Description: "Full system access", UsersCount: 1},
+		{RoleName: "Finance Manager", Description: "Financial oversight", UsersCount: 0},
+		{RoleName: "Facilities Head", Description: "Operations and maintenance", UsersCount: 0},
+		{RoleName: "Employee", Description: "Standard access", UsersCount: 0},
+	}
+	for _, role := range roles {
+		database.DB.Create(&role)
+	}
+
 	// Create initial admin
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("admin123"), bcrypt.DefaultCost)
 	admin := models.SystemUser{
@@ -27,6 +38,7 @@ func SeedDatabase(c *gin.Context) {
 		PasswordHash: string(hashedPassword),
 		Role:         "System Admin",
 		Status:       "Active",
+		Department:   "IT Services",
 	}
 	database.DB.Create(&admin)
 

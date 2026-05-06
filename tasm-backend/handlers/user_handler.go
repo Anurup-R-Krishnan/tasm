@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 // GetUsers returns a list of system users
@@ -91,7 +92,11 @@ func CreateUser(c *gin.Context) {
 	if !requireNonEmpty(c, "employeeId", payload.EmployeeID) ||
 		!requireNonEmpty(c, "name", payload.Name) ||
 		!requireNonEmpty(c, "email", payload.Email) ||
-		!requireNonEmpty(c, "password", payload.Password) {
+		!requireNonEmpty(c, "password", payload.Password) ||
+		!requireNonEmpty(c, "role", payload.Role) {
+		return
+	}
+	if !requirePasswordPolicy(c, "password", payload.Password) {
 		return
 	}
 	if payload.Status == "" {
@@ -103,6 +108,11 @@ func CreateUser(c *gin.Context) {
 
 	db, ok := requireDB(c)
 	if !ok {
+		return
+	}
+
+	if !roleExists(db, payload.Role) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "role not found"})
 		return
 	}
 
@@ -132,6 +142,8 @@ func CreateUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}
+
+	adjustRoleCount(db, payload.Role, 1)
 
 	c.JSON(http.StatusCreated, user)
 }
@@ -222,6 +234,7 @@ func UpdateUser(c *gin.Context) {
 		c.JSON(404, gin.H{"error": "Item not found"})
 		return
 	}
+	previousRole := item.Role
 
 	var payload updateUserRequest
 	if !bindJSON(c, &payload) {
@@ -247,6 +260,9 @@ func UpdateUser(c *gin.Context) {
 		item.Status = trimSpace(*payload.Status)
 	}
 	if payload.Password != nil && strings.TrimSpace(*payload.Password) != "" {
+		if !requirePasswordPolicy(c, "password", *payload.Password) {
+			return
+		}
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(*payload.Password), bcrypt.DefaultCost)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to secure password"})
@@ -257,7 +273,8 @@ func UpdateUser(c *gin.Context) {
 
 	if !requireNonEmpty(c, "employeeId", item.EmployeeID) ||
 		!requireNonEmpty(c, "name", item.Name) ||
-		!requireNonEmpty(c, "email", item.Email) {
+		!requireNonEmpty(c, "email", item.Email) ||
+		!requireNonEmpty(c, "role", item.Role) {
 		return
 	}
 	if item.Status == "" {
@@ -275,9 +292,21 @@ func UpdateUser(c *gin.Context) {
 		}
 	}
 
+	if item.Role != "" && item.Role != previousRole {
+		if !roleExists(db, item.Role) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "role not found"})
+			return
+		}
+	}
+
 	if err := db.Save(&item).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Failed to update"})
 		return
+	}
+
+	if previousRole != item.Role {
+		adjustRoleCount(db, previousRole, -1)
+		adjustRoleCount(db, item.Role, 1)
 	}
 
 	c.JSON(200, item)
@@ -293,12 +322,41 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	if err := db.Delete(&models.SystemUser{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
+	var user models.SystemUser
+	if err := db.First(&user, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	user.Status = "Inactive"
+	if err := db.Save(&user).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to deactivate"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "User deactivated successfully"})
+}
+
+func roleExists(db *gorm.DB, roleName string) bool {
+	if strings.TrimSpace(roleName) == "" {
+		return false
+	}
+	var role models.UserRole
+	if err := db.Where("role_name = ?", roleName).First(&role).Error; err != nil {
+		return false
+	}
+	return true
+}
+
+func adjustRoleCount(db *gorm.DB, roleName string, delta int) {
+	if strings.TrimSpace(roleName) == "" || delta == 0 {
+		return
+	}
+	if delta > 0 {
+		db.Model(&models.UserRole{}).Where("role_name = ?", roleName).UpdateColumn("users_count", gorm.Expr("users_count + ?", delta))
+		return
+	}
+	db.Model(&models.UserRole{}).Where("role_name = ?", roleName).UpdateColumn("users_count", gorm.Expr("GREATEST(users_count - ?, 0)", -delta))
 }
 
 func UpdateRole(c *gin.Context) {

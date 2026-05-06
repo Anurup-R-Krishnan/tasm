@@ -76,6 +76,9 @@ func main() {
 			protected.POST("/assets", handlers.CreateAsset)
 			protected.PUT("/assets/:id", handlers.UpdateAsset)
 			protected.DELETE("/assets/:id", handlers.DeleteAsset)
+			protected.POST("/assets/:id/checkout", handlers.CheckoutAsset)
+			protected.POST("/assets/:id/checkin", handlers.CheckinAsset)
+			protected.GET("/assets/:id/history", handlers.GetAssetHistory)
 
 			protected.GET("/consumables", handlers.GetConsumables)
 			protected.GET("/consumables/:id", handlers.GetConsumableByID)

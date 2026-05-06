@@ -6,6 +6,9 @@ import (
 	"os"
 	"strings"
 
+	"tasm-backend/database"
+	"tasm-backend/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -25,6 +28,8 @@ func AuthRequired() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Authorization header required"})
 			return
 		}
+		// Log the authHeader for debugging
+		fmt.Printf("AuthHeader: %s\n", authHeader)
 
 		parts := strings.Split(authHeader, " ")
 		if len(parts) != 2 || parts[0] != "Bearer" {
@@ -58,7 +63,19 @@ func AuthRequired() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("userID", uint(userIDFloat))
+		userID := uint(userIDFloat)
+		var user models.SystemUser
+		if err := database.DB.First(&user, userID).Error; err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+			return
+		}
+		if strings.TrimSpace(user.Status) != "Active" {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "User is inactive"})
+			return
+		}
+
+		c.Set("userID", userID)
+		c.Set("userRole", user.Role)
 		c.Next()
 	}
 }

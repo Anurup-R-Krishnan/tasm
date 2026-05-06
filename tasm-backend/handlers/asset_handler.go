@@ -55,6 +55,203 @@ func GetAssets(c *gin.Context) {
 	c.JSON(http.StatusOK, assets)
 }
 
+// CheckoutAsset handles checking out an asset to a user
+func CheckoutAsset(c *gin.Context) {
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var asset models.Asset
+	if err := db.First(&asset, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Asset not found"})
+		return
+	}
+
+	if asset.Status != "In Stock" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Asset is not available for checkout"})
+		return
+	}
+
+	type checkoutPayload struct {
+		UserID    uint   `json:"userId"`
+		DueDate   string `json:"dueDate"` // ISO date string
+		Notes     string `json:"notes,omitempty"`
+		Custodian string `json:"custodian"` // optional override
+	}
+	var payload checkoutPayload
+	if !bindJSON(c, &payload) {
+		return
+	}
+
+	if payload.UserID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "userId is required"})
+		return
+	}
+
+	var user models.SystemUser
+	if err := db.First(&user, payload.UserID).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+		return
+	}
+	if strings.TrimSpace(user.Status) != "Active" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user is not active"})
+		return
+	}
+
+	var custodian string
+	if strings.TrimSpace(payload.Custodian) != "" {
+		custodian = strings.TrimSpace(payload.Custodian)
+	} else {
+		custodian = user.Name
+	}
+
+	var dueDate *time.Time
+	if strings.TrimSpace(payload.DueDate) != "" {
+		parsed, err := parseTime(payload.DueDate)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "dueDate must be a valid datetime"})
+			return
+		}
+		dueDate = &parsed
+		if dueDate.Before(time.Now()) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "dueDate cannot be in the past"})
+			return
+		}
+	}
+
+	// Update asset
+	asset.Status = "Checked Out"
+	asset.Custodian = custodian
+	if err := db.Save(&asset).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update asset"})
+		return
+	}
+
+	// Log event
+	logAssetEvent(db, asset.ID, user.ID, user.Name, "checkout",
+		"Asset checked out",
+		"In Stock", asset.Status,
+		"", asset.Custodian,
+		dueDate, payload.Notes)
+
+	c.JSON(http.StatusOK, asset)
+}
+
+// CheckinAsset handles checking in an asset
+func CheckinAsset(c *gin.Context) {
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var asset models.Asset
+	if err := db.First(&asset, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Asset not found"})
+		return
+	}
+
+	if asset.Status != "Checked Out" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Asset is not currently checked out"})
+		return
+	}
+
+	type checkinPayload struct {
+		Notes     string `json:"notes,omitempty"`
+		Custodian string `json:"custodian,omitempty"` // optional, for verification
+	}
+	var payload checkinPayload
+	if !bindJSON(c, &payload) {
+		return
+	}
+
+	previousCustodian := asset.Custodian
+	if strings.TrimSpace(payload.Custodian) != "" && strings.TrimSpace(payload.Custodian) != previousCustodian {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "custodian does not match current holder"})
+		return
+	}
+
+	// Update asset
+	asset.Status = "In Stock"
+	asset.Custodian = ""
+	if err := db.Save(&asset).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update asset"})
+		return
+	}
+
+	// Log event - we need actor from context (the user performing checkin)
+	userID, exists := c.Get("userID")
+	var actorID uint
+	var actorName string
+	if exists {
+		actorID = userID.(uint)
+		var actor models.SystemUser
+		if err := db.First(&actor, actorID).Error; err == nil {
+			actorName = actor.Name
+		}
+	}
+	if actorName == "" {
+		actorName = "System"
+	}
+
+	logAssetEvent(db, asset.ID, actorID, actorName, "checkin",
+		"Asset checked in",
+		"Checked Out", asset.Status,
+		previousCustodian, "",
+		nil, payload.Notes)
+
+	c.JSON(http.StatusOK, asset)
+}
+
+// GetAssetHistory returns the event history for an asset
+func GetAssetHistory(c *gin.Context) {
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var events []models.AssetEvent
+	if err := db.Where("asset_id = ?", id).Order("created_at desc").Find(&events).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch asset history"})
+		return
+	}
+
+	c.JSON(http.StatusOK, events)
+}
+
+// logAssetEvent creates an asset event record
+func logAssetEvent(db *gorm.DB, assetID uint, actorID uint, actorName string, eventType string, description string,
+	previousStatus string, newStatus string,
+	previousCustodian string, newCustodian string,
+	dueDate *time.Time, notes string) {
+	event := models.AssetEvent{
+		AssetID:           assetID,
+		EventType:         eventType,
+		ActorID:           actorID,
+		ActorName:         actorName,
+		Description:       description,
+		PreviousStatus:    previousStatus,
+		NewStatus:         newStatus,
+		PreviousCustodian: previousCustodian,
+		NewCustodian:      newCustodian,
+		DueDate:           dueDate,
+		Notes:             notes,
+	}
+	db.Create(&event)
+}
+
 type assetRequest struct {
 	Name           string  `json:"name"`
 	TagID          string  `json:"tagId"`

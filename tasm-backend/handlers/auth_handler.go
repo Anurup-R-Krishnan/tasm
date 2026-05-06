@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -42,6 +43,10 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
+	if strings.TrimSpace(user.Status) != "Active" {
+		c.JSON(http.StatusForbidden, gin.H{"error": "User is inactive"})
+		return
+	}
 
 	// Compare password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password)); err != nil {
@@ -51,8 +56,9 @@ func Login(c *gin.Context) {
 
 	// Generate JWT
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.ID,
-		"exp": time.Now().Add(time.Hour * 24).Unix(), // 24 hours
+		"sub":  user.ID,
+		"role": user.Role,
+		"exp":  time.Now().Add(time.Hour * 24).Unix(), // 24 hours
 	})
 
 	tokenString, err := token.SignedString(getJWTSecret())

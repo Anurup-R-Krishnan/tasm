@@ -136,3 +136,35 @@ func parseDatePointer(value string) (*time.Time, error) {
 func mapValidationErrors(c *gin.Context, err error) {
 	c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload", "details": err.Error()})
 }
+
+func requirePasswordPolicy(c *gin.Context, field string, value string) bool {
+	trimmed := strings.TrimSpace(value)
+	if len(trimmed) < 8 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": field + " must be at least 8 characters"})
+		return false
+	}
+
+	var hasUpper bool
+	var hasLower bool
+	var hasNumber bool
+	var hasSpecial bool
+	for _, char := range trimmed {
+		switch {
+		case char >= 'A' && char <= 'Z':
+			hasUpper = true
+		case char >= 'a' && char <= 'z':
+			hasLower = true
+		case char >= '0' && char <= '9':
+			hasNumber = true
+		case strings.ContainsRune("!\"#$%&'()*+,-./:;=?@[\\]^_`{|}~", char):
+			hasSpecial = true
+		}
+	}
+
+	if !hasUpper || !hasLower || !hasNumber || !hasSpecial {
+		c.JSON(http.StatusBadRequest, gin.H{"error": field + " must include upper, lower, number, and special character"})
+		return false
+	}
+
+	return true
+}
