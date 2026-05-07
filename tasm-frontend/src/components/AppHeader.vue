@@ -52,9 +52,19 @@
       >
         <span class="material-symbols-outlined">qr_code_scanner</span>
       </RouterLink>
-      <button class="p-2 text-text-secondary hover:text-primary transition-colors">
+      <RouterLink
+        to="/alerts"
+        class="p-2 text-text-secondary hover:text-primary transition-colors relative"
+        title="Alerts"
+      >
         <span class="material-symbols-outlined">notifications</span>
-      </button>
+        <span
+          v-if="unreadCount > 0"
+          class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-status-critical text-white text-[9px] font-bold flex items-center justify-center"
+        >
+          {{ unreadCount > 9 ? '9+' : unreadCount }}
+        </span>
+      </RouterLink>
       <button class="p-2 text-text-secondary hover:text-primary transition-colors">
         <span class="material-symbols-outlined">help</span>
       </button>
@@ -82,14 +92,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import { appRoutes } from '../router/routes';
 import { useAuth } from '../composables/useAuth';
+import { getAlerts } from '../api/alerts';
 
 const route = useRoute();
 const query = ref('');
 const isFocused = ref(false);
+const unreadCount = ref(0);
 const { currentUser } = useAuth();
 
 const currentTitle = computed(() => route.meta['title']?.toString() ?? 'Dashboard');
@@ -115,5 +127,14 @@ const filteredRoutes = computed(() => {
   return routeIndex
     .filter((item) => item.title.toLowerCase().includes(normalizedQuery))
     .slice(0, 6);
+});
+
+onMounted(async () => {
+  try {
+    const alerts = await getAlerts({ unread: true });
+    unreadCount.value = alerts.length;
+  } catch {
+    /* ignore */
+  }
 });
 </script>
