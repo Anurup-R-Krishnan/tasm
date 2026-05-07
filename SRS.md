@@ -1,4 +1,4 @@
-# Software Requirements Specification (SRS)
+~# Software Requirements Specification (SRS)
 ## TASM - Asset Management System
 
 ---
@@ -177,6 +177,8 @@ The system provides the following major functions:
 | PF-14 | Alerts & Notifications | System alerts for critical events |
 | PF-15 | Reports & Analytics | Custom reports and KPI dashboards |
 | PF-16 | Self-Service Portal | Employee asset checkout and reservations |
+| PF-17 | Asset Event History | Immutable event log for checkout/checkin and lifecycle changes |
+
 
 ### 2.3 User Characteristics
 
@@ -231,6 +233,10 @@ The Asset Registry module serves as the central database for all organizational 
 | FR-1.8 | Export Assets | Medium | System shall allow exporting asset list to CSV format |
 | FR-1.9 | Asset Categories | High | System shall support asset categorization: IT Equipment, IT Peripherals, Office Furniture, Infrastructure |
 | FR-1.10 | Asset Status Tracking | High | System shall track asset status changes with timestamps and user attribution |
+| FR-1.11 | Asset Checkout | High | System shall allow authorized users to check out available assets to a user with optional notes and due date |
+| FR-1.12 | Asset Checkin | High | System shall allow authorized users to check in checked-out assets with condition notes and automatic status transition to available |
+| FR-1.13 | Asset Event History API | High | System shall expose per-asset history showing event type, actor, timestamps, and metadata for auditability |
+
 
 #### 3.1.3 Asset Status Workflow
 
@@ -954,26 +960,14 @@ erDiagram
 | Alerts | GET/PUT | `/api/alerts` | Alert management |
 | Health | GET | `/healthz` | Health check (no auth) |
 | Metrics | GET | `/metrics` | Prometheus metrics (no auth) |
+| GET | `/api/roles` | List available roles | Yes |
+| GET | `/api/roles/:id` | Get role details | Yes |
+| POST | `/api/roles` | Create role | Yes (Admin) |
+| PUT | `/api/roles/:id` | Update role | Yes (Admin) |
+| DELETE | `/api/roles/:id` | Delete role | Yes (Admin) |
 
-#### 6.2.8 API Response Format
 
-**Success Response:**
-```json
-{
-  "success": true,
-  "data": { ... },
-  "message": "Operation successful"
-}
-```
 
-**Error Response:**
-```json
-{
-  "success": false,
-  "error": "Error message description",
-  "code": "ERROR_CODE"
-}
-```
 
 ### 6.3 Hardware Interfaces
 
@@ -1230,3 +1224,4 @@ flowchart TD
 ---
 
 **End of Document**
+~
