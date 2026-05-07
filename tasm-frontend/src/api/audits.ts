@@ -54,9 +54,9 @@ export function scanAssetInAudit(
 }
 
 export function getDiscrepancies(params?: {
-  auditSessionId?: number | string;
-  status?: string;
-  issueType?: string;
+  auditSessionId?: number | string | undefined;
+  status?: string | undefined;
+  issueType?: string | undefined;
 }): Promise<AuditDiscrepancy[]> {
   const qs = new URLSearchParams();
   if (params?.auditSessionId) qs.set('auditSessionId', String(params.auditSessionId));
@@ -82,8 +82,8 @@ export function resolveDiscrepancy(
   id: number | string,
   data: {
     action: 'confirm_location' | 'mark_lost' | 'register' | 'update_location' | 'dismiss';
-    newLocation?: string;
-    notes?: string;
+    newLocation?: string | undefined;
+    notes?: string | undefined;
   },
 ): Promise<AuditDiscrepancy> {
   return apiRequest<AuditDiscrepancy>(`/discrepancies/${id}/resolve`, {

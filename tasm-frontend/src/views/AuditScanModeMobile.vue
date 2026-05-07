@@ -326,7 +326,7 @@ const submitManualTag = async () => {
 const fetchDiscrepancies = async () => {
   try {
     discrepancies.value = await getDiscrepancies({
-      auditSessionId: auditId.value,
+      auditSessionId: auditId.value || undefined,
       status: 'Open',
     });
   } catch (err) {

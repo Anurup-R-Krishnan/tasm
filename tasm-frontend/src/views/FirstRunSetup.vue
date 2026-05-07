@@ -69,10 +69,10 @@
                   type="text"
                   placeholder="Jane Smith"
                   class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl text-text-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                  :class="{ 'border-status-critical': errors.name }"
+                  :class="{ 'border-status-critical': errors['name'] }"
                 />
-                <p v-if="errors.name" class="text-status-critical text-xs mt-1">
-                  {{ errors.name }}
+                <p v-if="errors['name']" class="text-status-critical text-xs mt-1">
+                  {{ errors['name'] }}
                 </p>
               </div>
               <div>
@@ -99,10 +99,10 @@
                 type="email"
                 placeholder="admin@company.com"
                 class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl text-text-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                :class="{ 'border-status-critical': errors.email }"
+                :class="{ 'border-status-critical': errors['email'] }"
               />
-              <p v-if="errors.email" class="text-status-critical text-xs mt-1">
-                {{ errors.email }}
+              <p v-if="errors['email']" class="text-status-critical text-xs mt-1">
+                {{ errors['email'] }}
               </p>
             </div>
 
@@ -130,7 +130,7 @@
                   :type="showPassword ? 'text' : 'password'"
                   placeholder="Min. 8 characters"
                   class="w-full h-11 px-4 pr-12 bg-canvas border border-border-default rounded-xl text-text-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                  :class="{ 'border-status-critical': errors.password }"
+                  :class="{ 'border-status-critical': errors['password'] }"
                 />
                 <button
                   type="button"
@@ -142,8 +142,8 @@
                   }}</span>
                 </button>
               </div>
-              <p v-if="errors.password" class="text-status-critical text-xs mt-1">
-                {{ errors.password }}
+              <p v-if="errors['password']" class="text-status-critical text-xs mt-1">
+                {{ errors['password'] }}
               </p>
               <!-- Strength indicator -->
               <div v-if="form.password" class="flex gap-1 mt-2">
@@ -169,10 +169,10 @@
                 :type="showPassword ? 'text' : 'password'"
                 placeholder="Repeat password"
                 class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl text-text-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                :class="{ 'border-status-critical': errors.confirmPassword }"
+                :class="{ 'border-status-critical': errors['confirmPassword'] }"
               />
-              <p v-if="errors.confirmPassword" class="text-status-critical text-xs mt-1">
-                {{ errors.confirmPassword }}
+              <p v-if="errors['confirmPassword']" class="text-status-critical text-xs mt-1">
+                {{ errors['confirmPassword'] }}
               </p>
             </div>
           </div>
@@ -203,10 +203,10 @@
                 type="text"
                 placeholder="Acme Corporation"
                 class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl text-text-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                :class="{ 'border-status-critical': errors.companyName }"
+                :class="{ 'border-status-critical': errors['companyName'] }"
               />
-              <p v-if="errors.companyName" class="text-status-critical text-xs mt-1">
-                {{ errors.companyName }}
+              <p v-if="errors['companyName']" class="text-status-critical text-xs mt-1">
+                {{ errors['companyName'] }}
               </p>
             </div>
 
@@ -500,21 +500,21 @@ const strengthLabel = computed(
 // Step validation
 const validateStep1 = () => {
   const e: Record<string, string> = {};
-  if (!form.value.name.trim()) e.name = 'Full name is required';
-  if (!form.value.email.trim()) e.email = 'Email is required';
+  if (!form.value.name.trim()) e['name'] = 'Full name is required';
+  if (!form.value.email.trim()) e['email'] = 'Email is required';
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email))
-    e.email = 'Enter a valid email address';
-  if (!form.value.password) e.password = 'Password is required';
-  else if (form.value.password.length < 8) e.password = 'Password must be at least 8 characters';
+    e['email'] = 'Enter a valid email address';
+  if (!form.value.password) e['password'] = 'Password is required';
+  else if (form.value.password.length < 8) e['password'] = 'Password must be at least 8 characters';
   if (form.value.password !== form.value.confirmPassword)
-    e.confirmPassword = 'Passwords do not match';
+    e['confirmPassword'] = 'Passwords do not match';
   errors.value = e;
   return Object.keys(e).length === 0;
 };
 
 const validateStep2 = () => {
   const e: Record<string, string> = {};
-  if (!form.value.companyName.trim()) e.companyName = 'Company name is required';
+  if (!form.value.companyName.trim()) e['companyName'] = 'Company name is required';
   errors.value = e;
   return Object.keys(e).length === 0;
 };

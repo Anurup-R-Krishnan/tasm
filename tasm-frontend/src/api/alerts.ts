@@ -1,7 +1,10 @@
 import { apiRequest } from './client';
 import type { SystemAlert } from '../types/models';
 
-export function getAlerts(params?: { unread?: boolean; type?: string }): Promise<SystemAlert[]> {
+export function getAlerts(params?: {
+  unread?: boolean | undefined;
+  type?: string | undefined;
+}): Promise<SystemAlert[]> {
   const qs = new URLSearchParams();
   if (params?.unread) qs.set('unread', 'true');
   if (params?.type) qs.set('type', params.type);
