@@ -155,12 +155,16 @@ type AuditDiscrepancy struct {
 	CreatedAt         time.Time      `json:"createdAt"`
 	UpdatedAt         time.Time      `json:"updatedAt"`
 	DeletedAt         gorm.DeletedAt `gorm:"index" json:"-"`
+	AuditSessionID    uint           `json:"auditSessionId"`
 	AssetName         string         `json:"assetName"`
 	AssetTag          string         `json:"assetTag"`
 	IssueType         string         `json:"issueType"` // Missing, Location Mismatch, Unregistered
 	LastKnownLocation string         `json:"lastKnownLocation"`
 	ScannedLocation   string         `json:"scannedLocation"`
 	RecommendedAction string         `json:"recommendedAction"`
+	Status            string         `json:"status" gorm:"default:Open"` // Open, Resolved, Dismissed
+	Resolution        string         `json:"resolution"`                 // e.g. "Location Updated", "Marked as Lost", "Registered"
+	ResolvedBy        string         `json:"resolvedBy"`
 }
 
 type Reservation struct {

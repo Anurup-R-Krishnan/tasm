@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"strings"
+	"time"
 
 	"tasm-backend/models"
 
@@ -93,12 +94,269 @@ func CreateAudit(c *gin.Context) {
 		return
 	}
 
+	// Auto-set totalAssets from DB count if not provided
+	if audit.TotalAssets == 0 {
+		var count int64
+		db.Model(&models.Asset{}).Where("status IN ?", []string{"In Stock", "Checked Out", "Reserved"}).Count(&count)
+		audit.TotalAssets = int(count)
+	}
+
 	if err := db.Create(&audit).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create audit"})
 		return
 	}
 
 	c.JSON(http.StatusCreated, audit)
+}
+
+// ScanAssetInAudit registers a scanned asset tag against an active audit session.
+// It updates scanned count and progress; if there's a discrepancy it records it.
+func ScanAssetInAudit(c *gin.Context) {
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var session models.AuditSession
+	if err := db.First(&session, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Audit session not found"})
+		return
+	}
+	if session.Status != "Active" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Audit session is not active"})
+		return
+	}
+
+	type scanPayload struct {
+		TagID           string `json:"tagId"`
+		ScannedLocation string `json:"scannedLocation"`
+	}
+	var payload scanPayload
+	if !bindJSON(c, &payload) {
+		return
+	}
+	payload.TagID = trimSpace(payload.TagID)
+	if payload.TagID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "tagId is required"})
+		return
+	}
+
+	// Look up the asset by tag
+	var asset models.Asset
+	result := db.Where("tag_id = ?", payload.TagID).First(&asset)
+
+	if result.Error != nil {
+		// Asset not found — log as unregistered discrepancy
+		disc := models.AuditDiscrepancy{
+			AuditSessionID:    session.ID,
+			AssetTag:          payload.TagID,
+			AssetName:         "Unknown",
+			IssueType:         "Unregistered",
+			ScannedLocation:   payload.ScannedLocation,
+			LastKnownLocation: "N/A",
+			RecommendedAction: "Register as new asset or investigate",
+			Status:            "Open",
+		}
+		db.Create(&disc)
+
+		// Increment discrepancy count
+		session.DiscrepancyCount++
+		db.Save(&session)
+
+		c.JSON(http.StatusOK, gin.H{
+			"result":      "unregistered",
+			"message":     "Asset tag not found in system",
+			"discrepancy": disc,
+		})
+		return
+	}
+
+	// Asset found — check for location mismatch
+	scannedLoc := trimSpace(payload.ScannedLocation)
+	locationMismatch := scannedLoc != "" && scannedLoc != asset.Location
+
+	// Update scanned count and progress
+	session.ScannedAssets++
+	if session.TotalAssets > 0 {
+		session.Progress = (session.ScannedAssets * 100) / session.TotalAssets
+	}
+
+	if locationMismatch {
+		// Check if a discrepancy for this asset in this audit already exists
+		var existingDisc models.AuditDiscrepancy
+		discErr := db.Where("audit_session_id = ? AND asset_tag = ? AND status = ?", session.ID, asset.TagID, "Open").First(&existingDisc).Error
+		if discErr != nil {
+			disc := models.AuditDiscrepancy{
+				AuditSessionID:    session.ID,
+				AssetTag:          asset.TagID,
+				AssetName:         asset.Name,
+				IssueType:         "Location Mismatch",
+				LastKnownLocation: asset.Location,
+				ScannedLocation:   scannedLoc,
+				RecommendedAction: "Verify asset location and update record",
+				Status:            "Open",
+			}
+			db.Create(&disc)
+			session.DiscrepancyCount++
+		}
+	}
+
+	db.Save(&session)
+
+	c.JSON(http.StatusOK, gin.H{
+		"result":        "found",
+		"asset":         asset,
+		"locationMatch": !locationMismatch,
+		"progress":      session.Progress,
+	})
+}
+
+// ResolveDiscrepancy marks a discrepancy as resolved and optionally updates the related asset
+func ResolveDiscrepancy(c *gin.Context) {
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var disc models.AuditDiscrepancy
+	if err := db.First(&disc, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Discrepancy not found"})
+		return
+	}
+	if disc.Status == "Resolved" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Discrepancy is already resolved"})
+		return
+	}
+
+	type resolvePayload struct {
+		Action      string `json:"action"`      // confirm_location, mark_lost, register, update_location, dismiss
+		NewLocation string `json:"newLocation"` // for update_location action
+		Notes       string `json:"notes"`
+	}
+	var payload resolvePayload
+	if !bindJSON(c, &payload) {
+		return
+	}
+	payload.Action = trimSpace(payload.Action)
+	if payload.Action == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "action is required"})
+		return
+	}
+
+	validActions := []string{"confirm_location", "mark_lost", "register", "update_location", "dismiss"}
+	if !validateStatus(c, "action", payload.Action, validActions) {
+		return
+	}
+
+	// Get actor name from auth context
+	actorName := "System"
+	if v, exists := c.Get("userID"); exists {
+		actorID := v.(uint)
+		var actor models.SystemUser
+		if err := db.First(&actor, actorID).Error; err == nil {
+			actorName = actor.Name
+		}
+	}
+
+	// Apply the action
+	switch payload.Action {
+	case "confirm_location":
+		// Asset location is correct as scanned — update DB to match scan
+		if disc.AssetTag != "" && disc.ScannedLocation != "" {
+			db.Model(&models.Asset{}).Where("tag_id = ?", disc.AssetTag).Update("location", disc.ScannedLocation)
+		}
+		disc.Resolution = "Location confirmed and updated to: " + disc.ScannedLocation
+
+	case "mark_lost":
+		if disc.AssetTag != "" {
+			db.Model(&models.Asset{}).Where("tag_id = ?", disc.AssetTag).Update("status", "Retired")
+		}
+		disc.Resolution = "Asset marked as lost/retired"
+
+	case "register":
+		// For unregistered assets, we just dismiss — user should register via AddNewAsset
+		disc.Resolution = "Flagged for registration as new asset"
+
+	case "update_location":
+		newLoc := trimSpace(payload.NewLocation)
+		if newLoc == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "newLocation is required for update_location action"})
+			return
+		}
+		if disc.AssetTag != "" {
+			db.Model(&models.Asset{}).Where("tag_id = ?", disc.AssetTag).Update("location", newLoc)
+		}
+		disc.Resolution = "Location updated to: " + newLoc
+
+	case "dismiss":
+		disc.Resolution = "Dismissed: " + payload.Notes
+	}
+
+	disc.Status = "Resolved"
+	disc.ResolvedBy = actorName
+	disc.UpdatedAt = time.Now()
+
+	if err := db.Save(&disc).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to resolve discrepancy"})
+		return
+	}
+
+	// Recalculate discrepancy count for the audit session
+	if disc.AuditSessionID > 0 {
+		var openCount int64
+		db.Model(&models.AuditDiscrepancy{}).Where("audit_session_id = ? AND status = ?", disc.AuditSessionID, "Open").Count(&openCount)
+		db.Model(&models.AuditSession{}).Where("id = ?", disc.AuditSessionID).Update("discrepancy_count", openCount)
+	}
+
+	c.JSON(http.StatusOK, disc)
+}
+
+// CreateDiscrepancy creates a new discrepancy record
+func CreateDiscrepancy(c *gin.Context) {
+	var disc models.AuditDiscrepancy
+	if !bindJSON(c, &disc) {
+		return
+	}
+	disc.AssetTag = trimSpace(disc.AssetTag)
+	disc.IssueType = trimSpace(disc.IssueType)
+	disc.AssetName = trimSpace(disc.AssetName)
+
+	if !requireNonEmpty(c, "assetTag", disc.AssetTag) ||
+		!requireNonEmpty(c, "issueType", disc.IssueType) {
+		return
+	}
+	if !validateStatus(c, "issueType", disc.IssueType, []string{"Missing", "Location Mismatch", "Unregistered"}) {
+		return
+	}
+	if disc.Status == "" {
+		disc.Status = "Open"
+	}
+
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+	if err := db.Create(&disc).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create discrepancy"})
+		return
+	}
+
+	// Update audit discrepancy count if linked
+	if disc.AuditSessionID > 0 {
+		var openCount int64
+		db.Model(&models.AuditDiscrepancy{}).Where("audit_session_id = ? AND status = ?", disc.AuditSessionID, "Open").Count(&openCount)
+		db.Model(&models.AuditSession{}).Where("id = ?", disc.AuditSessionID).Update("discrepancy_count", openCount)
+	}
+
+	c.JSON(http.StatusCreated, disc)
 }
 
 func GetDiscrepancies(c *gin.Context) {
@@ -108,7 +366,19 @@ func GetDiscrepancies(c *gin.Context) {
 	}
 
 	var discs []models.AuditDiscrepancy
-	if err := db.Order("id desc").Find(&discs).Error; err != nil {
+	query := db.Order("id desc")
+
+	if auditID := c.Query("auditSessionId"); auditID != "" {
+		query = query.Where("audit_session_id = ?", auditID)
+	}
+	if status := c.Query("status"); status != "" {
+		query = query.Where("status = ?", status)
+	}
+	if issueType := c.Query("issueType"); issueType != "" {
+		query = query.Where("issue_type = ?", issueType)
+	}
+
+	if err := query.Find(&discs).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load discrepancies"})
 		return
 	}
@@ -314,6 +584,9 @@ func UpdateDiscrepancy(c *gin.Context) {
 	}
 	if payload.RecommendedAction != "" {
 		item.RecommendedAction = trimSpace(payload.RecommendedAction)
+	}
+	if payload.AuditSessionID > 0 {
+		item.AuditSessionID = payload.AuditSessionID
 	}
 
 	if !requireNonEmpty(c, "assetTag", item.AssetTag) ||
