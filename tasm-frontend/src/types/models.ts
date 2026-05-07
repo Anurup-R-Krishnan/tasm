@@ -32,11 +32,16 @@ export interface AuditSession extends BaseEntity {
 }
 
 export interface AuditDiscrepancy extends BaseEntity {
+  auditSessionId: number;
+  assetName: string;
   assetTag: string;
   issueType: string;
   lastKnownLocation: string;
   scannedLocation: string;
   recommendedAction: string;
+  status: string; // Open, Resolved, Dismissed
+  resolution: string;
+  resolvedBy: string;
 }
 
 export interface Consumable extends BaseEntity {

@@ -10,6 +10,7 @@ const currentUser = ref<SystemUser | null>(null);
 const token = ref<string | null>(localStorage.getItem(TOKEN_KEY));
 const isInitializing = ref(true);
 const isSetupCompleted = ref(true);
+const isFirstRun = ref(false); // True when no users exist at all (fresh install)
 
 export function useAuth() {
   const isAuthenticated = computed(() => !!token.value);
@@ -18,7 +19,8 @@ export function useAuth() {
     try {
       const response = await fetch('/api/setup/status');
       const data = await response.json();
-      isSetupCompleted.value = data.isSetupCompleted;
+      isFirstRun.value = !!data.isFirstRun;
+      isSetupCompleted.value = !!data.isSetupCompleted;
     } catch (error) {
       console.error('Failed to check setup status:', error);
     }
@@ -49,6 +51,8 @@ export function useAuth() {
   const logout = () => {
     setToken(null);
     currentUser.value = null;
+    isFirstRun.value = false;
+    isSetupCompleted.value = false;
     if (typeof window !== 'undefined') {
       window.location.href = '/login';
     }
@@ -64,17 +68,18 @@ export function useAuth() {
       return;
     }
 
+    // Always check setup status first — this tells us if it's a first run
+    await checkSetupStatus();
+
     if (token.value) {
       try {
         const user = await getMe();
         currentUser.value = user;
-        await checkSetupStatus();
       } catch (error) {
         console.error('Session restoration failed:', error);
-        logout(); // Token invalid or expired
+        setToken(null);
+        currentUser.value = null;
       }
-    } else {
-      await checkSetupStatus();
     }
     isInitializing.value = false;
   };
@@ -85,9 +90,11 @@ export function useAuth() {
     isAuthenticated,
     isInitializing,
     isSetupCompleted,
+    isFirstRun,
     login,
     logout,
     initAuth,
     checkSetupStatus,
+    setToken,
   };
 }
