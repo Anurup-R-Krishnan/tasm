@@ -6,7 +6,7 @@
     >
       <!-- Background Image with Overlay -->
       <img
-        src="/home/anuruprkris/.gemini/antigravity/brain/cfaca06b-fed7-43bb-969b-9dcad87f6f35/tasm_login_branding_1778221047984.png"
+        :src="heroImage"
         alt="Branding"
         class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay"
       />
@@ -504,6 +504,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '../composables/useAuth';
+import heroImage from '../assets/hero.png';
 
 const router = useRouter();
 const { setToken, checkSetupStatus, isAuthenticated, currentUser } = useAuth();

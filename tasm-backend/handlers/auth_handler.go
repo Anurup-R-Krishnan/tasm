@@ -106,17 +106,11 @@ func Register(c *gin.Context) {
 	// Normalize email
 	req.Email = strings.ToLower(strings.TrimSpace(req.Email))
 
-	// Flaw 1: Block Register during First Run to prevent admin lockout
+	// Registration is only allowed after the initial setup is complete.
 	var setupConfig models.SystemConfig
-	err := database.DB.Where("key = ?", "is_setup_completed").First(&setupConfig).Error
-	if err != nil {
-		// If setup config doesn't even exist, the system might be in first-run state
-		var adminCount int64
-		database.DB.Model(&models.SystemUser{}).Count(&adminCount)
-		if adminCount == 0 {
-			c.JSON(http.StatusForbidden, gin.H{"error": "System is not initialized. Please run the setup wizard first."})
-			return
-		}
+	if err := database.DB.Where("key = ?", "is_setup_completed").First(&setupConfig).Error; err != nil || setupConfig.Value != "true" {
+		c.JSON(http.StatusForbidden, gin.H{"error": "System is not initialized. Please run the setup wizard first."})
+		return
 	}
 
 	// Flaw 2: Password Complexity

@@ -6,7 +6,7 @@
     >
       <!-- Background Image with Overlay -->
       <img
-        src="/home/anuruprkris/.gemini/antigravity/brain/cfaca06b-fed7-43bb-969b-9dcad87f6f35/tasm_login_branding_1778221047984.png"
+        :src="heroImage"
         alt="Branding"
         class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay"
       />
@@ -181,11 +181,13 @@
         <div class="pt-8 border-t border-border-default">
           <p class="text-center text-sm text-text-secondary font-medium">
             Don't have an account yet?
-            <span
-              @click="router.push({ name: 'Register' })"
+            <button
+              type="button"
+              @click="handleRequestAccess"
               class="text-primary font-black hover:underline cursor-pointer ml-1"
-              >Request Access</span
             >
+              {{ isSetupCompleted ? 'Request Access' : 'Start Setup' }}
+            </button>
           </p>
         </div>
       </div>
@@ -204,9 +206,10 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '../composables/useAuth';
+import heroImage from '../assets/hero.png';
 
 const router = useRouter();
-const { login } = useAuth();
+const { login, isSetupCompleted } = useAuth();
 
 const email = ref('');
 const password = ref('');
@@ -234,6 +237,15 @@ const handleLogin = async () => {
   } finally {
     isLoading.value = false;
   }
+};
+
+const handleRequestAccess = () => {
+  if (isSetupCompleted.value) {
+    router.push({ name: 'Register' });
+    return;
+  }
+
+  router.push({ name: 'FirstRun', query: { setup: '1' } });
 };
 </script>
 

@@ -183,19 +183,9 @@
                 </p>
               </div>
             </div>
-            <div
-              class="p-6 bg-surface-subtle rounded-2xl flex flex-col items-center gap-4 border border-border-default"
-            >
-              <div
-                class="w-32 h-32 bg-white rounded-xl flex items-center justify-center border border-border-default p-2"
-              >
-                <span class="material-symbols-outlined text-6xl text-text-disabled">qr_code_2</span>
-              </div>
-              <button
-                class="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline"
-              >
-                Download Asset Tag
-              </button>
+            <AssetQrCode v-if="asset.tagId" :value="asset.tagId" label="Asset Tag QR" />
+            <div v-else class="p-6 bg-surface-subtle rounded-2xl border border-border-default">
+              <p class="text-sm text-text-secondary">No asset tag is available for this record.</p>
             </div>
           </div>
         </div>
@@ -209,6 +199,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { getAssetById, getAssetHistory } from '../api/assets';
 import type { Asset, AssetEvent } from '../types/models';
+import AssetQrCode from '../components/AssetQrCode.vue';
 
 const route = useRoute();
 const router = useRouter();

@@ -58,12 +58,18 @@ router.beforeEach(async (to) => {
   const isRegisterPath = to.name === 'Register' || to.path.startsWith('/register');
   const isWelcomePath = to.name === 'Welcome' || to.path.startsWith('/welcome');
   const isFirstRunPath = to.name === 'FirstRun' || to.path.startsWith('/first-run');
+  const startedSetupFromWelcome = to.query['setup'] === '1';
 
   // If setup completed, disallow /first-run
   if (isSetupCompleted.value && isFirstRunPath) return { name: 'Dashboard' };
 
-  // If user tries to open FirstRun when not allowed, send to Welcome
+  // If user tries to open FirstRun directly, send to Welcome.
+  // Only the explicit Start Setup button should be able to enter this flow.
   if (isFirstRunPath && !isSetupCompleted.value) {
+    if (!startedSetupFromWelcome) {
+      return { name: 'Welcome' };
+    }
+
     if (
       !isFirstRun.value &&
       !(isAuthenticated.value && currentUser.value?.role === 'System Admin')
@@ -76,6 +82,11 @@ router.beforeEach(async (to) => {
 
   // Protected route attempt by unauthenticated user → Welcome
   if (requiresAuth && !isAuthenticated.value) return { name: 'Welcome' };
+
+  // While the system is not initialized, /register should route into setup instead of failing.
+  if (isRegisterPath && !isSetupCompleted.value) {
+    return { name: 'FirstRun', query: { setup: '1' } };
+  }
 
   // Prevent auth pages when already logged in and setup done
   if (
