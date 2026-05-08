@@ -3,7 +3,7 @@
     <!-- Page Header -->
     <div class="mb-section-gap text-center">
       <h1 class="font-h1 text-h1 text-text-primary mb-base">Asset Check-Out</h1>
-      <p class="font-body text-body text-text-secondary">Assign equipment to a staff member.</p>
+      <p class="font-body text-text-secondary">Assign equipment to a staff member.</p>
     </div>
     <!-- Stepper -->
     <div class="mb-section-gap">
@@ -61,7 +61,7 @@
             >
             <input
               v-model="searchQuery"
-              class="w-full pl-10 pr-inline py-2 bg-surface border border-border-default rounded-DEFAULT font-body text-body text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-container shadow-sm"
+              class="w-full pl-10 pr-inline py-2 bg-surface border border-border-default rounded-DEFAULT font-body text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-container shadow-sm"
               placeholder="Search by asset tag, model, or type..."
               type="text"
             />
@@ -158,7 +158,7 @@
             >
             <input
               v-model="userSearchQuery"
-              class="w-full pl-10 pr-inline py-2 bg-surface border border-primary-container rounded-DEFAULT font-body text-body text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent shadow-sm"
+              class="w-full pl-10 pr-inline py-2 bg-surface border border-primary-container rounded-DEFAULT font-body text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent shadow-sm"
               type="text"
               placeholder="Search employees..."
             />

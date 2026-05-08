@@ -51,18 +51,18 @@
       </div>
       <div class="flex items-center gap-inline">
         <button
-          class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-body text-body font-medium hover:bg-surface-subtle transition-colors flex items-center gap-2 shadow-sm"
+          class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-body font-medium hover:bg-surface-subtle transition-colors flex items-center gap-2 shadow-sm"
         >
           <span class="material-symbols-outlined" style="font-size: 18px"> info </span>
           Request Info
         </button>
         <button
-          class="px-4 py-2 bg-surface text-status-critical border border-status-critical/30 rounded-lg font-body text-body font-medium hover:bg-error-container hover:border-status-critical transition-colors shadow-sm"
+          class="px-4 py-2 bg-surface text-status-critical border border-status-critical/30 rounded-lg font-body font-medium hover:bg-error-container hover:border-status-critical transition-colors shadow-sm"
         >
           Reject
         </button>
         <button
-          class="px-5 py-2 bg-text-primary text-white rounded-lg font-body text-body font-medium hover:bg-on-surface-variant transition-colors shadow-sm flex items-center gap-2"
+          class="px-5 py-2 bg-text-primary text-white rounded-lg font-body font-medium hover:bg-on-surface-variant transition-colors shadow-sm flex items-center gap-2"
         >
           <span class="material-symbols-outlined" style="font-size: 18px"> check </span>
           Approve
@@ -129,7 +129,7 @@
               Reason / Justification
             </span>
             <div class="bg-surface-subtle p-4 rounded-lg border border-border-default/50">
-              <p class="font-body text-body text-text-primary">
+              <p class="font-body text-text-primary">
                 Required for the upcoming Q1 intake of the Engineering Excellence program. Current
                 inventory of high-performance machines (16GB+ RAM, dedicated GPU) is depleted. These
                 specific models are required to run the local containerized environments specified
@@ -187,9 +187,7 @@
                       >
                         T
                       </div>
-                      <span class="font-body text-body font-medium text-text-primary">
-                        TechCorp India
-                      </span>
+                      <span class="font-body font-medium text-text-primary"> TechCorp India </span>
                       <span
                         class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-metric-sage text-status-in-stock"
                       >
@@ -197,12 +195,12 @@
                       </span>
                     </div>
                   </td>
-                  <td class="py-3 px-4 font-body text-body text-text-secondary">ProBook G9 16GB</td>
+                  <td class="py-3 px-4 font-body text-text-secondary">ProBook G9 16GB</td>
                   <td class="py-3 px-4 font-mono-data text-mono-data text-text-primary">₹64,500</td>
-                  <td class="py-3 px-4 font-body text-body text-text-secondary">14 Days</td>
+                  <td class="py-3 px-4 font-body text-text-secondary">14 Days</td>
                   <td class="py-3 px-4 text-right">
                     <button
-                      class="text-tertiary hover:underline font-body text-body font-medium flex items-center justify-end gap-1 w-full"
+                      class="text-tertiary hover:underline font-body font-medium flex items-center justify-end gap-1 w-full"
                     >
                       <span class="material-symbols-outlined" style="font-size: 16px">
                         download
@@ -221,19 +219,17 @@
                       >
                         E
                       </div>
-                      <span class="font-body text-body font-medium text-text-primary">
+                      <span class="font-body font-medium text-text-primary">
                         Enterprise IT Solutions
                       </span>
                     </div>
                   </td>
-                  <td class="py-3 px-4 font-body text-body text-text-secondary">
-                    Latitude 5530 16GB
-                  </td>
+                  <td class="py-3 px-4 font-body text-text-secondary">Latitude 5530 16GB</td>
                   <td class="py-3 px-4 font-mono-data text-mono-data text-text-primary">₹66,200</td>
-                  <td class="py-3 px-4 font-body text-body text-text-secondary">21 Days</td>
+                  <td class="py-3 px-4 font-body text-text-secondary">21 Days</td>
                   <td class="py-3 px-4 text-right">
                     <button
-                      class="text-tertiary hover:underline font-body text-body font-medium flex items-center justify-end gap-1 w-full"
+                      class="text-tertiary hover:underline font-body font-medium flex items-center justify-end gap-1 w-full"
                     >
                       <span class="material-symbols-outlined" style="font-size: 16px">
                         download
@@ -250,19 +246,17 @@
                       >
                         G
                       </div>
-                      <span class="font-body text-body font-medium text-text-primary">
+                      <span class="font-body font-medium text-text-primary">
                         Global Hardware Pvt
                       </span>
                     </div>
                   </td>
-                  <td class="py-3 px-4 font-body text-body text-text-secondary">
-                    ThinkPad L15 16GB
-                  </td>
+                  <td class="py-3 px-4 font-body text-text-secondary">ThinkPad L15 16GB</td>
                   <td class="py-3 px-4 font-mono-data text-mono-data text-text-primary">₹68,000</td>
-                  <td class="py-3 px-4 font-body text-body text-text-secondary">10 Days</td>
+                  <td class="py-3 px-4 font-body text-text-secondary">10 Days</td>
                   <td class="py-3 px-4 text-right">
                     <button
-                      class="text-tertiary hover:underline font-body text-body font-medium flex items-center justify-end gap-1 w-full"
+                      class="text-tertiary hover:underline font-body font-medium flex items-center justify-end gap-1 w-full"
                     >
                       <span class="material-symbols-outlined" style="font-size: 16px">
                         download
@@ -370,7 +364,7 @@
                     Oct 24, 09:20 AM
                   </span>
                 </div>
-                <p class="font-body text-body text-text-secondary text-sm">
+                <p class="font-body text-text-secondary text-sm">
                   I've attached three quotes as requested in the new policy. TechCorp is slightly
                   cheaper but Enterprise IT has better warranty terms. Open to guidance here.
                 </p>
@@ -391,7 +385,7 @@
                     Oct 25, 14:25 PM
                   </span>
                 </div>
-                <p class="font-body text-body text-text-secondary text-sm">
+                <p class="font-body text-text-secondary text-sm">
                   TechCorp's lead time is better for our Q1 start date. Let's proceed with them
                   despite the standard warranty.
                 </p>
@@ -401,7 +395,7 @@
           <div class="mt-auto">
             <div class="relative">
               <textarea
-                class="w-full bg-canvas border border-border-default rounded-xl p-3 pl-3 pr-10 font-body text-body focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none h-[80px]"
+                class="w-full bg-canvas border border-border-default rounded-xl p-3 pl-3 pr-10 font-body focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none h-[80px]"
                 placeholder="Add a note or request more info..."
               ></textarea>
               <button

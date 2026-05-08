@@ -4,7 +4,7 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-section-gap">
       <div>
         <h2 class="font-h1 text-h1 text-text-primary mb-2">Financial Analytics</h2>
-        <p class="font-body text-body text-text-secondary">
+        <p class="font-body text-text-secondary">
           Comprehensive overview of asset valuations and maintenance expenditures.
         </p>
       </div>

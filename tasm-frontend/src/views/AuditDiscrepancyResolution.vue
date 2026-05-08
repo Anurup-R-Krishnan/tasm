@@ -3,14 +3,14 @@
     <div class="mb-section-gap flex items-end justify-between">
       <div>
         <h2 class="font-h1 text-h1 text-text-primary mb-2">Audit Discrepancy Resolution</h2>
-        <p class="font-body text-body text-text-secondary">
+        <p class="font-body text-text-secondary">
           <span v-if="auditId">Session ID: #{{ auditId }} •</span>
           {{ stats.total }} total items scanned
         </p>
       </div>
       <div class="flex gap-3">
         <button
-          class="px-4 py-2 bg-surface border border-border-default rounded-lg font-body text-body text-text-primary hover:-translate-y-0.5 transition-transform shadow-sm flex items-center gap-2"
+          class="px-4 py-2 bg-surface border border-border-default rounded-lg font-body text-text-primary hover:-translate-y-0.5 transition-transform shadow-sm flex items-center gap-2"
           @click="fetchDiscrepancies"
         >
           <span class="material-symbols-outlined text-[18px]">refresh</span>
@@ -72,7 +72,7 @@
         <div class="flex items-center gap-3">
           <select
             v-model="issueTypeFilter"
-            class="bg-surface border border-border-default rounded-md font-body text-body text-text-primary py-1.5 pl-3 pr-8 focus:ring-1 focus:ring-primary text-sm"
+            class="bg-surface border border-border-default rounded-md font-body text-text-primary py-1.5 pl-3 pr-8 focus:ring-1 focus:ring-primary text-sm"
           >
             <option value="">All Issue Types</option>
             <option value="Missing">Missing</option>
@@ -81,7 +81,7 @@
           </select>
           <select
             v-model="statusFilter"
-            class="bg-surface border border-border-default rounded-md font-body text-body text-text-primary py-1.5 pl-3 pr-8 focus:ring-1 focus:ring-primary text-sm"
+            class="bg-surface border border-border-default rounded-md font-body text-text-primary py-1.5 pl-3 pr-8 focus:ring-1 focus:ring-primary text-sm"
           >
             <option value="">All Statuses</option>
             <option value="Open">Open</option>
@@ -132,14 +132,14 @@
           </Column>
           <Column field="lastKnownLocation" header="Last Known" sortable>
             <template #body="slotProps">
-              <span class="font-body text-body text-text-secondary">
+              <span class="font-body text-text-secondary">
                 {{ slotProps.data.lastKnownLocation || '—' }}
               </span>
             </template>
           </Column>
           <Column field="scannedLocation" header="Scanned At" sortable>
             <template #body="slotProps">
-              <span class="font-body text-body font-medium text-text-primary">
+              <span class="font-body font-medium text-text-primary">
                 {{ slotProps.data.scannedLocation || '—' }}
               </span>
             </template>

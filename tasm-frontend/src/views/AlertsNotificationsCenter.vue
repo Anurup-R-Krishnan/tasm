@@ -12,11 +12,13 @@
       </div>
       <div class="flex items-center gap-3">
         <button
+          @click="handleMarkAllRead"
           class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg font-h3 text-h3 hover:bg-surface-subtle hover:-translate-y-[2px] transition-all duration-200 shadow-[0_4px_4px_rgba(0,0,0,0.02)]"
         >
           Mark All Read
         </button>
         <button
+          @click="handleGenerateAlerts"
           class="bg-primary text-on-primary px-4 py-2 rounded-lg font-h3 text-h3 hover:bg-primary-hover hover:-translate-y-[2px] transition-all duration-200 flex items-center gap-2 shadow-[0_4px_4px_rgba(0,0,0,0.02)]"
         >
           <span class="material-symbols-outlined text-[18px]"> settings </span>
@@ -140,7 +142,7 @@
                 {{ new Date(alert.createdAt).toLocaleString() }}
               </span>
             </div>
-            <p class="font-body text-body text-text-primary">
+            <p class="font-body text-text-primary">
               {{ alert.message }}
             </p>
           </div>
@@ -153,6 +155,7 @@
             </button>
             <button
               v-if="alert.type === 'Critical' || alert.type === 'Warning'"
+              @click="handleAlertAction(alert)"
               :class="
                 alert.type === 'Critical'
                   ? 'bg-primary-container text-white hover:bg-primary'
@@ -176,7 +179,7 @@
         </span>
       </div>
       <h3 class="font-h2 text-h2 text-text-primary mb-2">No alerts found</h3>
-      <p class="font-body text-body text-text-secondary max-w-md">
+      <p class="font-body text-text-secondary max-w-md">
         You're all caught up! There are currently no critical system alerts or pending
         notifications.
       </p>
@@ -186,9 +189,17 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { getAlerts, updateAlert, deleteAlert } from '../api/alerts';
+import { useRouter } from 'vue-router';
+import {
+  getAlerts,
+  updateAlert,
+  deleteAlert,
+  markAllAlertsRead,
+  generateAlerts,
+} from '../api/alerts';
 import type { SystemAlert } from '../types/models';
 
+const router = useRouter();
 const alerts = ref<SystemAlert[]>([]);
 const loading = ref(true);
 const selectedFilter = ref('All');
@@ -225,6 +236,58 @@ const markAsRead = async (alert: SystemAlert) => {
   } catch (error) {
     console.error('Failed to mark alert as read:', error);
   }
+};
+
+const handleMarkAllRead = async () => {
+  try {
+    await markAllAlertsRead();
+    alerts.value = alerts.value.map((alert) => ({ ...alert, isRead: true }));
+  } catch (error) {
+    console.error('Failed to mark all alerts as read:', error);
+    alert('Failed to mark alerts as read.');
+  }
+};
+
+const handleGenerateAlerts = async () => {
+  try {
+    const result = await generateAlerts();
+    console.info(result.message);
+    await fetchAlerts();
+  } catch (error) {
+    console.error('Failed to generate alerts:', error);
+    alert('Failed to refresh alert rules.');
+  }
+};
+
+const handleAlertAction = (alert: SystemAlert) => {
+  const source = (alert.source || '').toLowerCase();
+
+  if (source.includes('maintenance')) {
+    router.push('/maintenance-tracker');
+    return;
+  }
+
+  if (source.includes('inventory') || source.includes('warranty')) {
+    router.push('/inventory');
+    return;
+  }
+
+  if (source.includes('license')) {
+    router.push('/licenses');
+    return;
+  }
+
+  if (source.includes('procurement')) {
+    router.push('/procurement');
+    return;
+  }
+
+  if (source.includes('audit')) {
+    router.push('/audits');
+    return;
+  }
+
+  router.push('/dashboard');
 };
 
 const dismissAlert = async (id: number) => {

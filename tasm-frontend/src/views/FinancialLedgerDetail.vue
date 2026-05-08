@@ -4,7 +4,7 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-section-gap">
       <div>
         <h1 class="font-h1 text-h1 text-text-primary tracking-tight">Financial Ledger</h1>
-        <p class="font-body text-body text-text-secondary mt-1">
+        <p class="font-body text-text-secondary mt-1">
           Comprehensive view of asset valuations and depreciation metrics.
         </p>
       </div>

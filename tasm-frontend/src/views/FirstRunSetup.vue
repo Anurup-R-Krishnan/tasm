@@ -94,10 +94,10 @@
           <!-- Step 1: Identity -->
           <div v-if="step === 1" class="space-y-10">
             <div class="space-y-4">
-              <h2 class="text-4xl font-bold text-text-primary tracking-tight">Master Account</h2>
+              <h2 class="text-4xl font-bold text-text-primary tracking-tight">Initial Account</h2>
               <p class="text-text-secondary text-lg font-medium">
-                Define the primary administrator for the system. This account will have full control
-                over all modules and users.
+                Create the first account for this system. You can assign the role and contact
+                details that fit your organization.
               </p>
             </div>
 
@@ -527,7 +527,7 @@ onMounted(() => {
 
 const stepTitles = ['Identity', 'Organization', 'Infrastructure', 'Capabilities', 'Finalize'];
 const stepSubtitles = [
-  'Admin account creation',
+  'Initial account creation',
   'Workspace parameters',
   'Physical site hierarchy',
   'Module & category selection',
@@ -608,14 +608,14 @@ const handleSubmit = async () => {
       });
 
       const adminData = await adminRes.json();
-      if (!adminRes.ok) throw new Error(adminData.error || 'Failed to create admin');
+      if (!adminRes.ok) throw new Error(adminData.error || 'Failed to create initial account');
 
       // If server returns a token (legacy), use it; otherwise require explicit sign-in
       if (adminData.token) {
         token = adminData.token;
         setToken(token);
       } else {
-        alert('Admin account created. Please sign in to continue.');
+        alert('Initial account created. Please sign in to continue.');
         window.location.href = '/login';
         return;
       }

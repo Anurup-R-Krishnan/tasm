@@ -35,13 +35,15 @@
       </div>
       <div class="flex items-center gap-inline">
         <button
-          class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-body text-body hover:bg-surface-subtle transition-colors shadow-sm flex items-center gap-2 hover:-translate-y-[1px] duration-200"
+          @click="handlePrint"
+          class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-body hover:bg-surface-subtle transition-colors shadow-sm flex items-center gap-2 hover:-translate-y-[1px] duration-200"
         >
           <span class="material-symbols-outlined text-[18px]"> print </span>
           Print
         </button>
         <button
-          class="px-4 py-2 bg-primary text-on-primary rounded-lg font-body text-body hover:bg-primary-hover transition-colors shadow-sm flex items-center gap-2 hover:-translate-y-[1px] duration-200"
+          @click="handleEditOrder"
+          class="px-4 py-2 bg-primary text-on-primary rounded-lg font-body hover:bg-primary-hover transition-colors shadow-sm flex items-center gap-2 hover:-translate-y-[1px] duration-200"
         >
           <span class="material-symbols-outlined text-[18px]"> edit </span>
           Edit Order
@@ -83,23 +85,23 @@
                   {{ order.assetTag }}
                 </span>
               </div>
-              <p v-if="order" class="font-body text-body text-text-secondary max-w-2xl">
+              <p v-if="order" class="font-body text-text-secondary max-w-2xl">
                 {{ order.description }}
               </p>
               <div class="mt-4 flex gap-6 border-t border-border-default pt-4">
                 <div>
                   <p class="font-metadata text-metadata text-text-secondary">Location</p>
-                  <p v-if="order" class="font-body text-body font-medium">
+                  <p v-if="order" class="font-body font-medium">
                     {{ order.assetLocation }}
                   </p>
                 </div>
                 <div>
                   <p class="font-metadata text-metadata text-text-secondary">Reported By</p>
-                  <p v-if="order" class="font-body text-body font-medium">{{ order.reportedBy }}</p>
+                  <p v-if="order" class="font-body font-medium">{{ order.reportedBy }}</p>
                 </div>
                 <div>
                   <p class="font-metadata text-metadata text-text-secondary">Date Created</p>
-                  <p v-if="order" class="font-body text-body font-medium">
+                  <p v-if="order" class="font-body font-medium">
                     {{ formatDate(order.createdAt) }}
                   </p>
                 </div>
@@ -129,7 +131,7 @@
                   Today, 09:15 AM
                 </span>
               </div>
-              <p class="font-body text-body text-text-secondary">
+              <p class="font-body text-text-secondary">
                 Replacement compressor and refrigerant tanks have been delivered to the loading
                 dock. Moving to roof deck.
               </p>
@@ -155,7 +157,7 @@
                   Yesterday, 14:30 PM
                 </span>
               </div>
-              <p class="font-body text-body text-text-secondary">
+              <p class="font-body text-text-secondary">
                 PO-4921 generated and sent to Trane Commercial Parts. Expedited shipping requested
                 due to critical severity.
               </p>
@@ -179,7 +181,7 @@
                   Oct 12, 11:00 AM
                 </span>
               </div>
-              <p class="font-body text-body text-text-secondary">
+              <p class="font-body text-text-secondary">
                 Confirmed bearing failure. The shaft is seized. Requires full compressor
                 replacement. Tagged out unit at main breaker.
               </p>
@@ -200,7 +202,7 @@
           </div>
           <div class="mt-8 relative">
             <textarea
-              class="w-full bg-surface-subtle border border-border-default rounded-lg p-3 font-body text-body focus:ring-primary-container focus:border-primary-container resize-none"
+              class="w-full bg-surface-subtle border border-border-default rounded-lg p-3 font-body focus:ring-primary-container focus:border-primary-container resize-none"
               placeholder="Add an update to the log..."
               rows="3"
             ></textarea>
@@ -211,7 +213,7 @@
                 <span class="material-symbols-outlined text-[20px]"> attach_file </span>
               </button>
               <button
-                class="px-3 py-1.5 bg-primary text-on-primary rounded font-body text-body text-sm hover:bg-primary/90 transition-colors"
+                class="px-3 py-1.5 bg-primary text-on-primary rounded font-body text-sm hover:bg-primary/90 transition-colors"
               >
                 Post
               </button>
@@ -246,9 +248,7 @@
                 <span class="material-symbols-outlined text-[18px] text-text-secondary">
                   store
                 </span>
-                <p class="font-body text-body font-medium text-text-primary">
-                  Trane Commercial Service
-                </p>
+                <p class="font-body font-medium text-text-primary">Trane Commercial Service</p>
               </div>
             </div>
           </div>
@@ -266,15 +266,15 @@
           <!-- Mini Table -->
           <div class="space-y-2 mb-4">
             <div class="flex justify-between items-center py-1">
-              <span class="font-body text-body text-text-secondary"> Compressor Unit </span>
+              <span class="font-body text-text-secondary"> Compressor Unit </span>
               <span class="font-mono-data text-mono-data text-text-primary"> ₹2,45,000 </span>
             </div>
             <div class="flex justify-between items-center py-1">
-              <span class="font-body text-body text-text-secondary"> Refrigerant (20kg) </span>
+              <span class="font-body text-text-secondary"> Refrigerant (20kg) </span>
               <span class="font-mono-data text-mono-data text-text-primary"> ₹18,500 </span>
             </div>
             <div class="flex justify-between items-center py-1">
-              <span class="font-body text-body text-text-secondary"> Labor (Est. 12h) </span>
+              <span class="font-body text-text-secondary"> Labor (Est. 12h) </span>
               <span class="font-mono-data text-mono-data text-text-primary"> ₹14,400 </span>
             </div>
           </div>
@@ -301,12 +301,16 @@
           </h3>
           <div class="space-y-3">
             <button
+              @click="handleUpdateStatus('On Hold')"
+              :disabled="!order || isUpdating"
               class="w-full py-2.5 bg-canvas border border-outline rounded-lg font-h3 text-h3 text-text-primary hover:bg-surface-dim transition-colors flex items-center justify-center gap-2"
             >
               <span class="material-symbols-outlined text-[18px]"> pause_circle </span>
               Put on Hold
             </button>
             <button
+              @click="handleUpdateStatus('Closed')"
+              :disabled="!order || isUpdating"
               class="w-full py-2.5 bg-status-in-stock/20 border border-status-in-stock/40 rounded-lg font-h3 text-h3 text-status-in-stock hover:bg-status-in-stock/30 transition-colors flex items-center justify-center gap-2"
             >
               <span class="material-symbols-outlined text-[18px]"> check_circle </span>
@@ -314,8 +318,9 @@
             </button>
             <div class="pt-2">
               <button
-                class="w-full py-2.5 bg-surface-variant text-text-disabled rounded-lg font-h3 text-h3 transition-colors flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
-                disabled
+                @click="handleUpdateStatus('Closed')"
+                :disabled="!order || isUpdating || order.status === 'Closed'"
+                class="w-full py-2.5 bg-surface-variant text-text-primary rounded-lg font-h3 text-h3 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-subtle"
               >
                 <span class="material-symbols-outlined text-[18px]"> lock </span>
                 Close Work Order
@@ -334,7 +339,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getWorkOrderById } from '../api/workOrders';
+import { getWorkOrderById, updateWorkOrder } from '../api/workOrders';
 import type { WorkOrder } from '../types/models';
 
 const route = useRoute();
@@ -342,6 +347,7 @@ const router = useRouter();
 
 const order = ref<WorkOrder | null>(null);
 const loading = ref(true);
+const isUpdating = ref(false);
 
 const fetchWorkOrder = async () => {
   try {
@@ -363,6 +369,29 @@ const formatDate = (dateString: string) => {
     month: 'short',
     year: 'numeric',
   });
+};
+
+const handlePrint = () => {
+  window.print();
+};
+
+const handleEditOrder = () => {
+  router.push('/maintenance-tracker');
+};
+
+const handleUpdateStatus = async (status: 'On Hold' | 'Closed') => {
+  if (!order.value) return;
+
+  isUpdating.value = true;
+  try {
+    const updated = await updateWorkOrder(order.value.id, { status });
+    order.value = { ...order.value, ...updated };
+  } catch (err) {
+    console.error('Failed to update work order:', err);
+    alert('Failed to update work order.');
+  } finally {
+    isUpdating.value = false;
+  }
 };
 
 onMounted(() => {

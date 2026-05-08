@@ -15,7 +15,7 @@
           <span class="material-symbols-outlined text-[18px]">history</span>
           History
         </button>
-        <button class="btn-primary">
+        <button class="btn-primary" @click="openNewSchedule">
           <span class="material-symbols-outlined">add_task</span>
           Schedule Service
         </button>
@@ -201,6 +201,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { getContracts } from '../api/financial';
 import { getWorkOrders } from '../api/workOrders';
 import type { MaintenanceContract, WorkOrder } from '../types/models';
@@ -208,6 +209,7 @@ import type { MaintenanceContract, WorkOrder } from '../types/models';
 const contracts = ref<MaintenanceContract[]>([]);
 const workOrders = ref<WorkOrder[]>([]);
 const loading = ref(true);
+const router = useRouter();
 
 const fetchData = async () => {
   loading.value = true;
@@ -220,6 +222,10 @@ const fetchData = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const openNewSchedule = () => {
+  router.push({ name: 'ScheduledMaintenanceTracker' });
 };
 
 const openWorkOrders = computed(() => {

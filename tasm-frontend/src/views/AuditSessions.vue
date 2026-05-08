@@ -10,14 +10,14 @@
       </div>
       <div class="flex gap-3">
         <button
-          class="bg-surface border border-border-default text-text-primary rounded font-body text-body py-2 px-4 transition-colors shadow-sm flex items-center gap-2 hover:bg-surface-subtle"
+          class="bg-surface border border-border-default text-text-primary rounded font-body py-2 px-4 transition-colors shadow-sm flex items-center gap-2 hover:bg-surface-subtle"
           @click="showCreateModal = true"
         >
           <span class="material-symbols-outlined" style="font-size: 18px">add</span>
           New Session
         </button>
         <button
-          class="bg-primary hover:bg-primary-hover text-on-primary rounded font-body text-body py-2 px-5 transition-colors shadow-sm flex items-center gap-2"
+          class="bg-primary hover:bg-primary-hover text-on-primary rounded font-body py-2 px-5 transition-colors shadow-sm flex items-center gap-2"
           @click="handleStartAudit"
         >
           <span class="material-symbols-outlined" style="font-size: 18px">qr_code_scanner</span>
@@ -252,7 +252,7 @@
         <div class="mt-auto pt-4 border-t border-border-default flex justify-end gap-2">
           <select
             v-model="selectedActions[disc.id]"
-            class="form-select w-full bg-surface border border-[#D6D3CE] rounded text-body font-body text-text-primary py-1.5 px-3 focus:ring-primary focus:border-primary"
+            class="form-select w-full bg-surface border border-[#D6D3CE] rounded font-body text-text-primary py-1.5 px-3 focus:ring-primary focus:border-primary"
           >
             <option disabled value="">Select Action...</option>
             <option
@@ -364,12 +364,14 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuth } from '../composables/useAuth';
 import { getAudits, createAudit, getDiscrepancies, resolveDiscrepancy } from '../api/audits';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type { AuditSession, AuditDiscrepancy } from '../types/models';
 
 const router = useRouter();
+const { currentUser } = useAuth();
 
 const audits = ref<AuditSession[]>([]);
 const loadingAudits = ref(true);
@@ -425,7 +427,32 @@ const handleStartAudit = () => {
   if (activeAudit) {
     router.push({ name: 'AuditScanModeMobile', query: { auditId: String(activeAudit.id) } });
   } else {
+    void startQuickScanSession();
+  }
+};
+
+const startQuickScanSession = async () => {
+  creatingAudit.value = true;
+  try {
+    const today = new Date().toISOString().split('T')[0] || '';
+    const auditLabelDate = new Date().toLocaleDateString();
+    const auditor = currentUser.value?.name || 'Field Auditor';
+
+    const created = await createAudit({
+      title: `Quick Scan Session - ${auditLabelDate}`,
+      auditorName: auditor,
+      startDate: today,
+      status: 'Active',
+    });
+
+    audits.value.unshift(created as AuditSession);
+    router.push({ name: 'AuditScanModeMobile', query: { auditId: String(created.id) } });
+  } catch (err) {
+    console.error('Failed to start quick scan session:', err);
+    alert(err instanceof Error ? err.message : 'Failed to start scanning session.');
     showCreateModal.value = true;
+  } finally {
+    creatingAudit.value = false;
   }
 };
 
@@ -454,7 +481,7 @@ const handleCreateAudit = async () => {
     router.push({ name: 'AuditScanModeMobile', query: { auditId: String(created.id) } });
   } catch (err) {
     console.error('Failed to create audit:', err);
-    alert('Failed to create audit session. Please try again.');
+    alert(err instanceof Error ? err.message : 'Failed to create audit session. Please try again.');
   } finally {
     creatingAudit.value = false;
   }

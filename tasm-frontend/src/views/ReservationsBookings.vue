@@ -4,7 +4,7 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-section-gap">
       <div>
         <h2 class="font-h1 text-h1 text-text-primary mb-2">Reservations &amp; Bookings</h2>
-        <p class="font-body text-body text-text-secondary">
+        <p class="font-body text-text-secondary">
           Manage asset availability and schedule requests.
         </p>
       </div>
@@ -24,7 +24,7 @@
         </button>
         <button
           @click="currentTab = 'Past'"
-          class="px-4 py-1.5 rounded-md font-body text-body transition-all whitespace-nowrap"
+          class="px-4 py-1.5 rounded-md font-body transition-all whitespace-nowrap"
           :class="
             currentTab === 'Past'
               ? 'bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-border-default text-text-primary'
@@ -35,7 +35,7 @@
         </button>
         <button
           @click="currentTab = 'My Bookings'"
-          class="px-4 py-1.5 rounded-md font-body text-body transition-all whitespace-nowrap"
+          class="px-4 py-1.5 rounded-md font-body transition-all whitespace-nowrap"
           :class="
             currentTab === 'My Bookings'
               ? 'bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-border-default text-text-primary'
@@ -253,7 +253,7 @@
               <Column field="bookedBy" header="Reserved By" sortable></Column>
               <Column field="startTime" header="Date & Time" sortable>
                 <template #body="slotProps">
-                  <p class="font-body text-body text-text-primary">
+                  <p class="font-body text-text-primary">
                     {{ new Date(slotProps.data.startTime).toLocaleDateString() }}
                   </p>
                   <p class="font-metadata text-metadata text-text-secondary">
@@ -361,7 +361,7 @@
                 </span>
                 <input
                   v-model="bookingForm.resourceId"
-                  class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface"
+                  class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface"
                   :placeholder="`Search ${currentCategory.toLowerCase()}s...`"
                   type="text"
                 />
@@ -378,7 +378,7 @@
                 </span>
                 <input
                   v-model="bookingForm.date"
-                  class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
+                  class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
                   type="date"
                 />
               </div>
@@ -395,7 +395,7 @@
                   </span>
                   <input
                     v-model="bookingForm.startTime"
-                    class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
+                    class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
                     type="time"
                   />
                 </div>
@@ -410,7 +410,7 @@
                   </span>
                   <input
                     v-model="bookingForm.endTime"
-                    class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
+                    class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
                     type="time"
                   />
                 </div>
@@ -424,7 +424,7 @@
               </label>
               <textarea
                 v-model="bookingForm.notes"
-                class="w-full p-3 border border-border-default rounded-lg font-body text-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface resize-none"
+                class="w-full p-3 border border-border-default rounded-lg font-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface resize-none"
                 placeholder="Brief description..."
                 rows="2"
               ></textarea>

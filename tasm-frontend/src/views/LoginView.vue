@@ -126,10 +126,13 @@
                 class="block text-[10px] font-black text-text-secondary uppercase tracking-[0.2em]"
                 >Password</label
               >
-              <a
-                href="#"
+              <button
+                type="button"
+                @click="handleForgotPassword"
                 class="text-[10px] font-black text-primary hover:underline uppercase tracking-widest"
-                >Forgot Password?</a
+              >
+                Forgot Password?
+              </button>
               >
             </div>
             <div class="relative group">
@@ -246,6 +249,10 @@ const handleRequestAccess = () => {
   }
 
   router.push({ name: 'FirstRun', query: { setup: '1' } });
+};
+
+const handleForgotPassword = () => {
+  alert('Password reset is not enabled yet. Please contact your administrator.');
 };
 </script>
 

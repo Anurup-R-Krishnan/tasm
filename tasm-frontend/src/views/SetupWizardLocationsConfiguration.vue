@@ -3,7 +3,7 @@
     <!-- Header Section -->
     <div class="flex flex-col gap-base">
       <h1 class="font-h1 text-h1 text-text-primary">System Setup Wizard</h1>
-      <p class="font-body text-body text-text-secondary">
+      <p class="font-body text-text-secondary">
         Configure your basic organisational hierarchy to get started.
       </p>
     </div>
@@ -119,7 +119,7 @@
             <template #body="slotProps">
               <div class="flex items-center gap-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-status-in-stock"></span>
-                <span class="font-body text-body text-text-primary">{{ slotProps.data.type }}</span>
+                <span class="font-body text-text-primary">{{ slotProps.data.type }}</span>
               </div>
             </template>
           </Column>
@@ -133,7 +133,7 @@
           </Column>
           <Column field="address" header="Description / Address">
             <template #body="slotProps">
-              <span class="font-body text-body text-text-secondary truncate max-w-[300px]">{{
+              <span class="font-body text-text-secondary truncate max-w-[300px]">{{
                 slotProps.data.address
               }}</span>
             </template>
@@ -202,7 +202,7 @@
     <!-- Action Bar -->
     <div class="flex justify-between items-center mt-auto pt-6 border-t border-border-default">
       <button
-        class="px-6 py-2 bg-white border border-border-default text-text-primary rounded-md font-body text-body font-medium hover:bg-stone-50 transition-colors flex items-center gap-2 shadow-sm"
+        class="px-6 py-2 bg-white border border-border-default text-text-primary rounded-md font-body font-medium hover:bg-stone-50 transition-colors flex items-center gap-2 shadow-sm"
         @click="router.push('/stockrooms')"
       >
         <span class="material-symbols-outlined text-[18px]"> arrow_back </span>
@@ -210,13 +210,13 @@
       </button>
       <div class="flex gap-4">
         <button
-          class="px-6 py-2 bg-white border border-border-default text-text-secondary rounded-md font-body text-body font-medium hover:bg-stone-50 transition-colors shadow-sm"
+          class="px-6 py-2 bg-white border border-border-default text-text-secondary rounded-md font-body font-medium hover:bg-stone-50 transition-colors shadow-sm"
           @click="saveDraft"
         >
           Save as Draft
         </button>
         <button
-          class="px-6 py-2 bg-text-primary text-white rounded-md font-body text-body font-medium hover:bg-stone-800 transition-colors flex items-center gap-2 shadow-sm"
+          class="px-6 py-2 bg-text-primary text-white rounded-md font-body font-medium hover:bg-stone-800 transition-colors flex items-center gap-2 shadow-sm"
           @click="completeSetup"
         >
           Complete Setup

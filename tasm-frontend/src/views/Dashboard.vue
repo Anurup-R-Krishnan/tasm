@@ -139,7 +139,7 @@
               <span class="text-[10px] font-bold uppercase tracking-wider">Service Log</span>
             </button>
             <button
-              @click="router.push('/audit-scan')"
+              @click="handleAuditScan"
               class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-error-container/20 border border-status-critical/20 hover:bg-status-critical hover:text-white transition-all group shadow-sm"
             >
               <span class="material-symbols-outlined text-status-critical group-hover:text-white"
@@ -200,6 +200,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '../composables/useAuth';
 import { getAssets } from '../api/assets';
+import { getAudits } from '../api/audits';
 import { getWorkOrders } from '../api/workOrders';
 import { getAlerts } from '../api/alerts';
 import type { Asset, WorkOrder, SystemAlert } from '../types/models';
@@ -229,6 +230,23 @@ const fetchData = async () => {
     console.error('Failed to fetch dashboard data:', err);
   } finally {
     loading.value = false;
+  }
+};
+
+const handleAuditScan = async () => {
+  try {
+    const activeAudits = await getAudits({ status: 'Active' });
+    const activeAudit = activeAudits[0];
+
+    if (activeAudit?.id) {
+      router.push({ name: 'AuditScanModeMobile', query: { auditId: String(activeAudit.id) } });
+      return;
+    }
+
+    router.push({ name: 'AuditSessions' });
+  } catch (err) {
+    console.error('Failed to open audit scanner:', err);
+    router.push({ name: 'AuditSessions' });
   }
 };
 

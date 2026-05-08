@@ -6,9 +6,7 @@
       <div class="flex justify-between items-end">
         <div>
           <h1 class="font-h1 text-h1 text-text-primary mb-1">Software Licenses</h1>
-          <p class="text-text-secondary font-body text-body">
-            Manage subscriptions, seats, and renewals
-          </p>
+          <p class="text-text-secondary font-body">Manage subscriptions, seats, and renewals</p>
         </div>
         <div class="flex gap-3">
           <button

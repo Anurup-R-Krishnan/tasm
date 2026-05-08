@@ -1,13 +1,19 @@
 <template>
   <main class="space-y-section-gap pb-24 max-w-[1000px]">
     <div class="mb-8">
-      <div class="flex items-center gap-2 text-text-disabled font-body text-body mb-2">
-        <a class="hover:text-text-primary" href="#"> Asset Inventory </a>
+      <div class="flex items-center gap-2 text-text-disabled font-body mb-2">
+        <a
+          class="hover:text-text-primary"
+          @click.prevent="router.push('/inventory')"
+          href="/inventory"
+        >
+          Asset Inventory
+        </a>
         <span class="material-symbols-outlined text-[16px]"> chevron_right </span>
         <span class="text-text-primary"> Add New Asset </span>
       </div>
       <h2 class="font-h1 text-h1 text-text-primary">Add New Asset</h2>
-      <p class="font-body text-body text-text-secondary mt-1">
+      <p class="font-body text-text-secondary mt-1">
         Enter details to register a new asset into the system.
       </p>
     </div>
@@ -32,7 +38,7 @@
               <input
                 v-model="form.name"
                 required
-                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 placeholder="e.g. Dell Latitude 5420 Laptop"
                 type="text"
               />
@@ -65,7 +71,7 @@
                 <select
                   v-model="form.category"
                   required
-                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white pr-8"
+                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white pr-8"
                 >
                   <option disabled value="">Select Category</option>
                   <option>IT Equipment</option>
@@ -87,7 +93,7 @@
               <div class="relative">
                 <select
                   v-model="form.condition"
-                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white pr-8"
+                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white pr-8"
                 >
                   <option>New</option>
                   <option>Good</option>
@@ -120,7 +126,7 @@
                 <input
                   v-model="form.purchaseDate"
                   type="date"
-                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
@@ -129,8 +135,7 @@
                 Purchase Cost
               </label>
               <div class="relative">
-                <span
-                  class="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 font-body text-body"
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 font-body"
                   >₹</span
                 >
                 <input
@@ -150,7 +155,7 @@
                 <input
                   v-model="form.location"
                   required
-                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                   placeholder="e.g. Stockroom A"
                   type="text"
                 />

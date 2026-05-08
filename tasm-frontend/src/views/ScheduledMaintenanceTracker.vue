@@ -4,12 +4,12 @@
     <div class="flex justify-between items-center mb-section-gap">
       <div>
         <h2 class="text-h1 font-h1 text-text-primary mb-1">Maintenance Schedules & Work Orders</h2>
-        <p class="text-body font-body text-text-secondary">
+        <p class="font-body text-text-secondary">
           Track and manage upcoming asset maintenance across facilities.
         </p>
       </div>
       <button
-        class="bg-text-primary text-surface px-5 py-2.5 rounded-lg text-body font-body font-medium hover:bg-opacity-90 transition-colors shadow-sm flex items-center gap-2"
+        class="bg-text-primary text-surface px-5 py-2.5 rounded-lg font-body font-medium hover:bg-opacity-90 transition-colors shadow-sm flex items-center gap-2"
         @click="openNewSchedule"
       >
         <span class="material-symbols-outlined text-[20px]"> calendar_add_on </span>
@@ -25,7 +25,7 @@
         <div class="relative">
           <select
             v-model="selectedStatus"
-            class="appearance-none bg-surface-subtle border border-border-default text-body font-body text-text-primary rounded-md pl-4 pr-10 py-2 focus:outline-none focus:border-primary-container"
+            class="appearance-none bg-surface-subtle border border-border-default font-body text-text-primary rounded-md pl-4 pr-10 py-2 focus:outline-none focus:border-primary-container"
           >
             <option value="">All Statuses</option>
             <option value="Open">Open</option>
@@ -46,7 +46,7 @@
           </span>
           <input
             v-model="searchQuery"
-            class="w-full bg-surface-subtle border border-border-default text-body font-body text-text-primary rounded-md pl-10 pr-4 py-2 focus:outline-none focus:border-primary-container"
+            class="w-full bg-surface-subtle border border-border-default font-body text-text-primary rounded-md pl-10 pr-4 py-2 focus:outline-none focus:border-primary-container"
             placeholder="Search by ID or Title..."
           />
         </div>

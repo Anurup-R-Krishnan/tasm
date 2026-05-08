@@ -9,7 +9,7 @@
           <span> Reports </span>
         </div>
         <h1 class="font-h1 text-h1 text-text-primary">Custom Report Builder</h1>
-        <p class="font-body text-body text-text-secondary mt-1">
+        <p class="font-body text-text-secondary mt-1">
           Configure and generate detailed compliance and operational reports.
         </p>
       </div>
@@ -66,7 +66,7 @@
                 <div class="relative">
                   <select
                     v-model="selectedEntity"
-                    class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform"
+                    class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform"
                   >
                     <option value="assets">Fixed Assets</option>
                     <option value="wo">Work Orders</option>
@@ -87,7 +87,7 @@
                 <label class="font-h3 text-h3 text-text-primary block"> Report Timeframe </label>
                 <div class="relative">
                   <select
-                    class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-body text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform"
+                    class="w-full bg-surface border border-border-default rounded-lg pl-4 pr-10 py-2.5 font-body text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 appearance-none cursor-pointer shadow-sm hover:translate-y-[-1px] transition-transform"
                   >
                     <option value="mtd">Month to Date (MTD)</option>
                     <option value="qtd">Quarter to Date (QTD)</option>
@@ -141,7 +141,7 @@
                   </span>
                 </div>
                 <span
-                  class="font-body text-body text-text-primary group-hover:text-primary transition-colors"
+                  class="font-body text-text-primary group-hover:text-primary transition-colors"
                 >
                   {{ col }}
                 </span>
@@ -210,7 +210,7 @@
               <div class="space-y-2">
                 <label class="font-h3 text-h3 text-text-primary block"> Group By </label>
                 <select
-                  class="w-full bg-surface border border-border-default rounded-lg px-4 py-2 font-body text-body"
+                  class="w-full bg-surface border border-border-default rounded-lg px-4 py-2 font-body"
                 >
                   <option value="none">No Grouping</option>
                   <option value="category">Category</option>
@@ -221,7 +221,7 @@
               <div class="space-y-2">
                 <label class="font-h3 text-h3 text-text-primary block"> Sort Order </label>
                 <select
-                  class="w-full bg-surface border border-border-default rounded-lg px-4 py-2 font-body text-body"
+                  class="w-full bg-surface border border-border-default rounded-lg px-4 py-2 font-body"
                 >
                   <option value="asc">Ascending</option>
                   <option value="desc">Descending</option>

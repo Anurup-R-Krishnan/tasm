@@ -3,7 +3,7 @@
     <div class="mb-section-gap flex justify-between items-end">
       <div>
         <h1 class="font-h1 text-h1 text-text-primary mb-1">Maintenance History</h1>
-        <p class="font-body text-body text-text-secondary">
+        <p class="font-body text-text-secondary">
           Track work orders, service logs, and maintenance costs.
         </p>
       </div>

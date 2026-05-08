@@ -4,7 +4,11 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-section-gap">
       <div>
         <div class="flex items-center gap-3 mb-1">
-          <a class="text-text-secondary hover:text-primary-container transition-colors" href="#">
+          <a
+            class="text-text-secondary hover:text-primary-container transition-colors"
+            href="/financials"
+            @click.prevent="router.push('/financials')"
+          >
             <span class="material-symbols-outlined text-sm"> arrow_back </span>
           </a>
           <span class="font-metadata text-metadata text-text-secondary"> Financials / Leases </span>
@@ -145,6 +149,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 import { ref, onMounted } from 'vue';
 import { getLeases } from '../api/financial';
 import DataTable from 'primevue/datatable';

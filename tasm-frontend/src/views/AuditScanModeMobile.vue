@@ -210,7 +210,7 @@
               <p class="font-mono-data text-mono-data text-text-primary mb-1">
                 {{ item.assetTag }}
               </p>
-              <p class="font-body text-body text-text-secondary">
+              <p class="font-body text-text-secondary">
                 {{ item.assetName || 'Unknown' }}
               </p>
             </div>

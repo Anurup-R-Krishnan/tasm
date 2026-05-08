@@ -10,7 +10,7 @@
           class="absolute right-0 top-0 w-64 h-full bg-gradient-to-l from-metric-amber/30 to-transparent pointer-events-none"
         ></div>
         <h1 class="font-h1 text-h1 text-text-primary mb-2 z-10">Hello, Divya.</h1>
-        <p class="font-body text-body text-text-secondary z-10 mb-6 max-w-lg">
+        <p class="font-body text-text-secondary z-10 mb-6 max-w-lg">
           Welcome back to the Employee Self-Service Portal. You have critical actions pending
           regarding your assigned equipment.
         </p>
@@ -24,7 +24,7 @@
           </div>
           <div>
             <h3 class="font-h3 text-h3 text-text-primary mb-1">Action Required</h3>
-            <p class="font-body text-body text-text-secondary">
+            <p class="font-body text-text-secondary">
               You have
               <span class="font-semibold text-text-primary"> 2 assets </span>
               awaiting acknowledgement.
@@ -44,7 +44,7 @@
             <span class="material-symbols-outlined text-white text-[24px]"> devices </span>
           </div>
           <h2 class="font-h2 text-h2 text-white mb-2">Need equipment?</h2>
-          <p class="font-body text-body text-white/80 mb-6">
+          <p class="font-body text-white/80 mb-6">
             Submit a request for new laptops, peripherals, or specialized software licenses.
           </p>
         </div>

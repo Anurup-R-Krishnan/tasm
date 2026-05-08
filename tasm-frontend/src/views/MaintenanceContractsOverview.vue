@@ -3,9 +3,7 @@
     <!-- Page Title -->
     <div class="flex flex-col gap-1">
       <h1 class="font-h1 text-h1 text-text-primary">Operations Overview</h1>
-      <p class="font-body text-body text-text-secondary">
-        Manage maintenance queues and vendor contracts.
-      </p>
+      <p class="font-body text-text-secondary">Manage maintenance queues and vendor contracts.</p>
     </div>
     <!-- Header KPIs (4 Cards) -->
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-inline">
@@ -88,7 +86,7 @@
           <h2 class="font-h2 text-h2 text-text-primary">Work Order Queue</h2>
           <button
             @click="router.push('/maintenance')"
-            class="bg-text-primary text-on-primary font-body text-body px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-sm"
+            class="bg-text-primary text-on-primary font-body px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-sm"
           >
             New Order
           </button>
@@ -161,7 +159,11 @@
           </DataTable>
         </div>
         <div class="p-4 border-t border-border-default bg-surface text-center">
-          <a class="font-metadata text-metadata text-tertiary hover:underline" href="#">
+          <a
+            class="font-metadata text-metadata text-tertiary hover:underline"
+            href="/maintenance-tracker"
+            @click.prevent="router.push('/maintenance-tracker')"
+          >
             View All Orders
           </a>
         </div>
