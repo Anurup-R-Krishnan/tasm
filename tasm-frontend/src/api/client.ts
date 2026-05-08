@@ -29,7 +29,7 @@ export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T
   });
 
   if (!response.ok) {
-    if (response.status === 401) {
+    if (response.status === 401 && !path.includes('/auth/login') && !path.includes('/auth/me')) {
       localStorage.removeItem('tasm_auth_token');
       window.location.href = '/login';
     }

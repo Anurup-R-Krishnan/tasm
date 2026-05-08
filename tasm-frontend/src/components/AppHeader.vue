@@ -3,7 +3,9 @@
     class="fixed top-0 left-0 w-full h-[60px] z-50 bg-surface border-b border-border-default shadow-sm flex justify-between items-center px-8 font-body antialiased tracking-tight"
   >
     <div class="flex items-center gap-inline">
-      <span class="text-lg font-black tracking-tighter text-text-primary"> TASM AMS </span>
+      <span class="text-lg font-black tracking-tighter text-text-primary uppercase">
+        Technopark AMS
+      </span>
       <span class="text-sm text-text-secondary">
         {{ currentTitle }}
       </span>

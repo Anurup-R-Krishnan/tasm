@@ -21,7 +21,7 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'inventory',
     name: 'AssetRegistry',
-    title: 'Asset Registry',
+    title: 'Asset List',
     icon: 'inventory_2',
     showInSidebar: true,
     component: () => import('../views/AssetRegistry.vue'),
@@ -43,7 +43,7 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'audits',
     name: 'AuditSessions',
-    title: 'Audit Sessions',
+    title: 'Audits',
     icon: 'fact_check',
     showInSidebar: true,
     component: () => import('../views/AuditSessions.vue'),
@@ -65,7 +65,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/FinancialAnalyticsDashboard.vue'),
   },
   {
-    path: 'depreciation',
+    path: 'depreciation/:id?',
     name: 'AssetDepreciationLedger',
     title: 'Depreciation',
     icon: 'trending_down',
@@ -105,7 +105,7 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'roles',
     name: 'UserAccessRoleControl',
-    title: 'User Roles',
+    title: 'Access & Roles',
     icon: 'admin_panel_settings',
     showInSidebar: true,
     component: () => import('../views/UserAccessRoleControl.vue'),
@@ -113,7 +113,7 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'maintenance',
     name: 'MaintenanceScheduleContracts',
-    title: 'Maintenance',
+    title: 'Work Orders',
     icon: 'build_circle',
     showInSidebar: true,
     component: () => import('../views/MaintenanceScheduleContracts.vue'),
@@ -243,7 +243,7 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'alerts',
     name: 'AlertsNotificationsCenter',
-    title: 'Alerts',
+    title: 'System Alerts',
     icon: 'notifications',
     showInSidebar: true,
     component: () => import('../views/AlertsNotificationsCenter.vue'),
@@ -252,41 +252,28 @@ export const appRoutes: AppRouteDefinition[] = [
 
 export const sidebarGroups = [
   {
-    name: 'Inventory',
+    name: 'Assets & Inventory',
     items: [
       'AssetRegistry',
-      'StockroomInventory',
-      'ConsumablesSuppliesTracker',
-      'SoftwareLicenseRegistry',
       'InventoryCardView',
+      'ConsumablesSuppliesTracker',
+      'StockroomInventory',
     ],
   },
   {
-    name: 'Operations',
-    items: [
-      'MaintenanceScheduleContracts',
-      'ScheduledMaintenanceTracker',
-      'AuditSessions',
-      'ReservationsBookings',
-      'MaintenanceContractsOverview',
-      'MaintenanceServiceHistoryLog',
-    ],
+    name: 'Operations & Audits',
+    items: ['MaintenanceScheduleContracts', 'AuditSessions', 'ReservationsBookings'],
   },
   {
-    name: 'Financials',
-    items: ['ProcurementPipeline', 'FinancialAnalyticsDashboard', 'AssetDepreciationLedger'],
+    name: 'Finance & Procurement',
+    items: ['ProcurementPipeline', 'FinancialAnalyticsDashboard', 'SoftwareLicenseRegistry'],
   },
   {
     name: 'Analytics',
-    items: ['ReportsAnalyticsDashboard', 'CustomReportBuilder'],
+    items: ['ReportsAnalyticsDashboard'],
   },
   {
-    name: 'System',
-    items: [
-      'AlertsNotificationsCenter',
-      'EmployeeSelfServicePortal',
-      'UserAccessRoleControl',
-      'SetupWizardLocationsConfiguration',
-    ],
+    name: 'Administration',
+    items: ['EmployeeSelfServicePortal', 'UserAccessRoleControl', 'AlertsNotificationsCenter'],
   },
 ];

@@ -3,7 +3,6 @@ package middleware
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
 
 	"tasm-backend/database"
@@ -11,15 +10,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"tasm-backend/utils"
 )
-
-func getJWTSecret() []byte {
-	secret := os.Getenv("JWT_SECRET")
-	if secret == "" {
-		secret = "super-secret-tasm-key" // Fallback for dev
-	}
-	return []byte(secret)
-}
 
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -43,7 +35,7 @@ func AuthRequired() gin.HandlerFunc {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
-			return getJWTSecret(), nil
+			return utils.GetJWTSecret(), nil
 		})
 
 		if err != nil || !token.Valid {

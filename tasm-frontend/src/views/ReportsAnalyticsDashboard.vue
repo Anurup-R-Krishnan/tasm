@@ -1,5 +1,5 @@
 <template>
-  <main class="space-y-section-gap pb-24">
+  <main class="space-y-section-gap pb-24 font-body">
     <!-- Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
@@ -10,14 +10,14 @@
       </div>
       <div class="flex gap-3">
         <button
-          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
+          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm opacity-50 cursor-not-allowed"
         >
           <span class="material-symbols-outlined text-[18px]">calendar_month</span>
-          FY 2025-26
+          Current Period
         </button>
-        <button class="btn-primary">
+        <button @click="handleExport" class="btn-primary">
           <span class="material-symbols-outlined">download</span>
-          Export PDF
+          Export Report
         </button>
       </div>
     </div>
@@ -42,7 +42,7 @@
         </p>
         <h2 class="text-2xl font-bold text-text-primary mt-1">₹{{ kpi.value.toLocaleString() }}</h2>
         <div class="mt-4 h-1 w-full bg-surface-variant rounded-full overflow-hidden">
-          <div class="h-full bg-primary rounded-full" :style="{ width: kpi.progress + '%' }"></div>
+          <div class="h-full bg-primary/20 rounded-full" style="width: 100%"></div>
         </div>
       </div>
     </div>
@@ -60,18 +60,6 @@
               <p class="text-[10px] text-text-secondary font-medium uppercase tracking-widest mt-1">
                 Pending Approvals & Shipping
               </p>
-            </div>
-            <div class="flex gap-2">
-              <button
-                class="text-[10px] font-bold px-3 py-1.5 rounded-lg border border-border-default text-text-secondary hover:bg-white shadow-sm transition-all"
-              >
-                By Dept
-              </button>
-              <button
-                class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-white border border-border-default text-text-primary shadow-sm transition-all"
-              >
-                By Priority
-              </button>
             </div>
           </div>
           <div class="overflow-x-auto flex-1">
@@ -97,7 +85,7 @@
                       <div
                         class="w-8 h-8 rounded-lg bg-primary-container/20 text-primary flex items-center justify-center font-bold text-[10px]"
                       >
-                        {{ req.requestorInitials }}
+                        {{ req.requestorInitials || '??' }}
                       </div>
                       <div>
                         <p
@@ -123,7 +111,7 @@
                       class="text-[10px] font-bold text-text-secondary flex items-center gap-1.5"
                     >
                       <span
-                        class="w-1.5 h-1.5 rounded-full bg-text-disabled"
+                        class="w-1.5 h-1.5 rounded-full"
                         :class="getStatusDotClass(req.status)"
                       ></span>
                       {{ req.status }}
@@ -196,7 +184,7 @@
           </div>
           <div class="p-4 bg-surface-subtle/50 border-t border-border-default">
             <button
-              @click="router.push('/depreciation')"
+              @click="router.push('/ledgers')"
               class="w-full py-2 bg-white border border-border-default rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-colors shadow-sm"
             >
               View Full Audit Log
@@ -213,19 +201,26 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getLedgers } from '../api/financial';
 import { getProcurements } from '../api/procurements';
-import type { LedgerEntry, ProcurementRequest } from '../types/models';
+import { getAssets } from '../api/assets';
+import type { LedgerEntry, ProcurementRequest, Asset } from '../types/models';
 
 const router = useRouter();
 const ledgers = ref<LedgerEntry[]>([]);
 const procurements = ref<ProcurementRequest[]>([]);
+const assets = ref<Asset[]>([]);
 const loading = ref(true);
 
 const fetchData = async () => {
   loading.value = true;
   try {
-    const [ledgerData, procData] = await Promise.all([getLedgers(), getProcurements()]);
+    const [ledgerData, procData, assetData] = await Promise.all([
+      getLedgers(),
+      getProcurements(),
+      getAssets(),
+    ]);
     ledgers.value = ledgerData;
     procurements.value = procData;
+    assets.value = assetData;
   } catch (err) {
     console.error('Failed to fetch financial data:', err);
   } finally {
@@ -237,10 +232,12 @@ const financialKPIs = computed(() => {
   const totalSpend = ledgers.value
     .filter((l) => l.type === 'Debit')
     .reduce((sum, l) => sum + (l.amount || 0), 0);
-  const totalBudget = 5000000; // Mock budget for progress
+
   const pendingValue = procurements.value
     .filter((p) => p.status !== 'Received')
     .reduce((sum, p) => sum + (p.estimatedValue || 0), 0);
+
+  const assetValue = assets.value.reduce((sum, a) => sum + (a.value || 0), 0);
 
   return [
     {
@@ -249,31 +246,27 @@ const financialKPIs = computed(() => {
       icon: 'payments',
       bgClass: 'bg-rose-50',
       iconClass: 'text-rose-500',
-      progress: (totalSpend / totalBudget) * 100,
     },
     {
-      label: 'Pending Procurement',
+      label: 'Pending Pipeline',
       value: pendingValue,
       icon: 'shopping_cart_checkout',
       bgClass: 'bg-primary-container/10',
       iconClass: 'text-primary',
-      progress: 45,
-    },
-    {
-      label: 'Opex Savings',
-      value: 842000,
-      icon: 'savings',
-      bgClass: 'bg-emerald-50',
-      iconClass: 'text-emerald-500',
-      progress: 72,
     },
     {
       label: 'Asset Valuation',
-      value: 12450000,
+      value: assetValue,
       icon: 'account_balance_wallet',
       bgClass: 'bg-surface-subtle',
       iconClass: 'text-text-secondary',
-      progress: 60,
+    },
+    {
+      label: 'Ledger Entries',
+      value: ledgers.value.length,
+      icon: 'receipt_long',
+      bgClass: 'bg-amber-50',
+      iconClass: 'text-amber-500',
     },
   ];
 });
@@ -299,6 +292,10 @@ const getStatusDotClass = (status: string) => {
   if (status.includes('Pending') || status.includes('PO')) return 'bg-amber-500';
   if (status.includes('Shipping')) return 'bg-blue-500';
   return 'bg-slate-400';
+};
+
+const handleExport = () => {
+  window.print();
 };
 
 onMounted(fetchData);

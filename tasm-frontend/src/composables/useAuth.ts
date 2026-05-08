@@ -1,5 +1,12 @@
 import { ref, computed } from 'vue';
-import { login as apiLogin, getMe, type LoginCredentials, type AuthResponse } from '../api/auth';
+import {
+  login as apiLogin,
+  register as apiRegister,
+  getMe,
+  type LoginCredentials,
+  type RegisterCredentials,
+  type AuthResponse,
+} from '../api/auth';
 import type { SystemUser } from '../types/models';
 
 const TOKEN_KEY = 'tasm_auth_token';
@@ -9,8 +16,10 @@ const isE2E = import.meta.env['VITE_E2E'] === 'true';
 const currentUser = ref<SystemUser | null>(null);
 const token = ref<string | null>(localStorage.getItem(TOKEN_KEY));
 const isInitializing = ref(true);
-const isSetupCompleted = ref(true);
+const isSetupCompleted = ref(false);
 const isFirstRun = ref(false); // True when no users exist at all (fresh install)
+const companyName = ref('');
+let authPromise: Promise<void> | null = null;
 
 export function useAuth() {
   const isAuthenticated = computed(() => !!token.value);
@@ -21,6 +30,7 @@ export function useAuth() {
       const data = await response.json();
       isFirstRun.value = !!data.isFirstRun;
       isSetupCompleted.value = !!data.isSetupCompleted;
+      companyName.value = data.companyName || '';
     } catch (error) {
       console.error('Failed to check setup status:', error);
     }
@@ -48,6 +58,19 @@ export function useAuth() {
     }
   };
 
+  const register = async (credentials: RegisterCredentials) => {
+    try {
+      const response: AuthResponse = await apiRegister(credentials);
+      setToken(response.token);
+      currentUser.value = response.user;
+      await checkSetupStatus();
+      return true;
+    } catch (error) {
+      console.error('Registration failed:', error);
+      throw error;
+    }
+  };
+
   const logout = () => {
     setToken(null);
     currentUser.value = null;
@@ -59,29 +82,35 @@ export function useAuth() {
   };
 
   const initAuth = async () => {
-    isInitializing.value = true;
-    if (isE2E) {
-      if (!token.value) {
-        setToken('e2e-dummy-token');
+    if (authPromise) return authPromise;
+
+    authPromise = (async () => {
+      isInitializing.value = true;
+      if (isE2E) {
+        if (!token.value) {
+          setToken('e2e-dummy-token');
+        }
+        isInitializing.value = false;
+        return;
+      }
+
+      // Always check setup status first — this tells us if it's a first run
+      await checkSetupStatus();
+
+      if (token.value) {
+        try {
+          const user = await getMe();
+          currentUser.value = user;
+        } catch (error) {
+          console.error('Session restoration failed:', error);
+          setToken(null);
+          currentUser.value = null;
+        }
       }
       isInitializing.value = false;
-      return;
-    }
+    })();
 
-    // Always check setup status first — this tells us if it's a first run
-    await checkSetupStatus();
-
-    if (token.value) {
-      try {
-        const user = await getMe();
-        currentUser.value = user;
-      } catch (error) {
-        console.error('Session restoration failed:', error);
-        setToken(null);
-        currentUser.value = null;
-      }
-    }
-    isInitializing.value = false;
+    return authPromise;
   };
 
   return {
@@ -91,7 +120,9 @@ export function useAuth() {
     isInitializing,
     isSetupCompleted,
     isFirstRun,
+    companyName,
     login,
+    register,
     logout,
     initAuth,
     checkSetupStatus,

@@ -19,6 +19,10 @@ export function getDepreciations(): Promise<DepreciationSchedule[]> {
   return apiRequest<DepreciationSchedule[]>('/depreciations');
 }
 
+export function getDepreciationById(id: string | number): Promise<DepreciationSchedule> {
+  return apiRequest<DepreciationSchedule>(`/depreciations/${id}`);
+}
+
 export function getSoftwareLicenses(): Promise<SoftwareLicense[]> {
   return apiRequest<SoftwareLicense[]>('/software-licenses');
 }

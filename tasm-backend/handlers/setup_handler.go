@@ -11,14 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
-	"os"
+	"tasm-backend/utils"
 )
 
 func GetSetupStatus(c *gin.Context) {
-	// Check if ANY users exist — if not, this is a fresh install
-	var userCount int64
-	database.DB.Model(&models.SystemUser{}).Count(&userCount)
-	if userCount == 0 {
+	// Flaw 5: Admin Resurrection Prevention
+	// Don't just check userCount, check if the system config was ever initialized
+	var configCount int64
+	database.DB.Model(&models.SystemConfig{}).Where("key = ?", "is_setup_completed").Count(&configCount)
+
+	if configCount == 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"isFirstRun":       true,
 			"isSetupCompleted": false,
@@ -34,20 +36,24 @@ func GetSetupStatus(c *gin.Context) {
 		})
 		return
 	}
+	var companyName models.SystemConfig
+	database.DB.Where("key = ?", "company_name").First(&companyName)
+
 	c.JSON(http.StatusOK, gin.H{
 		"isFirstRun":       false,
 		"isSetupCompleted": config.Value == "true",
+		"companyName":      companyName.Value,
 	})
 }
 
 // CreateAdmin bootstraps the very first admin account on a fresh installation.
 // This endpoint only works when ZERO users exist in the system.
 func CreateAdmin(c *gin.Context) {
-	// Safety: refuse if any user already exists
-	var userCount int64
-	database.DB.Model(&models.SystemUser{}).Count(&userCount)
-	if userCount > 0 {
-		c.JSON(http.StatusForbidden, gin.H{"error": "Admin account already exists. Use the login page."})
+	// Safety: refuse if the system has already been initialized
+	var configCount int64
+	database.DB.Model(&models.SystemConfig{}).Where("key = ?", "is_setup_completed").Count(&configCount)
+	if configCount > 0 {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Admin account already exists or system is initialized. Use the login page."})
 		return
 	}
 
@@ -65,13 +71,14 @@ func CreateAdmin(c *gin.Context) {
 	}
 
 	req.Name = strings.TrimSpace(req.Name)
-	req.Email = strings.TrimSpace(req.Email)
+	req.Email = strings.ToLower(strings.TrimSpace(req.Email)) // Flaw 4: Normalize email
 	req.EmployeeID = strings.TrimSpace(req.EmployeeID)
 	req.Department = strings.TrimSpace(req.Department)
 	req.CompanyName = strings.TrimSpace(req.CompanyName)
 
-	if len(strings.TrimSpace(req.Password)) < 8 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Password must be at least 8 characters"})
+	// Flaw 2: Password Complexity
+	if len(req.Password) < 8 || !strings.ContainsAny(req.Password, "ABCDEFGHIJKLMNOPQRSTUVWXYZ") || !strings.ContainsAny(req.Password, "abcdefghijklmnopqrstuvwxyz") || !strings.ContainsAny(req.Password, "0123456789") {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Password must be at least 8 characters and contain uppercase, lowercase, and numbers."})
 		return
 	}
 
@@ -128,26 +135,10 @@ func CreateAdmin(c *gin.Context) {
 		Assign(models.SystemConfig{Value: "false"}).
 		FirstOrCreate(&models.SystemConfig{})
 
-	// Issue JWT immediately so user is auto-logged in
-	secret := os.Getenv("JWT_SECRET")
-	if secret == "" {
-		secret = "super-secret-tasm-key"
-	}
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":  admin.ID,
-		"role": admin.Role,
-		"exp":  time.Now().Add(time.Hour * 24).Unix(),
-	})
-	tokenString, err := jwtToken.SignedString([]byte(secret))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
-		return
-	}
-
+	// Do not auto-issue a JWT here. Require explicit sign-in to continue.
 	c.JSON(http.StatusCreated, gin.H{
-		"token":   tokenString,
 		"user":    admin,
-		"message": "Admin account created. Please complete the setup wizard.",
+		"message": "Admin account created. Please sign in to continue.",
 	})
 }
 
@@ -163,6 +154,14 @@ func CompleteSetup(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Flaw 3: Replay Attack in CompleteSetup
+	var setupConfig models.SystemConfig
+	database.DB.Where("key = ?", "is_setup_completed").First(&setupConfig)
+	if setupConfig.Value == "true" {
+		c.JSON(http.StatusConflict, gin.H{"error": "Setup has already been completed."})
 		return
 	}
 
@@ -194,10 +193,12 @@ func CompleteSetup(c *gin.Context) {
 	if len(req.Categories) > 0 {
 		cats := ""
 		for i, cat := range req.Categories {
+			// Flaw 7: Unsanitized Categories
+			cleanCat := strings.ReplaceAll(cat, ",", " ")
 			if i > 0 {
 				cats += ","
 			}
-			cats += cat
+			cats += cleanCat
 		}
 		configs = append(configs, models.SystemConfig{Key: "asset_categories", Value: cats})
 	}

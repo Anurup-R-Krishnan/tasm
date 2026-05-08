@@ -3,26 +3,16 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
-        <h1 class="text-text-primary mb-1">Operational Overview</h1>
+        <h1 class="text-text-primary mb-1">{{ companyName || 'Operational Overview' }}</h1>
         <p class="text-text-secondary">
           Real-time insights across campus assets and infrastructure.
         </p>
       </div>
-      <div class="flex gap-3 bg-surface p-1 rounded-xl border border-border-default shadow-sm">
-        <button
-          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-primary text-on-primary shadow-lg shadow-primary/10"
-        >
-          24 Hours
-        </button>
-        <button
-          class="px-4 py-1.5 rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-all"
-        >
-          7 Days
-        </button>
-        <button
-          class="px-4 py-1.5 rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-all"
-        >
-          30 Days
+      <div
+        class="hidden md:flex gap-3 bg-surface p-1 rounded-xl border border-border-default shadow-sm opacity-50 cursor-not-allowed"
+      >
+        <button class="px-4 py-1.5 rounded-lg text-xs font-bold bg-primary text-on-primary">
+          Real-time
         </button>
       </div>
     </div>
@@ -41,27 +31,14 @@
           >
             <span class="material-symbols-outlined" :class="kpi.iconClass">{{ kpi.icon }}</span>
           </div>
-          <div
-            class="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border"
-            :class="kpi.trendClass"
-          >
-            <span class="material-symbols-outlined text-xs">{{ kpi.trendIcon }}</span>
-            {{ kpi.trend }}
-          </div>
+          <!-- Trend chips removed as they were mock data -->
         </div>
         <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
           {{ kpi.label }}
         </p>
         <h2 class="text-3xl font-bold text-text-primary mt-1">{{ kpi.value }}</h2>
-        <div class="mt-4 flex items-center gap-2">
-          <div class="flex-1 h-1 bg-surface-variant rounded-full overflow-hidden">
-            <div
-              class="h-full rounded-full transition-all duration-1000"
-              :class="kpi.barClass"
-              :style="{ width: kpi.progress + '%' }"
-            ></div>
-          </div>
-          <span class="text-[10px] font-bold text-text-secondary">{{ kpi.progress }}%</span>
+        <div class="mt-4 h-1 bg-surface-variant rounded-full overflow-hidden">
+          <div class="h-full rounded-full bg-primary/20" style="width: 100%"></div>
         </div>
       </div>
     </div>
@@ -221,12 +198,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuth } from '../composables/useAuth';
 import { getAssets } from '../api/assets';
 import { getWorkOrders } from '../api/workOrders';
 import { getAlerts } from '../api/alerts';
 import type { Asset, WorkOrder, SystemAlert } from '../types/models';
 
 const router = useRouter();
+const { companyName } = useAuth();
 
 const assets = ref<Asset[]>([]);
 const workOrders = ref<WorkOrder[]>([]);
@@ -260,11 +239,6 @@ const mainKPIs = computed(() => [
     icon: 'inventory_2',
     bgClass: 'bg-primary-container/20',
     iconClass: 'text-primary',
-    trend: '4.2%',
-    trendIcon: 'arrow_upward',
-    trendClass: 'text-status-in-stock bg-metric-sage border-status-in-stock/10',
-    progress: 78,
-    barClass: 'bg-primary',
   },
   {
     label: 'Operational Health',
@@ -276,11 +250,6 @@ const mainKPIs = computed(() => [
     icon: 'verified_user',
     bgClass: 'bg-metric-sage',
     iconClass: 'text-status-in-stock',
-    trend: '99.9%',
-    trendIcon: 'check_circle',
-    trendClass: 'text-primary bg-primary-container/20 border-primary/10',
-    progress: 92,
-    barClass: 'bg-status-in-stock',
   },
   {
     label: 'Maintenance Queue',
@@ -288,11 +257,6 @@ const mainKPIs = computed(() => [
     icon: 'handyman',
     bgClass: 'bg-error-container/20',
     iconClass: 'text-status-critical',
-    trend: '12%',
-    trendIcon: 'arrow_downward',
-    trendClass: 'text-status-critical bg-error-container border-status-critical/10',
-    progress: 45,
-    barClass: 'bg-status-critical',
   },
   {
     label: 'Est. Valuation',
@@ -300,11 +264,6 @@ const mainKPIs = computed(() => [
     icon: 'account_balance_wallet',
     bgClass: 'bg-secondary-container',
     iconClass: 'text-secondary',
-    trend: '2.5%',
-    trendIcon: 'arrow_upward',
-    trendClass: 'text-secondary bg-secondary-container/50 border-secondary/10',
-    progress: 60,
-    barClass: 'bg-secondary',
   },
 ]);
 

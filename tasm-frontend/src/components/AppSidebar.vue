@@ -10,7 +10,9 @@
         <span class="material-symbols-outlined text-amber-700"> domain </span>
       </div>
       <div class="overflow-hidden">
-        <h2 class="text-xl font-bold text-text-primary leading-tight truncate">TASM</h2>
+        <h2 class="text-xl font-bold text-text-primary leading-tight truncate">
+          {{ companyName || 'TASM' }}
+        </h2>
         <span class="text-text-secondary text-[10px] uppercase tracking-widest font-bold">
           Asset Management
         </span>
@@ -97,7 +99,7 @@ import { useAuth } from '../composables/useAuth';
 
 const route = useRoute();
 const activeIconStyle = "font-variation-settings: 'FILL' 1;";
-const { logout } = useAuth();
+const { logout, companyName } = useAuth();
 
 const handleLogout = () => {
   logout();

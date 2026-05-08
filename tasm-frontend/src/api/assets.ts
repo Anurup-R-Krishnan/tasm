@@ -9,10 +9,6 @@ export function getAssetById(id: string | number): Promise<Asset> {
   return apiRequest<Asset>(`/assets/${id}`);
 }
 
-export function getAssetByTag(tagId: string): Promise<Asset> {
-  return apiRequest<Asset>(`/assets/by-tag/${tagId}`);
-}
-
 export function createAsset(data: Partial<Asset>): Promise<Asset> {
   return apiRequest<Asset>('/assets', {
     method: 'POST',
@@ -40,17 +36,6 @@ export function checkoutAsset(
   data: { userId: number; dueDate?: string; notes?: string; custodian?: string },
 ): Promise<Asset> {
   return apiRequest<Asset>(`/assets/${id}/checkout`, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
-
-export function checkinAsset(
-  id: string | number,
-  data: { notes?: string; custodian?: string },
-): Promise<Asset> {
-  return apiRequest<Asset>(`/assets/${id}/checkin`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json' },

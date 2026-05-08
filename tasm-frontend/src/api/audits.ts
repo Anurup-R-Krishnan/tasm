@@ -18,21 +18,6 @@ export function createAudit(data: Partial<AuditSession>): Promise<AuditSession> 
   });
 }
 
-export function updateAudit(
-  id: number | string,
-  data: Partial<AuditSession>,
-): Promise<AuditSession> {
-  return apiRequest<AuditSession>(`/audits/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
-
-export function deleteAudit(id: number | string): Promise<{ message: string }> {
-  return apiRequest<{ message: string }>(`/audits/${id}`, { method: 'DELETE' });
-}
-
 export interface ScanResult {
   result: 'found' | 'unregistered';
   message?: string;
@@ -64,18 +49,6 @@ export function getDiscrepancies(params?: {
   if (params?.issueType) qs.set('issueType', params.issueType);
   const q = qs.toString();
   return apiRequest<AuditDiscrepancy[]>(`/discrepancies${q ? '?' + q : ''}`);
-}
-
-export function getDiscrepancyById(id: number | string): Promise<AuditDiscrepancy> {
-  return apiRequest<AuditDiscrepancy>(`/discrepancies/${id}`);
-}
-
-export function createDiscrepancy(data: Partial<AuditDiscrepancy>): Promise<AuditDiscrepancy> {
-  return apiRequest<AuditDiscrepancy>('/discrepancies', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
-  });
 }
 
 export function resolveDiscrepancy(

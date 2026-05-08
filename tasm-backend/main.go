@@ -60,6 +60,7 @@ func main() {
 		auth := api.Group("/auth")
 		{
 			auth.POST("/login", handlers.Login)
+			auth.POST("/register", handlers.Register)
 			auth.POST("/create-admin", handlers.CreateAdmin) // first-run only: bootstrap
 		}
 

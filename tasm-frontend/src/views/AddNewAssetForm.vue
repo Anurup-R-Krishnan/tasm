@@ -149,6 +149,7 @@
               <div class="relative">
                 <input
                   v-model="form.location"
+                  required
                   class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body text-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                   placeholder="e.g. Stockroom A"
                   type="text"
@@ -234,9 +235,9 @@ const submitForm = async () => {
       alert('Asset created successfully!');
     }
     router.push('/inventory');
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    alert('Network error');
+    alert(error.message || 'Failed to save asset');
   } finally {
     isSubmitting.value = false;
   }

@@ -1,223 +1,332 @@
 <template>
-  <main class="space-y-section-gap pb-24">
+  <main class="space-y-section-gap pb-24 font-body">
     <!-- Page Header: Asset Identity -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-      <div>
+      <div v-if="loading" class="animate-pulse space-y-2">
+        <div class="h-4 w-32 bg-border-default rounded"></div>
+        <div class="h-8 w-64 bg-border-default rounded"></div>
+      </div>
+      <div v-else>
         <div class="flex items-center gap-2 mb-2">
-          <span class="font-metadata text-metadata text-text-secondary"> Financial Ledgers </span>
+          <RouterLink
+            to="/financials"
+            class="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
+          >
+            Financials
+          </RouterLink>
           <span class="material-symbols-outlined text-[14px] text-text-secondary">
             chevron_right
           </span>
-          <span class="font-metadata text-metadata text-primary-container font-medium">
-            Asset Depreciation
-          </span>
+          <RouterLink
+            to="/depreciation"
+            class="font-metadata text-metadata font-medium"
+            :class="
+              isDetailView ? 'text-text-secondary hover:text-primary' : 'text-primary-container'
+            "
+          >
+            Depreciation Ledger
+          </RouterLink>
+          <template v-if="isDetailView && selectedSchedule">
+            <span class="material-symbols-outlined text-[14px] text-text-secondary">
+              chevron_right
+            </span>
+            <span class="font-metadata text-metadata text-primary-container font-medium">
+              {{ selectedSchedule.assetName }}
+            </span>
+          </template>
         </div>
-        <h2 class="font-h1 text-h1 text-text-primary mb-1">Laptop Alpha #TAG-1001</h2>
+
+        <h2 class="font-h1 text-h1 text-text-primary mb-1">
+          {{
+            isDetailView && selectedSchedule
+              ? selectedSchedule.assetName
+              : 'Asset Depreciation Ledger'
+          }}
+          <span
+            v-if="isDetailView && selectedSchedule"
+            class="text-text-secondary font-mono font-normal ml-2"
+            >#{{ selectedSchedule.assetId }}</span
+          >
+        </h2>
+
         <div class="flex items-center gap-3">
           <span
-            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-surface-variant text-on-surface-variant border border-outline-variant"
+            class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-surface-variant text-on-surface-variant border border-outline-variant"
           >
-            Category: IT Equipment
+            {{ isDetailView && selectedSchedule ? 'Asset Focus' : 'System-wide Overview' }}
           </span>
-          <span class="inline-flex items-center gap-1 text-xs font-medium text-status-in-stock">
+          <span v-if="!isDetailView" class="text-xs font-medium text-text-secondary">
+            Tracking {{ schedules.length }} active asset lifecycles
+          </span>
+          <span
+            v-else-if="selectedSchedule"
+            class="inline-flex items-center gap-1 text-xs font-medium text-status-in-stock"
+          >
             <span class="w-2 h-2 rounded-full bg-status-in-stock"> </span>
-            Active Asset
+            {{ selectedSchedule.method }} Method
           </span>
         </div>
       </div>
+
       <div class="flex items-center gap-3">
         <button
           @click="handlePrint"
-          class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-lg font-h3 text-h3 hover:bg-surface-subtle transition-colors flex items-center gap-2 shadow-sm -translate-y-0 hover:-translate-y-[1px]"
+          class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-xl font-bold text-xs hover:bg-surface-subtle transition-all flex items-center gap-2 shadow-sm"
         >
           <span class="material-symbols-outlined text-[18px]"> print </span>
           Print
         </button>
         <button
           @click="handleExport"
-          class="px-4 py-2 bg-[#1C1917] text-white rounded-lg font-h3 text-h3 hover:bg-stone-800 transition-colors flex items-center gap-2 shadow-sm -translate-y-0 hover:-translate-y-[1px]"
+          class="px-4 py-2 bg-primary text-on-primary rounded-xl font-bold text-xs hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-primary/10"
         >
           <span class="material-symbols-outlined text-[18px]"> download </span>
           Export CSV
         </button>
       </div>
     </div>
+
     <!-- KPI Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- KPI 1 -->
-      <div
-        class="bg-surface border border-border-default rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform duration-200"
-      >
+      <!-- KPI 1: Acquisition Cost -->
+      <div class="premium-card group hover:border-primary/20 transition-all">
         <div class="flex items-center justify-between mb-4">
-          <span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider">
-            Total Cost
-          </span>
           <span
-            class="material-symbols-outlined text-text-secondary bg-surface-subtle p-1.5 rounded-md"
+            class="font-metadata text-[10px] font-bold text-text-secondary uppercase tracking-[0.15em]"
           >
-            payments
+            {{ isDetailView ? 'Initial Cost' : 'Total Acquisition' }}
           </span>
+          <div
+            class="w-8 h-8 rounded-lg bg-primary-container/10 text-primary flex items-center justify-center"
+          >
+            <span class="material-symbols-outlined text-[20px]">payments</span>
+          </div>
         </div>
-        <div class="font-kpi-number text-kpi-number text-text-primary">
-          ₹{{ totalPurchaseValue.toLocaleString() }}
+        <div class="text-3xl font-bold text-text-primary">
+          ₹{{ currentPurchaseValue.toLocaleString() }}
         </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-1">
-          Initial acquisition value
+        <div class="text-[10px] text-text-secondary mt-2 font-medium">
+          {{ isDetailView ? 'Asset purchase price' : 'Combined value of all tracked assets' }}
         </div>
       </div>
-      <!-- KPI 2 -->
-      <div
-        class="bg-surface border border-border-default rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform duration-200"
-      >
+
+      <!-- KPI 2: Depreciation -->
+      <div class="premium-card border-rose-500/10">
         <div class="flex items-center justify-between mb-4">
-          <span class="font-metadata text-metadata text-text-secondary uppercase tracking-wider">
+          <span
+            class="font-metadata text-[10px] font-bold text-text-secondary uppercase tracking-[0.15em]"
+          >
             Accumulated Depreciation
           </span>
-          <span
-            class="material-symbols-outlined text-text-secondary bg-surface-subtle p-1.5 rounded-md"
+          <div
+            class="w-8 h-8 rounded-lg bg-error-container/20 text-status-critical flex items-center justify-center"
           >
-            trending_down
-          </span>
+            <span class="material-symbols-outlined text-[20px]">trending_down</span>
+          </div>
         </div>
-        <div class="font-kpi-number text-kpi-number text-error">
-          ₹{{ totalAccumulatedDepreciation.toLocaleString() }}
+        <div class="text-3xl font-bold text-status-critical">
+          ₹{{ currentAccumulatedDepreciation.toLocaleString() }}
         </div>
-        <div class="font-metadata text-metadata text-text-secondary mt-1">
-          Total written off to date
+        <div class="text-[10px] text-text-secondary mt-2 font-medium">
+          Total value written off to date
         </div>
       </div>
-      <!-- KPI 3 (Sage Fill) -->
+
+      <!-- KPI 3: Net Book Value -->
       <div
-        class="bg-metric-sage border border-status-in-stock/20 rounded-xl p-card-padding shadow-sm hover:-translate-y-[2px] transition-transform duration-200 relative overflow-hidden"
+        class="premium-card bg-metric-sage/30 border-status-in-stock/20 relative overflow-hidden"
       >
-        <div class="absolute right-0 top-0 opacity-10 pointer-events-none">
+        <div class="absolute -right-2 -top-2 opacity-10 pointer-events-none transform rotate-12">
           <span
-            class="material-symbols-outlined text-[120px] -mt-4 -mr-4"
+            class="material-symbols-outlined text-[100px]"
             style="font-variation-settings: 'FILL' 1"
+            >account_balance</span
           >
-            account_balance
-          </span>
         </div>
         <div class="flex items-center justify-between mb-4 relative z-10">
           <span
-            class="font-metadata text-metadata text-status-in-stock uppercase tracking-wider font-semibold"
+            class="font-metadata text-[10px] font-bold text-status-in-stock uppercase tracking-[0.15em]"
           >
             Net Book Value
           </span>
-          <span class="material-symbols-outlined text-status-in-stock bg-white/50 p-1.5 rounded-md">
-            account_balance_wallet
-          </span>
+          <div
+            class="w-8 h-8 rounded-lg bg-white/50 text-status-in-stock flex items-center justify-center shadow-sm"
+          >
+            <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+          </div>
         </div>
-        <div class="font-kpi-number text-kpi-number text-status-in-stock relative z-10">
-          ₹{{ totalNetBookValue.toLocaleString() }}
+        <div class="text-3xl font-bold text-status-in-stock relative z-10">
+          ₹{{ currentNetBookValue.toLocaleString() }}
         </div>
-        <div class="font-metadata text-metadata text-status-in-stock/80 mt-1 relative z-10">
-          Current carrying value
+        <div class="text-[10px] text-status-in-stock/70 mt-2 font-medium relative z-10">
+          Current carrying value on balance sheet
         </div>
       </div>
-      <!-- Dense Table Section -->
+    </div>
+
+    <!-- Table Section (Full Width) -->
+    <div class="premium-card !p-0 overflow-hidden">
       <div
-        class="bg-surface border border-border-default rounded-xl shadow-sm overflow-hidden flex flex-col"
+        class="p-6 border-b border-border-default bg-surface-subtle/30 flex items-center justify-between"
       >
-        <div
-          class="px-card-padding py-4 border-b border-border-default bg-surface flex items-center justify-between"
-        >
-          <h3 class="font-h2 text-h2 text-text-primary flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary-container"> calendar_month </span>
-            Depreciation Schedules
-          </h3>
+        <div>
+          <h3 class="text-sm font-bold text-text-primary">Depreciation Schedules</h3>
+          <p class="text-[10px] text-text-secondary font-medium uppercase tracking-widest mt-1">
+            Historical & projected valuation metrics
+          </p>
         </div>
-        <div class="overflow-x-auto p-4">
-          <DataTable
-            :value="schedules"
-            :loading="loading"
-            paginator
-            :rows="10"
-            tableStyle="min-width: 50rem"
-            class="w-full text-left"
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[18px]"
+              >search</span
+            >
+            <input
+              v-model="searchQuery"
+              placeholder="Search assets..."
+              class="h-10 pl-10 pr-4 bg-white border border-border-default rounded-xl text-xs focus:ring-2 focus:ring-primary/20 outline-none transition-all w-64"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead
+            class="bg-surface-subtle/50 text-[10px] font-bold text-text-secondary uppercase tracking-widest border-b border-border-default"
           >
-            <Column field="assetId" header="Asset ID" sortable>
-              <template #body="slotProps">
-                <span class="font-mono-data text-mono-data text-surface-tint">
-                  {{ slotProps.data.assetId }}
-                </span>
-              </template>
-            </Column>
-            <Column field="assetName" header="Asset Name" sortable></Column>
-            <Column field="purchaseValue" header="Purchase Value" sortable>
-              <template #body="slotProps">
-                <span class="font-mono-data text-mono-data">
-                  ₹ {{ slotProps.data.purchaseValue?.toLocaleString() }}
-                </span>
-              </template>
-            </Column>
-            <Column field="currentValue" header="Current Value" sortable>
-              <template #body="slotProps">
-                <span class="font-mono-data text-mono-data text-primary-container">
-                  ₹ {{ slotProps.data.currentValue?.toLocaleString() }}
-                </span>
-              </template>
-            </Column>
-            <Column field="method" header="Method" sortable>
-              <template #body="slotProps">
-                <span
-                  class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-surface-variant text-on-surface-variant border border-outline-variant"
+            <tr>
+              <th class="px-6 py-4">Asset ID</th>
+              <th class="px-6 py-4">Asset Name</th>
+              <th class="px-6 py-4">Purchase Value</th>
+              <th class="px-6 py-4">Net Book Value</th>
+              <th class="px-6 py-4">Method</th>
+              <th class="px-6 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            <tr
+              v-for="s in filteredSchedules"
+              :key="s.id"
+              class="hover:bg-surface-subtle/50 transition-colors group cursor-pointer"
+              :class="{ 'bg-primary/5': isDetailView && s.id === Number(route.params['id']) }"
+              @click="router.push(`/depreciation/${s.id}`)"
+            >
+              <td class="px-6 py-4">
+                <span class="font-mono text-[11px] text-surface-tint font-bold"
+                  >#{{ s.assetId }}</span
                 >
-                  {{ slotProps.data.method }}
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="text-sm font-bold text-text-primary group-hover:text-primary transition-colors"
+                  >{{ s.assetName }}</span
+                >
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-xs font-medium text-text-secondary"
+                  >₹{{ s.purchaseValue.toLocaleString() }}</span
+                >
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-xs font-bold text-primary-container"
+                  >₹{{ s.currentValue.toLocaleString() }}</span
+                >
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-surface-variant text-on-surface-variant rounded-full border border-border-default"
+                >
+                  {{ s.method }}
                 </span>
-              </template>
-            </Column>
-          </DataTable>
-        </div>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <RouterLink
+                  :to="`/asset/${s.assetId}`"
+                  class="p-2 text-text-secondary hover:text-primary transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[20px]">visibility</span>
+                </RouterLink>
+              </td>
+            </tr>
+            <tr v-if="filteredSchedules.length === 0">
+              <td colspan="6" class="px-6 py-12 text-center text-text-secondary text-sm italic">
+                No depreciation records found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { getDepreciations } from '../api/financial';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter, RouterLink } from 'vue-router';
+import { getDepreciations, getDepreciationById } from '../api/financial';
+import type { DepreciationSchedule } from '../types/models';
 
-interface DepreciationSchedule {
-  id: number;
-  assetId: string;
-  assetName: string;
-  purchaseValue: number;
-  currentValue: number;
-  method: string;
-}
+const route = useRoute();
+const router = useRouter();
 
 const schedules = ref<DepreciationSchedule[]>([]);
+const selectedSchedule = ref<DepreciationSchedule | null>(null);
 const loading = ref(true);
+const searchQuery = ref('');
 
-const totalPurchaseValue = computed(() =>
-  schedules.value.reduce((sum, item) => sum + (item.purchaseValue || 0), 0),
-);
+const isDetailView = computed(() => !!route.params['id']);
 
-const totalAccumulatedDepreciation = computed(() =>
-  schedules.value.reduce(
+const currentPurchaseValue = computed(() => {
+  if (isDetailView.value && selectedSchedule.value) {
+    return selectedSchedule.value.purchaseValue;
+  }
+  return schedules.value.reduce((sum, item) => sum + (item.purchaseValue || 0), 0);
+});
+
+const currentAccumulatedDepreciation = computed(() => {
+  if (isDetailView.value && selectedSchedule.value) {
+    return selectedSchedule.value.purchaseValue - selectedSchedule.value.currentValue;
+  }
+  return schedules.value.reduce(
     (sum, item) => sum + ((item.purchaseValue || 0) - (item.currentValue || 0)),
     0,
-  ),
-);
+  );
+});
 
-const totalNetBookValue = computed(() =>
-  schedules.value.reduce((sum, item) => sum + (item.currentValue || 0), 0),
-);
+const currentNetBookValue = computed(() => {
+  if (isDetailView.value && selectedSchedule.value) {
+    return selectedSchedule.value.currentValue;
+  }
+  return schedules.value.reduce((sum, item) => sum + (item.currentValue || 0), 0);
+});
 
-const fetchSchedules = async () => {
+const filteredSchedules = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  return schedules.value.filter(
+    (s) => s.assetName.toLowerCase().includes(query) || s.assetId.toLowerCase().includes(query),
+  );
+});
+
+const fetchData = async () => {
   loading.value = true;
   try {
-    const data = await getDepreciations();
-    schedules.value = data as DepreciationSchedule[];
+    const all = await getDepreciations();
+    schedules.value = all;
+
+    if (route.params['id']) {
+      selectedSchedule.value = await getDepreciationById(route.params['id'] as string);
+    } else {
+      selectedSchedule.value = null;
+    }
   } catch (error) {
-    console.error('Failed to fetch depreciation schedules:', error);
+    console.error('Failed to fetch depreciation data:', error);
   } finally {
     loading.value = false;
   }
 };
+
+watch(() => route.params['id'], fetchData);
 
 const handleExport = () => {
   const headers = ['Asset ID', 'Asset Name', 'Purchase Value', 'Current Value', 'Method'];
@@ -241,7 +350,5 @@ const handlePrint = () => {
   window.print();
 };
 
-onMounted(() => {
-  fetchSchedules();
-});
+onMounted(fetchData);
 </script>

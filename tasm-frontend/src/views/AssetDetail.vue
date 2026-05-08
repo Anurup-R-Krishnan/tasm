@@ -131,9 +131,18 @@
           <div
             class="premium-card bg-gradient-to-br from-primary to-surface-secondary text-white border-none shadow-xl shadow-primary/10"
           >
-            <p class="text-[10px] font-bold text-primary-container uppercase tracking-widest mb-2">
-              Current Valuation
-            </p>
+            <div class="flex justify-between items-start mb-2">
+              <p class="text-[10px] font-bold text-primary-container uppercase tracking-widest">
+                Current Valuation
+              </p>
+              <RouterLink
+                :to="`/depreciation/${asset.id}`"
+                class="text-[10px] font-bold text-white uppercase tracking-widest hover:underline flex items-center gap-1"
+              >
+                View Ledger
+                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+              </RouterLink>
+            </div>
             <h2 class="text-4xl font-bold">₹{{ (asset.value || 0).toLocaleString() }}</h2>
             <div class="mt-6 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
               <div class="flex justify-between items-center mb-2">
@@ -197,7 +206,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { getAssetById, getAssetHistory } from '../api/assets';
 import type { Asset, AssetEvent } from '../types/models';
 

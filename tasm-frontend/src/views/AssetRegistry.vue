@@ -96,12 +96,11 @@
                 >Category</label
               >
               <select
+                v-model="selectedCategory"
                 class="w-full bg-surface border border-border-default rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/20"
               >
                 <option value="">All Categories</option>
-                <option value="it">IT Equipment</option>
-                <option value="furniture">Furniture</option>
-                <option value="infrastructure">Infrastructure</option>
+                <option v-for="cat in uniqueCategories" :key="cat" :value="cat">{{ cat }}</option>
               </select>
             </div>
             <div class="space-y-2">
@@ -109,12 +108,11 @@
                 >Location</label
               >
               <select
+                v-model="selectedLocationFilter"
                 class="w-full bg-surface border border-border-default rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/20"
               >
                 <option value="">All Locations</option>
-                <option value="nila">Nila</option>
-                <option value="pampa">Pampa</option>
-                <option value="tejaswini">Tejaswini</option>
+                <option v-for="loc in uniqueLocations" :key="loc" :value="loc">{{ loc }}</option>
               </select>
             </div>
             <div class="md:col-span-2 flex items-end justify-end gap-2">
@@ -258,6 +256,8 @@ const assets = ref<Asset[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const selectedFilter = ref('All');
+const selectedCategory = ref('');
+const selectedLocationFilter = ref('');
 const showAdvancedFilters = ref(false);
 
 const fetchAssets = async () => {
@@ -278,6 +278,14 @@ const filteredAssets = computed(() => {
     filtered = filtered.filter((a) => a.status === selectedFilter.value);
   }
 
+  if (selectedCategory.value) {
+    filtered = filtered.filter((a) => a.category === selectedCategory.value);
+  }
+
+  if (selectedLocationFilter.value) {
+    filtered = filtered.filter((a) => a.location === selectedLocationFilter.value);
+  }
+
   const query = searchQuery.value.toLowerCase();
   if (query) {
     filtered = filtered.filter(
@@ -290,6 +298,16 @@ const filteredAssets = computed(() => {
   }
 
   return filtered;
+});
+
+const uniqueCategories = computed(() => {
+  const cats = new Set(assets.value.map((a) => a.category));
+  return Array.from(cats).filter(Boolean).sort();
+});
+
+const uniqueLocations = computed(() => {
+  const locs = new Set(assets.value.map((a) => a.location));
+  return Array.from(locs).filter(Boolean).sort();
 });
 
 const filterStats = computed(() => [
