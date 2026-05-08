@@ -23,3 +23,15 @@ export function updateAlert(id: string | number, data: Partial<SystemAlert>): Pr
 export function deleteAlert(id: string | number): Promise<{ message: string }> {
   return apiRequest<{ message: string }>(`/alerts/${id}`, { method: 'DELETE' });
 }
+
+export function markAllAlertsRead(): Promise<{ message: string }> {
+  return apiRequest<{ message: string }>('/alerts/mark-all-read', {
+    method: 'POST',
+  });
+}
+
+export function generateAlerts(): Promise<{ message: string }> {
+  return apiRequest<{ message: string }>('/alerts/generate', {
+    method: 'POST',
+  });
+}

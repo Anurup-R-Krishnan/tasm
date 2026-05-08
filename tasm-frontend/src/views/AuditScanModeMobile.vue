@@ -251,8 +251,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { getDiscrepancies, scanAssetInAudit, getAuditById, type ScanResult } from '../api/audits';
-import type { AuditDiscrepancy, AuditSession } from '../types/models';
+import { getDiscrepancies, scanAssetInAudit, getAuditById } from '../api/audits';
+import type { AuditDiscrepancy, AuditSession, ScanResult } from '../types/models';
 import QRScanner from '../components/QRScanner.vue';
 
 const route = useRoute();
@@ -267,10 +267,10 @@ const scanLog = ref<ScanResult[]>([]);
 const auditId = computed(() => route.query['auditId'] as string | undefined);
 
 const verifiedCount = computed(
-  () => scanLog.value.filter((s) => s.result === 'found' && s.locationMatch).length,
+  () => scanLog.value.filter((s: ScanResult) => s.result === 'found' && s.locationMatch).length,
 );
 const mismatchCount = computed(
-  () => scanLog.value.filter((s) => s.result === 'found' && !s.locationMatch).length,
+  () => scanLog.value.filter((s: ScanResult) => s.result === 'found' && !s.locationMatch).length,
 );
 const unresolvedCount = computed(() => discrepancies.value.length);
 

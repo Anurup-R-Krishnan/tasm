@@ -170,13 +170,21 @@ export interface SystemAlert extends BaseEntity {
 export interface AssetEvent extends BaseEntity {
   assetId: number;
   eventType: string;
-  description: string;
-  previousStatus: string;
-  newStatus: string;
-  previousCustodian: string;
-  newCustodian: string;
-  actorId: number;
-  actorName: string;
+  actorID?: number;
+  actorName?: string;
+  description?: string;
+  previousStatus?: string;
+  newStatus?: string;
+  previousCustodian?: string;
+  newCustodian?: string;
   dueDate?: string;
-  notes: string;
+  notes?: string;
+}
+
+export interface ScanResult {
+  result: 'found' | 'unregistered' | 'error';
+  asset?: Asset;
+  locationMatch: boolean;
+  progress?: number;
+  discrepancyId?: number;
 }

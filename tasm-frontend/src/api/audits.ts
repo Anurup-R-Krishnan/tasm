@@ -1,9 +1,9 @@
 import { apiRequest } from './client';
-import type { AuditSession, AuditDiscrepancy } from '../types/models';
+import type { AuditSession, AuditDiscrepancy, ScanResult } from '../types/models';
 
 export function getAudits(params?: { status?: string }): Promise<AuditSession[]> {
-  const qs = params?.status ? `?status=${encodeURIComponent(params.status)}` : '';
-  return apiRequest<AuditSession[]>(`/audits${qs}`);
+  const queryString = params ? new URLSearchParams(params as any).toString() : '';
+  return apiRequest<AuditSession[]>(`/audits${queryString ? `?${queryString}` : ''}`);
 }
 
 export function getAuditById(id: number | string): Promise<AuditSession> {
@@ -18,13 +18,21 @@ export function createAudit(data: Partial<AuditSession>): Promise<AuditSession> 
   });
 }
 
-export interface ScanResult {
-  result: 'found' | 'unregistered';
-  message?: string;
-  asset?: import('../types/models').Asset;
-  discrepancy?: AuditDiscrepancy;
-  locationMatch?: boolean;
-  progress?: number;
+export function updateAudit(
+  id: number | string,
+  data: Partial<AuditSession>,
+): Promise<AuditSession> {
+  return apiRequest<AuditSession>(`/audits/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+export function deleteAudit(id: number | string): Promise<{ message: string }> {
+  return apiRequest<{ message: string }>(`/audits/${id}`, {
+    method: 'DELETE',
+  });
 }
 
 export function scanAssetInAudit(
