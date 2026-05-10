@@ -47,8 +47,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  const { initAuth, isInitializing, isAuthenticated, isSetupCompleted, isFirstRun, currentUser } =
-    useAuth();
+  const { initAuth, isInitializing, isAuthenticated, isSetupCompleted } = useAuth();
 
   if (isInitializing.value) {
     await initAuth();
@@ -70,12 +69,7 @@ router.beforeEach(async (to) => {
       return { name: 'Welcome' };
     }
 
-    if (
-      !isFirstRun.value &&
-      !(isAuthenticated.value && currentUser.value?.role === 'System Admin')
-    ) {
-      return { name: 'Welcome' };
-    }
+    return true;
   }
 
   const requiresAuth = to.matched.some((record) => record.meta['requiresAuth']);

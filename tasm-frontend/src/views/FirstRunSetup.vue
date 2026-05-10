@@ -23,7 +23,9 @@
         >
           <span class="material-symbols-outlined text-[24px]">inventory_2</span>
         </div>
-        <h1 class="text-xl font-bold tracking-tight text-white uppercase">Technopark AMS</h1>
+        <h1 class="text-xl font-bold tracking-tight text-white uppercase">
+          {{ companyName || 'Asset Management' }}
+        </h1>
       </div>
 
       <!-- Stepper Content -->
@@ -492,8 +494,8 @@
 
       <!-- Footer Credits -->
       <div class="p-8 text-center bg-canvas/30 backdrop-blur-sm border-t border-border-default">
-        <p class="text-[10px] font-bold text-text-disabled uppercase tracking-[0.4em]">
-          &copy; {{ new Date().getFullYear() }} Technopark Asset Management
+        <p class="text-[10px] font-bold text-text-disabled uppercase tracking-[0.4em] mb-4">
+          &copy; {{ new Date().getFullYear() }} {{ companyName || 'Asset Management' }}
         </p>
       </div>
     </div>
@@ -504,10 +506,11 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '../composables/useAuth';
+import { apiRequest } from '../api/client';
 import heroImage from '../assets/hero.png';
 
 const router = useRouter();
-const { setToken, checkSetupStatus, isAuthenticated, currentUser } = useAuth();
+const { setToken, checkSetupStatus, isAuthenticated, currentUser, companyName } = useAuth();
 
 const step = ref(1);
 const loading = ref(false);
@@ -592,42 +595,31 @@ const toggleCategory = (cat: string) => {
 const handleSubmit = async () => {
   loading.value = true;
   try {
-    let token = localStorage.getItem('tasm_auth_token');
-
     if (!isAuthenticated.value) {
-      const adminRes = await fetch('/api/auth/create-admin', {
+      const adminData = await apiRequest<{ token?: string; user?: any }>('/auth/create-admin', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body: {
           name: form.value.name,
           email: form.value.email,
           password: form.value.password,
           department: form.value.department || 'Administration',
           companyName: form.value.companyName,
-        }),
+        },
       });
 
-      const adminData = await adminRes.json();
-      if (!adminRes.ok) throw new Error(adminData.error || 'Failed to create initial account');
-
-      // If server returns a token (legacy), use it; otherwise require explicit sign-in
+      // If server returns a token, use it; otherwise require explicit sign-in
       if (adminData.token) {
-        token = adminData.token;
-        setToken(token);
+        setToken(adminData.token);
       } else {
         alert('Initial account created. Please sign in to continue.');
-        window.location.href = '/login';
+        router.push({ name: 'Login' });
         return;
       }
     }
 
-    const setupRes = await fetch('/api/setup/complete', {
+    await apiRequest('/setup/complete', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
+      body: {
         companyName: form.value.companyName,
         currency: form.value.currency,
         locations: form.value.locations,
@@ -640,21 +632,16 @@ const handleSubmit = async () => {
           purchasePrice: true,
           department: true,
         },
-      }),
+      },
     });
-
-    if (!setupRes.ok) {
-      const setupData = await setupRes.json();
-      throw new Error(setupData.error || 'Failed to finalize setup');
-    }
 
     await checkSetupStatus();
     setTimeout(() => {
       window.location.href = '/';
     }, 2000);
   } catch (err: any) {
-    console.error(err);
-    alert(err.message);
+    console.error('Setup failed:', err);
+    alert(err.message || 'An unexpected error occurred during setup.');
     step.value = 1;
   } finally {
     loading.value = false;

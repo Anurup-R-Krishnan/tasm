@@ -4,7 +4,7 @@
   >
     <div class="flex items-center gap-inline">
       <span class="text-lg font-black tracking-tighter text-text-primary uppercase">
-        Technopark AMS
+        {{ companyName || 'Asset Management' }}
       </span>
       <span class="text-sm text-text-secondary">
         {{ currentTitle }}
@@ -104,7 +104,7 @@ const route = useRoute();
 const query = ref('');
 const isFocused = ref(false);
 const unreadCount = ref(0);
-const { currentUser } = useAuth();
+const { currentUser, companyName } = useAuth();
 
 const currentTitle = computed(() => route.meta['title']?.toString() ?? 'Dashboard');
 const routeIndex = appRoutes.map((item) => ({

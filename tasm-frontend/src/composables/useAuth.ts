@@ -7,6 +7,7 @@ import {
   type RegisterCredentials,
   type AuthResponse,
 } from '../api/auth';
+import { apiRequest } from '../api/client';
 import type { SystemUser } from '../types/models';
 
 const TOKEN_KEY = 'tasm_auth_token';
@@ -26,8 +27,11 @@ export function useAuth() {
 
   const checkSetupStatus = async () => {
     try {
-      const response = await fetch('/api/setup/status');
-      const data = await response.json();
+      const data = await apiRequest<{
+        isFirstRun: boolean;
+        isSetupCompleted: boolean;
+        companyName: string;
+      }>('/setup/status');
       isFirstRun.value = !!data.isFirstRun;
       isSetupCompleted.value = !!data.isSetupCompleted;
       companyName.value = data.companyName || '';

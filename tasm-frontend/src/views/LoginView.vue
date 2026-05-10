@@ -33,7 +33,7 @@
           </div>
           <div>
             <h1 class="text-2xl font-bold tracking-tight text-white mb-0 uppercase">
-              Technopark AMS
+              {{ companyName || 'Asset Management' }}
             </h1>
             <p class="text-[10px] font-bold text-white/70 uppercase tracking-[0.2em] mt-0.5">
               Enterprise Edition
@@ -84,7 +84,9 @@
         >
           <span class="material-symbols-outlined text-[32px]">inventory_2</span>
         </div>
-        <h1 class="text-3xl font-bold text-text-primary tracking-tight">Technopark AMS</h1>
+        <h1 class="text-3xl font-bold text-text-primary tracking-tight">
+          {{ companyName || 'Asset Management' }}
+        </h1>
         <p class="text-text-secondary mt-2">Enterprise Asset Management</p>
       </div>
 
@@ -198,7 +200,7 @@
       <!-- Footer Credits -->
       <div class="absolute bottom-8 left-0 right-0 text-center">
         <p class="text-[10px] font-bold text-text-disabled uppercase tracking-[0.4em]">
-          &copy; {{ new Date().getFullYear() }} Technopark Asset Management
+          &copy; {{ new Date().getFullYear() }} {{ companyName || 'Asset Management' }}
         </p>
       </div>
     </div>
@@ -212,7 +214,7 @@ import { useAuth } from '../composables/useAuth';
 import heroImage from '../assets/hero.png';
 
 const router = useRouter();
-const { login, isSetupCompleted } = useAuth();
+const { login, isSetupCompleted, companyName } = useAuth();
 
 const email = ref('');
 const password = ref('');
