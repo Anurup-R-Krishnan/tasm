@@ -537,7 +537,7 @@ const handleConfirmBooking = async () => {
       startTime: `${bookingForm.value.date}T${bookingForm.value.startTime}:00`,
       endTime: `${bookingForm.value.date}T${bookingForm.value.endTime}:00`,
       status: 'Active',
-      location: 'Main Campus',
+      location: '',
     });
     reservations.value = [newBooking, ...reservations.value];
     alert(`Booking confirmed for ${newBooking.title} on ${bookingForm.value.date}`);
