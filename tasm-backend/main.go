@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -25,6 +26,9 @@ func main() {
 	// Setup Router
 	r := gin.Default()
 
+	// Performance: GZIP Compression
+	r.Use(gzip.Gzip(gzip.DefaultCompression))
+
 	allowedOrigin := os.Getenv("FRONTEND_ORIGIN")
 
 	r.Use(func(c *gin.Context) {
@@ -44,6 +48,12 @@ func main() {
 			c.AbortWithStatus(204)
 			return
 		}
+
+		// Security Headers
+		c.Writer.Header().Set("X-Content-Type-Options", "nosniff")
+		c.Writer.Header().Set("X-Frame-Options", "DENY")
+		c.Writer.Header().Set("X-XSS-Protection", "1; mode=block")
+
 		c.Next()
 	})
 

@@ -19,4 +19,27 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    target: 'esnext',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/vue') || id.includes('node_modules/vue-router')) {
+            return 'vue-vendor';
+          }
+          if (id.includes('node_modules/chart.js') || id.includes('node_modules/vue-chartjs')) {
+            return 'chart-vendor';
+          }
+          return undefined;
+        },
+      },
+    },
+  },
 });

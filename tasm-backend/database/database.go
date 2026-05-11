@@ -35,6 +35,15 @@ func ConnectDB() error {
 	DB = db
 	log.Printf("Database connected: %s:%s/%s", config.Host, config.Port, config.Name)
 
+	// Configure Connection Pooling
+	sqlDB, err := DB.DB()
+	if err == nil {
+		sqlDB.SetMaxOpenConns(100)
+		sqlDB.SetMaxIdleConns(10)
+		sqlDB.SetConnMaxLifetime(time.Hour)
+		log.Println("Connection pool configured: MaxOpen=100, MaxIdle=10")
+	}
+
 	if err := DB.AutoMigrate(
 		&models.Asset{},
 		&models.AuditSession{},

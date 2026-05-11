@@ -32,11 +32,24 @@ export async function apiRequest<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...init,
-    body,
-    headers,
-  });
+  let response: Response;
+  let attempt = 0;
+  const maxRetries = init?.method && init.method !== 'GET' ? 0 : 2;
+
+  while (true) {
+    try {
+      response = await fetch(`${API_BASE_URL}${path}`, {
+        ...init,
+        body,
+        headers,
+      });
+      break;
+    } catch (error) {
+      if (attempt >= maxRetries) throw error;
+      attempt++;
+      await new Promise((resolve) => setTimeout(resolve, 500 * Math.pow(2, attempt - 1)));
+    }
+  }
 
   if (!response.ok) {
     if (response.status === 401 && !path.includes('/auth/login') && !path.includes('/auth/me')) {
