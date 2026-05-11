@@ -12,12 +12,21 @@ class ApiError extends Error {
   }
 }
 
-export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
+export async function apiRequest<T>(
+  path: string,
+  init?: Omit<RequestInit, 'body'> & { body?: any },
+): Promise<T> {
   const token = localStorage.getItem('tasm_auth_token');
   const headers: Record<string, string> = {
     Accept: 'application/json',
     ...((init?.headers as Record<string, string>) ?? {}),
   };
+
+  let body = init?.body;
+  if (body && typeof body === 'object' && !(body instanceof FormData) && !(body instanceof Blob)) {
+    body = JSON.stringify(body);
+    headers['Content-Type'] = 'application/json';
+  }
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
@@ -25,6 +34,7 @@ export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
+    body,
     headers,
   });
 

@@ -15,19 +15,18 @@
         >
           <span class="material-symbols-outlined text-[24px]">inventory_2</span>
         </div>
-        <span class="font-h2 text-h2 font-bold text-text-primary tracking-tight">{{
-          companyName || 'Asset Management'
-        }}</span>
+        <span class="font-h2 text-h2 font-bold text-text-primary tracking-tight"
+          >Technopark AMS</span
+        >
       </div>
     </header>
 
     <main class="flex-1 flex flex-col items-center justify-center p-6 z-10 relative">
       <div class="max-w-3xl text-center space-y-8 animate-fade-in-up">
-        <h1 class="text-4xl font-black tracking-tight text-white uppercase mb-4 animate-fade-in-up">
-          Welcome to
-          <span
-            class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-500"
-            >{{ companyName || 'Asset Management' }}</span
+        <h1 class="text-5xl md:text-7xl font-bold text-text-primary tracking-tight leading-tight">
+          Track assets with <br class="hidden md:block" />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-metric-amber"
+            >precision &amp; clarity.</span
           >
         </h1>
 
@@ -46,7 +45,6 @@
           </button>
 
           <button
-            v-if="!isSetupCompleted"
             @click="router.push({ name: 'FirstRun', query: { setup: '1' } })"
             class="w-full sm:w-auto h-14 px-8 bg-surface border-2 border-border-default text-text-primary rounded-xl font-bold hover:border-primary hover:text-primary transition-all active:scale-95 flex items-center justify-center gap-2 text-lg"
           >
@@ -110,10 +108,8 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { useAuth } from '../composables/useAuth';
 
 const router = useRouter();
-const { isSetupCompleted, companyName } = useAuth();
 
 const handleGetStarted = () => {
   router.push({ name: 'Login' });

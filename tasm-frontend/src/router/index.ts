@@ -59,30 +59,24 @@ router.beforeEach(async (to) => {
   const isFirstRunPath = to.name === 'FirstRun' || to.path.startsWith('/first-run');
   const startedSetupFromWelcome = to.query['setup'] === '1';
 
-  // If setup completed, disallow /first-run
-  if (isSetupCompleted.value && isFirstRunPath) return { name: 'Dashboard' };
-
-  // If user tries to open FirstRun directly, send to Welcome.
-  // Only the explicit Start Setup button should be able to enter this flow.
-  if (isFirstRunPath && !isSetupCompleted.value) {
-    if (!startedSetupFromWelcome) {
-      return { name: 'Welcome' };
-    }
-
+  // /first-run: only reachable via the "Start Setup" button (?setup=1).
+  // Direct URL access without the param → Welcome.
+  // No restriction based on isSetupCompleted — users can always run setup.
+  if (isFirstRunPath) {
+    if (!startedSetupFromWelcome) return { name: 'Welcome' };
     return true;
   }
 
+  // Unauthenticated user hitting a protected route → Welcome
   const requiresAuth = to.matched.some((record) => record.meta['requiresAuth']);
-
-  // Protected route attempt by unauthenticated user → Welcome
   if (requiresAuth && !isAuthenticated.value) return { name: 'Welcome' };
 
-  // While the system is not initialized, /register should route into setup instead of failing.
+  // /register before setup is done → redirect into setup wizard
   if (isRegisterPath && !isSetupCompleted.value) {
     return { name: 'FirstRun', query: { setup: '1' } };
   }
 
-  // Prevent auth pages when already logged in and setup done
+  // Authenticated + setup done: bounce away from auth/welcome pages to the app
   if (
     isAuthenticated.value &&
     isSetupCompleted.value &&
