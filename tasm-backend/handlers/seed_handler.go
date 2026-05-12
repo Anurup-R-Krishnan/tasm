@@ -76,22 +76,22 @@ func SeedDatabase(c *gin.Context) {
 	// 4. Create Core Assets
 	assets := []models.Asset{
 		{
-			AssetTag: "TP-LAP-001", Name: "MacBook Pro M2", Category: "Laptops",
+			TagID: "TP-LAP-001", Name: "MacBook Pro M2", Category: "Laptops",
 			Status: "Assigned", Location: "Thejaswini Hall", Department: "Engineering",
 			Value: 185000, PurchaseDate: time.Now().AddDate(-1, 0, 0),
 		},
 		{
-			AssetTag: "TP-LAP-002", Name: "Dell Latitude 5430", Category: "Laptops",
+			TagID: "TP-LAP-002", Name: "Dell Latitude 5430", Category: "Laptops",
 			Status: "In Stock", Location: "Nila Building", Department: "Sales",
 			Value: 95000, PurchaseDate: time.Now().AddDate(0, -6, 0),
 		},
 		{
-			AssetTag: "TP-SRV-001", Name: "HP ProLiant Gen10", Category: "Servers",
+			TagID: "TP-SRV-001", Name: "HP ProLiant Gen10", Category: "Servers",
 			Status: "Active", Location: "Data Center A", Department: "IT Infrastructure",
 			Value: 450000, PurchaseDate: time.Now().AddDate(-2, 0, 0),
 		},
 		{
-			AssetTag: "TP-HVAC-001", Name: "BlueStar Industrial Chiller", Category: "Infrastructure",
+			TagID: "TP-HVAC-001", Name: "BlueStar Industrial Chiller", Category: "Infrastructure",
 			Status: "Maintenance", Location: "Ganga Building", Department: "Facilities",
 			Value: 1250000, PurchaseDate: time.Now().AddDate(-3, 0, 0),
 		},

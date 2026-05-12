@@ -12,6 +12,7 @@ type Asset struct {
 	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
 	Name           string         `json:"name"`
 	TagID          string         `json:"tagId"`
+	Department     string         `json:"department"`
 	Category       string         `json:"category"`
 	Location       string         `json:"location"`
 	Condition      string         `json:"condition"`

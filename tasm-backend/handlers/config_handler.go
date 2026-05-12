@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strings"
 
-	"tasm-backend/database"
 	"tasm-backend/models"
 
 	"github.com/gin-gonic/gin"
