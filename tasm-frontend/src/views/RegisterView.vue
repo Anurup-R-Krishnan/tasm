@@ -33,31 +33,21 @@
           </div>
           <div>
             <h1 class="text-2xl font-bold tracking-tight text-white mb-0 uppercase">
-              {{ companyName || 'Asset Management' }}
+              Technopark Assets
             </h1>
             <p class="text-[10px] font-bold text-white/70 uppercase tracking-[0.2em] mt-0.5">
-              Enterprise Edition
+              Secure Operations & Management
             </p>
           </div>
         </div>
 
         <div class="space-y-6">
           <h2 class="text-5xl lg:text-7xl font-bold leading-tight tracking-tight">
-            Join the <span class="text-metric-amber">standard</span> of excellence.
+            Welcome to the <span class="text-metric-amber">future</span> of asset management.
           </h2>
           <p class="text-xl text-white/80 font-medium max-w-md">
-            Create your account to start managing assets with the most advanced system in the
-            industry.
+            The next generation platform for Technopark infrastructure.
           </p>
-        </div>
-
-        <div class="flex items-center gap-12 pt-8">
-          <div v-for="stat in stats" :key="stat.label" class="space-y-1">
-            <p class="text-3xl font-bold text-white">{{ stat.value }}</p>
-            <p class="text-[10px] font-bold text-white/60 uppercase tracking-widest">
-              {{ stat.label }}
-            </p>
-          </div>
         </div>
       </div>
 
@@ -293,12 +283,6 @@ const loading = ref(false);
 const error = ref('');
 const success = ref('');
 const showPassword = ref(false);
-
-const stats = [
-  { label: 'Security', value: 'ISO 27001' },
-  { label: 'Compliance', value: '100%' },
-  { label: 'Support', value: '24/7' },
-];
 
 const form = ref({
   name: '',
