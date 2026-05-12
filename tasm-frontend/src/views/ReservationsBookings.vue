@@ -367,6 +367,23 @@
                 />
               </div>
             </div>
+            <!-- Location -->
+            <div class="space-y-2">
+              <label class="font-h3 text-h3 text-text-primary block"> Location </label>
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-[18px]"
+                >
+                  location_on
+                </span>
+                <input
+                  v-model="bookingForm.location"
+                  class="w-full pl-9 pr-3 py-2 border border-border-default rounded-lg font-body focus:ring-2 focus:ring-surface-tint/20 focus:border-surface-tint outline-none bg-surface text-text-primary"
+                  placeholder="e.g. Block A, 3rd Floor"
+                  type="text"
+                />
+              </div>
+            </div>
             <!-- Date Picker -->
             <div class="space-y-2">
               <label class="font-h3 text-h3 text-text-primary block"> Date </label>
@@ -460,6 +477,7 @@ const currentCategory = ref('Meeting Room');
 // Form state for Quick Book
 const bookingForm = ref({
   resourceId: '',
+  location: '',
   date: new Date().toISOString().split('T')[0],
   startTime: '09:00',
   endTime: '11:00',
@@ -524,8 +542,15 @@ const fetchReservations = async () => {
 };
 
 const handleConfirmBooking = async () => {
-  if (!bookingForm.value.date || !bookingForm.value.resourceId) {
-    alert('Please provide resource name and date.');
+  if (!bookingForm.value.date || !bookingForm.value.resourceId || !bookingForm.value.location) {
+    alert('Please provide resource name, location, and date.');
+    return;
+  }
+
+  const start = `${bookingForm.value.date}T${bookingForm.value.startTime}:00`;
+  const end = `${bookingForm.value.date}T${bookingForm.value.endTime}:00`;
+  if (new Date(end) <= new Date(start)) {
+    alert('End time must be after start time.');
     return;
   }
 
@@ -534,15 +559,16 @@ const handleConfirmBooking = async () => {
       title: bookingForm.value.resourceId,
       type: currentCategory.value,
       bookedBy: currentUser.value?.name || 'Unknown',
-      startTime: `${bookingForm.value.date}T${bookingForm.value.startTime}:00`,
-      endTime: `${bookingForm.value.date}T${bookingForm.value.endTime}:00`,
+      startTime: start,
+      endTime: end,
       status: 'Active',
-      location: '',
+      location: bookingForm.value.location,
     });
     reservations.value = [newBooking, ...reservations.value];
     alert(`Booking confirmed for ${newBooking.title} on ${bookingForm.value.date}`);
 
     bookingForm.value.resourceId = '';
+    bookingForm.value.location = '';
     bookingForm.value.notes = '';
   } catch (error) {
     console.error('Failed to create reservation:', error);

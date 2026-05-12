@@ -22,12 +22,6 @@
             type="text"
           />
         </div>
-        <button
-          class="bg-primary hover:bg-primary/90 text-on-primary py-2 px-4 rounded-lg font-h3 text-h3 flex items-center justify-center gap-2 transition-colors shadow-sm active:scale-[0.98] whitespace-nowrap"
-        >
-          <span class="material-symbols-outlined text-[18px]"> person_add </span>
-          Add New User
-        </button>
       </div>
     </div>
     <!-- Filters & Actions Bar -->
@@ -167,6 +161,90 @@
         </Column>
       </DataTable>
     </div>
+
+    <Teleport to="body">
+      <div
+        v-if="showUserModal && selectedUser"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        @click.self="closeUserDetails"
+      >
+        <div class="bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-lg mx-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-h2 text-h2 text-text-primary">User Details</h2>
+            <button class="text-text-secondary hover:text-text-primary" @click="closeUserDetails">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 rounded-full bg-surface-variant border border-border-default flex items-center justify-center text-on-surface-variant font-h3"
+              >
+                {{ selectedUser.name.charAt(0) }}
+              </div>
+              <div>
+                <p class="font-h3 text-h3 text-text-primary">{{ selectedUser.name }}</p>
+                <p class="font-metadata text-metadata text-text-secondary">
+                  {{ selectedUser.email }}
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="bg-surface-subtle border border-border-default rounded-xl p-3">
+                <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+                  Employee ID
+                </p>
+                <p class="font-h3 text-h3 text-text-primary mt-1">
+                  {{ selectedUser.employeeId || '—' }}
+                </p>
+              </div>
+              <div class="bg-surface-subtle border border-border-default rounded-xl p-3">
+                <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+                  Role
+                </p>
+                <p class="font-h3 text-h3 text-text-primary mt-1">
+                  {{ selectedUser.role || '—' }}
+                </p>
+              </div>
+              <div class="bg-surface-subtle border border-border-default rounded-xl p-3">
+                <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+                  Department
+                </p>
+                <p class="font-h3 text-h3 text-text-primary mt-1">
+                  {{ selectedUser.department || '—' }}
+                </p>
+              </div>
+              <div class="bg-surface-subtle border border-border-default rounded-xl p-3">
+                <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+                  Status
+                </p>
+                <p class="font-h3 text-h3 text-text-primary mt-1">
+                  {{ selectedUser.status || '—' }}
+                </p>
+              </div>
+            </div>
+            <div class="bg-surface-subtle border border-border-default rounded-xl p-3">
+              <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+                Last Login
+              </p>
+              <p class="font-h3 text-h3 text-text-primary mt-1">
+                {{
+                  selectedUser.lastLogin ? new Date(selectedUser.lastLogin).toLocaleString() : '—'
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end">
+            <button
+              class="px-4 py-2 bg-primary text-on-primary rounded-lg font-h3 hover:opacity-90"
+              @click="closeUserDetails"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </main>
 </template>
 
@@ -183,6 +261,8 @@ const searchQuery = ref('');
 const selectedRole = ref('');
 const selectedDepartment = ref('');
 const selectedStatus = ref('');
+const selectedUser = ref<SystemUser | null>(null);
+const showUserModal = ref(false);
 
 const filteredUsers = computed(() => {
   return users.value.filter((user) => {
@@ -223,12 +303,17 @@ const deleteUser = async (id: number) => {
 
 const openUserDetails = async (id: number) => {
   try {
-    const user = await getUserById(id);
-    alert(`User: ${user.name}\nRole: ${user.role}\nDepartment: ${user.department}`);
+    selectedUser.value = await getUserById(id);
+    showUserModal.value = true;
   } catch (error) {
     console.error('Failed to fetch user', error);
     alert('Failed to load user details');
   }
+};
+
+const closeUserDetails = () => {
+  showUserModal.value = false;
+  selectedUser.value = null;
 };
 
 const handleExport = () => {

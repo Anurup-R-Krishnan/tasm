@@ -162,6 +162,127 @@
         </table>
       </div>
     </div>
+
+    <Teleport to="body">
+      <div
+        v-if="showNewRequestModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        @click.self="closeNewRequest"
+      >
+        <div class="bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-lg mx-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-h2 text-h2 text-text-primary">New Procurement Request</h2>
+            <button class="text-text-secondary hover:text-text-primary" @click="closeNewRequest">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label
+                class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+              >
+                Request Title
+              </label>
+              <input
+                v-model="newRequest.title"
+                type="text"
+                placeholder="e.g. Workstation Refresh"
+                class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+                >
+                  Department
+                </label>
+                <input
+                  v-model="newRequest.department"
+                  type="text"
+                  placeholder="e.g. Facilities"
+                  class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                />
+              </div>
+              <div>
+                <label
+                  class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+                >
+                  Priority
+                </label>
+                <select
+                  v-model="newRequest.priority"
+                  class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                >
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+                >
+                  Estimated Value
+                </label>
+                <input
+                  v-model.number="newRequest.estimatedValue"
+                  type="number"
+                  min="0"
+                  class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                />
+              </div>
+              <div>
+                <label
+                  class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+                >
+                  PO Number (Optional)
+                </label>
+                <input
+                  v-model="newRequest.poNumber"
+                  type="text"
+                  class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+              >
+                Requestor Name
+              </label>
+              <input
+                v-model="newRequest.requestorName"
+                type="text"
+                placeholder="e.g. Priya Singh"
+                class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button
+              class="flex-1 py-3 bg-surface border border-border-default rounded-xl font-h3 text-text-secondary hover:bg-surface-subtle"
+              @click="closeNewRequest"
+              :disabled="creatingRequest"
+            >
+              Cancel
+            </button>
+            <button
+              class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-h3 hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+              :disabled="!canCreateRequest || creatingRequest"
+              @click="handleCreateRequest"
+            >
+              <span v-if="creatingRequest" class="material-symbols-outlined animate-spin"
+                >sync</span
+              >
+              {{ creatingRequest ? 'Creating...' : 'Create Request' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </main>
 </template>
 
@@ -192,35 +313,73 @@ const fetchRequests = async () => {
   }
 };
 
-const openNewRequest = async () => {
-  const title = prompt('Request title?');
-  if (!title) return;
-  const department = prompt('Department?') || 'General';
-  const priority = (prompt('Priority? (Low/Medium/High)') || 'Low').trim();
-  const estimatedValue = Number(prompt('Estimated value?', '0') || 0);
-  const requestorName = prompt('Requestor name?') || 'Unknown';
-  const requestorInitials = requestorName
+const showNewRequestModal = ref(false);
+const creatingRequest = ref(false);
+const newRequest = ref({
+  title: '',
+  department: '',
+  priority: 'Low',
+  estimatedValue: 0,
+  requestorName: '',
+  poNumber: '',
+});
+
+const canCreateRequest = computed(() => {
+  return Boolean(
+    newRequest.value.title && newRequest.value.department && newRequest.value.requestorName,
+  );
+});
+
+const openNewRequest = () => {
+  showNewRequestModal.value = true;
+};
+
+const closeNewRequest = () => {
+  showNewRequestModal.value = false;
+  resetNewRequest();
+};
+
+const resetNewRequest = () => {
+  newRequest.value = {
+    title: '',
+    department: '',
+    priority: 'Low',
+    estimatedValue: 0,
+    requestorName: '',
+    poNumber: '',
+  };
+};
+
+const handleCreateRequest = async () => {
+  if (!canCreateRequest.value) return;
+  creatingRequest.value = true;
+  const requestorInitials = newRequest.value.requestorName
     .split(' ')
+    .filter(Boolean)
     .map((n) => n[0])
     .join('')
     .toUpperCase()
     .slice(0, 2);
   try {
     const created = await createProcurement({
-      title,
-      department,
-      priority,
-      estimatedValue,
+      title: newRequest.value.title,
+      department: newRequest.value.department,
+      priority: newRequest.value.priority,
+      estimatedValue: Number(newRequest.value.estimatedValue || 0),
       actualValue: 0,
-      requestorName,
+      requestorName: newRequest.value.requestorName,
       requestorInitials,
       status: 'Draft',
-      poNumber: '',
+      poNumber: newRequest.value.poNumber,
     });
     requests.value = [created, ...requests.value];
+    closeNewRequest();
+    resetNewRequest();
   } catch (error) {
     console.error('Failed to create procurement', error);
     alert('Failed to create procurement');
+  } finally {
+    creatingRequest.value = false;
   }
 };
 

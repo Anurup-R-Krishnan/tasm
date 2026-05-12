@@ -126,7 +126,6 @@
               >
                 Forgot Password?
               </button>
-              >
             </div>
             <div class="relative group">
               <span
