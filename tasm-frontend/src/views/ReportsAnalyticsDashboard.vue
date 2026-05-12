@@ -10,10 +10,11 @@
       </div>
       <div class="flex gap-3">
         <button
-          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm opacity-50 cursor-not-allowed"
+          class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
+          @click="showPeriodModal = true"
         >
           <span class="material-symbols-outlined text-[18px]">calendar_month</span>
-          Current Period
+          {{ periodLabel }}
         </button>
         <button @click="handleExport" class="btn-primary">
           <span class="material-symbols-outlined">download</span>
@@ -76,7 +77,7 @@
               </thead>
               <tbody class="divide-y divide-slate-50">
                 <tr
-                  v-for="req in procurements"
+                  v-for="req in filteredProcurements"
                   :key="req.id"
                   class="hover:bg-surface-subtle/50 transition-colors group"
                 >
@@ -121,7 +122,7 @@
                     ₹{{ (req.estimatedValue || 0).toLocaleString() }}
                   </td>
                 </tr>
-                <tr v-if="procurements.length === 0">
+                <tr v-if="filteredProcurements.length === 0">
                   <td colspan="4" class="px-6 py-12 text-center text-text-secondary text-sm italic">
                     No active procurement requests.
                   </td>
@@ -146,7 +147,7 @@
           </div>
           <div class="p-4 space-y-3 overflow-y-auto max-h-[500px] flex-1">
             <div
-              v-for="entry in ledgers"
+              v-for="entry in filteredLedgers"
               :key="entry.id"
               class="p-4 bg-surface-subtle/50 border border-border-default rounded-xl hover:border-slate-200 transition-all group"
             >
@@ -176,7 +177,7 @@
               </div>
             </div>
             <div
-              v-if="ledgers.length === 0"
+              v-if="filteredLedgers.length === 0"
               class="py-12 text-center text-text-secondary text-sm italic"
             >
               No transactions recorded in ledger.
@@ -184,7 +185,7 @@
           </div>
           <div class="p-4 bg-surface-subtle/50 border-t border-border-default">
             <button
-              @click="router.push('/ledgers')"
+              @click="router.push('/financial-ledger')"
               class="w-full py-2 bg-white border border-border-default rounded-lg text-xs font-bold text-text-secondary hover:text-primary transition-colors shadow-sm"
             >
               View Full Audit Log
@@ -193,6 +194,66 @@
         </div>
       </div>
     </div>
+    <Teleport to="body">
+      <div
+        v-if="showPeriodModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        @click.self="showPeriodModal = false"
+      >
+        <div class="bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-h2 text-h2 text-text-primary">Reporting Period</h2>
+            <button
+              class="text-text-secondary hover:text-text-primary"
+              @click="showPeriodModal = false"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label
+                class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+              >
+                Start Date
+              </label>
+              <input
+                v-model="period.start"
+                type="date"
+                class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+            <div>
+              <label
+                class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+              >
+                End Date
+              </label>
+              <input
+                v-model="period.end"
+                type="date"
+                class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button
+              class="flex-1 py-3 bg-surface border border-border-default rounded-xl font-h3 text-text-secondary hover:bg-surface-subtle"
+              @click="resetPeriod"
+            >
+              Clear
+            </button>
+            <button
+              class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-h3 hover:opacity-90"
+              @click="applyPeriod"
+              :disabled="!period.start || !period.end"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </main>
 </template>
 
@@ -209,6 +270,11 @@ const ledgers = ref<LedgerEntry[]>([]);
 const procurements = ref<ProcurementRequest[]>([]);
 const assets = ref<Asset[]>([]);
 const loading = ref(true);
+const showPeriodModal = ref(false);
+const period = ref({
+  start: new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0],
+  end: new Date().toISOString().split('T')[0],
+});
 
 const fetchData = async () => {
   loading.value = true;
@@ -228,12 +294,27 @@ const fetchData = async () => {
   }
 };
 
+const isWithinPeriod = (value: string) => {
+  const start = new Date(`${period.value.start}T00:00:00`);
+  const end = new Date(`${period.value.end}T23:59:59`);
+  const date = new Date(value);
+  return date >= start && date <= end;
+};
+
+const filteredProcurements = computed(() => {
+  return procurements.value.filter((p) => isWithinPeriod(p.createdAt));
+});
+
+const filteredLedgers = computed(() => {
+  return ledgers.value.filter((l) => isWithinPeriod(l.date));
+});
+
 const financialKPIs = computed(() => {
-  const totalSpend = ledgers.value
+  const totalSpend = filteredLedgers.value
     .filter((l) => l.type === 'Debit')
     .reduce((sum, l) => sum + (l.amount || 0), 0);
 
-  const pendingValue = procurements.value
+  const pendingValue = filteredProcurements.value
     .filter((p) => p.status !== 'Received')
     .reduce((sum, p) => sum + (p.estimatedValue || 0), 0);
 
@@ -263,7 +344,7 @@ const financialKPIs = computed(() => {
     },
     {
       label: 'Ledger Entries',
-      value: ledgers.value.length,
+      value: filteredLedgers.value.length,
       icon: 'receipt_long',
       bgClass: 'bg-amber-50',
       iconClass: 'text-amber-500',
@@ -292,6 +373,24 @@ const getStatusDotClass = (status: string) => {
   if (status.includes('Pending') || status.includes('PO')) return 'bg-amber-500';
   if (status.includes('Shipping')) return 'bg-blue-500';
   return 'bg-slate-400';
+};
+
+const periodLabel = computed(() => {
+  if (!period.value.start || !period.value.end) return 'Current Period';
+  const start = formatDate(period.value.start);
+  const end = formatDate(period.value.end);
+  return `${start} - ${end}`;
+});
+
+const resetPeriod = () => {
+  period.value = {
+    start: new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0],
+    end: new Date().toISOString().split('T')[0],
+  };
+};
+
+const applyPeriod = () => {
+  showPeriodModal.value = false;
 };
 
 const handleExport = () => {

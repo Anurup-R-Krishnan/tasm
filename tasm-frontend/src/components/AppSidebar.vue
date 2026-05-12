@@ -64,15 +64,6 @@
 
     <!-- Footer Settings -->
     <div class="mt-auto pt-4 border-t border-border-default space-y-1">
-      <RouterLink v-if="settingsItem" :class="navClass(settingsItem.name)" :to="settingsItem.to">
-        <span
-          class="material-symbols-outlined"
-          :style="isActive(settingsItem.name) ? activeIconStyle : undefined"
-        >
-          {{ settingsItem.icon }}
-        </span>
-        {{ settingsItem.title }}
-      </RouterLink>
       <a
         class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:text-primary hover:bg-primary-container/10 transition-colors duration-200 group"
         href="mailto:support@technopark.com"
@@ -109,8 +100,6 @@ const navigationItems = appRoutes.map((item) => ({
   ...item,
   to: item.path === '' ? '/' : `/${item.path}`,
 }));
-
-const settingsItem = navigationItems.find((item) => item.name === 'UserManagementSettings');
 
 const groupedNavigation = computed(() => {
   return sidebarGroups.map((group) => ({

@@ -11,6 +11,7 @@
       <div class="flex gap-3">
         <button
           class="bg-surface border border-border-default text-text-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface-subtle transition-colors shadow-sm"
+          @click="router.push({ name: 'MaintenanceServiceHistoryLog' })"
         >
           <span class="material-symbols-outlined text-[18px]">history</span>
           History
