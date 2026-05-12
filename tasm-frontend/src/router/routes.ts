@@ -213,7 +213,7 @@ export const appRoutes: AppRouteDefinition[] = [
     name: 'SetupWizardLocationsConfiguration',
     title: 'Setup Wizard',
     icon: 'tune',
-    showInSidebar: true,
+    showInSidebar: false,
     component: () => import('../views/SetupWizardLocationsConfiguration.vue'),
   },
   {
@@ -301,7 +301,6 @@ export const sidebarGroups = [
       'UserAccessRoleControl',
       'UserManagementSettings',
       'AlertsNotificationsCenter',
-      'SetupWizardLocationsConfiguration',
     ],
   },
 ];

@@ -16,7 +16,7 @@
           <span class="material-symbols-outlined text-[18px]">print</span>
           Reports
         </button>
-        <button @click="router.push('/setup-wizard')" class="btn-primary">
+        <button @click="openAddLocation" class="btn-primary">
           <span class="material-symbols-outlined">add_location</span>
           New Location
         </button>
@@ -227,13 +227,104 @@
         </div>
       </div>
     </div>
+    <Teleport to="body">
+      <div
+        v-if="showAddLocation"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        @click.self="closeAddLocation"
+      >
+        <div class="bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-lg mx-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-h2 text-h2 text-text-primary">Add Location</h2>
+            <button class="text-text-secondary hover:text-text-primary" @click="closeAddLocation">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label
+                class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+              >
+                Location Name
+              </label>
+              <input
+                v-model="newLocation.name"
+                type="text"
+                placeholder="e.g. Main Campus"
+                class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+                >
+                  Type
+                </label>
+                <select
+                  v-model="newLocation.type"
+                  class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                >
+                  <option value="Office">Office</option>
+                  <option value="Warehouse">Warehouse</option>
+                  <option value="Data Center">Data Center</option>
+                  <option value="Clinic">Clinic</option>
+                  <option value="School">School</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+                >
+                  Capacity
+                </label>
+                <input
+                  v-model.number="newLocation.capacity"
+                  type="number"
+                  min="0"
+                  class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+              >
+                Address / Description
+              </label>
+              <input
+                v-model="newLocation.address"
+                type="text"
+                placeholder="Optional"
+                class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button
+              class="flex-1 py-3 bg-surface border border-border-default rounded-xl font-h3 text-text-secondary hover:bg-surface-subtle"
+              @click="closeAddLocation"
+            >
+              Cancel
+            </button>
+            <button
+              class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-h3 hover:opacity-90 disabled:opacity-50"
+              @click="saveLocation"
+              :disabled="savingLocation || !newLocation.name.trim()"
+            >
+              {{ savingLocation ? 'Saving...' : 'Add Location' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getLocations } from '../api/locations';
+import { getLocations, createLocation } from '../api/locations';
 import { getAssets } from '../api/assets';
 import type { Asset, Location } from '../types/models';
 
@@ -242,6 +333,15 @@ const locations = ref<Location[]>([]);
 const assets = ref<Asset[]>([]);
 const selectedLocation = ref<Location | null>(null);
 const loading = ref(true);
+const showAddLocation = ref(false);
+const savingLocation = ref(false);
+const newLocation = ref({
+  name: '',
+  type: 'Office',
+  address: '',
+  capacity: 0,
+  status: 'Active',
+});
 
 const fetchData = async () => {
   loading.value = true;
@@ -285,6 +385,36 @@ const summaryStats = computed(() => [
     iconClass: 'text-rose-500',
   },
 ]);
+
+const openAddLocation = () => {
+  showAddLocation.value = true;
+};
+
+const closeAddLocation = () => {
+  showAddLocation.value = false;
+  newLocation.value = {
+    name: '',
+    type: 'Office',
+    address: '',
+    capacity: 0,
+    status: 'Active',
+  };
+};
+
+const saveLocation = async () => {
+  if (!newLocation.value.name.trim()) return;
+  savingLocation.value = true;
+  try {
+    const created = await createLocation(newLocation.value);
+    locations.value = [...locations.value, created];
+    selectedLocation.value = created;
+    closeAddLocation();
+  } catch (error) {
+    console.error('Failed to create location:', error);
+  } finally {
+    savingLocation.value = false;
+  }
+};
 
 const handlePrint = () => {
   const rows: string[][] = [];
