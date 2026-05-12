@@ -51,6 +51,17 @@
       <div class="lg:col-span-3 space-y-6">
         <!-- Form Container -->
         <div class="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
+          <div
+            v-if="notice.message"
+            class="m-4 px-4 py-3 rounded-xl border text-sm font-semibold"
+            :class="
+              notice.tone === 'error'
+                ? 'bg-status-critical/10 border-status-critical/20 text-status-critical'
+                : 'bg-status-in-stock/10 border-status-in-stock/20 text-status-in-stock'
+            "
+          >
+            {{ notice.message }}
+          </div>
           <!-- Step 1 Content: Base Data -->
           <div
             v-if="activeStep === 1"
@@ -173,7 +184,7 @@
                   </button>
                 </div>
                 <button
-                  @click="addFilter"
+                  @click="showFilterModal = true"
                   class="inline-flex items-center gap-1 px-3 py-1.5 border border-dashed border-outline rounded-full text-text-secondary hover:text-text-primary hover:border-text-primary transition-colors font-metadata text-metadata"
                 >
                   <span class="material-symbols-outlined text-[14px]"> add </span>
@@ -314,7 +325,7 @@
               </button>
             </div>
             <button
-              @click="handleSaveReport"
+              @click="showSaveModal = true"
               class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-text-primary text-white rounded-lg font-h3 text-h3 hover:bg-text-primary/90 hover:-translate-y-0.5 transition-all shadow-md"
             >
               <span class="material-symbols-outlined text-[18px]"> save </span>
@@ -324,6 +335,96 @@
         </div>
       </div>
     </div>
+    <Teleport to="body">
+      <div
+        v-if="showFilterModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        @click.self="closeFilterModal"
+      >
+        <div class="bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-h2 text-h2 text-text-primary">Add Filter</h2>
+            <button class="text-text-secondary hover:text-text-primary" @click="closeFilterModal">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="space-y-3">
+            <label
+              class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider"
+            >
+              Filter Expression
+            </label>
+            <input
+              v-model="filterInput"
+              type="text"
+              placeholder="e.g. Location: Nila"
+              class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+            />
+            <p class="text-xs text-text-secondary">Use “Field: Value” format.</p>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button
+              class="flex-1 py-3 bg-surface border border-border-default rounded-xl font-h3 text-text-secondary hover:bg-surface-subtle"
+              @click="closeFilterModal"
+            >
+              Cancel
+            </button>
+            <button
+              class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-h3 hover:opacity-90"
+              @click="applyFilter"
+              :disabled="!filterInput.trim()"
+            >
+              Add Filter
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+    <Teleport to="body">
+      <div
+        v-if="showSaveModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        @click.self="closeSaveModal"
+      >
+        <div class="bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-h2 text-h2 text-text-primary">Save Report Template</h2>
+            <button class="text-text-secondary hover:text-text-primary" @click="closeSaveModal">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="space-y-3">
+            <label
+              class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider"
+            >
+              Template Name
+            </label>
+            <input
+              v-model="templateName"
+              type="text"
+              placeholder="e.g. Quarterly Compliance"
+              class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+            />
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button
+              class="flex-1 py-3 bg-surface border border-border-default rounded-xl font-h3 text-text-secondary hover:bg-surface-subtle"
+              @click="closeSaveModal"
+            >
+              Cancel
+            </button>
+            <button
+              class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-h3 hover:opacity-90"
+              @click="saveTemplate"
+              :disabled="!templateName.trim()"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </main>
 </template>
 
@@ -337,6 +438,14 @@ const activeStep = ref(1);
 const selectedEntity = ref('assets');
 const reportData = ref<any[]>([]);
 const loading = ref(false);
+const showFilterModal = ref(false);
+const showSaveModal = ref(false);
+const filterInput = ref('');
+const templateName = ref('');
+const notice = ref<{ message: string; tone: 'success' | 'error' }>({
+  message: '',
+  tone: 'success',
+});
 
 const steps = [
   { id: 1, title: 'Base Data', description: 'Select primary entity' },
@@ -358,9 +467,23 @@ const selectedColumns = ref(['Asset ID', 'Asset Name', 'Category', 'Location', '
 
 const activeFilters = ref(['Category: IT Equipment', 'Status: Active']);
 
-const addFilter = () => {
-  const filter = prompt('Enter filter (e.g., Location: Nila):');
-  if (filter) activeFilters.value.push(filter);
+const showNotice = (message: string, tone: 'success' | 'error' = 'success') => {
+  notice.value = { message, tone };
+  window.setTimeout(() => {
+    notice.value = { message: '', tone: 'success' };
+  }, 3000);
+};
+
+const closeFilterModal = () => {
+  showFilterModal.value = false;
+  filterInput.value = '';
+};
+
+const applyFilter = () => {
+  if (!filterInput.value.trim()) return;
+  activeFilters.value.push(filterInput.value.trim());
+  closeFilterModal();
+  showNotice('Filter added to the report configuration.');
 };
 
 const removeFilter = (filter: string) => {
@@ -369,7 +492,7 @@ const removeFilter = (filter: string) => {
 
 const handleExport = (format: string) => {
   if (reportData.value.length === 0) {
-    alert('No data available to export. Please generate a report first.');
+    showNotice('No data available to export. Generate a report first.', 'error');
     return;
   }
 
@@ -394,12 +517,18 @@ const handleExport = (format: string) => {
   link.download = `tasm_report_${selectedEntity.value}_${timestamp}.csv`;
   link.click();
 
-  alert(`${format} export triggered (as CSV for demonstration).`);
+  showNotice(`${format} export downloaded as CSV.`);
 };
 
-const handleSaveReport = () => {
-  const name = prompt('Enter a name for this report template:');
-  if (name) alert(`Template "${name}" saved to your report library.`);
+const closeSaveModal = () => {
+  showSaveModal.value = false;
+  templateName.value = '';
+};
+
+const saveTemplate = () => {
+  if (!templateName.value.trim()) return;
+  showNotice(`Template "${templateName.value.trim()}" saved to your report library.`);
+  closeSaveModal();
 };
 
 const handleGenerateReport = async () => {
@@ -408,7 +537,7 @@ const handleGenerateReport = async () => {
   await new Promise((resolve) => setTimeout(resolve, 800));
   await fetchReportData();
   activeStep.value = 4; // Stay on step 4 or show preview
-  alert('Final report structure generated and preview updated.');
+  showNotice('Final report structure generated and preview updated.');
 };
 
 const fetchReportData = async () => {

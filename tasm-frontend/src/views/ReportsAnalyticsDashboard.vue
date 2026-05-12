@@ -394,7 +394,51 @@ const applyPeriod = () => {
 };
 
 const handleExport = () => {
-  window.print();
+  const rows: string[][] = [];
+
+  rows.push(['Report', 'Financial Reports & Analytics']);
+  rows.push(['Period', periodLabel.value]);
+  rows.push([]);
+
+  rows.push(['KPI', 'Value']);
+  financialKPIs.value.forEach((kpi) => {
+    rows.push([kpi.label, String(kpi.value)]);
+  });
+  rows.push([]);
+
+  rows.push(['Procurement Pipeline']);
+  rows.push(['Title', 'Department', 'Priority', 'Status', 'Estimated Value']);
+  filteredProcurements.value.forEach((req) => {
+    rows.push([
+      req.title,
+      req.department,
+      req.priority,
+      req.status,
+      String(req.estimatedValue || 0),
+    ]);
+  });
+  rows.push([]);
+
+  rows.push(['Ledger Entries']);
+  rows.push(['Transaction ID', 'Date', 'Description', 'Type', 'Category', 'Amount']);
+  filteredLedgers.value.forEach((entry) => {
+    rows.push([
+      entry.transactionId,
+      formatDate(entry.date),
+      entry.description,
+      entry.type,
+      entry.category,
+      String(entry.amount || 0),
+    ]);
+  });
+
+  const csvContent = rows.map((row) => row.map((cell) => `"${cell}"`).join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  const timestamp = new Date().toISOString().split('T')[0];
+  link.download = `tasm_financial_report_${timestamp}.csv`;
+  link.click();
 };
 
 onMounted(fetchData);

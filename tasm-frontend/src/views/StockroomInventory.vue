@@ -287,7 +287,39 @@ const summaryStats = computed(() => [
 ]);
 
 const handlePrint = () => {
-  window.print();
+  const rows: string[][] = [];
+  rows.push(['Location Report']);
+  rows.push(['Location', selectedLocation.value?.name || 'All Locations']);
+  rows.push([]);
+
+  rows.push(['Locations']);
+  rows.push(['Name', 'Type', 'Address', 'Capacity', 'Status']);
+  locations.value.forEach((loc) => {
+    rows.push([loc.name, loc.type, loc.address || '', String(loc.capacity || 0), loc.status]);
+  });
+  rows.push([]);
+
+  rows.push(['Assets']);
+  rows.push(['Tag ID', 'Name', 'Category', 'Location', 'Status', 'Custodian']);
+  const assetsToExport = selectedLocation.value ? locationAssets.value : assets.value;
+  assetsToExport.forEach((asset) => {
+    rows.push([
+      asset.tagId,
+      asset.name,
+      asset.category,
+      asset.location,
+      asset.status,
+      asset.custodian,
+    ]);
+  });
+
+  const csvContent = rows.map((row) => row.map((cell) => `"${cell}"`).join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  const timestamp = new Date().toISOString().split('T')[0];
+  link.download = `tasm_stockroom_report_${timestamp}.csv`;
+  link.click();
 };
 
 const getLocIcon = (type: string) => {
