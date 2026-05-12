@@ -28,12 +28,11 @@
         </div>
         <div class="flex items-center gap-4 text-text-secondary ml-10">
           <div class="flex items-center gap-2">
-            <img
-              alt="Sarah Jenkins"
-              class="w-6 h-6 rounded-full border border-border-default"
-              data-alt="professional headshot of a woman with dark hair smiling gently"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMl2rAFUYQ96VmKc44gP_8GSOGpxIfOjgB4gNwbB-wLVrcSKIZvEfAMpAywsvt9FvBWKqGrHkcfQ-VqZnxZfYc5opM4f7EDVpbtOfG6-F9KOuz-8qE6uK_PC3mrZo7csekgodU5T5yEX3Qf0luQGL5qqblVJ3Y5Qtw2bA3g2R4n_QvmJvv7BM6bh1qxPvaBWzAWTihA1sGYCAekuXRALCphOxaWCMKBN9QtahK2eIOQLgrlvTsom1WMw-XJYkZOzXZ0z3yrYFfxJCU"
-            />
+            <div
+              class="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-[10px] border border-primary/30"
+            >
+              {{ request?.requestorInitials || 'SJ' }}
+            </div>
             <span v-if="request" class="font-metadata text-metadata">
               Raised by
               <strong class="font-medium text-text-primary">
@@ -349,12 +348,11 @@
           </h2>
           <div class="space-y-4 mb-6">
             <div class="flex gap-3">
-              <img
-                alt="Sarah Jenkins"
-                class="w-8 h-8 rounded-full border border-border-default mt-1"
-                data-alt="professional headshot of a woman with dark hair smiling gently"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvnAJhDv7ibhMM8BhSkMmGtGTXMGAbVJFI-7RgBwMxNA4IUOmyMqkYliunGvzQwdomGOXs1ogRjfyCME0w8RsIMH6yk7DSGEAhTJezWLHidLNTeQL_n_8ztJjkRukdqQqni_e7-yumU1qQH1oKK00hitiR6_h1hHSJwGbnuptUT2fy5BBvjU8ZSEGTm-y8l7o9RetKzK_yT8CCRzh9yvZKH69dM9K4ApACRPQCgnlBIrUDVugJ3Q43n_uA8yiI15rgcYsRwHMdLXsL"
-              />
+              <div
+                class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs mt-1 shrink-0 shadow-sm"
+              >
+                {{ request?.requestorInitials || 'SJ' }}
+              </div>
               <div
                 class="bg-surface-subtle p-3 rounded-xl rounded-tl-none border border-border-default/50"
               >

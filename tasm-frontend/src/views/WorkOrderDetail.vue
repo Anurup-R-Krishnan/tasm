@@ -62,11 +62,12 @@
             <div
               class="w-24 h-24 rounded-lg bg-surface-variant flex-shrink-0 border border-border-default overflow-hidden relative"
             >
-              <img
-                class="w-full h-full object-cover"
-                data-alt="Industrial HVAC compressor unit in a commercial building mechanical room, well lit, metallic textures"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuClVqu29Efx7pXUteE-rtjp4U81zsD8LIA1CkRMeLzzxna94mh3ZMp6XlBnhPZEmHX8bVYSy1bdYK71QSntly6Ux3aTSYu0pEj_3jtdLloyRlicSLkN-NzZWffj5UzkSumcqf7joSmINXzgPAAl34sKZAWsqz53NM_e-izNd7dKmPxBs_LDyiwzkuWeK7BypFSyexHe14_aNqSW5EObdBvQbLhiGkNYpBAZ53pfeLwBYDkKj_A_RuS_dnlis0MOXcmCb2HjJiPJay7-"
-              />
+              <div
+                class="w-full h-full flex flex-col items-center justify-center bg-surface-subtle text-text-disabled"
+              >
+                <span class="material-symbols-outlined text-[48px] mb-1"> factory </span>
+                <span class="text-[10px] font-bold uppercase tracking-widest"> Asset Photo </span>
+              </div>
             </div>
             <div class="flex-1">
               <h3
@@ -187,16 +188,16 @@
               </p>
               <!-- Photo thumbnails -->
               <div class="flex gap-2 mt-3">
-                <img
-                  class="w-16 h-16 rounded border border-border-default object-cover cursor-pointer hover:opacity-80"
-                  data-alt="Close up of a burnt out mechanical bearing covered in dark grease and metal shavings"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcwwHAudoxguJh9FRyxeDl6lOhL-tMY-QjBQ75PbKaCrFd-wllUmDM9Qpjdye9w9wmtQssKKqXi96PtHTueEd8n8Bw9jne5pcnbMv8Ck_eCx_H_nc9DGZRXmMWC1blzl25O3ZKlt2T7LdCaUkNVLIlJdc47EGLaGmLtMjuxNG3qcNFrnVQsNv-A92HFRmpT47r2D6RS-ghEos8_X7qgDK9S1p44Ain3_ObQr2GIaTTOTu4INXup8lL-3j6IW4A1Y8pdqsvXCIhtSIN"
-                />
-                <img
-                  class="w-16 h-16 rounded border border-border-default object-cover cursor-pointer hover:opacity-80"
-                  data-alt="Electrical lockout tag on an industrial breaker box"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2iph5IY55sqFsF-82YrThEJQOFckfEbSb1ZSY9F8t75VLDypjJlO169jQqXmAcQizSMpoZxBowIuYiPsvQUAyQi_DImCcVTUaeI9MeyRcf-jHfD2M_aZxYue0jFYzpIKNxVzOSIu_6Ao7zoRbpzPPVFHDLAxtttMfb4OMzMjhb-3x3j5q8qt4QoM1hk3tl1hDwSDBXZGieZkp6VTaChtanfAeNnUom0T6RrrYYvMXprxyuPGgUl_QshuRxcrkBxdaHZ7vbS4jI_6a"
-                />
+                <div
+                  class="w-16 h-16 rounded border border-border-default bg-surface-subtle flex flex-col items-center justify-center text-text-disabled"
+                >
+                  <span class="material-symbols-outlined text-[24px]"> engineering </span>
+                </div>
+                <div
+                  class="w-16 h-16 rounded border border-border-default bg-surface-subtle flex flex-col items-center justify-center text-text-disabled"
+                >
+                  <span class="material-symbols-outlined text-[24px]"> photo_camera </span>
+                </div>
               </div>
             </div>
           </div>
