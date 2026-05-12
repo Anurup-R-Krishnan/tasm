@@ -217,6 +217,14 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/SetupWizardLocationsConfiguration.vue'),
   },
   {
+    path: 'configuration',
+    name: 'SystemConfiguration',
+    title: 'Configuration',
+    icon: 'tune',
+    showInSidebar: true,
+    component: () => import('../views/SystemConfiguration.vue'),
+  },
+  {
     path: 'reports',
     name: 'ReportsAnalyticsDashboard',
     title: 'Reports',
@@ -297,6 +305,7 @@ export const sidebarGroups = [
   {
     name: 'Administration',
     items: [
+      'SystemConfiguration',
       'EmployeeSelfServicePortal',
       'UserAccessRoleControl',
       'UserManagementSettings',

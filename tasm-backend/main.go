@@ -86,6 +86,9 @@ func main() {
 		{
 			protected.GET("/auth/me", handlers.GetMe)
 
+			protected.GET("/config", handlers.GetSystemConfig)
+			protected.PUT("/config", handlers.UpdateSystemConfig)
+
 			// Setup — auth required, Admin only for completion
 			protected.POST("/setup/complete", handlers.CompleteSetup)
 
