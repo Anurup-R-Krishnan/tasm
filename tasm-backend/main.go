@@ -66,6 +66,7 @@ func main() {
 	{
 		// Public seed (dev only) + auth
 		api.POST("/seed", handlers.SeedDatabase)
+		api.GET("/seed", handlers.SeedDatabase)
 
 		auth := api.Group("/auth")
 		{
