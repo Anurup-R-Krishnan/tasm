@@ -70,6 +70,14 @@
 
       <div class="flex items-center gap-3">
         <button
+          v-if="isDetailView && selectedSchedule"
+          @click="openEditModal"
+          class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-xl font-bold text-xs hover:bg-surface-subtle transition-all flex items-center gap-2 shadow-sm"
+        >
+          <span class="material-symbols-outlined text-[18px]"> tune </span>
+          Edit Values
+        </button>
+        <button
           @click="handlePrint"
           class="px-4 py-2 bg-surface text-text-primary border border-border-default rounded-xl font-bold text-xs hover:bg-surface-subtle transition-all flex items-center gap-2 shadow-sm"
         >
@@ -258,13 +266,86 @@
         </table>
       </div>
     </div>
+    <Teleport to="body">
+      <div
+        v-if="showEditModal && selectedSchedule"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        @click.self="closeEditModal"
+      >
+        <div class="bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-h2 text-h2 text-text-primary">Adjust Depreciation</h2>
+            <button class="text-text-secondary hover:text-text-primary" @click="closeEditModal">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label
+                class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+              >
+                Method
+              </label>
+              <input
+                v-model="editForm.method"
+                type="text"
+                class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+                >
+                  Purchase Value
+                </label>
+                <input
+                  v-model.number="editForm.purchaseValue"
+                  type="number"
+                  min="0"
+                  class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                />
+              </div>
+              <div>
+                <label
+                  class="block font-metadata text-metadata text-text-secondary uppercase tracking-wider mb-1"
+                >
+                  Current Value
+                </label>
+                <input
+                  v-model.number="editForm.currentValue"
+                  type="number"
+                  min="0"
+                  class="w-full h-11 px-4 bg-canvas border border-border-default rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button
+              class="flex-1 py-3 bg-surface border border-border-default rounded-xl font-h3 text-text-secondary hover:bg-surface-subtle"
+              @click="closeEditModal"
+            >
+              Cancel
+            </button>
+            <button
+              class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-h3 hover:opacity-90 disabled:opacity-50"
+              @click="saveEdit"
+              :disabled="savingEdit"
+            >
+              {{ savingEdit ? 'Saving...' : 'Save Changes' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
-import { getDepreciations, getDepreciationById } from '../api/financial';
+import { getDepreciations, getDepreciationById, updateDepreciation } from '../api/financial';
 import type { DepreciationSchedule } from '../types/models';
 
 const route = useRoute();
@@ -274,6 +355,13 @@ const schedules = ref<DepreciationSchedule[]>([]);
 const selectedSchedule = ref<DepreciationSchedule | null>(null);
 const loading = ref(true);
 const searchQuery = ref('');
+const showEditModal = ref(false);
+const savingEdit = ref(false);
+const editForm = ref({
+  method: '',
+  purchaseValue: 0,
+  currentValue: 0,
+});
 
 const isDetailView = computed(() => !!route.params['id']);
 
@@ -327,6 +415,39 @@ const fetchData = async () => {
 };
 
 watch(() => route.params['id'], fetchData);
+
+const openEditModal = () => {
+  if (!selectedSchedule.value) return;
+  editForm.value = {
+    method: selectedSchedule.value.method || '',
+    purchaseValue: selectedSchedule.value.purchaseValue || 0,
+    currentValue: selectedSchedule.value.currentValue || 0,
+  };
+  showEditModal.value = true;
+};
+
+const closeEditModal = () => {
+  showEditModal.value = false;
+};
+
+const saveEdit = async () => {
+  if (!selectedSchedule.value) return;
+  savingEdit.value = true;
+  try {
+    const updated = await updateDepreciation(selectedSchedule.value.id, {
+      method: editForm.value.method,
+      purchaseValue: editForm.value.purchaseValue,
+      currentValue: editForm.value.currentValue,
+    });
+    selectedSchedule.value = updated;
+    schedules.value = schedules.value.map((item) => (item.id === updated.id ? updated : item));
+    closeEditModal();
+  } catch (error) {
+    console.error('Failed to update depreciation values:', error);
+  } finally {
+    savingEdit.value = false;
+  }
+};
 
 const handleExport = () => {
   const headers = ['Asset ID', 'Asset Name', 'Purchase Value', 'Current Value', 'Method'];

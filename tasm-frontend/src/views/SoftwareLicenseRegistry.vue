@@ -452,9 +452,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { getSoftwareLicenses } from '../api/financial';
+import { getUsers } from '../api/users';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import type { SoftwareLicense } from '../types/models';
+import type { SoftwareLicense, SystemUser } from '../types/models';
 
 const licenses = ref<SoftwareLicense[]>([]);
 const loading = ref(true);
@@ -464,23 +465,9 @@ const searchQuery = ref('');
 const drawerActiveTab = ref('overview');
 const userSearchQuery = ref('');
 
-const assignedUsers = ref([
-  {
-    name: 'John Doe',
-    email: 'john.doe@tasm.com',
-    dept: 'Engineering',
-    location: 'Tejaswini',
-    initials: 'JD',
-  },
-  {
-    name: 'Sarah Smith',
-    email: 'sarah.s@tasm.com',
-    dept: 'Design',
-    location: 'Gayathri',
-    initials: 'SS',
-  },
-  { name: 'Mike Ross', email: 'mike.r@tasm.com', dept: 'Legal', location: 'Nila', initials: 'MR' },
-]);
+const assignedUsers = ref<
+  { name: string; email: string; dept: string; location: string; initials: string }[]
+>([]);
 
 const filteredAssignedUsers = computed(() => {
   if (!userSearchQuery.value) return assignedUsers.value;
@@ -528,6 +515,27 @@ const fetchLicenses = async () => {
     console.error('Failed to fetch licenses:', error);
   } finally {
     loading.value = false;
+  }
+};
+
+const fetchAssignedUsers = async () => {
+  try {
+    const users = (await getUsers()) as SystemUser[];
+    assignedUsers.value = users.map((u) => ({
+      name: u.name,
+      email: u.email,
+      dept: u.department || 'General',
+      location: u.department || 'General',
+      initials: u.name
+        .split(' ')
+        .filter(Boolean)
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2),
+    }));
+  } catch (error) {
+    console.error('Failed to fetch users for license assignments:', error);
   }
 };
 
@@ -595,5 +603,6 @@ const handleAssignUser = () => {
 
 onMounted(() => {
   fetchLicenses();
+  fetchAssignedUsers();
 });
 </script>

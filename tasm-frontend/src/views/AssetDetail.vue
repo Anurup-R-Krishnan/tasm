@@ -191,11 +191,24 @@
         </div>
       </div>
     </div>
+
+    <div v-else class="flex flex-col items-center justify-center py-32 gap-4">
+      <span class="material-symbols-outlined text-4xl text-text-secondary">inventory_2</span>
+      <p class="text-sm font-bold text-text-secondary uppercase tracking-widest">
+        Select an asset to view details.
+      </p>
+      <button
+        class="px-4 py-2 bg-primary text-on-primary rounded-lg text-xs font-bold"
+        @click="router.push('/inventory')"
+      >
+        Go to Asset List
+      </button>
+    </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { getAssetById, getAssetHistory } from '../api/assets';
 import type { Asset, AssetEvent } from '../types/models';
@@ -208,9 +221,14 @@ const loading = ref(true);
 const events = ref<AssetEvent[]>([]);
 
 const fetchAssetDetails = async () => {
+  loading.value = true;
   try {
     const id = route.params['id'] as string;
-    if (!id) return;
+    if (!id) {
+      asset.value = null;
+      events.value = [];
+      return;
+    }
 
     asset.value = await getAssetById(id);
     events.value = await getAssetHistory(id);
@@ -253,10 +271,10 @@ const technicalSpecs = computed(() => {
   return {
     'Purchase Date': formatDate(asset.value.purchaseDate),
     'Warranty Expiry': formatDate(asset.value.warrantyExpiry),
-    'Asset Model': 'Enterprise Edition v2',
-    Manufacturer: 'TASM Systems',
-    'Network Status': 'Connected',
-    'Last Audit': '12 Oct 2025',
+    Category: asset.value.category,
+    Location: asset.value.location,
+    Custodian: asset.value.custodian || 'Unassigned',
+    Status: asset.value.status,
   };
 });
 
@@ -307,4 +325,5 @@ const startCheckout = () => {
 };
 
 onMounted(fetchAssetDetails);
+watch(() => route.params['id'], fetchAssetDetails);
 </script>

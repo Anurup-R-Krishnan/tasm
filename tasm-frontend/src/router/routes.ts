@@ -89,7 +89,7 @@ export const appRoutes: AppRouteDefinition[] = [
     component: () => import('../views/ReservationsBookings.vue'),
   },
   {
-    path: 'asset/:id',
+    path: 'asset/:id?',
     name: 'AssetDetail',
     title: 'Asset Detail',
     component: () => import('../views/AssetDetail.vue'),
