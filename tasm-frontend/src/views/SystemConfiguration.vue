@@ -457,12 +457,12 @@ const removeLocation = async (id: number) => {
 const loadConfig = async () => {
   try {
     const data = await getSystemConfig();
-    organisation.value.companyName = data.company_name || '';
-    organisation.value.currency = data.currency || '';
-    organisation.value.timezone = data.timezone || '';
-    buildings.value = parseList(data.buildings);
-    departments.value = parseList(data.departments);
-    categories.value = parseList(data.asset_categories);
+    organisation.value.companyName = data['company_name'] || '';
+    organisation.value.currency = data['currency'] || '';
+    organisation.value.timezone = data['timezone'] || '';
+    buildings.value = parseList(data['buildings']);
+    departments.value = parseList(data['departments']);
+    categories.value = parseList(data['asset_categories']);
     fieldOptions.forEach((field) => {
       const raw = data[`field_${field.key}`];
       fields.value[field.key] = raw === 'true';
