@@ -33,7 +33,7 @@
           </div>
           <div>
             <h1 class="text-2xl font-bold tracking-tight text-white mb-0 uppercase">
-              {{ companyName || 'Asset Management' }}
+              Asset Management
             </h1>
             <p class="text-[10px] font-bold text-white/70 uppercase tracking-[0.2em] mt-0.5">
               Enterprise Edition
@@ -43,12 +43,21 @@
 
         <div class="space-y-6">
           <h2 class="text-5xl lg:text-7xl font-bold leading-tight tracking-tight">
-            Managing assets with <span class="text-metric-amber">unrivaled</span> precision.
+            Join the <span class="text-metric-amber">standard</span> of excellence.
           </h2>
           <p class="text-xl text-white/80 font-medium max-w-md">
-            The unified platform for enterprise asset lifecycle management. From procurement to
-            retirement, we've got you covered.
+            Create your account to start managing assets with the most advanced system in the
+            industry.
           </p>
+        </div>
+
+        <div class="flex items-center gap-12 pt-8">
+          <div v-for="stat in stats" :key="stat.label" class="space-y-1">
+            <p class="text-3xl font-bold text-white">{{ stat.value }}</p>
+            <p class="text-[10px] font-bold text-white/60 uppercase tracking-widest">
+              {{ stat.label }}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -211,6 +220,12 @@ const password = ref('');
 const showPassword = ref(false);
 const isLoading = ref(false);
 const error = ref('');
+
+const stats = [
+  { label: 'Security', value: 'ISO 27001' },
+  { label: 'Compliance', value: '100%' },
+  { label: 'Support', value: '24/7' },
+];
 
 const handleLogin = async () => {
   if (!email.value || !password.value) return;
