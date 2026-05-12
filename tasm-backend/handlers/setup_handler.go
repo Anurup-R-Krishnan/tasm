@@ -215,7 +215,9 @@ func CompleteSetup(c *gin.Context) {
 	}
 
 	// Mark setup as completed
-	database.DB.Model(&models.SystemConfig{}).Where("key = ?", "is_setup_completed").Update("value", "true")
+	database.DB.Where(models.SystemConfig{Key: "is_setup_completed"}).
+		Assign(models.SystemConfig{Value: "true"}).
+		FirstOrCreate(&models.SystemConfig{})
 
 	c.JSON(http.StatusOK, gin.H{"message": "Setup completed successfully"})
 }

@@ -45,11 +45,11 @@
           </button>
 
           <button
-            @click="router.push({ name: 'FirstRun', query: { setup: '1' } })"
+            @click="router.push({ name: 'Register' })"
             class="w-full sm:w-auto h-14 px-8 bg-surface border-2 border-border-default text-text-primary rounded-xl font-bold hover:border-primary hover:text-primary transition-all active:scale-95 flex items-center justify-center gap-2 text-lg"
           >
-            Start Setup
-            <span class="material-symbols-outlined text-[20px]">settings</span>
+            Create Account
+            <span class="material-symbols-outlined text-[20px]">person_add</span>
           </button>
         </div>
       </div>

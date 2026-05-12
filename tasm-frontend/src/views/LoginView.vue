@@ -50,15 +50,6 @@
             retirement, we've got you covered.
           </p>
         </div>
-
-        <div class="flex items-center gap-12 pt-8">
-          <div v-for="stat in stats" :key="stat.label" class="space-y-1">
-            <p class="text-3xl font-bold text-white">{{ stat.value }}</p>
-            <p class="text-[10px] font-bold text-white/60 uppercase tracking-widest">
-              {{ stat.label }}
-            </p>
-          </div>
-        </div>
       </div>
 
       <!-- Bottom Credits -->
@@ -191,7 +182,7 @@
               @click="handleRequestAccess"
               class="text-primary font-black hover:underline cursor-pointer ml-1"
             >
-              {{ isSetupCompleted ? 'Request Access' : 'Start Setup' }}
+              Create Account
             </button>
           </p>
         </div>
@@ -222,12 +213,6 @@ const showPassword = ref(false);
 const isLoading = ref(false);
 const error = ref('');
 
-const stats = [
-  { label: 'Total Assets', value: '12k+' },
-  { label: 'Active Users', value: '450+' },
-  { label: 'Efficiency', value: '99%' },
-];
-
 const handleLogin = async () => {
   if (!email.value || !password.value) return;
 
@@ -236,7 +221,11 @@ const handleLogin = async () => {
 
   try {
     await login({ email: email.value.trim(), password: password.value });
-    router.push({ name: 'Dashboard' });
+    if (!isSetupCompleted.value) {
+      router.push({ name: 'FirstRun' });
+    } else {
+      router.push({ name: 'Dashboard' });
+    }
   } catch (err: any) {
     error.value = err?.message || 'Invalid email or password. Please try again.';
   } finally {
@@ -245,12 +234,7 @@ const handleLogin = async () => {
 };
 
 const handleRequestAccess = () => {
-  if (isSetupCompleted.value) {
-    router.push({ name: 'Register' });
-    return;
-  }
-
-  router.push({ name: 'FirstRun', query: { setup: '1' } });
+  router.push({ name: 'Register' });
 };
 
 const handleForgotPassword = () => {

@@ -86,10 +86,7 @@ func main() {
 			protected.GET("/auth/me", handlers.GetMe)
 
 			// Setup — auth required, Admin only for completion
-			protected.POST("/setup/complete",
-				middleware.RequireRoles("System Admin"),
-				handlers.CompleteSetup,
-			)
+			protected.POST("/setup/complete", handlers.CompleteSetup)
 
 			// Dashboard
 			protected.GET("/dashboard/stats", handlers.GetDashboardStats)

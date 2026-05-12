@@ -105,6 +105,15 @@
             <span class="material-symbols-outlined text-status-critical text-[20px]">error</span>
             <p class="text-xs font-bold text-status-critical">{{ error }}</p>
           </div>
+          <div
+            v-if="success"
+            class="p-4 rounded-2xl bg-status-in-stock/10 border border-status-in-stock/20 flex items-start gap-3"
+          >
+            <span class="material-symbols-outlined text-status-in-stock text-[20px]"
+              >check_circle</span
+            >
+            <p class="text-xs font-bold text-status-in-stock">{{ success }}</p>
+          </div>
 
           <div class="space-y-4">
             <div class="space-y-1.5">
@@ -282,6 +291,7 @@ const { register, companyName } = useAuth();
 
 const loading = ref(false);
 const error = ref('');
+const success = ref('');
 const showPassword = ref(false);
 
 const stats = [
@@ -362,6 +372,7 @@ const handleSubmit = async () => {
 
   loading.value = true;
   error.value = '';
+  success.value = '';
 
   try {
     await register({
@@ -371,7 +382,10 @@ const handleSubmit = async () => {
       department: form.value.department.trim(),
       password: form.value.password,
     });
-    router.push({ name: 'Dashboard' });
+    success.value = 'Account created. Please sign in to continue.';
+    setTimeout(() => {
+      router.push({ name: 'Login' });
+    }, 800);
   } catch (err: any) {
     error.value = err.message || 'Registration failed. Please try again.';
   } finally {

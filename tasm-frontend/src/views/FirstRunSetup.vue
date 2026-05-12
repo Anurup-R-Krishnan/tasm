@@ -213,7 +213,7 @@
                 <input
                   v-model="form.companyName"
                   type="text"
-                  placeholder="e.g. Acme Corporation"
+                  placeholder="e.g. Technopark"
                   class="w-full px-5 py-10 bg-canvas border border-border-default rounded-[32px] text-text-primary focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-center text-4xl font-black"
                 />
               </div>
@@ -510,7 +510,7 @@ import { apiRequest } from '../api/client';
 import heroImage from '../assets/hero.png';
 
 const router = useRouter();
-const { setToken, checkSetupStatus, isAuthenticated, currentUser, companyName } = useAuth();
+const { checkSetupStatus, isAuthenticated, currentUser, companyName } = useAuth();
 
 const step = ref(1);
 const loading = ref(false);
@@ -596,25 +596,9 @@ const handleSubmit = async () => {
   loading.value = true;
   try {
     if (!isAuthenticated.value) {
-      const adminData = await apiRequest<{ token?: string; user?: any }>('/auth/create-admin', {
-        method: 'POST',
-        body: {
-          name: form.value.name,
-          email: form.value.email,
-          password: form.value.password,
-          department: form.value.department || 'Administration',
-          companyName: form.value.companyName,
-        },
-      });
-
-      // If server returns a token, use it; otherwise require explicit sign-in
-      if (adminData.token) {
-        setToken(adminData.token);
-      } else {
-        alert('Initial account created. Please sign in to continue.');
-        router.push({ name: 'Login' });
-        return;
-      }
+      alert('Please sign in to complete setup.');
+      router.push({ name: 'Login' });
+      return;
     }
 
     await apiRequest('/setup/complete', {

@@ -64,9 +64,7 @@ export function useAuth() {
 
   const register = async (credentials: RegisterCredentials) => {
     try {
-      const response: AuthResponse = await apiRegister(credentials);
-      setToken(response.token);
-      currentUser.value = response.user;
+      await apiRegister(credentials);
       await checkSetupStatus();
       return true;
     } catch (error) {

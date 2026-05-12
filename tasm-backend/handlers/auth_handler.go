@@ -106,13 +106,6 @@ func Register(c *gin.Context) {
 	// Normalize email
 	req.Email = strings.ToLower(strings.TrimSpace(req.Email))
 
-	// Registration is only allowed after the initial setup is complete.
-	var setupConfig models.SystemConfig
-	if err := database.DB.Where("key = ?", "is_setup_completed").First(&setupConfig).Error; err != nil || setupConfig.Value != "true" {
-		c.JSON(http.StatusForbidden, gin.H{"error": "System is not initialized. Please run the setup wizard first."})
-		return
-	}
-
 	// Flaw 2: Password Complexity
 	if len(req.Password) < 8 || !strings.ContainsAny(req.Password, "ABCDEFGHIJKLMNOPQRSTUVWXYZ") || !strings.ContainsAny(req.Password, "abcdefghijklmnopqrstuvwxyz") || !strings.ContainsAny(req.Password, "0123456789") {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Password must be at least 8 characters and contain uppercase, lowercase, and numbers."})
