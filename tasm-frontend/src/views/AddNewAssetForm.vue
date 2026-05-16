@@ -10,11 +10,17 @@
           Asset Inventory
         </a>
         <span class="material-symbols-outlined text-[16px]"> chevron_right </span>
-        <span class="text-text-primary"> Add New Asset </span>
+        <span class="text-text-primary">{{ isEditMode ? 'Edit Asset' : 'Add New Asset' }}</span>
       </div>
-      <h2 class="font-h1 text-h1 text-text-primary">Add New Asset</h2>
+      <h2 class="font-h1 text-h1 text-text-primary">
+        {{ isEditMode ? 'Edit Asset' : 'Add New Asset' }}
+      </h2>
       <p class="font-body text-text-secondary mt-1">
-        Enter details to register a new asset into the system.
+        {{
+          isEditMode
+            ? 'Update asset details below.'
+            : 'Enter details to register a new asset into the system.'
+        }}
       </p>
     </div>
     <div
@@ -65,6 +71,17 @@
             </div>
             <div>
               <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Serial Number
+              </label>
+              <input
+                v-model="form.serialNumber"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-mono-data text-mono-data bg-surface-subtle focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                placeholder="SN-XXXX-XXXX"
+                type="text"
+              />
+            </div>
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
                 Category <span class="text-error">*</span>
               </label>
               <div class="relative">
@@ -109,6 +126,7 @@
             </div>
           </div>
         </div>
+
         <!-- 2. Purchase & Finance -->
         <div class="mb-section-gap">
           <h3
@@ -122,13 +140,11 @@
               <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
                 Purchase Date
               </label>
-              <div class="relative">
-                <input
-                  v-model="form.purchaseDate"
-                  type="date"
-                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                />
-              </div>
+              <input
+                v-model="form.purchaseDate"
+                type="date"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              />
             </div>
             <div>
               <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
@@ -151,13 +167,154 @@
               <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
                 Location
               </label>
+              <input
+                v-model="form.location"
+                required
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                placeholder="e.g. Stockroom A"
+                type="text"
+              />
+            </div>
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Department
+              </label>
+              <input
+                v-model="form.department"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                placeholder="e.g. Finance"
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Warranty -->
+        <div class="mb-section-gap">
+          <h3
+            class="font-h3 text-h3 text-text-primary border-b border-border-default pb-2 mb-6 flex items-center gap-2"
+          >
+            <span class="material-symbols-outlined text-primary text-[20px]"> verified </span>
+            Warranty
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Warranty Start Date
+              </label>
+              <input
+                v-model="form.warrantyStartDate"
+                type="date"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Warranty End Date
+              </label>
+              <input
+                v-model="form.warrantyExpiry"
+                type="date"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Warranty Provider
+              </label>
+              <input
+                v-model="form.warrantyProvider"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                placeholder="e.g. Dell ProSupport"
+                type="text"
+              />
+            </div>
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Warranty Terms
+              </label>
+              <input
+                v-model="form.warrantyTerms"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                placeholder="e.g. 3-year on-site"
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Depreciation -->
+        <div class="mb-section-gap">
+          <h3
+            class="font-h3 text-h3 text-text-primary border-b border-border-default pb-2 mb-6 flex items-center gap-2"
+          >
+            <span class="material-symbols-outlined text-primary text-[20px]"> trending_down </span>
+            Depreciation
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Useful Life (Years)
+              </label>
+              <input
+                v-model.number="form.usefulLifeYears"
+                type="number"
+                min="1"
+                max="50"
+                class="w-full border border-border-default rounded-[6px] px-3 py-2 font-mono-data text-mono-data focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                placeholder="5"
+              />
+            </div>
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Depreciation Method
+              </label>
               <div class="relative">
+                <select
+                  v-model="form.depreciationMethod"
+                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white pr-8"
+                >
+                  <option>Straight Line</option>
+                  <option>Declining Balance</option>
+                </select>
+                <span
+                  class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-text-disabled"
+                >
+                  expand_more
+                </span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Residual Value
+              </label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 font-body"
+                  >₹</span
+                >
                 <input
-                  v-model="form.location"
-                  required
-                  class="w-full border border-border-default rounded-[6px] px-3 py-2 font-body focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                  placeholder="e.g. Stockroom A"
-                  type="text"
+                  v-model.number="form.residualValue"
+                  type="number"
+                  step="0.01"
+                  class="w-full border border-border-default rounded-[6px] pl-7 pr-3 py-2 font-mono-data text-mono-data focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block font-table-header text-table-header text-text-secondary mb-1.5">
+                Replacement Cost
+              </label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 font-body"
+                  >₹</span
+                >
+                <input
+                  v-model.number="form.replacementCost"
+                  type="number"
+                  step="0.01"
+                  class="w-full border border-border-default rounded-[6px] pl-7 pr-3 py-2 font-mono-data text-mono-data focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  placeholder="0.00"
                 />
               </div>
             </div>
@@ -181,7 +338,7 @@
             <span v-if="isSubmitting" class="material-symbols-outlined animate-spin text-[18px]"
               >refresh</span
             >
-            Save Asset
+            {{ isEditMode ? 'Update Asset' : 'Save Asset' }}
           </button>
         </div>
       </form>
@@ -200,17 +357,27 @@ const route = useRoute();
 const form = ref({
   name: '',
   tagId: '',
+  serialNumber: '',
   category: '',
   condition: 'New',
   purchaseDate: '',
   value: 0,
   location: '',
+  department: '',
   status: 'In Stock',
   custodian: 'Unassigned',
   currentStock: 1,
   reorderLevel: 0,
   warrantyStatus: 'Active',
-  warrantyExpiry: new Date().toISOString(),
+  warrantyExpiry: '',
+  warrantyStartDate: '',
+  warrantyProvider: '',
+  warrantyTerms: '',
+  usefulLifeYears: 5,
+  depreciationMethod: 'Straight Line',
+  residualValue: 0,
+  replacementCost: 0,
+  lifecycleStatus: 'Deployed',
 });
 
 const isSubmitting = ref(false);
@@ -228,6 +395,13 @@ const submitForm = async () => {
       purchaseDate: form.value.purchaseDate
         ? new Date(form.value.purchaseDate).toISOString()
         : new Date().toISOString(),
+      warrantyExpiry: form.value.warrantyExpiry
+        ? new Date(form.value.warrantyExpiry).toISOString()
+        : '',
+      warrantyStartDate: form.value.warrantyStartDate
+        ? new Date(form.value.warrantyStartDate).toISOString()
+        : '',
+      purchasePrice: form.value.value,
     };
     if (isEditMode.value) {
       const id = route.query['edit'];
@@ -255,8 +429,20 @@ const loadAsset = async (id: string) => {
       ...form.value,
       ...asset,
       purchaseDate: asset.purchaseDate ? (asset.purchaseDate.split('T')[0] ?? '') : '',
-      warrantyExpiry: asset.warrantyExpiry ? asset.warrantyExpiry : new Date().toISOString(),
-      condition: form.value.condition,
+      warrantyExpiry: asset.warrantyExpiry ? (asset.warrantyExpiry.split('T')[0] ?? '') : '',
+      warrantyStartDate: asset.warrantyStartDate
+        ? (asset.warrantyStartDate.split('T')[0] ?? '')
+        : '',
+      condition: asset.condition || form.value.condition,
+      usefulLifeYears: asset.usefulLifeYears || 5,
+      depreciationMethod: asset.depreciationMethod || 'Straight Line',
+      residualValue: asset.residualValue || 0,
+      replacementCost: asset.replacementCost || 0,
+      warrantyProvider: asset.warrantyProvider || '',
+      warrantyTerms: asset.warrantyTerms || '',
+      serialNumber: asset.serialNumber || '',
+      department: asset.department || '',
+      lifecycleStatus: asset.lifecycleStatus || 'Deployed',
     };
     isEditMode.value = true;
   } catch (error) {

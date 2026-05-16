@@ -117,6 +117,26 @@ export function useAuth() {
     return authPromise;
   };
 
+  const permissionMatrix: Record<string, string[]> = {
+    view: ['Admin', 'Asset Manager', 'Auditor', 'Finance Manager', 'Employee', 'Viewer'],
+    edit: ['Admin', 'Asset Manager'],
+    transfer: ['Admin', 'Asset Manager'],
+    approve: ['Admin'],
+    retire: ['Admin', 'Asset Manager'],
+    dispose: ['Admin', 'Asset Manager'],
+    audit: ['Admin', 'Auditor'],
+    finance_write: ['Admin', 'Finance Manager'],
+    user_manage: ['Admin'],
+  };
+
+  const hasPermission = (action: string): boolean => {
+    const role = currentUser.value?.role;
+    if (!role) return false;
+    const allowed = permissionMatrix[action];
+    if (!allowed) return false;
+    return allowed.some((r) => r.toLowerCase() === role.toLowerCase());
+  };
+
   return {
     currentUser,
     token,
@@ -131,5 +151,6 @@ export function useAuth() {
     initAuth,
     checkSetupStatus,
     setToken,
+    hasPermission,
   };
 }

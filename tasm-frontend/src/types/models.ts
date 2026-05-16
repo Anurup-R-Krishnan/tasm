@@ -7,16 +7,75 @@ export interface BaseEntity {
 export interface Asset extends BaseEntity {
   name: string;
   tagId: string;
+  serialNumber: string;
   category: string;
   location: string;
   status: string;
+  condition: string;
   custodian: string;
+  department: string;
   currentStock: number;
   reorderLevel: number;
   value: number;
   purchaseDate: string;
+  purchasePrice: number;
   warrantyStatus: string;
   warrantyExpiry: string;
+  warrantyStartDate: string;
+  warrantyEndDate: string;
+  warrantyProvider: string;
+  warrantyTerms: string;
+  receiptFilePath: string;
+  usefulLifeYears: number;
+  depreciationMethod: string;
+  residualValue: number;
+  replacementCost: number;
+  lifecycleStatus: string;
+  disposalMethod: string;
+  disposalDate: string | null;
+  disposalNotes: string;
+  environmentalCompliance: boolean;
+  dataWipingConfirmed: boolean;
+}
+
+export interface AssetTransfer extends BaseEntity {
+  assetId: number;
+  fromEntity: string;
+  toEntity: string;
+  fromLocation: string;
+  toLocation: string;
+  reason: string;
+  effectiveDate: string;
+  approvedBy: string;
+  approvalStatus: string;
+  requiresApproval: boolean;
+  reverted: boolean;
+  revertedAt: string | null;
+  revertedBy: string;
+  actorId: number;
+  actorName: string;
+}
+
+export interface AssetDisposalRecord extends BaseEntity {
+  assetId: number;
+  disposalMethod: string;
+  residualValue: number;
+  decommissionDate: string;
+  valuationDate: string;
+  environmentalCompliance: boolean;
+  dataWipingConfirmed: boolean;
+  complianceVerified: boolean;
+  notes: string;
+  actorId: number;
+  actorName: string;
+}
+
+export interface DepreciationYearRow {
+  year: number;
+  openingValue: number;
+  depreciationAmount: number;
+  accumulatedDepreciation: number;
+  closingBookValue: number;
 }
 
 export interface AuditSession extends BaseEntity {
@@ -177,8 +236,11 @@ export interface AssetEvent extends BaseEntity {
   newStatus?: string;
   previousCustodian?: string;
   newCustodian?: string;
+  previousLocation?: string;
+  newLocation?: string;
   dueDate?: string;
   notes?: string;
+  metadata?: string;
 }
 
 export interface ScanResult {

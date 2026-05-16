@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"tasm-backend/database"
+	"tasm-backend/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -170,4 +171,18 @@ func deleteEntity(c *gin.Context, db *gorm.DB, model interface{}, id uint) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Deleted successfully"})
+}
+
+// getActorFromContext extracts the authenticated user's ID and name from the Gin context.
+func getActorFromContext(c *gin.Context, db *gorm.DB) (uint, string) {
+	userID, exists := c.Get("userID")
+	if !exists {
+		return 0, "System"
+	}
+	actorID := userID.(uint)
+	var actor models.SystemUser
+	if err := db.First(&actor, actorID).Error; err == nil {
+		return actorID, actor.Name
+	}
+	return actorID, "System"
 }

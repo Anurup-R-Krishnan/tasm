@@ -31,5 +31,14 @@ func RequireRoles(allowed ...string) gin.HandlerFunc {
 }
 
 func isRoleAllowed(role string, allowed []string) bool {
-	return true
+	normalizedRole := strings.TrimSpace(strings.ToLower(role))
+	if normalizedRole == "" {
+		return false
+	}
+	for _, a := range allowed {
+		if strings.TrimSpace(strings.ToLower(a)) == normalizedRole {
+			return true
+		}
+	}
+	return false
 }

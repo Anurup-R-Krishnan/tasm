@@ -1,5 +1,5 @@
 import { apiRequest } from './client';
-import type { Asset, AssetEvent } from '../types/models';
+import type { Asset, AssetEvent, AssetTransfer, DepreciationYearRow } from '../types/models';
 
 export function getAssets(): Promise<Asset[]> {
   return apiRequest<Asset[]>('/assets');
@@ -79,4 +79,63 @@ export function transferAsset(
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json' },
   });
+}
+
+export function retireAsset(
+  id: string | number,
+  data: { reason: string; notes?: string },
+): Promise<Asset> {
+  return apiRequest<Asset>(`/assets/${id}/retire`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+export function disposeAsset(
+  id: string | number,
+  data: {
+    disposalMethod: string;
+    residualValue: number;
+    environmentalCompliance: boolean;
+    dataWipingConfirmed: boolean;
+    notes?: string;
+  },
+): Promise<Asset> {
+  return apiRequest<Asset>(`/assets/${id}/dispose`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+export function getAssetDepreciation(id: string | number): Promise<DepreciationYearRow[]> {
+  return apiRequest<DepreciationYearRow[]>(`/assets/${id}/depreciation`);
+}
+
+export function getAssetTransfers(id: string | number): Promise<AssetTransfer[]> {
+  return apiRequest<AssetTransfer[]>(`/assets/${id}/transfers`);
+}
+
+export function revertTransfer(
+  assetId: string | number,
+  transferId: string | number,
+): Promise<AssetTransfer> {
+  return apiRequest<AssetTransfer>(`/assets/${assetId}/transfers/${transferId}/revert`, {
+    method: 'POST',
+  });
+}
+
+export function uploadReceipt(id: string | number, file: File): Promise<{ path: string }> {
+  const formData = new FormData();
+  formData.append('receipt', file);
+  return apiRequest<{ path: string }>(`/assets/${id}/receipt`, {
+    method: 'POST',
+    body: formData,
+  });
+}
+
+export function getReceiptUrl(id: string | number): string {
+  const base = import.meta.env['VITE_API_BASE_URL']?.replace(/\/$/, '') ?? '/api';
+  return `${base}/assets/${id}/receipt`;
 }
