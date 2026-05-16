@@ -67,7 +67,7 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'depreciation/:id?',
     name: 'AssetDepreciationLedger',
-    title: 'Depreciation',
+    title: 'Depreciation Ledger',
     icon: 'trending_down',
     showInSidebar: true,
     component: () => import('../views/AssetDepreciationLedger.vue'),

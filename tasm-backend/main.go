@@ -121,19 +121,21 @@ func main() {
 			protected.PUT("/consumables/:id", middleware.RequireRoles("Admin", "Asset Manager"), handlers.UpdateConsumable)
 			protected.DELETE("/consumables/:id", middleware.RequireRoles("Admin"), handlers.DeleteConsumable)
 
-			// ---- Maintenance Contracts ----
-			protected.GET("/contracts", handlers.GetContracts)
-			protected.GET("/contracts/:id", handlers.GetContractByID)
-			protected.POST("/contracts", middleware.RequireRoles("Admin", "Asset Manager"), handlers.CreateContract)
-			protected.PUT("/contracts/:id", middleware.RequireRoles("Admin", "Asset Manager"), handlers.UpdateContract)
-			protected.DELETE("/contracts/:id", middleware.RequireRoles("Admin"), handlers.DeleteContract)
+			// ---- Maintenance ----
+			maintenance := protected.Group("/maintenance")
+			{
+				maintenance.GET("/contracts", handlers.GetContracts)
+				maintenance.GET("/contracts/:id", handlers.GetContractByID)
+				maintenance.POST("/contracts", middleware.RequireRoles("Admin", "Asset Manager"), handlers.CreateContract)
+				maintenance.PUT("/contracts/:id", middleware.RequireRoles("Admin", "Asset Manager"), handlers.UpdateContract)
+				maintenance.DELETE("/contracts/:id", middleware.RequireRoles("Admin"), handlers.DeleteContract)
 
-			// ---- Work Orders ----
-			protected.GET("/work-orders", handlers.GetWorkOrders)
-			protected.GET("/work-orders/:id", handlers.GetWorkOrderByID)
-			protected.POST("/work-orders", middleware.RequireRoles("Admin", "Asset Manager"), handlers.CreateWorkOrder)
-			protected.PUT("/work-orders/:id", middleware.RequireRoles("Admin", "Asset Manager"), handlers.UpdateWorkOrder)
-			protected.DELETE("/work-orders/:id", middleware.RequireRoles("Admin"), handlers.DeleteWorkOrder)
+				maintenance.GET("/work-orders", handlers.GetWorkOrders)
+				maintenance.GET("/work-orders/:id", handlers.GetWorkOrderByID)
+				maintenance.POST("/work-orders", middleware.RequireRoles("Admin", "Asset Manager"), handlers.CreateWorkOrder)
+				maintenance.PUT("/work-orders/:id", middleware.RequireRoles("Admin", "Asset Manager"), handlers.UpdateWorkOrder)
+				maintenance.DELETE("/work-orders/:id", middleware.RequireRoles("Admin"), handlers.DeleteWorkOrder)
+			}
 
 			// ---- Audits ----
 			protected.GET("/audits", handlers.GetAudits)
@@ -174,29 +176,32 @@ func main() {
 			protected.DELETE("/locations/:id", middleware.RequireRoles("Admin"), handlers.DeleteLocation)
 
 			// ---- Financial ----
-			protected.GET("/ledgers", handlers.GetLedgers)
-			protected.GET("/ledgers/:id", handlers.GetLedgerByID)
-			protected.POST("/ledgers", middleware.RequireRoles("Admin", "Finance Manager"), handlers.CreateLedger)
-			protected.PUT("/ledgers/:id", middleware.RequireRoles("Admin", "Finance Manager"), handlers.UpdateLedger)
-			protected.DELETE("/ledgers/:id", middleware.RequireRoles("Admin"), handlers.DeleteLedger)
+			financial := protected.Group("/financial")
+			{
+				financial.GET("/ledgers", handlers.GetLedgers)
+				financial.GET("/ledgers/:id", handlers.GetLedgerByID)
+				financial.POST("/ledgers", middleware.RequireRoles("Admin", "Finance Manager"), handlers.CreateLedger)
+				financial.PUT("/ledgers/:id", middleware.RequireRoles("Admin", "Finance Manager"), handlers.UpdateLedger)
+				financial.DELETE("/ledgers/:id", middleware.RequireRoles("Admin"), handlers.DeleteLedger)
 
-			protected.GET("/leases", handlers.GetLeases)
-			protected.GET("/leases/:id", handlers.GetLeaseByID)
-			protected.POST("/leases", middleware.RequireRoles("Admin", "Finance Manager"), handlers.CreateLease)
-			protected.PUT("/leases/:id", middleware.RequireRoles("Admin", "Finance Manager"), handlers.UpdateLease)
-			protected.DELETE("/leases/:id", middleware.RequireRoles("Admin"), handlers.DeleteLease)
+				financial.GET("/leases", handlers.GetLeases)
+				financial.GET("/leases/:id", handlers.GetLeaseByID)
+				financial.POST("/leases", middleware.RequireRoles("Admin", "Finance Manager"), handlers.CreateLease)
+				financial.PUT("/leases/:id", middleware.RequireRoles("Admin", "Finance Manager"), handlers.UpdateLease)
+				financial.DELETE("/leases/:id", middleware.RequireRoles("Admin"), handlers.DeleteLease)
 
-			protected.GET("/depreciations", handlers.GetDepreciations)
-			protected.GET("/depreciations/:id", handlers.GetDepreciationByID)
-			protected.POST("/depreciations", middleware.RequireRoles("Admin", "Finance Manager"), handlers.CreateDepreciation)
-			protected.PUT("/depreciations/:id", middleware.RequireRoles("Admin", "Finance Manager"), handlers.UpdateDepreciation)
-			protected.DELETE("/depreciations/:id", middleware.RequireRoles("Admin"), handlers.DeleteDepreciation)
+				financial.GET("/depreciations", handlers.GetDepreciations)
+				financial.GET("/depreciations/:id", handlers.GetDepreciationByID)
+				financial.POST("/depreciations", middleware.RequireRoles("Admin", "Finance Manager"), handlers.CreateDepreciation)
+				financial.PUT("/depreciations/:id", middleware.RequireRoles("Admin", "Finance Manager"), handlers.UpdateDepreciation)
+				financial.DELETE("/depreciations/:id", middleware.RequireRoles("Admin"), handlers.DeleteDepreciation)
 
-			protected.GET("/software-licenses", handlers.GetSoftwareLicenses)
-			protected.GET("/software-licenses/:id", handlers.GetSoftwareLicenseByID)
-			protected.POST("/software-licenses", middleware.RequireRoles("Admin", "Finance Manager"), handlers.CreateSoftwareLicense)
-			protected.PUT("/software-licenses/:id", middleware.RequireRoles("Admin", "Finance Manager"), handlers.UpdateSoftwareLicense)
-			protected.DELETE("/software-licenses/:id", middleware.RequireRoles("Admin"), handlers.DeleteSoftwareLicense)
+				financial.GET("/software-licenses", handlers.GetSoftwareLicenses)
+				financial.GET("/software-licenses/:id", handlers.GetSoftwareLicenseByID)
+				financial.POST("/software-licenses", middleware.RequireRoles("Admin", "Finance Manager"), handlers.CreateSoftwareLicense)
+				financial.PUT("/software-licenses/:id", middleware.RequireRoles("Admin", "Finance Manager"), handlers.UpdateSoftwareLicense)
+				financial.DELETE("/software-licenses/:id", middleware.RequireRoles("Admin"), handlers.DeleteSoftwareLicense)
+			}
 
 			// ---- User Management ----
 			protected.GET("/users", handlers.GetUsers)
