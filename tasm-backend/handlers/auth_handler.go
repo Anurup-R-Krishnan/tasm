@@ -148,23 +148,7 @@ func Register(c *gin.Context) {
 	// Flaw 8: Update UserRole count
 	database.DB.Model(&models.UserRole{}).Where("role_name = ?", "Employee").UpdateColumn("users_count", gorm.Expr("users_count + ?", 1))
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":  user.ID,
-		"role": user.Role,
-		"exp":  time.Now().Add(time.Hour * 24).Unix(),
-	})
-
-	tokenString, err := token.SignedString(utils.GetJWTSecret())
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
-		return
-	}
-
-	user.LastLogin = time.Now()
-	database.DB.Save(&user)
-
-	c.JSON(http.StatusCreated, LoginResponse{
-		Token: tokenString,
-		User:  user,
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "Account created successfully. Please sign in to continue.",
 	})
 }
