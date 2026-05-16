@@ -183,7 +183,7 @@ export const appRoutes: AppRouteDefinition[] = [
   {
     path: 'procurement',
     name: 'ProcurementPipeline',
-    title: 'Procurement',
+    title: 'Procurement Pipeline',
     icon: 'shopping_cart',
     showInSidebar: true,
     component: () => import('../views/ProcurementPipeline.vue'),
@@ -245,7 +245,7 @@ export const appRoutes: AppRouteDefinition[] = [
     name: 'InventoryCardView',
     title: 'Asset Cards',
     icon: 'grid_view',
-    showInSidebar: true,
+    showInSidebar: false,
     component: () => import('../views/InventoryCardView.vue'),
   },
   {
@@ -256,46 +256,49 @@ export const appRoutes: AppRouteDefinition[] = [
     showInSidebar: true,
     component: () => import('../views/AlertsNotificationsCenter.vue'),
   },
+  {
+    path: 'leases',
+    name: 'LeaseAgreements',
+    title: 'Lease Agreements',
+    icon: 'gavel',
+    showInSidebar: true,
+    component: () => import('../views/LeaseAgreements.vue'),
+  },
+  {
+    path: 'ledger',
+    name: 'FinancialLedger',
+    title: 'Financial Ledger',
+    icon: 'account_balance',
+    showInSidebar: true,
+    component: () => import('../views/FinancialLedgerDetail.vue'),
+  },
 ];
 
 export const sidebarGroups = [
   {
-    name: 'Assets & Inventory',
-    items: [
-      'AssetRegistry',
-      'InventoryCardView',
-      'ConsumablesSuppliesTracker',
-      'StockroomInventory',
-      'AddNewAssetForm',
-      'AssetDetail',
-      'AssetCheckOutFlow',
-      'AssetCheckOutStep2',
-    ],
+    name: 'Inventory',
+    items: ['AssetRegistry', 'ConsumablesSuppliesTracker', 'StockroomInventory'],
   },
   {
-    name: 'Operations & Audits',
+    name: 'Operations',
     items: [
       'MaintenanceScheduleContracts',
       'ScheduledMaintenanceTracker',
       'MaintenanceServiceHistoryLog',
       'MaintenanceContractsOverview',
-      'WorkOrderDetail',
       'AuditSessions',
-      'AuditDiscrepancyResolution',
-      'AuditScanModeMobile',
       'ReservationsBookings',
     ],
   },
   {
-    name: 'Finance & Procurement',
+    name: 'Financials',
     items: [
-      'ProcurementPipeline',
-      'ProcurementRequestDetail',
       'FinancialAnalyticsDashboard',
-      'FinancialLedgerDetail',
-      'SoftwareLicenseRegistry',
-      'LeaseAgreementDetail',
       'AssetDepreciationLedger',
+      'LeaseAgreements',
+      'SoftwareLicenseRegistry',
+      'FinancialLedger',
+      'ProcurementPipeline',
     ],
   },
   {

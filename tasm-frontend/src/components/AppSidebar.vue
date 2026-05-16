@@ -106,7 +106,9 @@ const groupedNavigation = computed(() => {
     name: group.name,
     items: group.items
       .map((name) => navigationItems.find((item) => item.name === name))
-      .filter((item): item is typeof item & {} => Boolean(item)),
+      .filter((item): item is typeof item & { showInSidebar: boolean } =>
+        Boolean(item && item.showInSidebar),
+      ),
   }));
 });
 
