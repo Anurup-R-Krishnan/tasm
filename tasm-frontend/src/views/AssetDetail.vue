@@ -587,7 +587,14 @@ import {
   disposeAsset,
 } from '../api/assets';
 import { getLocations } from '../api/locations';
-import type { Asset, AssetEvent, Location } from '../types/models';
+import type {
+  Asset,
+  AssetEvent,
+  Location,
+  WorkOrder,
+  LeaseAgreement,
+  DepreciationYearRow,
+} from '../types/models';
 import AssetQrCode from '../components/AssetQrCode.vue';
 
 const route = useRoute();
