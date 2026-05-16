@@ -5,13 +5,14 @@ import (
 	"net/http"
 	"os"
 
+	"tasm-backend/database"
+	"tasm-backend/handlers"
+	"tasm-backend/middleware"
+
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"tasm-backend/database"
-	"tasm-backend/handlers"
-	"tasm-backend/middleware"
 )
 
 func main() {

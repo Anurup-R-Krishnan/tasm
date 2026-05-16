@@ -134,7 +134,7 @@ func CheckoutAsset(c *gin.Context) {
 	}
 
 	// Log event
-	logAssetEvent(db, asset.ID, user.ID, user.Name, "checkout",
+	logAssetEvent(db, asset.ID, user.ID, user.Name, "CHECKOUT",
 		"Asset checked out",
 		"In Stock", asset.Status,
 		"", asset.Custodian,
@@ -203,7 +203,7 @@ func CheckinAsset(c *gin.Context) {
 		actorName = "System"
 	}
 
-	logAssetEvent(db, asset.ID, actorID, actorName, "checkin",
+	logAssetEvent(db, asset.ID, actorID, actorName, "CHECKIN",
 		"Asset checked in",
 		"Checked Out", asset.Status,
 		previousCustodian, "",
@@ -277,7 +277,7 @@ func TransferAsset(c *gin.Context) {
 		description += " to " + payload.NewCustodian
 	}
 
-	logAssetEvent(db, asset.ID, actorID, actorName, "transfer",
+	logAssetEvent(db, asset.ID, actorID, actorName, "TRANSFER",
 		description,
 		asset.Status, asset.Status,
 		previousCustodian, asset.Custodian,
