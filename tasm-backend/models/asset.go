@@ -51,4 +51,6 @@ type Asset struct {
 	DisposalNotes           string     `json:"disposalNotes"`
 	EnvironmentalCompliance bool       `json:"environmentalCompliance"`
 	DataWipingConfirmed     bool       `json:"dataWipingConfirmed"`
+	// Financial Links
+	LeaseID uint `json:"leaseId,omitempty"`
 }

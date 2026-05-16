@@ -229,6 +229,67 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <!-- Left Column: Specs & History -->
         <div class="lg:col-span-8 space-y-8">
+          <!-- Lease Information (If applicable) -->
+          <div v-if="lease" class="premium-card bg-surface-subtle/50 border-primary/10">
+            <div class="flex justify-between items-start mb-6 border-b border-border-default pb-4">
+              <div>
+                <p class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">
+                  Lease Agreement
+                </p>
+                <h3 class="text-xl font-bold text-text-primary">
+                  {{ lease.leaseId }} — {{ lease.vendor }}
+                </h3>
+              </div>
+              <span
+                class="px-2.5 py-1 rounded-full bg-status-in-stock/20 text-status-in-stock font-bold text-[10px] uppercase border border-status-in-stock/30"
+              >
+                {{ lease.status }}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div>
+                <div class="flex items-center gap-2 mb-2 text-text-secondary">
+                  <span class="material-symbols-outlined text-[18px]">payments</span>
+                  <span class="text-[10px] font-bold uppercase tracking-widest">Monthly Value</span>
+                </div>
+                <p class="text-xl font-bold text-text-primary">
+                  ₹{{ lease.monthlyCost?.toLocaleString() }}
+                </p>
+                <p class="text-[10px] text-text-secondary mt-1 font-medium">
+                  Due 5th of every month
+                </p>
+              </div>
+
+              <div>
+                <div class="flex items-center gap-2 mb-2 text-text-secondary">
+                  <span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
+                  <span class="text-[10px] font-bold uppercase tracking-widest">Duration</span>
+                </div>
+                <p class="text-xl font-bold text-text-primary">36 Months</p>
+                <p class="text-[10px] text-text-secondary mt-1 font-medium">
+                  Commenced: {{ formatDate(lease.startDate) }}
+                </p>
+              </div>
+
+              <div>
+                <div class="flex items-center gap-2 mb-2 text-text-secondary">
+                  <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                  <span class="text-[10px] font-bold uppercase tracking-widest">Expiry Date</span>
+                </div>
+                <p class="text-xl font-bold text-text-primary">{{ formatDate(lease.endDate) }}</p>
+                <p class="text-[10px] text-text-secondary mt-1 font-medium">
+                  {{
+                    Math.ceil(
+                      (new Date(lease.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24),
+                    )
+                  }}
+                  days remaining
+                </p>
+              </div>
+            </div>
+          </div>
+
           <!-- Primary Info Cards -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div v-for="info in primarySpecs" :key="info.label" class="premium-card">
@@ -262,6 +323,51 @@
               >
                 <span class="text-xs font-medium text-text-secondary capitalize">{{ key }}</span>
                 <span class="text-xs font-bold text-text-primary">{{ val }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maintenance History -->
+          <div v-if="workOrders.length > 0" class="premium-card">
+            <div class="flex justify-between items-center mb-6 border-b border-border-default pb-4">
+              <h3 class="text-xs font-bold text-text-secondary uppercase tracking-widest">
+                Service & Maintenance History
+              </h3>
+              <span class="text-[10px] font-bold text-text-secondary"
+                >{{ workOrders.length }} Operations</span
+              >
+            </div>
+            <div class="space-y-4">
+              <div
+                v-for="wo in workOrders"
+                :key="wo.id"
+                class="p-4 rounded-2xl bg-canvas border border-border-default hover:border-primary/20 transition-all flex justify-between items-center"
+              >
+                <div class="flex items-center gap-4">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-surface flex items-center justify-center text-primary"
+                  >
+                    <span class="material-symbols-outlined text-[20px]">build</span>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-bold text-text-primary">{{ wo.title }}</h4>
+                    <p class="text-xs text-text-secondary mt-0.5">
+                      {{ formatDate(wo.createdAt) }} • {{ wo.technician }}
+                    </p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm font-bold text-text-primary">
+                    ₹{{ wo.cost?.toLocaleString() || '0' }}
+                  </p>
+                  <span
+                    class="text-[10px] font-bold uppercase tracking-wider"
+                    :class="
+                      wo.status === 'Closed' ? 'text-status-in-stock' : 'text-status-checked-out'
+                    "
+                    >{{ wo.status }}</span
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -305,6 +411,26 @@
 
         <!-- Right Column: Sidebar Stats -->
         <div class="lg:col-span-4 space-y-8">
+          <!-- Upcoming Maintenance Alert -->
+          <div
+            v-if="workOrders.some((wo) => wo.status !== 'Closed')"
+            class="p-6 rounded-[24px] bg-metric-amber border border-metric-amber/30 shadow-lg animate-pulse"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <span class="material-symbols-outlined text-surface-tint">engineering</span>
+              <p class="text-[10px] font-black text-surface-tint uppercase tracking-[0.2em]">
+                Pending Service
+              </p>
+            </div>
+            <h4 class="text-lg font-bold text-on-surface mb-1">Upcoming Maintenance</h4>
+            <p class="text-xs text-on-surface-variant font-medium">
+              Next scheduled check:
+              {{
+                formatDate(workOrders.find((wo) => wo.status !== 'Closed')?.targetDate as string)
+              }}
+            </p>
+          </div>
+
           <!-- Valuation Card -->
           <div
             class="premium-card bg-gradient-to-br from-primary to-surface-secondary text-white border-none shadow-xl shadow-primary/10"
@@ -454,8 +580,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
 import {
-  getAssetById,
-  getAssetHistory,
+  getAssetLifecycle,
   transferAsset,
   checkinAsset,
   retireAsset,
@@ -470,6 +595,9 @@ const router = useRouter();
 const asset = ref<Asset | null>(null);
 const loading = ref(true);
 const events = ref<AssetEvent[]>([]);
+const workOrders = ref<WorkOrder[]>([]);
+const depreciationSchedule = ref<DepreciationYearRow[]>([]);
+const lease = ref<LeaseAgreement | null>(null);
 const locations = ref<Location[]>([]);
 const showDisposeModal = ref(false);
 
@@ -488,12 +616,15 @@ const fetchAssetDetails = async () => {
     const id = route.params['id'] as string;
     if (!id) {
       asset.value = null;
-      events.value = [];
       return;
     }
 
-    asset.value = await getAssetById(id);
-    events.value = await getAssetHistory(id);
+    const lifecycle = await getAssetLifecycle(id);
+    asset.value = lifecycle.asset;
+    events.value = lifecycle.history;
+    workOrders.value = lifecycle.workOrders;
+    depreciationSchedule.value = lifecycle.depreciation;
+    lease.value = lifecycle.lease;
     locations.value = await getLocations();
   } catch (error) {
     console.error('Failed to fetch asset details:', error);
@@ -671,13 +802,9 @@ const technicalSpecs = computed(() => {
 });
 
 const historyLogs = computed(() => {
-  return events.value.map((e) => ({
+  const logs = events.value.map((e) => ({
     event: e.eventType.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
-    date: new Date(e.createdAt).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    }),
+    date: new Date(e.createdAt),
     description: e.notes || e.description || `${e.previousStatus || ''} → ${e.newStatus || ''}`,
     actor: e.actorName || 'System',
     icon: ['CHECKOUT', 'CHECKIN', 'TRANSFER'].includes(e.eventType)
@@ -685,7 +812,29 @@ const historyLogs = computed(() => {
       : ['RETIRED', 'DISPOSED'].includes(e.eventType)
         ? 'power_settings_new'
         : 'history',
+    type: 'event',
   }));
+
+  const woLogs = workOrders.value.map((wo) => ({
+    event: 'Maintenance: ' + wo.title,
+    date: new Date(wo.createdAt),
+    description: wo.issue + (wo.cost ? ` (Cost: ₹${wo.cost.toLocaleString()})` : ''),
+    actor: wo.technician || 'Technician',
+    icon: 'build',
+    type: 'work_order',
+    status: wo.status,
+  }));
+
+  return [...logs, ...woLogs]
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .map((l) => ({
+      ...l,
+      date: l.date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      }),
+    }));
 });
 
 const getStatusClass = (status: string) => {

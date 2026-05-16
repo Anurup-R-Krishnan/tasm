@@ -113,6 +113,9 @@ func GetWorkOrders(c *gin.Context) {
 	if severity := strings.TrimSpace(c.Query("severity")); severity != "" {
 		query = query.Where("severity = ?", severity)
 	}
+	if assetTag := strings.TrimSpace(c.Query("assetTag")); assetTag != "" {
+		query = query.Where("asset_tag = ?", assetTag)
+	}
 	if err := query.Find(&workOrders).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load work orders"})
 		return

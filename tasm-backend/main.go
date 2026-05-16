@@ -99,6 +99,7 @@ func main() {
 			protected.GET("/assets", handlers.GetAssets)
 			protected.GET("/assets/:id", handlers.GetAssetByID)
 			protected.GET("/assets/:id/history", handlers.GetAssetHistory)
+			protected.GET("/assets/:id/lifecycle", handlers.GetAssetFullLifecycle)
 			protected.GET("/assets/:id/depreciation", handlers.GetAssetDepreciationSchedule)
 			protected.GET("/assets/:id/transfers", handlers.GetAssetTransfers)
 			protected.GET("/assets/:id/receipt", handlers.GetReceipt)

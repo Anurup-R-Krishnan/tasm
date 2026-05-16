@@ -123,7 +123,21 @@ func SeedDatabase(c *gin.Context) {
 		database.DB.Create(&wo)
 	}
 
-	// 6. Create Software Licenses
+	// 6. Create Lease Agreements
+	lease := models.LeaseAgreement{
+		LeaseID:     "LS-4055",
+		Vendor:      "Tata Elxsi",
+		StartDate:   time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC),
+		EndDate:     time.Date(2025, 12, 31, 0, 0, 0, 0, time.UTC),
+		MonthlyCost: 450000,
+		Status:      "Active",
+	}
+	database.DB.Create(&lease)
+
+	// Link lease to an asset (Server)
+	database.DB.Model(&models.Asset{}).Where("tag_id = ?", "TP-SRV-001").Update("lease_id", lease.ID)
+
+	// 7. Create Software Licenses
 	licenses := []models.SoftwareLicense{
 		{SoftwareName: "Adobe Creative Cloud", PlanName: "Enterprise", Status: "Active", TotalSeats: 50, UsedSeats: 42, RenewalDate: time.Now().AddDate(0, 3, 0), AnnualCost: 125000},
 		{SoftwareName: "Microsoft 365", PlanName: "E5 Business", Status: "Active", TotalSeats: 500, UsedSeats: 485, RenewalDate: time.Now().AddDate(0, 8, 0), AnnualCost: 850000},

@@ -389,6 +389,7 @@ type assetRequest struct {
 	ReplacementCost    float64 `json:"replacementCost"`
 	LifecycleStatus    string  `json:"lifecycleStatus"`
 	Department         string  `json:"department"`
+	LeaseID            uint    `json:"leaseId"`
 }
 
 var validLifecycleStatuses = []string{"Procurement", "Deployed", "Under Maintenance", "End of Life", "Disposed"}
@@ -522,6 +523,7 @@ func CreateAsset(c *gin.Context) {
 		ResidualValue:      payload.ResidualValue,
 		ReplacementCost:    payload.ReplacementCost,
 		LifecycleStatus:    payload.LifecycleStatus,
+		LeaseID:            payload.LeaseID,
 	}
 
 	db, ok := requireDB(c)
@@ -630,6 +632,7 @@ func updateAssetFromPayload(c *gin.Context, db *gorm.DB, asset *models.Asset) bo
 		ResidualValue      *float64 `json:"residualValue"`
 		ReplacementCost    *float64 `json:"replacementCost"`
 		LifecycleStatus    *string  `json:"lifecycleStatus"`
+		LeaseID            *uint    `json:"leaseId"`
 	}
 
 	if !bindJSON(c, &payload) {
@@ -656,6 +659,10 @@ func updateAssetFromPayload(c *gin.Context, db *gorm.DB, asset *models.Asset) bo
 	applyAssetFloatField(&asset.ResidualValue, payload.ResidualValue)
 	applyAssetFloatField(&asset.ReplacementCost, payload.ReplacementCost)
 	applyAssetStringField(&asset.LifecycleStatus, payload.LifecycleStatus)
+
+	if payload.LeaseID != nil {
+		asset.LeaseID = *payload.LeaseID
+	}
 
 	if payload.PurchaseDate != nil {
 		parsed, err := parseTime(*payload.PurchaseDate)
@@ -1101,4 +1108,98 @@ func GetReceipt(c *gin.Context) {
 	}
 
 	c.File(asset.ReceiptFilePath)
+}
+
+// GetAssetFullLifecycle returns a comprehensive summary of an asset's history and state
+func GetAssetFullLifecycle(c *gin.Context) {
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var asset models.Asset
+	if err := db.First(&asset, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Asset not found"})
+		return
+	}
+
+	// 1. History
+	var history []models.AssetEvent
+	db.Where("asset_id = ?", id).Order("created_at desc").Find(&history)
+
+	// 2. Work Orders
+	var workOrders []models.WorkOrder
+	db.Where("asset_tag = ?", asset.TagID).Order("target_date desc").Find(&workOrders)
+
+	// 3. Depreciation
+	// We reuse the logic from GetAssetDepreciationSchedule but return it here
+	depreciation := calculateDepreciation(asset)
+
+	// 4. Lease
+	var lease *models.LeaseAgreement
+	if asset.LeaseID != 0 {
+		var l models.LeaseAgreement
+		if err := db.First(&l, asset.LeaseID).Error; err == nil {
+			lease = &l
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"asset":        asset,
+		"history":      history,
+		"workOrders":   workOrders,
+		"depreciation": depreciation,
+		"lease":        lease,
+	})
+}
+
+func calculateDepreciation(asset models.Asset) []DepreciationYearRow {
+	purchasePrice := asset.PurchasePrice
+	if purchasePrice <= 0 {
+		purchasePrice = asset.Value
+	}
+	usefulLife := asset.UsefulLifeYears
+	if usefulLife <= 0 {
+		usefulLife = 5
+	}
+	residual := asset.ResidualValue
+	method := asset.DepreciationMethod
+	if method == "" {
+		method = "Straight Line"
+	}
+
+	var rows []DepreciationYearRow
+	accumulated := 0.0
+	bookValue := purchasePrice
+
+	for year := 1; year <= usefulLife; year++ {
+		var depr float64
+		if method == "Straight Line" {
+			depr = (purchasePrice - residual) / float64(usefulLife)
+		} else {
+			rate := 2.0 / float64(usefulLife)
+			depr = bookValue * rate
+			if bookValue-depr < residual {
+				depr = bookValue - residual
+			}
+		}
+		if depr < 0 {
+			depr = 0
+		}
+		accumulated += depr
+		closing := bookValue - depr
+		rows = append(rows, DepreciationYearRow{
+			Year:                    year,
+			OpeningValue:            bookValue,
+			DepreciationAmount:      depr,
+			AccumulatedDepreciation: accumulated,
+			ClosingBookValue:        closing,
+		})
+		bookValue = closing
+	}
+	return rows
 }

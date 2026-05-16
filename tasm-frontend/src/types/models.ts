@@ -36,6 +36,7 @@ export interface Asset extends BaseEntity {
   disposalNotes: string;
   environmentalCompliance: boolean;
   dataWipingConfirmed: boolean;
+  leaseId?: number;
 }
 
 export interface AssetTransfer extends BaseEntity {

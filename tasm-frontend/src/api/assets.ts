@@ -139,3 +139,7 @@ export function getReceiptUrl(id: string | number): string {
   const base = import.meta.env['VITE_API_BASE_URL']?.replace(/\/$/, '') ?? '/api';
   return `${base}/assets/${id}/receipt`;
 }
+
+export function getAssetLifecycle(id: string | number): Promise<any> {
+  return apiRequest<any>(`/assets/${id}/lifecycle`);
+}
