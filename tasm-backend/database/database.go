@@ -63,6 +63,7 @@ func ConnectDB() error {
 		&models.SystemAlert{},
 		&models.SystemConfig{},
 		&models.AssetEvent{},
+		&models.AuditScan{},
 	); err != nil {
 		log.Fatalf("Failed to auto-migrate models: %v", err)
 	}

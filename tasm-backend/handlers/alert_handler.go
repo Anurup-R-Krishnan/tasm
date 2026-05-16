@@ -124,13 +124,7 @@ func DeleteAlert(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.SystemAlert{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.SystemAlert{}, id)
 }
 
 // MarkAllAlertsRead marks all unread alerts as read

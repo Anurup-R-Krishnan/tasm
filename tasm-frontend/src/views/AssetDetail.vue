@@ -32,21 +32,126 @@
             </p>
           </div>
         </div>
-        <div class="flex gap-3 w-full md:w-auto">
+        <div class="flex flex-wrap gap-3 w-full md:w-auto">
           <button
-            class="flex-1 md:flex-none bg-surface border border-border-default text-text-primary px-6 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-surface-subtle transition-all shadow-sm"
+            class="flex-1 md:flex-none bg-surface border border-border-default text-text-primary px-4 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-surface-subtle transition-all shadow-sm"
             @click="editAsset"
           >
             <span class="material-symbols-outlined text-[18px]">edit</span>
-            Edit Record
+            Edit
           </button>
+
           <button
-            class="flex-1 md:flex-none btn-primary px-6 py-2.5 !text-sm"
+            v-if="asset.status === 'In Stock'"
+            class="flex-1 md:flex-none btn-primary px-4 py-2.5 !text-sm"
             @click="startCheckout"
           >
             <span class="material-symbols-outlined">sync_alt</span>
-            Checkout / Transfer
+            Checkout
           </button>
+
+          <button
+            v-if="asset.status === 'Checked Out'"
+            class="flex-1 md:flex-none bg-metric-amber/10 border border-metric-amber/30 text-amber-800 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-metric-amber/20 transition-all shadow-sm"
+            @click="handleCheckin"
+          >
+            <span class="material-symbols-outlined">assignment_return</span>
+            Check-in
+          </button>
+
+          <button
+            class="flex-1 md:flex-none bg-primary-container/10 border border-primary-container/30 text-primary px-4 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-primary-container/20 transition-all shadow-sm"
+            @click="showTransferModal = true"
+          >
+            <span class="material-symbols-outlined">move_up</span>
+            Transfer
+          </button>
+        </div>
+      </div>
+
+      <!-- Transfer Modal -->
+      <div
+        v-if="showTransferModal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+      >
+        <div
+          class="bg-surface w-full max-w-lg rounded-[32px] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300"
+        >
+          <div class="p-8 border-b border-border-default flex justify-between items-center">
+            <div>
+              <h2 class="text-2xl font-bold text-text-primary tracking-tight">Transfer Asset</h2>
+              <p class="text-xs text-text-secondary mt-1 font-medium">
+                Log a physical move or change in custody.
+              </p>
+            </div>
+            <button
+              @click="showTransferModal = false"
+              class="text-text-secondary hover:text-text-primary transition-colors"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <div class="p-8 space-y-6">
+            <div class="space-y-2">
+              <label
+                class="block text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] ml-1"
+                >Target Location</label
+              >
+              <select
+                v-model="transferForm.newLocation"
+                class="w-full h-14 px-5 bg-canvas border border-border-default rounded-2xl text-text-primary focus:outline-none focus:border-primary transition-all font-bold"
+              >
+                <option value="">Maintain Current ({{ asset.location }})</option>
+                <option v-for="loc in locations" :key="loc.id" :value="loc.name">
+                  {{ loc.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="space-y-2">
+              <label
+                class="block text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] ml-1"
+                >New Custodian (Optional)</label
+              >
+              <input
+                v-model="transferForm.newCustodian"
+                type="text"
+                placeholder="e.g. Finance Dept / John Doe"
+                class="w-full h-14 px-5 bg-canvas border border-border-default rounded-2xl text-text-primary focus:outline-none focus:border-primary transition-all font-bold"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label
+                class="block text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] ml-1"
+                >Movement Notes</label
+              >
+              <textarea
+                v-model="transferForm.notes"
+                rows="3"
+                placeholder="Reason for transfer..."
+                class="w-full p-5 bg-canvas border border-border-default rounded-2xl text-text-primary focus:outline-none focus:border-primary transition-all font-medium resize-none"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="p-8 bg-surface-subtle flex gap-4">
+            <button
+              @click="showTransferModal = false"
+              class="flex-1 h-14 rounded-2xl font-bold text-text-secondary hover:bg-white transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              @click="executeTransfer"
+              :disabled="transferring"
+              class="flex-[2] h-14 bg-primary text-on-primary rounded-2xl font-bold shadow-xl shadow-primary/20 hover:opacity-90 flex items-center justify-center gap-2"
+            >
+              <span v-if="transferring" class="material-symbols-outlined animate-spin">sync</span>
+              <span>{{ transferring ? 'Transferring...' : 'Execute Transfer' }}</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -210,8 +315,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
-import { getAssetById, getAssetHistory } from '../api/assets';
-import type { Asset, AssetEvent } from '../types/models';
+import { getAssetById, getAssetHistory, transferAsset, checkinAsset } from '../api/assets';
+import { getLocations } from '../api/locations';
+import type { Asset, AssetEvent, Location } from '../types/models';
 import AssetQrCode from '../components/AssetQrCode.vue';
 
 const route = useRoute();
@@ -219,6 +325,16 @@ const router = useRouter();
 const asset = ref<Asset | null>(null);
 const loading = ref(true);
 const events = ref<AssetEvent[]>([]);
+const locations = ref<Location[]>([]);
+
+// Transfer State
+const showTransferModal = ref(false);
+const transferring = ref(false);
+const transferForm = ref({
+  newLocation: '',
+  newCustodian: '',
+  notes: '',
+});
 
 const fetchAssetDetails = async () => {
   loading.value = true;
@@ -232,10 +348,50 @@ const fetchAssetDetails = async () => {
 
     asset.value = await getAssetById(id);
     events.value = await getAssetHistory(id);
+    locations.value = await getLocations();
   } catch (error) {
     console.error('Failed to fetch asset details:', error);
   } finally {
     loading.value = false;
+  }
+};
+
+const handleCheckin = async () => {
+  if (!asset.value) return;
+  if (!confirm('Are you sure you want to check-in this asset? It will be marked as "In Stock".'))
+    return;
+
+  try {
+    loading.value = true;
+    await checkinAsset(asset.value.id, { notes: 'Asset checked in via detail view.' });
+    await fetchAssetDetails();
+    alert('Asset checked in successfully.');
+  } catch (error) {
+    console.error('Check-in failed:', error);
+    alert('Failed to check-in asset.');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const executeTransfer = async () => {
+  if (!asset.value) return;
+  transferring.value = true;
+  try {
+    await transferAsset(asset.value.id, {
+      newLocation: transferForm.value.newLocation || undefined,
+      newCustodian: transferForm.value.newCustodian || undefined,
+      notes: transferForm.value.notes,
+    });
+    showTransferModal.value = false;
+    transferForm.value = { newLocation: '', newCustodian: '', notes: '' };
+    await fetchAssetDetails();
+    alert('Asset transferred successfully.');
+  } catch (error) {
+    console.error('Transfer failed:', error);
+    alert('Failed to transfer asset.');
+  } finally {
+    transferring.value = false;
   }
 };
 
@@ -288,7 +444,9 @@ const historyLogs = computed(() => {
     }),
     description: e.notes || `${e.previousStatus} → ${e.newStatus}`,
     icon:
-      e.eventType === 'checkout' ? 'sync_alt' : e.eventType === 'checkin' ? 'sync_alt' : 'history',
+      e.eventType === 'checkout' || e.eventType === 'checkin' || e.eventType === 'transfer'
+        ? 'sync_alt'
+        : 'history',
   }));
 });
 

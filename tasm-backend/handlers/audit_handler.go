@@ -145,6 +145,17 @@ func ScanAssetInAudit(c *gin.Context) {
 		return
 	}
 
+	// Check if already scanned in this session
+	var existingScan models.AuditScan
+	err := db.Where("audit_session_id = ? AND asset_tag = ?", session.ID, payload.TagID).First(&existingScan).Error
+	if err == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"result":  "already_scanned",
+			"message": "Asset already scanned in this session",
+		})
+		return
+	}
+
 	// Look up the asset by tag
 	var asset models.Asset
 	result := db.Where("tag_id = ?", payload.TagID).First(&asset)
@@ -163,6 +174,13 @@ func ScanAssetInAudit(c *gin.Context) {
 		}
 		db.Create(&disc)
 
+		// Record the scan even if not found in registry (to prevent double-counting discrepancies)
+		db.Create(&models.AuditScan{
+			AuditSessionID: session.ID,
+			AssetTag:       payload.TagID,
+			ScannedAt:      time.Now(),
+		})
+
 		// Increment discrepancy count
 		session.DiscrepancyCount++
 		db.Save(&session)
@@ -178,6 +196,13 @@ func ScanAssetInAudit(c *gin.Context) {
 	// Asset found — check for location mismatch
 	scannedLoc := trimSpace(payload.ScannedLocation)
 	locationMismatch := scannedLoc != "" && scannedLoc != asset.Location
+
+	// Record the scan
+	db.Create(&models.AuditScan{
+		AuditSessionID: session.ID,
+		AssetTag:       asset.TagID,
+		ScannedAt:      time.Now(),
+	})
 
 	// Update scanned count and progress
 	session.ScannedAssets++
@@ -537,13 +562,7 @@ func DeleteAudit(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.AuditSession{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.AuditSession{}, id)
 }
 
 func UpdateDiscrepancy(c *gin.Context) {
@@ -614,11 +633,5 @@ func DeleteDiscrepancy(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.AuditDiscrepancy{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.AuditDiscrepancy{}, id)
 }

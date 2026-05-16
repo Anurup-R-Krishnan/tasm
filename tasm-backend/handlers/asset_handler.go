@@ -212,6 +212,80 @@ func CheckinAsset(c *gin.Context) {
 	c.JSON(http.StatusOK, asset)
 }
 
+// TransferAsset handles transferring an asset to a new location or custodian
+func TransferAsset(c *gin.Context) {
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
+	db, ok := requireDB(c)
+	if !ok {
+		return
+	}
+
+	var asset models.Asset
+	if err := db.First(&asset, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Asset not found"})
+		return
+	}
+
+	type transferPayload struct {
+		NewLocation  string `json:"newLocation"`
+		NewCustodian string `json:"newCustodian"`
+		Notes        string `json:"notes,omitempty"`
+	}
+	var payload transferPayload
+	if !bindJSON(c, &payload) {
+		return
+	}
+
+	previousLocation := asset.Location
+	previousCustodian := asset.Custodian
+
+	if payload.NewLocation != "" {
+		asset.Location = payload.NewLocation
+	}
+	if payload.NewCustodian != "" {
+		asset.Custodian = payload.NewCustodian
+	}
+
+	if err := db.Save(&asset).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update asset during transfer"})
+		return
+	}
+
+	// Log event
+	userID, exists := c.Get("userID")
+	var actorID uint
+	var actorName string
+	if exists {
+		actorID = userID.(uint)
+		var actor models.SystemUser
+		if err := db.First(&actor, actorID).Error; err == nil {
+			actorName = actor.Name
+		}
+	}
+	if actorName == "" {
+		actorName = "System"
+	}
+
+	description := "Asset transferred"
+	if payload.NewLocation != "" && payload.NewLocation != previousLocation {
+		description += " to " + payload.NewLocation
+	}
+	if payload.NewCustodian != "" && payload.NewCustodian != previousCustodian {
+		description += " to " + payload.NewCustodian
+	}
+
+	logAssetEvent(db, asset.ID, actorID, actorName, "transfer",
+		description,
+		asset.Status, asset.Status,
+		previousCustodian, asset.Custodian,
+		nil, payload.Notes)
+
+	c.JSON(http.StatusOK, asset)
+}
+
 // GetAssetHistory returns the event history for an asset
 func GetAssetHistory(c *gin.Context) {
 	id, ok := parseIDParam(c)
@@ -568,11 +642,5 @@ func DeleteAsset(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.Asset{}, id).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete asset"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "Asset deleted successfully"})
+	deleteEntity(c, db, &models.Asset{}, id)
 }

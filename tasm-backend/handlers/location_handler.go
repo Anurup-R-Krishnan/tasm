@@ -180,11 +180,5 @@ func DeleteLocation(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.Location{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.Location{}, id)
 }

@@ -25,14 +25,17 @@ func GetConsumables(c *gin.Context) {
 }
 
 func GetConsumableByID(c *gin.Context) {
-	id := c.Param("id")
+	id, ok := parseIDParam(c)
+	if !ok {
+		return
+	}
 	db, ok := requireDB(c)
 	if !ok {
 		return
 	}
 
 	var consumable models.Consumable
-	if err := db.First(&consumable, "id = ?", id).Error; err != nil {
+	if err := db.First(&consumable, id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Consumable not found"})
 		return
 	}
@@ -146,11 +149,5 @@ func DeleteConsumable(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.Consumable{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.Consumable{}, id)
 }

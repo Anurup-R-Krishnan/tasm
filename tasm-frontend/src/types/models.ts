@@ -182,7 +182,7 @@ export interface AssetEvent extends BaseEntity {
 }
 
 export interface ScanResult {
-  result: 'found' | 'unregistered' | 'error';
+  result: 'found' | 'unregistered' | 'error' | 'already_scanned';
   asset?: Asset;
   locationMatch: boolean;
   progress?: number;

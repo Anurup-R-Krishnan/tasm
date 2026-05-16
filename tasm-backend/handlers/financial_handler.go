@@ -437,13 +437,7 @@ func DeleteLedger(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.LedgerEntry{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.LedgerEntry{}, id)
 }
 
 func UpdateLease(c *gin.Context) {
@@ -538,13 +532,7 @@ func DeleteLease(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.LeaseAgreement{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.LeaseAgreement{}, id)
 }
 
 func UpdateDepreciation(c *gin.Context) {
@@ -713,13 +701,7 @@ func DeleteSoftwareLicense(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.SoftwareLicense{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.SoftwareLicense{}, id)
 }
 
 func DeleteDepreciation(c *gin.Context) {
@@ -731,11 +713,5 @@ func DeleteDepreciation(c *gin.Context) {
 	if !ok {
 		return
 	}
-
-	if err := db.Delete(&models.DepreciationSchedule{}, id).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete"})
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Deleted successfully"})
+	deleteEntity(c, db, &models.DepreciationSchedule{}, id)
 }

@@ -60,7 +60,9 @@
               ? 'bg-metric-sage border-green-200 text-status-in-stock'
               : lastScanResult.result === 'found' && !lastScanResult.locationMatch
                 ? 'bg-metric-amber border-amber-200 text-amber-800'
-                : 'bg-error-container border-red-200 text-status-critical'
+                : lastScanResult.result === 'already_scanned'
+                  ? 'bg-blue-50 border-blue-200 text-blue-700'
+                  : 'bg-error-container border-red-200 text-status-critical'
           "
         >
           <span class="material-symbols-outlined text-2xl">
@@ -69,7 +71,9 @@
                 ? 'check_circle'
                 : lastScanResult.result === 'found' && !lastScanResult.locationMatch
                   ? 'location_off'
-                  : 'report'
+                  : lastScanResult.result === 'already_scanned'
+                    ? 'info'
+                    : 'report'
             }}
           </span>
           <div class="flex-1">
@@ -79,14 +83,18 @@
                   ? '✓ Asset Verified'
                   : lastScanResult.result === 'found' && !lastScanResult.locationMatch
                     ? '⚠ Location Mismatch'
-                    : '✗ Unregistered Asset'
+                    : lastScanResult.result === 'already_scanned'
+                      ? 'ℹ Already Scanned'
+                      : '✗ Unregistered Asset'
               }}
             </p>
             <p class="text-xs mt-0.5 opacity-80">
               {{
                 lastScanResult.result === 'found'
                   ? lastScanResult.asset?.name + ' (' + lastScanResult.asset?.tagId + ')'
-                  : 'Tag not found in system — logged as discrepancy'
+                  : lastScanResult.result === 'already_scanned'
+                    ? 'This asset has already been recorded in this session.'
+                    : 'Tag not found in system — logged as discrepancy'
               }}
             </p>
           </div>

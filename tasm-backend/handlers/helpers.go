@@ -91,18 +91,18 @@ func validateStatus(c *gin.Context, field string, value string, allowed []string
 	return false
 }
 
+var dateLayouts = []string{
+	time.RFC3339,
+	"2006-01-02T15:04:05",
+	"2006-01-02",
+}
+
 func parseTime(value string) (time.Time, error) {
 	if strings.TrimSpace(value) == "" {
 		return time.Time{}, errors.New("time value is required")
 	}
 
-	layouts := []string{
-		time.RFC3339,
-		"2006-01-02T15:04:05",
-		"2006-01-02",
-	}
-
-	for _, layout := range layouts {
+	for _, layout := range dateLayouts {
 		parsed, err := time.Parse(layout, value)
 		if err == nil {
 			return parsed, nil
@@ -117,13 +117,7 @@ func parseDatePointer(value string) (*time.Time, error) {
 		return nil, nil
 	}
 
-	layouts := []string{
-		time.RFC3339,
-		"2006-01-02T15:04:05",
-		"2006-01-02",
-	}
-
-	for _, layout := range layouts {
+	for _, layout := range dateLayouts {
 		parsed, err := time.Parse(layout, value)
 		if err == nil {
 			return &parsed, nil
@@ -167,4 +161,13 @@ func requirePasswordPolicy(c *gin.Context, field string, value string) bool {
 	}
 
 	return true
+}
+
+func deleteEntity(c *gin.Context, db *gorm.DB, model interface{}, id uint) {
+	if err := db.Delete(model, id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete item"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Deleted successfully"})
 }

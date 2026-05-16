@@ -37,7 +37,12 @@ export function deleteAsset(id: string | number): Promise<{ message: string }> {
 
 export function checkoutAsset(
   id: string | number,
-  data: { userId: number; dueDate?: string; notes?: string; custodian?: string },
+  data: {
+    userId: number;
+    dueDate?: string | undefined;
+    notes?: string | undefined;
+    custodian?: string | undefined;
+  },
 ): Promise<Asset> {
   return apiRequest<Asset>(`/assets/${id}/checkout`, {
     method: 'POST',
@@ -48,7 +53,7 @@ export function checkoutAsset(
 
 export function checkinAsset(
   id: string | number,
-  data: { notes?: string; custodian?: string },
+  data: { notes?: string | undefined; custodian?: string | undefined },
 ): Promise<Asset> {
   return apiRequest<Asset>(`/assets/${id}/checkin`, {
     method: 'POST',
@@ -59,4 +64,19 @@ export function checkinAsset(
 
 export function getAssetHistory(id: string | number): Promise<AssetEvent[]> {
   return apiRequest<AssetEvent[]>(`/assets/${id}/history`);
+}
+
+export function transferAsset(
+  id: string | number,
+  data: {
+    newLocation?: string | undefined;
+    newCustodian?: string | undefined;
+    notes?: string | undefined;
+  },
+): Promise<Asset> {
+  return apiRequest<Asset>(`/assets/${id}/transfer`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json' },
+  });
 }

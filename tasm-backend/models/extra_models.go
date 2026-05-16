@@ -21,6 +21,13 @@ type AuditSession struct {
 	Progress         int            `json:"progress"`
 }
 
+type AuditScan struct {
+	ID             uint      `gorm:"primarykey" json:"id"`
+	AuditSessionID uint      `json:"auditSessionId"`
+	AssetTag       string    `json:"assetTag"`
+	ScannedAt      time.Time `json:"scannedAt"`
+}
+
 type Consumable struct {
 	ID           uint           `gorm:"primarykey" json:"id"`
 	CreatedAt    time.Time      `json:"createdAt"`

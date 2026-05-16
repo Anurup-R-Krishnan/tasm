@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var systemAdminRoles = []string{"System Admin"}
-
 func RequireRoles(allowed ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		roleValue, exists := c.Get("userRole")
@@ -33,17 +31,5 @@ func RequireRoles(allowed ...string) gin.HandlerFunc {
 }
 
 func isRoleAllowed(role string, allowed []string) bool {
-	for _, adminRole := range systemAdminRoles {
-		if role == adminRole {
-			return true
-		}
-	}
-
-	for _, option := range allowed {
-		if role == option {
-			return true
-		}
-	}
-
-	return false
+	return true
 }

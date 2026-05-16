@@ -277,7 +277,7 @@ import { useAuth } from '../composables/useAuth';
 import heroImage from '../assets/hero.png';
 
 const router = useRouter();
-const { register, companyName } = useAuth();
+const { register, isSetupCompleted, companyName } = useAuth();
 
 const loading = ref(false);
 const error = ref('');
@@ -366,10 +366,14 @@ const handleSubmit = async () => {
       department: form.value.department.trim(),
       password: form.value.password,
     });
-    success.value = 'Account created. Please sign in to continue.';
+    success.value = 'Account created successfully! Redirecting...';
     setTimeout(() => {
-      router.push({ name: 'Login' });
-    }, 800);
+      if (!isSetupCompleted.value) {
+        router.push({ name: 'FirstRun' });
+      } else {
+        router.push({ name: 'Dashboard' });
+      }
+    }, 1000);
   } catch (err: any) {
     error.value = err.message || 'Registration failed. Please try again.';
   } finally {
