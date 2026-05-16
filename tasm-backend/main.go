@@ -65,9 +65,7 @@ func main() {
 
 	api := r.Group("/api")
 	{
-		// Public seed (dev only) + auth
-		api.POST("/seed", handlers.SeedDatabase)
-
+		// Auth
 		auth := api.Group("/auth")
 		{
 			auth.POST("/login", handlers.Login)

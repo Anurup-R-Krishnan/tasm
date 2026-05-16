@@ -126,12 +126,31 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	// If no users exist, make this user a System Admin and seed default roles
+	var userCount int64
+	database.DB.Model(&models.SystemUser{}).Count(&userCount)
+	role := "Employee"
+	if userCount == 0 {
+		role = "System Admin"
+
+		// Create default roles
+		defaultRoles := []models.UserRole{
+			{RoleName: "System Admin", Description: "Full system access — can manage users, roles, and all configuration"},
+			{RoleName: "Finance Manager", Description: "Manage financial records, ledgers, leases, and depreciation"},
+			{RoleName: "Facilities Head", Description: "Manage assets, locations, maintenance, and audit sessions"},
+			{RoleName: "Employee", Description: "Standard access — can view assets and submit self-service requests"},
+		}
+		for _, r := range defaultRoles {
+			database.DB.Where(models.UserRole{RoleName: r.RoleName}).FirstOrCreate(&r)
+		}
+	}
+
 	user := models.SystemUser{
 		Name:         req.Name,
 		Email:        req.Email,
 		EmployeeID:   req.EmployeeId,
 		Department:   req.Department,
-		Role:         "Employee",
+		Role:         role,
 		PasswordHash: string(hashedPassword),
 		Status:       "Active",
 	}
